@@ -1,5 +1,5 @@
 #include "recvthreadecal.h"
-
+#include <QDebug>
 
 
 
@@ -33,7 +33,7 @@ void RecvThreadECal::Initialize()
  */
 void RecvThreadECal::OnRecv()
 {
-    qDebug("hello");
+    qDebug() << "RecvThreadECal::OnRecv()";
     emit new_data_arrived(0, 0);
 
 }

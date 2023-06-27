@@ -1,5 +1,6 @@
 #include "recvthreademul.h"
 #include <QtMath>
+#include <QDebug>
 
 
 
@@ -33,17 +34,17 @@ void RecvThreadEmul::Initialize()
 
 void RecvThreadEmul::OnRefreshPlot()
 {
-    qDebug("RecvThreadEmul::OnRefreshPlot");
+    //qDebug() << "RecvThreadEmul::OnRefreshPlot";
     emit add_data_refresh_plot(_dataBuffer, _dataIndex);
     _dataIndex = 0;
 }
 
 void RecvThreadEmul::OnRecv(const DataSeriesEmul& data)
 {
-    //qDebug("RecvThreadEmul::OnRecv");
+    //qDebug() << "RecvThreadEmul::OnRecv";
     if (_dataIndex >= DATA_INDEX_MAX)
     {
-        qDebug("Buffer overflow");
+        qDebug() << "Buffer overflow";
         return;
     }
     _dataBuffer[_dataIndex++] = data;
@@ -58,5 +59,3 @@ void RecvThreadEmul::run()
     exec();
     _refreshPlotTimer->stop();
 }
-
-

@@ -1,5 +1,6 @@
 #include "datasourceemul.h"
 #include <QtMath>
+#include <QDebug>
 
 #define DATA_EMUL_PUB_PERIOD (0.001)
 
@@ -18,8 +19,6 @@ DataSourceEmul::~DataSourceEmul()
 
 void DataSourceEmul::OnTimer()
 {
-    //qDebug("DataSourceEmul::OnTimer");
-
     static const double MAX_AMPLITUDE = 10.0;
     static const double FREQ = 0.1;
 

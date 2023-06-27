@@ -2,6 +2,8 @@
 #define PLOTCONFIG_H
 
 #include <QDockWidget>
+#include <QTreeWidgetItem>
+#include <QAbstractItemModel>
 
 namespace Ui {
 class PlotConfig;
@@ -14,6 +16,8 @@ class PlotConfig : public QDockWidget
 public:
     explicit PlotConfig(QWidget *parent = nullptr);
     ~PlotConfig();
+
+    void setConfigModel(QAbstractItemModel* configModel);
 
 private:
     Ui::PlotConfig *ui;

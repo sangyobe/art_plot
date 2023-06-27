@@ -6,13 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>359</height>
+    <width>367</width>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Plot Config Panel</string>
   </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTreeView" name="configview"/>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections/>
