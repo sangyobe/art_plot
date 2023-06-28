@@ -2,7 +2,40 @@
 #define RECVTHREADECAL_H
 
 #include "recvthread.h"
+#include <ecal/ecal.h>
+#include <ecal/msg/protobuf/subscriber.h>
+#include <dtProto/QuadIP.pb.h>
 #include <QTimer>
+
+class RecvThreadECal : public RecvThread
+{
+    Q_OBJECT
+public:
+    explicit RecvThreadECal(QObject *parent = nullptr);
+    virtual ~RecvThreadECal();
+
+    void run();
+
+public:
+    void Initialize();
+
+public:
+    void OnRecv(const art_protocol::quadip::ControlStateTimeStamped& data);
+
+
+signals:
+    void new_data_arrived(double* data, uint32_t len);
+
+public slots:
+    void OnRefreshPlot();
+
+private:
+    QTimer* _refreshPlotTimer;
+
+    eCAL::protobuf::CSubscriber<art_protocol::quadip::ControlStateTimeStamped>* sub_control_state;
+};
+
+#endif // RECVTHREADECAL_H
 
 /*!
  * \brief The RecvThreadECal class
@@ -59,28 +92,3 @@
  * 개발 편의성과 기능 안정성 측면에서 장점은 있으나, 데이터 동적 추가 등 편의성 부족
  *
  */
-class RecvThreadECal : public RecvThread
-{
-    Q_OBJECT
-public:
-    explicit RecvThreadECal(QObject *parent = nullptr);
-
-    void run();
-
-public:
-    void Initialize();
-
-public:
-//    void OnRecv();
-
-
-    QTimer* threadTimer;
-
-signals:
-    void new_data_arrived(double* data, uint32_t len);
-
-public slots:
-    void OnRecv();
-};
-
-#endif // RECVTHREADECAL_H

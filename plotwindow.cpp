@@ -1,11 +1,60 @@
 #include "plotconfig.h"
 #include "plotwindow.h"
 #include "ui_plotwindow.h"
-#include "recvthreadecal.h"
-#include "recvthreademul.h"
 #include <cassert>
 #include <iostream>
 #include <memory>
+
+#define PRINT_PUB_SUB_INFO
+
+void OnControlState(const char *topic_name_,
+                    const art_protocol::quadip::ControlStateTimeStamped &state_,
+                    const long long time_, const long long clock_) {
+#ifdef PRINT_PUB_SUB_INFO
+    qDebug() << "------------------------------------------";
+    qDebug() << " QuadIP Control State "                    ;
+    qDebug() << "------------------------------------------";
+    qDebug() << "topic name   : " << topic_name_            ;
+    qDebug() << "topic time   : " << time_                  ;
+    qDebug() << "topic clock  : " << clock_                 ;
+    qDebug() << "------------------------------------------";
+    qDebug() << " Header "                                  ;
+    qDebug() << "------------------------------------------";
+    qDebug() << "  seq        : " << state_.header().seq()  ;
+    qDebug() << "------------------------------------------";
+    qDebug() << ""                                          ;
+#else
+    Q_UNUSED(topic_name_);
+    Q_UNUSED(state_);
+    Q_UNUSED(time_);
+    Q_UNUSED(clock_);
+#endif // PRINT_PUB_SUB_INFO
+}
+
+void OnCpgState(const char *topic_name_,
+                const art_protocol::quadip::CpgStateTimeStamped &state_,
+                const long long time_, const long long clock_) {
+#ifdef PRINT_PUB_SUB_INFO
+    qDebug() << "------------------------------------------";
+    qDebug() << " QuadIP Cpg State "                        ;
+    qDebug() << "------------------------------------------";
+    qDebug() << "topic name   : " << topic_name_            ;
+    qDebug() << "topic time   : " << time_                  ;
+    qDebug() << "topic clock  : " << clock_                 ;
+    qDebug() << "------------------------------------------";
+    qDebug() << " Header "                                  ;
+    qDebug() << "------------------------------------------";
+    qDebug() << "  seq        : " << state_.header().seq()  ;
+    qDebug() << "------------------------------------------";
+    qDebug() << ""                                          ;
+#else
+    Q_UNUSED(topic_name_);
+    Q_UNUSED(state_);
+    Q_UNUSED(time_);
+    Q_UNUSED(clock_);
+#endif // PRINT_PUB_SUB_INFO
+}
+
 
 PlotWindow::ConfigOption::ConfigOption() :
     x_axis_auto_scroll(false),
@@ -14,15 +63,17 @@ PlotWindow::ConfigOption::ConfigOption() :
     x_axis_end_sec(1.0),
     y_axis_auto_scale(false),
     y_axis_lbound(-1.0),
-    y_axis_ubound(1.0)
+    y_axis_ubound(1.0),
+    legend_visible(true)
 {}
 
 PlotWindow::PlotWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PlotWindow),
     _configModel(nullptr),
-    _recvThread(new RecvThreadEmul(this))
-
+    _recvThread(nullptr),
+    sub_control_state(nullptr),
+    sub_cpg_state(nullptr)
 {
     ui->setupUi(this);
 
@@ -33,16 +84,12 @@ PlotWindow::PlotWindow(QWidget *parent) :
     BuildConfig();
 
 
-
-
-    connect(_recvThread.get(), SIGNAL(add_data_refresh_plot(DataSeriesEmul*, uint32_t)), this, SLOT(OnNewDataArrived(DataSeriesEmul*, uint32_t)));
-
-
-    this->AddGraph("Sin", QColorConstants::DarkCyan);
-    this->AddGraph("Sin^2", QColorConstants::DarkYellow);
-    this->AddGraph("Cos", QColorConstants::Yellow);
-    this->AddGraph("Cos^2", QColorConstants::Magenta);
-
+    // legend
+    ui->plotwidget->legend->setVisible(_configOption.legend_visible);
+    QFont legendFont = font();
+    legendFont.setPointSize(9);
+    ui->plotwidget->legend->setFont(legendFont);
+    ui->plotwidget->legend->setBrush(QBrush(QColor(255, 255, 255, 230)));
 
     // axis
     ui->plotwidget->xAxis->setLabel("x");
@@ -82,19 +129,60 @@ PlotWindow::PlotWindow(QWidget *parent) :
     ui->plotwidget->replot();
 
 
+    // initialize the last data receive time & plot refresh timer
+    _lastRecvTime = -1.0;
+    _isNewDataReceived = false;
+    _refreshPlotTimer = std::unique_ptr<QTimer>(new QTimer(this));
+    connect(_refreshPlotTimer.get(), SIGNAL(timeout()), this, SLOT(OnRefreshPlot()));
+    _refreshPlotTimer->setInterval(100); // msec
+    _refreshPlotTimer->start();
 
-    //_recvThread = std::make_unique<RecvThread>(this);
-    //_recvThread = new RecvThreadECal(this);
-    _recvThread->start();
+
+
+    sub_control_state = new eCAL::protobuf::CSubscriber<art_protocol::quadip::ControlStateTimeStamped>("ControlState");
+    auto callback_control_state = std::bind(OnControlState, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+    //auto callback_control_state = std::bind(&PlotWindow::OnRecv, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5);
+    //auto callback_control_state = std::bind(OnRecv, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+    sub_control_state->AddReceiveCallback(callback_control_state);
+
+
+
+#ifdef USE_EMUL_DATA
+    this->AddGraph("Sin", QColorConstants::DarkCyan);
+    this->AddGraph("Sin^2", QColorConstants::DarkYellow);
+    this->AddGraph("Cos", QColorConstants::Yellow);
+    this->AddGraph("Cos^2", QColorConstants::Magenta);
+
+    connect(this, SIGNAL(add_data_refresh_plot(DataSeriesEmul*, uint32_t)), this, SLOT(OnNewDataArrived(DataSeriesEmul*, uint32_t)));
+    _dataIndex = 0;
+    _dataSource = std::unique_ptr<DataSourceEmul>(new DataSourceEmul("Sample Data Series"));
+    connect(_dataSource.get(), SIGNAL(new_data(const DataSeriesEmul&)), this, SLOT(OnRecv(const DataSeriesEmul&)));
+#endif
 }
 
 PlotWindow::~PlotWindow()
 {
-    //_recvThread->exit(0);
-    _recvThread->terminate();
-    _recvThread->wait();
+    _refreshPlotTimer->stop();
 
     delete ui;
+}
+
+void PlotWindow::OnRecv(const char* topic_name, const art_protocol::quadip::ControlStateTimeStamped& state, const long long time, const long long clock)
+{
+    Q_UNUSED(topic_name);
+    Q_UNUSED(state);
+    Q_UNUSED(time);
+    Q_UNUSED(clock);
+
+}
+
+void PlotWindow::OnRecv(const char* topic_name, const art_protocol::quadip::CpgStateTimeStamped& state, const long long time, const long long clock)
+{
+    Q_UNUSED(topic_name);
+    Q_UNUSED(state);
+    Q_UNUSED(time);
+    Q_UNUSED(clock);
+
 }
 
 void PlotWindow::BuildConfig()
@@ -108,9 +196,11 @@ void PlotWindow::BuildConfig()
 
     QStandardItem* x_axis_root = new QStandardItem("x-Axis");
     QStandardItem* y_axis_root = new QStandardItem("y-Axis");
+    QStandardItem* legend_root = new QStandardItem("Legend");
     QStandardItem* data_series_root = new QStandardItem("Data series");
     _configModel->appendRow(x_axis_root);
     _configModel->appendRow(y_axis_root);
+    _configModel->appendRow(legend_root);
     _configModel->appendRow(data_series_root);
 
     // x-Axis
@@ -185,6 +275,16 @@ void PlotWindow::BuildConfig()
     items.append(item);
     y_axis_root->appendRow(items);
 
+    // legend
+    items.clear();
+    item_title = new QStandardItem("Visible");
+    item = new QStandardItem();
+    item->setCheckable(true);
+    item->setCheckState(_configOption.legend_visible ? Qt::Checked : Qt::Unchecked);
+    item->setWhatsThis("Legend::Visible");
+    items.append(item_title);
+    items.append(item);
+    legend_root->appendRow(items);
 
     _plotConfig->setConfigModel(_configModel);
 
@@ -207,30 +307,6 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color)
     graph->setPen(QPen(color));
     //graph->setScatterStyle(QCPScatterStyle::ssPlus);
     return ui->plotwidget->graphCount();
-}
-
-void PlotWindow::OnNewDataArrived(DataSeriesEmul* data, uint32_t size)
-{
-    //qDebug() << "OnNewDataArrived";
-
-    static double di = 0.0;
-    static double df = 1.1;
-    //static const double dt = 0.1;
-
-    for (size_t i=0; i<size; i++) {
-        ui->plotwidget->graph(0)->addData(data[i].time, data[i].data[0]);
-        ui->plotwidget->graph(1)->addData(data[i].time, data[i].data[1]);
-        ui->plotwidget->graph(2)->addData(data[i].time, data[i].data[2]);
-        ui->plotwidget->graph(3)->addData(data[i].time, data[i].data[3]);
-        df = data[i].time;
-    }
-    di = qMax(0.0, df - _configOption.x_axis_auto_scroll_window);
-    if (_configOption.x_axis_auto_scroll)
-        ui->plotwidget->xAxis->setRange(di, df);
-    if (_configOption.y_axis_auto_scale)
-        ui->plotwidget->yAxis->rescale();
-
-    ui->plotwidget->replot();
 }
 
 void PlotWindow::OnConfigChanged(QStandardItem *item)
@@ -262,6 +338,10 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
         _configOption.y_axis_ubound = item->text().toDouble();
         AdjustPlotYRange();
     }
+    else if (item->whatsThis() == "Legend::Visible") {
+        _configOption.legend_visible = (item->checkState() == Qt::Checked ? true : false);
+        ui->plotwidget->legend->setVisible(_configOption.legend_visible);
+    }
 }
 
 void PlotWindow::resizeEvent(QResizeEvent* event)
@@ -292,3 +372,58 @@ void PlotWindow::AdjustPlotYRange()
             );
     }
 }
+
+/*!
+ * \brief PlotWindow::OnRefreshPlot
+ * 주기적으로 새로운 데이터가 있는지 확인한 후 그래프를 새로 그린다.
+ */
+void PlotWindow::OnRefreshPlot()
+{
+    //qDebug() << "PlotWindow::OnRefreshPlot";
+
+    if (!_isNewDataReceived)
+        return;
+
+    _isNewDataReceived = false; // reset switch!
+
+    double di = qMax(0.0, _lastRecvTime - _configOption.x_axis_auto_scroll_window);
+    if (_configOption.x_axis_auto_scroll)
+        ui->plotwidget->xAxis->setRange(di, _lastRecvTime);
+    if (_configOption.y_axis_auto_scale)
+        ui->plotwidget->yAxis->rescale();
+
+    ui->plotwidget->replot();
+}
+
+#ifdef USE_EMUL_DATA
+void PlotWindow::OnNewDataArrived(DataSeriesEmul* data, uint32_t size)
+{
+    //qDebug() << "OnNewDataArrived " << size;
+
+    for (size_t i=0; i<size; i++) {
+        ui->plotwidget->graph(0)->addData(data[i].time, data[i].data[0]);
+        ui->plotwidget->graph(1)->addData(data[i].time, data[i].data[1]);
+        ui->plotwidget->graph(2)->addData(data[i].time, data[i].data[2]);
+        ui->plotwidget->graph(3)->addData(data[i].time, data[i].data[3]);
+        _lastRecvTime = data[i].time;
+    }
+
+    _isNewDataReceived = true;
+}
+
+void PlotWindow::OnRecv(const DataSeriesEmul& data)
+{
+    //qDebug() << "PlotWindow::OnRecv";
+    if (_dataIndex >= DATA_INDEX_MAX)
+    {
+        qDebug() << "Buffer overflow";
+        return;
+    }
+    _dataBuffer[_dataIndex++] = data;
+
+    if (_dataIndex >= 1) {
+        emit add_data_refresh_plot(_dataBuffer, _dataIndex);
+        _dataIndex = 0;
+    }
+}
+#endif

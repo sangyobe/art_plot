@@ -2,13 +2,14 @@
 #include <QtMath>
 #include <QDebug>
 
-#define DATA_EMUL_PUB_PERIOD (0.001)
+#define DATA_EMUL_PUB_PERIOD_MS (1)
+#define DATA_EMUL_PUB_PERIOD ((double)DATA_EMUL_PUB_PERIOD_MS * 0.001)
 
 DataSourceEmul::DataSourceEmul(const QString &name, QObject *parent)  : DataSource(name, parent), _time(0)
 {
     _pubTimer = new QTimer(this);
     connect(_pubTimer, SIGNAL(timeout()), this, SLOT(OnTimer()));
-    _pubTimer->setInterval(static_cast<int>(1/*DATA_EMUL_PUB_PERIOD*1000*/));
+    _pubTimer->setInterval(DATA_EMUL_PUB_PERIOD_MS);
     _pubTimer->start();
 }
 
