@@ -1,60 +1,10 @@
+#include "pconstants.h"
 #include "plotconfig.h"
 #include "plotwindow.h"
 #include "ui_plotwindow.h"
 #include <cassert>
 #include <iostream>
 #include <memory>
-
-#define PRINT_PUB_SUB_INFO
-
-void OnControlState(const char *topic_name_,
-                    const art_protocol::quadip::ControlStateTimeStamped &state_,
-                    const long long time_, const long long clock_) {
-#ifdef PRINT_PUB_SUB_INFO
-    qDebug() << "------------------------------------------";
-    qDebug() << " QuadIP Control State "                    ;
-    qDebug() << "------------------------------------------";
-    qDebug() << "topic name   : " << topic_name_            ;
-    qDebug() << "topic time   : " << time_                  ;
-    qDebug() << "topic clock  : " << clock_                 ;
-    qDebug() << "------------------------------------------";
-    qDebug() << " Header "                                  ;
-    qDebug() << "------------------------------------------";
-    qDebug() << "  seq        : " << state_.header().seq()  ;
-    qDebug() << "------------------------------------------";
-    qDebug() << ""                                          ;
-#else
-    Q_UNUSED(topic_name_);
-    Q_UNUSED(state_);
-    Q_UNUSED(time_);
-    Q_UNUSED(clock_);
-#endif // PRINT_PUB_SUB_INFO
-}
-
-void OnCpgState(const char *topic_name_,
-                const art_protocol::quadip::CpgStateTimeStamped &state_,
-                const long long time_, const long long clock_) {
-#ifdef PRINT_PUB_SUB_INFO
-    qDebug() << "------------------------------------------";
-    qDebug() << " QuadIP Cpg State "                        ;
-    qDebug() << "------------------------------------------";
-    qDebug() << "topic name   : " << topic_name_            ;
-    qDebug() << "topic time   : " << time_                  ;
-    qDebug() << "topic clock  : " << clock_                 ;
-    qDebug() << "------------------------------------------";
-    qDebug() << " Header "                                  ;
-    qDebug() << "------------------------------------------";
-    qDebug() << "  seq        : " << state_.header().seq()  ;
-    qDebug() << "------------------------------------------";
-    qDebug() << ""                                          ;
-#else
-    Q_UNUSED(topic_name_);
-    Q_UNUSED(state_);
-    Q_UNUSED(time_);
-    Q_UNUSED(clock_);
-#endif // PRINT_PUB_SUB_INFO
-}
-
 
 PlotWindow::ConfigOption::ConfigOption() :
     x_axis_auto_scroll(false),
@@ -67,13 +17,12 @@ PlotWindow::ConfigOption::ConfigOption() :
     legend_visible(true)
 {}
 
+
+
 PlotWindow::PlotWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PlotWindow),
-    _configModel(nullptr),
-    _recvThread(nullptr),
-    sub_control_state(nullptr),
-    sub_cpg_state(nullptr)
+    _configModel(nullptr)
 {
     ui->setupUi(this);
 
@@ -102,15 +51,6 @@ PlotWindow::PlotWindow(QWidget *parent) :
     ui->plotwidget->yAxis2->setTickLabels(false);
 
     //
-    // set range
-    //
-    ui->plotwidget->xAxis->setRange(
-        _configOption.x_axis_begin_sec,
-        _configOption.x_axis_end_sec);
-    ui->plotwidget->yAxis->setRange(
-        _configOption.y_axis_lbound,
-        _configOption.y_axis_ubound);
-    //
     // set user interaction options
     //
     // enable dragging using maouse
@@ -122,41 +62,29 @@ PlotWindow::PlotWindow(QWidget *parent) :
     ui->plotwidget->axisRect(0)->setRangeZoom(Qt::Vertical | Qt::Horizontal);
     ui->plotwidget->axisRect(0)->setRangeZoomFactor(1.1, 1.1);
     // enable clicking items
-    ui->plotwidget->setInteraction(QCP::iSelectPlottables);
-    ui->plotwidget->setInteraction(QCP::iMultiSelect, true);
-    ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
+//    ui->plotwidget->setInteraction(QCP::iSelectPlottables);
+//    ui->plotwidget->setInteraction(QCP::iMultiSelect, true);
+//    ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
 
-    ui->plotwidget->replot();
+    ResetPlot();
+    //ui->plotwidget->replot();
 
 
-    // initialize the last data receive time & plot refresh timer
-    _lastRecvTime = -1.0;
-    _isNewDataReceived = false;
+    // initialize the plot refresh timer
     _refreshPlotTimer = std::unique_ptr<QTimer>(new QTimer(this));
     connect(_refreshPlotTimer.get(), SIGNAL(timeout()), this, SLOT(OnRefreshPlot()));
     _refreshPlotTimer->setInterval(100); // msec
     _refreshPlotTimer->start();
 
 
-
-    sub_control_state = new eCAL::protobuf::CSubscriber<art_protocol::quadip::ControlStateTimeStamped>("ControlState");
-    auto callback_control_state = std::bind(OnControlState, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    //auto callback_control_state = std::bind(&PlotWindow::OnRecv, this, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5);
-    //auto callback_control_state = std::bind(OnRecv, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    sub_control_state->AddReceiveCallback(callback_control_state);
-
-
-
 #ifdef USE_EMUL_DATA
-    this->AddGraph("Sin", QColorConstants::DarkCyan);
-    this->AddGraph("Sin^2", QColorConstants::DarkYellow);
-    this->AddGraph("Cos", QColorConstants::Yellow);
-    this->AddGraph("Cos^2", QColorConstants::Magenta);
+    this->AddGraph("Sin", LineColor<0>());
+    this->AddGraph("Sin^2", LineColor<1>());
+    this->AddGraph("Cos", LineColor<2>());
+    this->AddGraph("Cos^2", LineColor<3>());
 
-    connect(this, SIGNAL(add_data_refresh_plot(DataSeriesEmul*, uint32_t)), this, SLOT(OnNewDataArrived(DataSeriesEmul*, uint32_t)));
-    _dataIndex = 0;
     _dataSource = std::unique_ptr<DataSourceEmul>(new DataSourceEmul("Sample Data Series"));
-    connect(_dataSource.get(), SIGNAL(new_data(const DataSeriesEmul&)), this, SLOT(OnRecv(const DataSeriesEmul&)));
+    connect(_dataSource.get(), SIGNAL(new_data(const DataSeriesEmul&)), this, SLOT(OnRecvEmul(const DataSeriesEmul&)));
 #endif
 }
 
@@ -167,22 +95,59 @@ PlotWindow::~PlotWindow()
     delete ui;
 }
 
-void PlotWindow::OnRecv(const char* topic_name, const art_protocol::quadip::ControlStateTimeStamped& state, const long long time, const long long clock)
+PlotWidget *PlotWindow::plot() const
 {
-    Q_UNUSED(topic_name);
-    Q_UNUSED(state);
-    Q_UNUSED(time);
-    Q_UNUSED(clock);
-
+    return ui->plotwidget;
 }
 
-void PlotWindow::OnRecv(const char* topic_name, const art_protocol::quadip::CpgStateTimeStamped& state, const long long time, const long long clock)
+QCPGraph *PlotWindow::graph(int index) const
 {
-    Q_UNUSED(topic_name);
-    Q_UNUSED(state);
-    Q_UNUSED(time);
-    Q_UNUSED(clock);
+    return ui->plotwidget->graph(index);
+}
 
+void PlotWindow::ResetPlot()
+{
+    for( int g=0; g<ui->plotwidget->graphCount(); g++ )
+    {
+        ui->plotwidget->graph(g)->data().data()->clear();
+    }
+
+    _lastRecvTime = -1.0;
+    _isNewDataReceived = false;
+
+    ui->plotwidget->xAxis->setRange(
+        _configOption.x_axis_begin_sec,
+        _configOption.x_axis_end_sec);
+    ui->plotwidget->yAxis->setRange(
+        _configOption.y_axis_lbound,
+        _configOption.y_axis_ubound);
+    ui->plotwidget->replot();
+}
+
+void PlotWindow::SetWindowTitle(const QString &title)
+{
+    setWindowTitle(title);
+}
+
+void PlotWindow::AutoScroll(bool on)
+{
+    _configOption.x_axis_auto_scroll = on;
+}
+
+void PlotWindow::AutoScrollWindow(double dt_sec)
+{
+    _configOption.x_axis_auto_scroll_window = dt_sec;
+}
+
+void PlotWindow::AutoScale(bool on)
+{
+    _configOption.y_axis_auto_scale = on;
+}
+
+void PlotWindow::DataUpdated(double recv_time)
+{
+    _lastRecvTime = qMax(_lastRecvTime.load(), recv_time);
+    _isNewDataReceived = true;
 }
 
 void PlotWindow::BuildConfig()
@@ -396,34 +361,21 @@ void PlotWindow::OnRefreshPlot()
 }
 
 #ifdef USE_EMUL_DATA
-void PlotWindow::OnNewDataArrived(DataSeriesEmul* data, uint32_t size)
+void PlotWindow::OnRecvEmul(const DataSeriesEmul& data)
 {
-    //qDebug() << "OnNewDataArrived " << size;
+    //qDebug() << "PlotWindow::OnRecvEmul";
 
-    for (size_t i=0; i<size; i++) {
-        ui->plotwidget->graph(0)->addData(data[i].time, data[i].data[0]);
-        ui->plotwidget->graph(1)->addData(data[i].time, data[i].data[1]);
-        ui->plotwidget->graph(2)->addData(data[i].time, data[i].data[2]);
-        ui->plotwidget->graph(3)->addData(data[i].time, data[i].data[3]);
-        _lastRecvTime = data[i].time;
-    }
-
+    ui->plotwidget->graph(0)->addData(data.time, data.data[0]);
+    ui->plotwidget->graph(1)->addData(data.time, data.data[1]);
+    ui->plotwidget->graph(2)->addData(data.time, data.data[2]);
+    ui->plotwidget->graph(3)->addData(data.time, data.data[3]);
+    _lastRecvTime = data.time;
     _isNewDataReceived = true;
 }
-
-void PlotWindow::OnRecv(const DataSeriesEmul& data)
-{
-    //qDebug() << "PlotWindow::OnRecv";
-    if (_dataIndex >= DATA_INDEX_MAX)
-    {
-        qDebug() << "Buffer overflow";
-        return;
-    }
-    _dataBuffer[_dataIndex++] = data;
-
-    if (_dataIndex >= 1) {
-        emit add_data_refresh_plot(_dataBuffer, _dataIndex);
-        _dataIndex = 0;
-    }
-}
 #endif
+
+void PlotWindow::on_actionNew_triggered()
+{
+    ResetPlot();
+}
+

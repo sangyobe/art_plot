@@ -41,6 +41,7 @@ HEADERS += \
         datasource.h \
         datasourceemul.h \
         mainwindow.h \
+        pconstants.h \
         plotconfig.h \
         plotwidget.h \
         plotwindow.h \
@@ -77,3 +78,6 @@ unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lecal_core
 
 INCLUDEPATH += $$PWD/../../../../../usr/local/include
 DEPENDPATH += $$PWD/../../../../../usr/local/include
+
+RESOURCES += \
+    artplot.qrc
