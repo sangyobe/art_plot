@@ -32,10 +32,7 @@ SOURCES += \
         plotconfig.cpp \
         plotwidget.cpp \
         plotwindow.cpp \
-        qcustomplot.cpp \
-        recvthread.cpp \
-        recvthreadecal.cpp \
-        recvthreademul.cpp
+        qcustomplot.cpp
 
 HEADERS += \
         datasource.h \
@@ -45,10 +42,7 @@ HEADERS += \
         plotconfig.h \
         plotwidget.h \
         plotwindow.h \
-        qcustomplot.h \
-        recvthread.h \
-        recvthreadecal.h \
-        recvthreademul.h
+        qcustomplot.h
 
 FORMS += \
         mainwindow.ui \

@@ -34,10 +34,17 @@ public:
 public:
     int AddGraph(const QString &name, const QColor &color);
     void ResetPlot();
+    void Replot();
     void SetWindowTitle(const QString& title);
+    void ShowLegend(bool show);
+    // config x-Axis
     void AutoScroll(bool on);
     void AutoScrollWindow(double dt_sec);
+    void SetXRange(double ti, double tf);
+    // config y-Axis
     void AutoScale(bool on);
+    void SetYRange(double lbound, double ubound);
+
     void DataUpdated(double recv_time);
 
 private:
@@ -71,9 +78,10 @@ private:
 private:
     void resizeEvent(QResizeEvent*);
 
-    void AdjustPlotXRange();
-    void AdjustPlotYRange();
+    void AdjustPlotXRange(bool replot = true);
+    void AdjustPlotYRange(bool replot = true);
 
+    const QStandardItem* FindFirstConfigOptionItem(const QString& cat, const QString& item);
 
 public slots:
     void OnRefreshPlot();

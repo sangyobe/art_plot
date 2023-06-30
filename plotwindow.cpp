@@ -124,24 +124,80 @@ void PlotWindow::ResetPlot()
     ui->plotwidget->replot();
 }
 
+void PlotWindow::Replot()
+{
+    ui->plotwidget->replot();
+}
+
 void PlotWindow::SetWindowTitle(const QString &title)
 {
     setWindowTitle(title);
 }
 
+void PlotWindow::ShowLegend(bool show)
+{
+    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Visible");
+    if (!item)
+        return;
+
+    const_cast<QStandardItem*>(item)->setCheckState(show? Qt::Checked : Qt::Unchecked);
+}
+
 void PlotWindow::AutoScroll(bool on)
 {
-    _configOption.x_axis_auto_scroll = on;
+    const QStandardItem* item = FindFirstConfigOptionItem("x-Axis", "Auto scroll");
+    if (!item)
+        return;
+
+    const_cast<QStandardItem*>(item)->setCheckState(on? Qt::Checked : Qt::Unchecked);
 }
 
 void PlotWindow::AutoScrollWindow(double dt_sec)
 {
-    _configOption.x_axis_auto_scroll_window = dt_sec;
+    const QStandardItem* item = FindFirstConfigOptionItem("x-Axis", "Scroll Window(s)");
+    if (!item)
+        return;
+
+    const_cast<QStandardItem*>(item)->setData(dt_sec, Qt::EditRole);
+}
+
+void PlotWindow::SetXRange(double ti, double tf)
+{
+    QStandardItem const * item;
+
+    item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+    if (item) {
+        const_cast<QStandardItem*>(item)->setData(ti, Qt::EditRole);
+    }
+
+    item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+    if (item) {
+        const_cast<QStandardItem*>(item)->setData(tf, Qt::EditRole);
+    }
 }
 
 void PlotWindow::AutoScale(bool on)
 {
-    _configOption.y_axis_auto_scale = on;
+    const QStandardItem* item = FindFirstConfigOptionItem("y-Axis", "Auto scale");
+    if (!item)
+        return;
+
+    const_cast<QStandardItem*>(item)->setCheckState(on ? Qt::Checked : Qt::Unchecked);
+}
+
+void PlotWindow::SetYRange(double lbound, double ubound)
+{
+    QStandardItem const * item;
+
+    item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+    if (item) {
+        const_cast<QStandardItem*>(item)->setData(lbound, Qt::EditRole);
+    }
+
+    item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+    if (item) {
+        const_cast<QStandardItem*>(item)->setData(ubound, Qt::EditRole);
+    }
 }
 
 void PlotWindow::DataUpdated(double recv_time)
@@ -280,27 +336,86 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
 
     if (item->whatsThis() == "x-Axis::AutoScroll") {
         _configOption.x_axis_auto_scroll = (item->checkState() == Qt::Checked ? true : false);
+
+        const QStandardItem* item = nullptr;
+        if (_configOption.x_axis_auto_scroll) {
+            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(false);
+            }
+            item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(false);
+            }
+
+            // AutoScroll on 시 여기서는 플래그만 셋하고, 실제 새로운 데이터 수신시에 그래프를 새로 그린다.
+        }
+        else {
+            double ti = ui->plotwidget->xAxis->range().lower;
+            double tf = ui->plotwidget->xAxis->range().upper;
+
+            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(true);
+                const_cast<QStandardItem*>(item)->setData(ti, Qt::EditRole);
+            }
+            item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(true);
+                const_cast<QStandardItem*>(item)->setData(tf, Qt::EditRole);
+            }
+        }
     }
     else if (item->whatsThis() == "x-Axis::AutoScrollWindow") {
-        _configOption.x_axis_auto_scroll_window = item->text().toDouble();
+        _configOption.x_axis_auto_scroll_window = item->data(Qt::EditRole).toDouble();
+        // 여기서는 데이터만 셋하고, 실제 새로운 데이터 수신시에 그래프를 새로 그린다.
     }
     else if (item->whatsThis() == "x-Axis::Begin") {
-        _configOption.x_axis_begin_sec = item->text().toDouble();
+        _configOption.x_axis_begin_sec = item->data(Qt::EditRole).toDouble();
         AdjustPlotXRange();
     }
     else if (item->whatsThis() == "x-Axis::End") {
-        _configOption.x_axis_end_sec = item->text().toDouble();
+        _configOption.x_axis_end_sec = item->data(Qt::EditRole).toDouble();
         AdjustPlotXRange();
     }
     else if (item->whatsThis() == "y-Axis::AutoScale") {
         _configOption.y_axis_auto_scale = (item->checkState() == Qt::Checked ? true : false);
+
+        const QStandardItem* item = nullptr;
+        if (_configOption.y_axis_auto_scale) {
+            item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(false);
+            }
+            item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(false);
+            }
+            ui->plotwidget->yAxis->rescale(false);
+            ui->plotwidget->replot();
+        }
+        else {
+            double lb = ui->plotwidget->yAxis->range().lower;
+            double ub = ui->plotwidget->yAxis->range().upper;
+
+            item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(true);
+                const_cast<QStandardItem*>(item)->setData(lb, Qt::EditRole);
+            }
+            item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setEnabled(true);
+                const_cast<QStandardItem*>(item)->setData(ub, Qt::EditRole);
+            }
+        }
     }
     else if (item->whatsThis() == "y-Axis::LBound") {
-        _configOption.y_axis_lbound = item->text().toDouble();
+        _configOption.y_axis_lbound = item->data(Qt::EditRole).toDouble();
         AdjustPlotYRange();
     }
     else if (item->whatsThis() == "y-Axis::UBound") {
-        _configOption.y_axis_ubound = item->text().toDouble();
+        _configOption.y_axis_ubound = item->data(Qt::EditRole).toDouble();
         AdjustPlotYRange();
     }
     else if (item->whatsThis() == "Legend::Visible") {
@@ -316,7 +431,7 @@ void PlotWindow::resizeEvent(QResizeEvent* event)
     QMainWindow::resizeEvent(event);
 }
 
-void PlotWindow::AdjustPlotXRange()
+void PlotWindow::AdjustPlotXRange(bool replot)
 {
     if (!_configOption.x_axis_auto_scroll)
     {
@@ -325,9 +440,11 @@ void PlotWindow::AdjustPlotXRange()
             _configOption.x_axis_end_sec
             );
     }
+    if (replot)
+        ui->plotwidget->replot();
 }
 
-void PlotWindow::AdjustPlotYRange()
+void PlotWindow::AdjustPlotYRange(bool replot)
 {
     if (!_configOption.y_axis_auto_scale)
     {
@@ -336,6 +453,19 @@ void PlotWindow::AdjustPlotYRange()
             _configOption.y_axis_ubound
             );
     }
+    if (replot)
+        ui->plotwidget->replot();
+}
+
+const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item)
+{
+    auto items = _configModel->findItems(item, Qt::MatchExactly | Qt::MatchRecursive, 0);
+    foreach (const QStandardItem* item, items) {
+        if (item->parent() && item->parent()->text() == cat) {
+            return item->parent()->child(item->row(), 1);
+        }
+    }
+    return nullptr;
 }
 
 /*!
@@ -355,7 +485,7 @@ void PlotWindow::OnRefreshPlot()
     if (_configOption.x_axis_auto_scroll)
         ui->plotwidget->xAxis->setRange(di, _lastRecvTime);
     if (_configOption.y_axis_auto_scale)
-        ui->plotwidget->yAxis->rescale();
+        ui->plotwidget->yAxis->rescale(true);
 
     ui->plotwidget->replot();
 }

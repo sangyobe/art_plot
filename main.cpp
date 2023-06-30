@@ -9,12 +9,12 @@
 
 //#define PRINT_PUB_SUB_INFO
 
-#define ENABLE_COM_POS_PLOT
-#define ENABLE_COM_VEL_PLOT
-#define ENABLE_ORIENTATION_PLOT
-#define ENABLE_ANGULAR_VEL_PLOT
-#define ENABLE_FOOT_CONTACT_PLOT
-//#define ENABLE_CPG_PHI_PLOT
+//#define ENABLE_COM_POS_PLOT
+//#define ENABLE_COM_VEL_PLOT
+//#define ENABLE_ORIENTATION_PLOT
+//#define ENABLE_ANGULAR_VEL_PLOT
+//#define ENABLE_FOOT_CONTACT_PLOT
+#define ENABLE_CPG_PHI_PLOT
 //#define ENABLE_CPG_CPG_PLOT
 //#define ENABLE_JOINT_POSISION_PLOT
 //#define ENABLE_JOINT_VELOCITY_PLOT
@@ -413,9 +413,12 @@ int main(int argc, char *argv[])
 #ifdef ENABLE_CPG_PHI_PLOT
     cpgStatePlot_phi = std::unique_ptr<PlotWindow>(new PlotWindow());
     cpgStatePlot_phi->SetWindowTitle("Cpg.phi");
-    cpgStatePlot_phi->AutoScale(true);
+    cpgStatePlot_phi->ShowLegend(false);
     cpgStatePlot_phi->AutoScroll(true);
-    cpgStatePlot_phi->AutoScrollWindow(5.0);
+    cpgStatePlot_phi->AutoScrollWindow(3.0);
+    cpgStatePlot_phi->SetXRange(0.0, 10.0);
+    cpgStatePlot_phi->AutoScale(true);
+    cpgStatePlot_phi->SetYRange(-2.5, 2.5);
     cpgStatePlot_phi->AddGraph("Phi.a1", LineColor<10>());
     cpgStatePlot_phi->AddGraph("Phi.a2", LineColor<11>());
     cpgStatePlot_phi->AddGraph("Phi.a3", LineColor<12>());
