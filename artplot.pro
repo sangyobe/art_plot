@@ -54,24 +54,24 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lart_protocol
+unix:!macx: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -ldtproto
 
-INCLUDEPATH += $$PWD/../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../usr/local/include
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/include
 
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libart_protocol.a
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libdtproto.a
 
-unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lprotobuf
+unix:!macx: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lprotobuf
 
-INCLUDEPATH += $$PWD/../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../usr/local/include
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/include
 
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libprotobuf.a
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libprotobuf.a
 
-unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lecal_core
+unix:!macx: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lecal_core
 
-INCLUDEPATH += $$PWD/../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../usr/local/include
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/include
 
 RESOURCES += \
     artplot.qrc

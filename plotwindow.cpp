@@ -327,6 +327,27 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color)
     graph->setLineStyle(QCPGraph::lsLine/*lsStepRight*/);
     graph->setPen(QPen(color));
     //graph->setScatterStyle(QCPScatterStyle::ssPlus);
+
+    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+    QList<QStandardItem*> item_graph_visible;
+    foreach (QStandardItem* data_series_root, items) {
+        if (data_series_root->parent())
+            continue;
+
+        QStandardItem* item_title = new QStandardItem(name);
+        QStandardItem* item_option = new QStandardItem();
+
+        item_option->setCheckable(true);
+        item_option->setCheckState(Qt::Checked);
+        //item_option->setWhatsThis(QString("Data series::%s").arg(name));
+        item_option->setWhatsThis(QString("Data series::Visible"));
+        item_option->setData(QVariant::fromValue((void*)graph));
+        item_graph_visible.append(item_title);
+        item_graph_visible.append(item_option);
+        data_series_root->appendRow(item_graph_visible);
+        break;
+    }
+
     return ui->plotwidget->graphCount();
 }
 
@@ -421,6 +442,11 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     else if (item->whatsThis() == "Legend::Visible") {
         _configOption.legend_visible = (item->checkState() == Qt::Checked ? true : false);
         ui->plotwidget->legend->setVisible(_configOption.legend_visible);
+    }
+    else if (item->whatsThis() == "Data series::Visible") {
+        QCPGraph *graph = (QCPGraph*)item->data().value<void*>();
+        if (graph)
+            graph->setVisible((item->checkState() == Qt::Checked ? true : false));
     }
 }
 

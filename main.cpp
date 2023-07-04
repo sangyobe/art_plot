@@ -15,7 +15,7 @@
 //#define ENABLE_ANGULAR_VEL_PLOT
 //#define ENABLE_FOOT_CONTACT_PLOT
 #define ENABLE_CPG_PHI_PLOT
-//#define ENABLE_CPG_CPG_PLOT
+#define ENABLE_CPG_CPG_PLOT
 //#define ENABLE_JOINT_POSISION_PLOT
 //#define ENABLE_JOINT_VELOCITY_PLOT
 //#define ENABLE_JOINT_ACCELERATION_PLOT
@@ -360,7 +360,7 @@ int main(int argc, char *argv[])
     std::unique_ptr<PlotWindow> controlStatePlot_angVel;
 #ifdef ENABLE_ANGULAR_VEL_PLOT
     controlStatePlot_angVel = std::unique_ptr<PlotWindow>(new PlotWindow());
-    controlStatePlot_angVel->SetWindowTitle("Body orientation wrt World");
+    controlStatePlot_angVel->SetWindowTitle("Body angular velocity wrt World");
     controlStatePlot_angVel->AutoScale(true);
     controlStatePlot_angVel->AutoScroll(true);
     controlStatePlot_angVel->AutoScrollWindow(5.0);
