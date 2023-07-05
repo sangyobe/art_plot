@@ -20,6 +20,7 @@ PlotConfig::~PlotConfig()
 void PlotConfig::setConfigModel(QAbstractItemModel *configModel)
 {
     ui->configview->setModel(configModel);
+    ui->configview->expandAll();
 }
 
 //void PlotConfig::BuildConfigUI()
