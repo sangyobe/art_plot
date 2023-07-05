@@ -134,6 +134,10 @@ void PlotWindow::SetWindowTitle(const QString &title)
     setWindowTitle(title);
 }
 
+QString PlotWindow::GetWindowTitle() const {
+    return windowTitle();
+}
+
 void PlotWindow::ShowLegend(bool show)
 {
     const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Visible");
@@ -204,6 +208,12 @@ void PlotWindow::DataUpdated(double recv_time)
 {
     _lastRecvTime = qMax(_lastRecvTime.load(), recv_time);
     _isNewDataReceived = true;
+}
+
+void PlotWindow::hideEvent(QHideEvent *event)
+{
+    QMainWindow::hideEvent(event);
+    emit widgetHidden(this);
 }
 
 void PlotWindow::BuildConfig()
@@ -353,7 +363,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color)
 
 void PlotWindow::OnConfigChanged(QStandardItem *item)
 {
-    qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
+    //qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
 
     if (item->whatsThis() == "x-Axis::AutoScroll") {
         _configOption.x_axis_auto_scroll = (item->checkState() == Qt::Checked ? true : false);
@@ -442,17 +452,20 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     else if (item->whatsThis() == "Legend::Visible") {
         _configOption.legend_visible = (item->checkState() == Qt::Checked ? true : false);
         ui->plotwidget->legend->setVisible(_configOption.legend_visible);
+        ui->plotwidget->replot();
     }
     else if (item->whatsThis() == "Data series::Visible") {
         QCPGraph *graph = (QCPGraph*)item->data().value<void*>();
-        if (graph)
+        if (graph) {
             graph->setVisible((item->checkState() == Qt::Checked ? true : false));
+            ui->plotwidget->replot();
+        }
     }
 }
 
 void PlotWindow::resizeEvent(QResizeEvent* event)
 {
-    qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
+    //qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
     ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width(), ui->centralwidget->height()));
     QMainWindow::resizeEvent(event);
 }
@@ -514,6 +527,12 @@ void PlotWindow::OnRefreshPlot()
         ui->plotwidget->yAxis->rescale(true);
 
     ui->plotwidget->replot();
+
+    // update frame rate
+    ui->statusbar->showMessage(
+        QString("%1 FPS, Total Data received: %2")
+            .arg(0.0, 0, 'f', 0)
+            .arg(ui->plotwidget->graph(0)->data()->size()), 0);
 }
 
 #ifdef USE_EMUL_DATA

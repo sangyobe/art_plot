@@ -8,6 +8,9 @@ class PlotWidget : public QCustomPlot
 public:
     explicit PlotWidget(QWidget *parent = nullptr);
     virtual ~PlotWidget() Q_DECL_OVERRIDE;
+
+public slots:
+    void ShowPointToolTip(QMouseEvent* event);
 };
 
 #endif // PLOTWIDGET_H

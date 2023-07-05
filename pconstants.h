@@ -3,8 +3,8 @@
 
 #include <QtGui/QColor>
 
-
-constexpr QColor color_arr[] = {
+#if (QT_VERSION_MAJOR >= 6 || (QT_VERSION_MAJOR == 5 && QT_VERSION_MINOR >= 14))
+const QColor color_arr[] = {
     QColorConstants::Svg::crimson,
     QColorConstants::Svg::coral,
     QColorConstants::Svg::gold,
@@ -25,6 +25,25 @@ constexpr QColor color_arr[] = {
     QColorConstants::Svg::slategray,
     QColorConstants::Svg::slateblue
 };
+#else
+const QColor color_arr[] = {
+    QColor(Qt::red),
+    QColor(Qt::green),
+    QColor(Qt::blue),
+    QColor(Qt::cyan),
+    QColor(Qt::magenta),
+    QColor(Qt::yellow),
+    QColor(Qt::darkRed),
+    QColor(Qt::darkGreen),
+    QColor(Qt::darkBlue),
+    QColor(Qt::darkCyan),
+    QColor(Qt::darkMagenta),
+    QColor(Qt::darkYellow),
+    QColor(Qt::gray),
+    QColor(Qt::darkGray),
+    QColor(Qt::lightGray)
+};
+#endif
 
 template<uint16_t line_number>
 inline const QColor& LineColor()

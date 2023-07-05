@@ -36,6 +36,7 @@ public:
     void ResetPlot();
     void Replot();
     void SetWindowTitle(const QString& title);
+    QString GetWindowTitle() const;
     void ShowLegend(bool show);
     // config x-Axis
     void AutoScroll(bool on);
@@ -46,6 +47,12 @@ public:
     void SetYRange(double lbound, double ubound);
 
     void DataUpdated(double recv_time);
+
+protected:
+    void hideEvent(QHideEvent* event);
+
+signals:
+    void widgetHidden(QWidget* widget);
 
 private:
     void BuildConfig();
@@ -85,6 +92,7 @@ private:
 
 public slots:
     void OnRefreshPlot();
+
 private:
     std::atomic<double> _lastRecvTime;
     std::atomic<bool> _isNewDataReceived;

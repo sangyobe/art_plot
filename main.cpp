@@ -9,17 +9,17 @@
 
 //#define PRINT_PUB_SUB_INFO
 
-//#define ENABLE_COM_POS_PLOT
-//#define ENABLE_COM_VEL_PLOT
+#define ENABLE_COM_POS_PLOT
+#define ENABLE_COM_VEL_PLOT
 //#define ENABLE_ORIENTATION_PLOT
 //#define ENABLE_ANGULAR_VEL_PLOT
 //#define ENABLE_FOOT_CONTACT_PLOT
 #define ENABLE_CPG_PHI_PLOT
 #define ENABLE_CPG_CPG_PLOT
-//#define ENABLE_JOINT_POSISION_PLOT
-//#define ENABLE_JOINT_VELOCITY_PLOT
+#define ENABLE_JOINT_POSISION_PLOT
+#define ENABLE_JOINT_VELOCITY_PLOT
 //#define ENABLE_JOINT_ACCELERATION_PLOT
-//#define ENABLE_JOINT_TORQUE_PLOT
+#define ENABLE_JOINT_TORQUE_PLOT
 //#define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 //#define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 
@@ -298,8 +298,10 @@ void OnRecvJointState(const char *topic_name,
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    //    MainWindow w;
-    //    w.show();
+    MainWindow plotToolbox;
+    plotToolbox.setWindowTitle("ART Plot (QuadIP)");
+    plotToolbox.setWindowFlag(Qt::WindowStaysOnTopHint);
+    plotToolbox.show();
 
     eCAL::Initialize(0, nullptr, "art_plot::QuadIP::ControlStatus");
     eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "proc info");
@@ -310,7 +312,7 @@ int main(int argc, char *argv[])
      */
     std::unique_ptr<PlotWindow> controlStatePlot_comPos;
 #ifdef ENABLE_COM_POS_PLOT
-    controlStatePlot_comPos = std::unique_ptr<PlotWindow>(new PlotWindow());
+    controlStatePlot_comPos = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     // Plot display option 설정
     controlStatePlot_comPos->SetWindowTitle("COM position wrt World");
     controlStatePlot_comPos->AutoScale(true);
@@ -323,11 +325,12 @@ int main(int argc, char *argv[])
     controlStatePlot_comPos->AddGraph("Com.y.actual", LineColor<4>());
     controlStatePlot_comPos->AddGraph("Com.z.actual", LineColor<5>());
     controlStatePlot_comPos->show();
+    plotToolbox.AddPlot(controlStatePlot_comPos.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_comVel;
 #ifdef ENABLE_COM_VEL_PLOT
-    controlStatePlot_comVel = std::unique_ptr<PlotWindow>(new PlotWindow());
+    controlStatePlot_comVel = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     controlStatePlot_comVel->SetWindowTitle("COM velocity wrt World");
     controlStatePlot_comVel->AutoScale(true);
     controlStatePlot_comVel->AutoScroll(true);
@@ -339,11 +342,12 @@ int main(int argc, char *argv[])
     controlStatePlot_comVel->AddGraph("Com.Vy.actual", LineColor<4>());
     controlStatePlot_comVel->AddGraph("Com.Vz.actual", LineColor<5>());
     controlStatePlot_comVel->show();
+    plotToolbox.AddPlot(controlStatePlot_comVel.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_orient;
 #ifdef ENABLE_ORIENTATION_PLOT
-    controlStatePlot_orient = std::unique_ptr<PlotWindow>(new PlotWindow());
+    controlStatePlot_orient = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     controlStatePlot_orient->SetWindowTitle("Body orientation wrt World");
     controlStatePlot_orient->AutoScale(true);
     controlStatePlot_orient->AutoScroll(true);
@@ -355,11 +359,12 @@ int main(int argc, char *argv[])
     controlStatePlot_orient->AddGraph("Euler.y.actual", LineColor<10>());
     controlStatePlot_orient->AddGraph("Euler.z.actual", LineColor<11>());
     controlStatePlot_orient->show();
+    plotToolbox.AddPlot(controlStatePlot_orient.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_angVel;
 #ifdef ENABLE_ANGULAR_VEL_PLOT
-    controlStatePlot_angVel = std::unique_ptr<PlotWindow>(new PlotWindow());
+    controlStatePlot_angVel = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     controlStatePlot_angVel->SetWindowTitle("Body angular velocity wrt World");
     controlStatePlot_angVel->AutoScale(true);
     controlStatePlot_angVel->AutoScroll(true);
@@ -371,11 +376,12 @@ int main(int argc, char *argv[])
     controlStatePlot_angVel->AddGraph("AngularVel.y.actual", LineColor<10>());
     controlStatePlot_angVel->AddGraph("AngularVel.z.actual", LineColor<11>());
     controlStatePlot_angVel->show();
+    plotToolbox.AddPlot(controlStatePlot_angVel.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_contact;
 #ifdef ENABLE_FOOT_CONTACT_PLOT
-    controlStatePlot_contact = std::unique_ptr<PlotWindow>(new PlotWindow());
+    controlStatePlot_contact = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     controlStatePlot_contact->SetWindowTitle("Foot-floor contact state");
     controlStatePlot_contact->AutoScale(true);
     controlStatePlot_contact->AutoScroll(true);
@@ -385,6 +391,7 @@ int main(int argc, char *argv[])
     controlStatePlot_contact->AddGraph("FR", LineColor<14>());
     controlStatePlot_contact->AddGraph("BR", LineColor<15>());
     controlStatePlot_contact->show();
+    plotToolbox.AddPlot(controlStatePlot_contact.get());
 #endif
 
     // 데이터 연결
@@ -411,7 +418,7 @@ int main(int argc, char *argv[])
 
     std::unique_ptr<PlotWindow> cpgStatePlot_phi;
 #ifdef ENABLE_CPG_PHI_PLOT
-    cpgStatePlot_phi = std::unique_ptr<PlotWindow>(new PlotWindow());
+    cpgStatePlot_phi = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     cpgStatePlot_phi->SetWindowTitle("Cpg.phi");
     cpgStatePlot_phi->ShowLegend(false);
     cpgStatePlot_phi->AutoScroll(true);
@@ -424,11 +431,12 @@ int main(int argc, char *argv[])
     cpgStatePlot_phi->AddGraph("Phi.a3", LineColor<12>());
     cpgStatePlot_phi->AddGraph("Phi.a4", LineColor<13>());
     cpgStatePlot_phi->show();
+    plotToolbox.AddPlot(cpgStatePlot_phi.get());
 #endif
 
     std::unique_ptr<PlotWindow> cpgStatePlot_cpg;
 #ifdef ENABLE_CPG_CPG_PLOT
-    cpgStatePlot_cpg = std::unique_ptr<PlotWindow>(new PlotWindow());
+    cpgStatePlot_cpg = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     cpgStatePlot_cpg->SetWindowTitle("Cpg.cpg");
     cpgStatePlot_cpg->AutoScale(true);
     cpgStatePlot_cpg->AutoScroll(true);
@@ -438,6 +446,7 @@ int main(int argc, char *argv[])
     cpgStatePlot_cpg->AddGraph("Cpg.a3", LineColor<12>());
     cpgStatePlot_cpg->AddGraph("Cpg.a4", LineColor<13>());
     cpgStatePlot_cpg->show();
+    plotToolbox.AddPlot(cpgStatePlot_cpg.get());
 #endif
 
     eCAL::protobuf::CSubscriber<art_protocol::quadip::CpgStateTimeStamped>
@@ -456,7 +465,7 @@ int main(int argc, char *argv[])
 
     std::unique_ptr<PlotWindow> jointStatePlot_pos;
 #ifdef ENABLE_JOINT_POSISION_PLOT
-    jointStatePlot_pos = std::unique_ptr<PlotWindow>(new PlotWindow());
+    jointStatePlot_pos = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     jointStatePlot_pos->SetWindowTitle("Joint position");
     jointStatePlot_pos->AutoScale(true);
     jointStatePlot_pos->AutoScroll(true);
@@ -466,11 +475,12 @@ int main(int argc, char *argv[])
         jointStatePlot_pos->AddGraph(QString("Joint_%02d.pos.actual").arg(ji+1), LineColor(ji + jdof));
     }
     jointStatePlot_pos->show();
+    plotToolbox.AddPlot(jointStatePlot_pos.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_vel;
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
-    jointStatePlot_vel = std::unique_ptr<PlotWindow>(new PlotWindow());
+    jointStatePlot_vel = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     jointStatePlot_vel->SetWindowTitle("Joint velocity");
     jointStatePlot_vel->AutoScale(true);
     jointStatePlot_vel->AutoScroll(true);
@@ -480,11 +490,12 @@ int main(int argc, char *argv[])
         jointStatePlot_vel->AddGraph(QString("Joint_%02d.vel.actual").arg(ji+1), LineColor(ji + jdof));
     }
     jointStatePlot_vel->show();
+    plotToolbox.AddPlot(jointStatePlot_vel.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_acc;
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
-    jointStatePlot_acc = std::unique_ptr<PlotWindow>(new PlotWindow());
+    jointStatePlot_acc = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     jointStatePlot_acc->SetWindowTitle("Joint acceleration");
     jointStatePlot_acc->AutoScale(true);
     jointStatePlot_acc->AutoScroll(true);
@@ -495,11 +506,12 @@ int main(int argc, char *argv[])
                                      LineColor(ji + jdof));
     }
     jointStatePlot_acc->show();
+    plotToolbox.AddPlot(jointStatePlot_acc.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_tau;
 #ifdef ENABLE_JOINT_TORQUE_PLOT
-    jointStatePlot_tau = std::unique_ptr<PlotWindow>(new PlotWindow());
+    jointStatePlot_tau = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     jointStatePlot_tau->SetWindowTitle("Joint torque");
     jointStatePlot_tau->AutoScale(true);
     jointStatePlot_tau->AutoScroll(true);
@@ -510,11 +522,12 @@ int main(int argc, char *argv[])
                                      LineColor(ji + jdof));
     }
     jointStatePlot_tau->show();
+    plotToolbox.AddPlot(jointStatePlot_tau.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_absEnc;
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
-    jointStatePlot_absEnc = std::unique_ptr<PlotWindow>(new PlotWindow());
+    jointStatePlot_absEnc = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     jointStatePlot_absEnc->SetWindowTitle("Joint absolute encoder");
     jointStatePlot_absEnc->AutoScale(true);
     jointStatePlot_absEnc->AutoScroll(true);
@@ -523,11 +536,12 @@ int main(int argc, char *argv[])
         jointStatePlot_absEnc->AddGraph(QString("Joint_%02d.absolute_encoder").arg(ji+1), LineColor(ji));
     }
     jointStatePlot_absEnc->show();
+    plotToolbox.AddPlot(jointStatePlot_absEnc.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_incEnc;
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-    jointStatePlot_incEnc = std::unique_ptr<PlotWindow>(new PlotWindow());
+    jointStatePlot_incEnc = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
     jointStatePlot_incEnc->SetWindowTitle("Joint incremental encoder");
     jointStatePlot_incEnc->AutoScale(true);
     jointStatePlot_incEnc->AutoScroll(true);
@@ -536,6 +550,7 @@ int main(int argc, char *argv[])
         jointStatePlot_incEnc->AddGraph(QString("Joint_%02d.incremental_encoder").arg(ji+1), LineColor(ji));
     }
     jointStatePlot_incEnc->show();
+    plotToolbox.AddPlot(jointStatePlot_incEnc.get());
 #endif
 
     eCAL::protobuf::CSubscriber<art_protocol::quadip::JointStateTimeStamped>

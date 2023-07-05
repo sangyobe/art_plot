@@ -16,12 +16,21 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public:
+    void AddPlot(PlotWindow* plotWnd);
+
+public slots:
+    void OnPlotWndHidden(QWidget* widget);
+    void OnConfigChanged(QStandardItem* item);
+    void OnItemClicked(QModelIndex index);
+
 private:
     void resizeEvent(QResizeEvent*);
 
 private:
     Ui::MainWindow *ui;
-    PlotWindow* _plotWnd;
+    QList<PlotWindow*> _plotWnds;
+    QStandardItemModel* _plotListModel;
 };
 
 #endif // MAINWINDOW_H
