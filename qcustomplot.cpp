@@ -25,6 +25,9 @@
 
 #include "qcustomplot.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#define QT_NO_PRINTER
+#endif
 
 /* including file 'src/vector2d.cpp'       */
 /* modified 2022-11-06T12:45:56, size 7973 */

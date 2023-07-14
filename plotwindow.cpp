@@ -17,22 +17,27 @@ PlotWindow::ConfigOption::ConfigOption() :
     legend_visible(true)
 {}
 
-
-
 PlotWindow::PlotWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PlotWindow),
     _configModel(nullptr)
 {
     ui->setupUi(this);
-
+    
+    //------------------------------------------------------------------
+    // Creat and set-up plot configuration(properties) panel
+    //
     _plotConfig = new PlotConfig(this);
     _plotConfig->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea, _plotConfig);
 
     BuildConfig();
-
-
+    
+    
+    //------------------------------------------------------------------
+    // Config plot window
+    //
+    
     // legend
     ui->plotwidget->legend->setVisible(_configOption.legend_visible);
     QFont legendFont = font();
@@ -56,7 +61,7 @@ PlotWindow::PlotWindow(QWidget *parent) :
     // enable dragging using maouse
     ui->plotwidget->setInteraction(QCP::iRangeDrag, true);
     // sellect enabled dragging direction
-    ui->plotwidget->axisRect(0)->setRangeDrag(/*Qt::Vertical | */Qt::Horizontal);
+    ui->plotwidget->axisRect(0)->setRangeDrag(Qt::Vertical | Qt::Horizontal);
     // enable zoom
     ui->plotwidget->setInteraction(QCP::iRangeZoom, true);
     ui->plotwidget->axisRect(0)->setRangeZoom(Qt::Vertical | Qt::Horizontal);
@@ -66,11 +71,22 @@ PlotWindow::PlotWindow(QWidget *parent) :
 //    ui->plotwidget->setInteraction(QCP::iMultiSelect, true);
 //    ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
 
+    // scroll-bars
+    ui->horizontalScrollBar->setRange(0,  100000);
+    ui->verticalScrollBar->setRange(-10000, 10000);
+    connect(ui->horizontalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(OnHorzScrollBarChanged(int)));
+    connect(ui->verticalScrollBar,   SIGNAL(valueChanged(int)), this, SLOT(OnVertScrollBarChanged(int)));
+    connect(ui->plotwidget->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(OnXAxisRangeChanged(QCPRange)));
+    connect(ui->plotwidget->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(OnYAxisRangeChanged(QCPRange)));
+
+
     ResetPlot();
     //ui->plotwidget->replot();
 
 
+    //------------------------------------------------------------------
     // initialize the plot refresh timer
+    //
     _refreshPlotTimer = std::unique_ptr<QTimer>(new QTimer(this));
     connect(_refreshPlotTimer.get(), SIGNAL(timeout()), this, SLOT(OnRefreshPlot()));
     _refreshPlotTimer->setInterval(100); // msec
@@ -466,10 +482,46 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     }
 }
 
+void PlotWindow::OnHorzScrollBarChanged(int value)
+{
+    //qDebug() << "OnHorzScrollBarChanged: value=" << value;
+    if (qAbs(ui->plotwidget->xAxis->range().center()-value/100.0) > 0.01) // if user is dragging plot, we don't want to replot twice
+    {
+        ui->plotwidget->xAxis->setRange(value/100.0, ui->plotwidget->xAxis->range().size(), Qt::AlignCenter);
+        ui->plotwidget->replot();
+    }
+}
+
+void PlotWindow::OnVertScrollBarChanged(int value)
+{
+    //qDebug() << "OnVertScrollBarChanged: value=" << value;
+    if (qAbs(ui->plotwidget->yAxis->range().center()+value/100.0) > 0.01) // if user is dragging plot, we don't want to replot twice
+    {
+        ui->plotwidget->yAxis->setRange(-value/100.0, ui->plotwidget->yAxis->range().size(), Qt::AlignCenter);
+        ui->plotwidget->replot();
+    }
+}
+
+void PlotWindow::OnXAxisRangeChanged(QCPRange range)
+{
+    //qDebug() << "OnXAxisRangeChanged: center=" << range.center() << ", size=" << range.size();
+    ui->horizontalScrollBar->setValue(qRound(range.center()*100.0)); // adjust position of scroll bar slider
+    ui->horizontalScrollBar->setPageStep(qRound(range.size()*100.0)); // adjust size of scroll bar slider
+}
+
+void PlotWindow::OnYAxisRangeChanged(QCPRange range)
+{
+    //qDebug() << "OnYAxisRangeChanged: center=" << range.center() << ", size=" << range.size();
+    ui->verticalScrollBar->setValue(qRound(-range.center()*100.0)); // adjust position of scroll bar slider
+    ui->verticalScrollBar->setPageStep(qRound(range.size()*100.0)); // adjust size of scroll bar slider
+}
+
 void PlotWindow::resizeEvent(QResizeEvent* event)
 {
     //qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
-    ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width(), ui->centralwidget->height()));
+    ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width()-18, ui->centralwidget->height()-18));
+    ui->horizontalScrollBar->setGeometry(0, ui->centralwidget->height()-18, ui->centralwidget->width()-18, 18);
+    ui->verticalScrollBar->setGeometry(ui->centralwidget->width()-18, 0, 18, ui->centralwidget->height()-18);
     QMainWindow::resizeEvent(event);
 }
 
@@ -536,6 +588,10 @@ void PlotWindow::OnRefreshPlot()
         QString("%1 FPS, Total Data received: %2")
             .arg(0.0, 0, 'f', 0)
             .arg(ui->plotwidget->graph(0)->data()->size()), 0);
+
+    // adjust scroll-bars
+    // 새로운 데이터가 들어오면, 새로운 데이터 시간을 기준으로 scroll-bar의 range를 변경
+    ui->horizontalScrollBar->setRange(0,  (_lastRecvTime + 0.5 * ui->plotwidget->xAxis->range().size()) * 100);
 }
 
 #ifdef USE_EMUL_DATA

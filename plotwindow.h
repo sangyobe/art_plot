@@ -59,6 +59,10 @@ private:
 
 private slots:
     void OnConfigChanged(QStandardItem* item);
+    void OnHorzScrollBarChanged(int value);
+    void OnVertScrollBarChanged(int value);
+    void OnXAxisRangeChanged(QCPRange range);
+    void OnYAxisRangeChanged(QCPRange range);
 
     void on_actionNew_triggered();
 
