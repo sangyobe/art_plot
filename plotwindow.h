@@ -7,7 +7,7 @@
 #include <chrono>
 #include "plotwidget.h"
 
-//#define USE_EMUL_DATA
+#define USE_EMUL_DATA
 
 class PlotConfig;
 
@@ -89,8 +89,8 @@ private:
 private:
     void resizeEvent(QResizeEvent*);
 
-    void AdjustPlotXRange(bool replot = true);
-    void AdjustPlotYRange(bool replot = true);
+    void AdjustPlotXRange();
+    void AdjustPlotYRange();
 
     const QStandardItem* FindFirstConfigOptionItem(const QString& cat, const QString& item);
 

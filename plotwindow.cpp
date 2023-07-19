@@ -79,10 +79,7 @@ PlotWindow::PlotWindow(QWidget *parent) :
     connect(ui->plotwidget->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(OnXAxisRangeChanged(QCPRange)));
     connect(ui->plotwidget->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(OnYAxisRangeChanged(QCPRange)));
 
-
     ResetPlot();
-    //ui->plotwidget->replot();
-
 
     //------------------------------------------------------------------
     // initialize the plot refresh timer
@@ -442,7 +439,6 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
                 const_cast<QStandardItem*>(item)->setEnabled(false);
             }
             ui->plotwidget->yAxis->rescale(false);
-            ui->plotwidget->replot();
         }
         else {
             double lb = ui->plotwidget->yAxis->range().lower;
@@ -471,13 +467,12 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     else if (item->whatsThis() == "Legend::Visible") {
         _configOption.legend_visible = (item->checkState() == Qt::Checked ? true : false);
         ui->plotwidget->legend->setVisible(_configOption.legend_visible);
-        ui->plotwidget->replot();
     }
     else if (item->whatsThis() == "Data series::Visible") {
         QCPGraph *graph = (QCPGraph*)item->data().value<void*>();
         if (graph) {
-            graph->setVisible((item->checkState() == Qt::Checked ? true : false));
-            ui->plotwidget->replot();
+            graph->setVisible(
+                (item->checkState() == Qt::Checked ? true : false));
         }
     }
 }
@@ -488,7 +483,7 @@ void PlotWindow::OnHorzScrollBarChanged(int value)
     if (qAbs(ui->plotwidget->xAxis->range().center()-value/100.0) > 0.01) // if user is dragging plot, we don't want to replot twice
     {
         ui->plotwidget->xAxis->setRange(value/100.0, ui->plotwidget->xAxis->range().size(), Qt::AlignCenter);
-        ui->plotwidget->replot();
+        // ui->plotwidget->replot();
     }
 }
 
@@ -498,7 +493,7 @@ void PlotWindow::OnVertScrollBarChanged(int value)
     if (qAbs(ui->plotwidget->yAxis->range().center()+value/100.0) > 0.01) // if user is dragging plot, we don't want to replot twice
     {
         ui->plotwidget->yAxis->setRange(-value/100.0, ui->plotwidget->yAxis->range().size(), Qt::AlignCenter);
-        ui->plotwidget->replot();
+        // ui->plotwidget->replot();
     }
 }
 
@@ -525,7 +520,7 @@ void PlotWindow::resizeEvent(QResizeEvent* event)
     QMainWindow::resizeEvent(event);
 }
 
-void PlotWindow::AdjustPlotXRange(bool replot)
+void PlotWindow::AdjustPlotXRange()
 {
     if (!_configOption.x_axis_auto_scroll)
     {
@@ -534,11 +529,9 @@ void PlotWindow::AdjustPlotXRange(bool replot)
             _configOption.x_axis_end_sec
             );
     }
-    if (replot)
-        ui->plotwidget->replot();
 }
 
-void PlotWindow::AdjustPlotYRange(bool replot)
+void PlotWindow::AdjustPlotYRange()
 {
     if (!_configOption.y_axis_auto_scale)
     {
@@ -547,8 +540,6 @@ void PlotWindow::AdjustPlotYRange(bool replot)
             _configOption.y_axis_ubound
             );
     }
-    if (replot)
-        ui->plotwidget->replot();
 }
 
 const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item)
@@ -570,28 +561,32 @@ void PlotWindow::OnRefreshPlot()
 {
     //qDebug() << "PlotWindow::OnRefreshPlot";
 
-    if (!_isNewDataReceived)
-        return;
+    if (_isNewDataReceived) {
+        _isNewDataReceived = false; // reset switch!
 
-    _isNewDataReceived = false; // reset switch!
+        double di =
+            qMax(0.0, _lastRecvTime - _configOption.x_axis_auto_scroll_window);
+        if (_configOption.x_axis_auto_scroll)
+            ui->plotwidget->xAxis->setRange(di, _lastRecvTime);
+        if (_configOption.y_axis_auto_scale)
+            ui->plotwidget->yAxis->rescale(true);
 
-    double di = qMax(0.0, _lastRecvTime - _configOption.x_axis_auto_scroll_window);
-    if (_configOption.x_axis_auto_scroll)
-        ui->plotwidget->xAxis->setRange(di, _lastRecvTime);
-    if (_configOption.y_axis_auto_scale)
-        ui->plotwidget->yAxis->rescale(true);
+        // update frame rate
+        ui->statusbar->showMessage(
+            QString("%1 FPS, Total Data received: %2")
+                .arg(0.0, 0, 'f', 0)
+                .arg(ui->plotwidget->graph(0)->data()->size()),
+            0);
+
+        // adjust scroll-bars
+        // 새로운 데이터가 들어오면, 새로운 데이터 시간을 기준으로 scroll-bar의
+        // range를 변경
+        ui->horizontalScrollBar->setRange(
+            0, (_lastRecvTime + 0.5 * ui->plotwidget->xAxis->range().size()) *
+                   100);
+    }
 
     ui->plotwidget->replot();
-
-    // update frame rate
-    ui->statusbar->showMessage(
-        QString("%1 FPS, Total Data received: %2")
-            .arg(0.0, 0, 'f', 0)
-            .arg(ui->plotwidget->graph(0)->data()->size()), 0);
-
-    // adjust scroll-bars
-    // 새로운 데이터가 들어오면, 새로운 데이터 시간을 기준으로 scroll-bar의 range를 변경
-    ui->horizontalScrollBar->setRange(0,  (_lastRecvTime + 0.5 * ui->plotwidget->xAxis->range().size()) * 100);
 }
 
 #ifdef USE_EMUL_DATA
