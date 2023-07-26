@@ -24,6 +24,14 @@ public slots:
     void OnConfigChanged(QStandardItem* item);
     void OnItemClicked(QModelIndex index);
 
+private slots:
+    void on_actionNew_triggered();
+
+    void on_actionExit_triggered();
+
+signals:
+    void newActionTriggered();
+
 private:
     void resizeEvent(QResizeEvent*);
 

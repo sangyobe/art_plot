@@ -32,7 +32,7 @@ public:
     QCPGraph *graph(int index) const;
 
 public:
-    int AddGraph(const QString &name, const QColor &color);
+    int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0);
     void ResetPlot();
     void Replot();
     void SetWindowTitle(const QString& title);
@@ -83,6 +83,7 @@ private:
         double y_axis_lbound;
         double y_axis_ubound;
         bool legend_visible;
+        unsigned int line_width;
     };
     ConfigOption _configOption;
 

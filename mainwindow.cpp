@@ -74,3 +74,14 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 {
     QMainWindow::resizeEvent(event);
 }
+
+void MainWindow::on_actionNew_triggered()
+{
+    emit newActionTriggered();
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    qApp->exit();
+}
+

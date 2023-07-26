@@ -14,7 +14,8 @@ PlotWindow::ConfigOption::ConfigOption() :
     y_axis_auto_scale(false),
     y_axis_lbound(-1.0),
     y_axis_ubound(1.0),
-    legend_visible(true)
+    legend_visible(true),
+    line_width(1)
 {}
 
 PlotWindow::PlotWindow(QWidget *parent) :
@@ -90,11 +91,17 @@ PlotWindow::PlotWindow(QWidget *parent) :
     _refreshPlotTimer->start();
 
 
+    //------------------------------------------------------------------
+    // other initializations
+    //
+    connect(this->parent(), SIGNAL(newActionTriggered()), this, SLOT(on_actionNew_triggered()));
+
+
 #ifdef USE_EMUL_DATA
-    this->AddGraph("Sin", LineColor<0>());
-    this->AddGraph("Sin^2", LineColor<1>());
-    this->AddGraph("Cos", LineColor<2>());
-    this->AddGraph("Cos^2", LineColor<3>());
+    this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000);
+    this->AddGraph("Sin^2", LineColor<1>(), 1);
+    this->AddGraph("Cos", LineColor<2>(), 2);
+    this->AddGraph("Cos^2", LineColor<3>(), 2, LineScatterShape::ssTriangle, 500);
 
     _dataSource = std::unique_ptr<DataSourceEmul>(new DataSourceEmul("Sample Data Series"));
     connect(_dataSource.get(), SIGNAL(new_data(const DataSeriesEmul&)), this, SLOT(OnRecvEmul(const DataSeriesEmul&)));
@@ -241,10 +248,12 @@ void PlotWindow::BuildConfig()
     QStandardItem* x_axis_root = new QStandardItem("x-Axis");
     QStandardItem* y_axis_root = new QStandardItem("y-Axis");
     QStandardItem* legend_root = new QStandardItem("Legend");
+    QStandardItem* style_root = new QStandardItem("Style");
     QStandardItem* data_series_root = new QStandardItem("Data series");
     _configModel->appendRow(x_axis_root);
     _configModel->appendRow(y_axis_root);
     _configModel->appendRow(legend_root);
+    _configModel->appendRow(style_root);
     _configModel->appendRow(data_series_root);
 
     // x-Axis
@@ -330,6 +339,29 @@ void PlotWindow::BuildConfig()
     items.append(item);
     legend_root->appendRow(items);
 
+    items.clear();
+    item_title = new QStandardItem("Position");
+    QStringList loc_options = {"Left-Top", "Left-Middle", "Left-Bottom", "Right-Top", "Right-Middle", "Right-Bottom"};
+    item = new QStandardItem(loc_options[3]);
+    item->setEditable(true);
+    item->setWhatsThis("Legend::Location");
+    item->setData(QVariant(loc_options), Qt::UserRole);
+    items.append(item_title);
+    items.append(item);
+    legend_root->appendRow(items);
+
+    // style
+    items.clear();
+    item_title = new QStandardItem("Line width(1~5)");
+    item = new QStandardItem();
+    item->setEditable(true);
+    item->setData(_configOption.line_width, Qt::EditRole);
+    item->setWhatsThis("Style::LineWidth");
+    items.append(item_title);
+    items.append(item);
+    style_root->appendRow(items);
+
+
     _plotConfig->setConfigModel(_configModel);
 
     // header
@@ -342,14 +374,18 @@ void PlotWindow::BuildConfig()
     connect(_configModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(OnConfigChanged(QStandardItem*)));
 }
 
-int PlotWindow::AddGraph(const QString &name, const QColor &color)
+int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_width, int scatter_shape, int scatter_skip)
 {
     QCPGraph *graph = ui->plotwidget->addGraph();
     graph->setName(name);
     // line style
     graph->setLineStyle(QCPGraph::lsLine/*lsStepRight*/);
-    graph->setPen(QPen(color));
-    //graph->setScatterStyle(QCPScatterStyle::ssPlus);
+    QPen pen(color);
+    pen.setWidth(line_width);
+    graph->setPen(pen);
+    QCPScatterStyle sstyle((QCPScatterStyle::ScatterShape)scatter_shape);
+    graph->setScatterStyle(sstyle);
+    graph->setScatterSkip(scatter_skip);
 
     auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
     QList<QStandardItem*> item_graph_visible;
@@ -467,6 +503,31 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     else if (item->whatsThis() == "Legend::Visible") {
         _configOption.legend_visible = (item->checkState() == Qt::Checked ? true : false);
         ui->plotwidget->legend->setVisible(_configOption.legend_visible);
+    }
+    else if (item->whatsThis() == "Style::LineWidth") {
+        _configOption.line_width = item->data(Qt::EditRole).toUInt();
+
+        if (_configOption.line_width >= 1 && _configOption.line_width <= 5) {
+            QPen pen;
+            for (int i = 0; i < ui->plotwidget->graphCount(); ++i)
+            {
+                pen = ui->plotwidget->graph(i)->pen();
+                pen.setWidth(_configOption.line_width);
+                ui->plotwidget->graph(i)->setPen(pen);
+            }
+        }
+        else {
+            if (_configOption.line_width < 1)
+                _configOption.line_width = 1;
+            else if (_configOption.line_width > 5)
+                _configOption.line_width = 5;
+
+            QStandardItem const * item;
+            item = FindFirstConfigOptionItem("Style", "Line width(1~5)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setData(_configOption.line_width, Qt::EditRole);
+            }
+        }
     }
     else if (item->whatsThis() == "Data series::Visible") {
         QCPGraph *graph = (QCPGraph*)item->data().value<void*>();
