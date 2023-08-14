@@ -92,10 +92,15 @@ PlotWindow::PlotWindow(QWidget *parent) :
 
 
     //------------------------------------------------------------------
+    // plot config window
+    //
+    ui->menuView->addSeparator();
+    ui->menuView->addAction(_plotConfig->toggleViewAction());
+
+    //------------------------------------------------------------------
     // other initializations
     //
     connect(this->parent(), SIGNAL(newActionTriggered()), this, SLOT(on_actionNew_triggered()));
-
 
 #ifdef USE_EMUL_DATA
     this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000);
@@ -152,6 +157,12 @@ void PlotWindow::Replot()
 void PlotWindow::SetWindowTitle(const QString &title)
 {
     setWindowTitle(title);
+
+
+    // restore window geometry (size, position)
+    QSettings settings("HMC::ArtTeam", "artPlot");
+    restoreGeometry(settings.value(title + "/geometry").toByteArray());
+    restoreState(settings.value(windowTitle() + "/windowState").toByteArray());
 }
 
 QString PlotWindow::GetWindowTitle() const {
@@ -579,6 +590,14 @@ void PlotWindow::resizeEvent(QResizeEvent* event)
     ui->horizontalScrollBar->setGeometry(0, ui->centralwidget->height()-18, ui->centralwidget->width()-18, 18);
     ui->verticalScrollBar->setGeometry(ui->centralwidget->width()-18, 0, 18, ui->centralwidget->height()-18);
     QMainWindow::resizeEvent(event);
+}
+
+void PlotWindow::closeEvent(QCloseEvent* event) {
+    // save window geometry
+    QSettings settings("HMC::ArtTeam", "artPlot");
+    settings.setValue(windowTitle() + "/geometry", saveGeometry());
+    settings.setValue(windowTitle() + "/windowState", saveState());
+    QMainWindow::closeEvent(event);
 }
 
 void PlotWindow::AdjustPlotXRange()

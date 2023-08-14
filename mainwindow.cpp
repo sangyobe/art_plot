@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect_success = connect(ui->plotlistview, SIGNAL(clicked(QModelIndex)), this, SLOT(OnItemClicked(QModelIndex)));
     Q_ASSERT(connect_success);
+
+
+    // restore window geometry (size, position)
+    QSettings settings("HMC::ArtTeam", "artPlot");
+    restoreGeometry(settings.value("geometry").toByteArray());
 }
 
 MainWindow::~MainWindow()
@@ -73,6 +78,14 @@ void MainWindow::OnItemClicked(QModelIndex index)
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
     QMainWindow::resizeEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    QSettings settings("HMC::ArtTeam", "artPlot");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("state", saveState());
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::on_actionNew_triggered()

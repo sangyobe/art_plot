@@ -34,6 +34,7 @@ signals:
 
 private:
     void resizeEvent(QResizeEvent*);
+    void closeEvent(QCloseEvent*);
 
 private:
     Ui::MainWindow *ui;

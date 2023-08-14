@@ -18,3 +18,10 @@ void PlotWidget::ShowPointToolTip(QMouseEvent *event)
     double y = this->yAxis->pixelToCoord(event->y());
     setToolTip(QString("%1, %2").arg(x).arg(y));
 }
+
+void PlotWidget::resizeEvent(QResizeEvent *event)
+{
+    qDebug() << "PlotWidget::resizeEvent (Width : " << this->width() << ", Height : " <<  this->height() << ")";
+    QCustomPlot::resizeEvent(event);
+
+}

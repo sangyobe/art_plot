@@ -89,6 +89,7 @@ private:
 
 private:
     void resizeEvent(QResizeEvent*);
+    void closeEvent(QCloseEvent*);
 
     void AdjustPlotXRange();
     void AdjustPlotYRange();
