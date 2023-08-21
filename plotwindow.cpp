@@ -414,7 +414,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         item_option->setWhatsThis(QString("Data series::Visible"));
         item_option->setSelectable(false);
         item_option->setData(QVariant::fromValue((void*)graph));
-        item_option->setData(color, Qt::BackgroundColorRole);
+        item_option->setData(color, Qt::BackgroundRole);
         item_graph_visible.append(item_title);
         item_graph_visible.append(item_option);
         data_series_root->appendRow(item_graph_visible);
