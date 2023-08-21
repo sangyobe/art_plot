@@ -158,11 +158,10 @@ void PlotWindow::SetWindowTitle(const QString &title)
 {
     setWindowTitle(title);
 
-
     // restore window geometry (size, position)
     QSettings settings("HMC::ArtTeam", "artPlot");
     restoreGeometry(settings.value(title + "/geometry").toByteArray());
-    restoreState(settings.value(windowTitle() + "/windowState").toByteArray());
+    restoreState(settings.value(title + "/windowState").toByteArray());
 }
 
 QString PlotWindow::GetWindowTitle() const {
@@ -414,7 +413,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         item_option->setWhatsThis(QString("Data series::Visible"));
         item_option->setSelectable(false);
         item_option->setData(QVariant::fromValue((void*)graph));
-        item_option->setData(color, Qt::BackgroundColorRole);
+        item_option->setData(color, Qt::BackgroundRole);
         item_graph_visible.append(item_title);
         item_graph_visible.append(item_option);
         data_series_root->appendRow(item_graph_visible);

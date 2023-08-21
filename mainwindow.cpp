@@ -82,6 +82,13 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+    // close all plotWindows
+    for (auto plotwnd : qAsConst(_plotWnds)) {
+        const_cast<PlotWindow*>(plotwnd)->close();
+    }
+    //QApplication::closeAllWindows();
+
+    // close itself
     QSettings settings("HMC::ArtTeam", "artPlot");
     settings.setValue("geometry", saveGeometry());
     settings.setValue("state", saveState());

@@ -21,7 +21,7 @@ void PlotWidget::ShowPointToolTip(QMouseEvent *event)
 
 void PlotWidget::resizeEvent(QResizeEvent *event)
 {
-    qDebug() << "PlotWidget::resizeEvent (Width : " << this->width() << ", Height : " <<  this->height() << ")";
+    //qDebug() << "PlotWidget::resizeEvent (Width : " << this->width() << ", Height : " <<  this->height() << ")";
     QCustomPlot::resizeEvent(event);
 
 }
