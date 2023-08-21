@@ -11,9 +11,6 @@ public:
 
 public slots:
     void ShowPointToolTip(QMouseEvent* event);
-
-private:
-    void resizeEvent(QResizeEvent*);
 };
 
 #endif // PLOTWIDGET_H
