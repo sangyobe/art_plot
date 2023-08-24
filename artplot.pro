@@ -29,6 +29,7 @@ SOURCES += \
         datasourceemul.cpp \
         main.cpp \
         mainwindow.cpp \
+        plotcentralwidget.cpp \
         plotconfig.cpp \
         plotwidget.cpp \
         plotwindow.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
         datasourceemul.h \
         mainwindow.h \
         pconstants.h \
+        plotcentralwidget.h \
         plotconfig.h \
         plotwidget.h \
         plotwindow.h \

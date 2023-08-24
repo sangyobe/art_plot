@@ -585,10 +585,15 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 void PlotWindow::resizeEvent(QResizeEvent* event)
 {
     //qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
+    RecalculatePlotLayout();
+    QMainWindow::resizeEvent(event);
+}
+
+void PlotWindow::RecalculatePlotLayout()
+{
     ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width()-18, ui->centralwidget->height()-18));
     ui->horizontalScrollBar->setGeometry(0, ui->centralwidget->height()-18, ui->centralwidget->width()-18, 18);
     ui->verticalScrollBar->setGeometry(ui->centralwidget->width()-18, 0, 18, ui->centralwidget->height()-18);
-    QMainWindow::resizeEvent(event);
 }
 
 void PlotWindow::closeEvent(QCloseEvent* event) {

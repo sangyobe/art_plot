@@ -48,6 +48,8 @@ public:
 
     void DataUpdated(double recv_time);
 
+    void RecalculatePlotLayout();
+
 protected:
     void hideEvent(QHideEvent* event);
 
