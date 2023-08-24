@@ -1,6 +1,5 @@
 #include "plotcentralwidget.h"
 #include "plotwindow.h"
-#include <qevent.h>
 
 PlotCentralWidget::PlotCentralWidget(QWidget *parent)
     : QWidget{parent}
