@@ -12,6 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
     _plotListModel = new QStandardItemModel;
     _plotListModel->setColumnCount(1);
 
+    QStandardItem* rt_plot_root = new QStandardItem("Realtime plots");
+    QStandardItem* im_plot_root = new QStandardItem("Imported plots");
+    _plotListModel->appendRow(rt_plot_root);
+    _plotListModel->appendRow(im_plot_root);
+
     ui->plotlistview->setModel(_plotListModel);
 
     bool connect_success;
@@ -42,6 +47,15 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
     item->setCheckState(Qt::Checked);
     item->setWhatsThis("Plot::Enabled");
     item->setData(QVariant::fromValue((void*)plotWnd));
+
+//    auto items = _plotListModel->findItems("Realtime plots", Qt::MatchExactly | Qt::MatchRecursive, 0);
+//    for (QStandardItem* rt_plot_root : items) {
+//        if (rt_plot_root->parent())
+//            continue;
+
+//        rt_plot_root->appendRow(item);
+//        break;
+//    }
     _plotListModel->appendRow(item);
 }
 
@@ -97,11 +111,24 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::on_actionNew_triggered()
 {
-    emit newActionTriggered();
+    PlotWindow* plotWnd;
+    plotWnd = new PlotWindow(this);
+    plotWnd->SetWindowTitle("New Plot");
+    plotWnd->AutoScale(false);
+    plotWnd->AutoScroll(false);
+    plotWnd->AutoScrollWindow(5.0);
+    plotWnd->show();
+    AddPlot(plotWnd);
 }
 
 void MainWindow::on_actionExit_triggered()
 {
     qApp->exit();
+}
+
+
+void MainWindow::on_actionClear_triggered()
+{
+    emit clearActionTriggered();
 }
 

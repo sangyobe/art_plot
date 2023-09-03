@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        csvfile.cpp \
         datasource.cpp \
         datasourceemul.cpp \
         main.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
         qcustomplot.cpp
 
 HEADERS += \
+        csvfile.h \
         datasource.h \
         datasourceemul.h \
         mainwindow.h \

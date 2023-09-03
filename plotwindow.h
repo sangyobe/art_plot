@@ -7,7 +7,7 @@
 #include <chrono>
 #include "plotwidget.h"
 
-#define USE_EMUL_DATA
+//#define USE_EMUL_DATA
 
 class PlotConfig;
 
@@ -66,7 +66,9 @@ private slots:
     void OnXAxisRangeChanged(QCPRange range);
     void OnYAxisRangeChanged(QCPRange range);
 
-    void on_actionNew_triggered();
+    void on_actionClear_triggered();
+    void on_actionImort_triggered();
+    void on_actionExport_triggered();
 
 private:
     Ui::PlotWindow *ui;

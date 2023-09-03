@@ -9,6 +9,9 @@ public:
     explicit PlotWidget(QWidget *parent = nullptr);
     virtual ~PlotWidget() Q_DECL_OVERRIDE;
 
+    void ExportToCSV(QString& export_dir);
+    void ImportFromCSV(QStringList& import_files);
+
 public slots:
     void ShowPointToolTip(QMouseEvent* event);
 };

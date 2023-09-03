@@ -64,8 +64,9 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionLoad"/>
+    <addaction name="actionClear"/>
+    <addaction name="actionImort"/>
+    <addaction name="actionExport"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
@@ -98,9 +99,15 @@
     <string>Close</string>
    </property>
   </action>
-  <action name="actionLoad">
+  <action name="actionImort">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Load</string>
+    <string>Imort...</string>
+   </property>
+   <property name="toolTip">
+    <string>Import data from CSV file</string>
    </property>
   </action>
   <action name="actionExtend_All">
@@ -118,9 +125,20 @@
     <string>Data Grid</string>
    </property>
   </action>
-  <action name="actionNew">
+  <action name="actionClear">
    <property name="text">
-    <string>New</string>
+    <string>Clear</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove all data</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export...</string>
+   </property>
+   <property name="toolTip">
+    <string>Export data to CSV file</string>
    </property>
   </action>
  </widget>

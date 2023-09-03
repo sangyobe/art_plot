@@ -100,7 +100,7 @@ PlotWindow::PlotWindow(QWidget *parent) :
     //------------------------------------------------------------------
     // other initializations
     //
-    connect(this->parent(), SIGNAL(newActionTriggered()), this, SLOT(on_actionNew_triggered()));
+    connect(this->parent(), SIGNAL(clearActionTriggered()), this, SLOT(on_actionClear_triggered()));
 
 #ifdef USE_EMUL_DATA
     this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000);
@@ -157,6 +157,7 @@ void PlotWindow::Replot()
 void PlotWindow::SetWindowTitle(const QString &title)
 {
     setWindowTitle(title);
+    ui->plotwidget->setWindowTitle(title);
 
     // restore window geometry (size, position)
     QSettings settings("HMC::ArtTeam", "artPlot");
@@ -687,8 +688,27 @@ void PlotWindow::OnRecvEmul(const DataSeriesEmul& data)
 }
 #endif
 
-void PlotWindow::on_actionNew_triggered()
+void PlotWindow::on_actionClear_triggered()
 {
     ResetPlot();
 }
 
+void PlotWindow::on_actionImort_triggered()
+{
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "", QDir::currentPath(), tr("CSV Files(.csv) (*.csv)"));
+    if (filenames.empty())
+        return;
+
+    qDebug() << "import files: " << filenames;
+    ui->plotwidget->ImportFromCSV(filenames);
+}
+
+void PlotWindow::on_actionExport_triggered()
+{
+    QString export_dir = QFileDialog::getExistingDirectory(this, "", QDir::currentPath(), QFileDialog::ShowDirsOnly);
+    if (export_dir.isNull())
+        return;
+
+    qDebug() << "export dir: " << export_dir;
+    ui->plotwidget->ExportToCSV(export_dir);
+}

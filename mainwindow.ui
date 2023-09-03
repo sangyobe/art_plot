@@ -34,6 +34,7 @@
      <string>File</string>
     </property>
     <addaction name="actionNew"/>
+    <addaction name="actionClear"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -52,10 +53,21 @@
    <property name="text">
     <string>New</string>
    </property>
+   <property name="toolTip">
+    <string>New plot</string>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>Clear</string>
+   </property>
+   <property name="toolTip">
+    <string>Clear All plots</string>
    </property>
   </action>
  </widget>
