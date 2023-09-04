@@ -43,6 +43,7 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
     connect(plotWnd, SIGNAL(widgetHidden(QWidget*)), this, SLOT(OnPlotWndHidden(QWidget*)));
 
     QStandardItem* item = new QStandardItem(plotWnd->GetWindowTitle());
+    item->setEditable(false);
     item->setCheckable(true);
     item->setCheckState(Qt::Checked);
     item->setWhatsThis("Plot::Enabled");
@@ -74,6 +75,7 @@ void MainWindow::OnConfigChanged(QStandardItem *item)
     if (item->whatsThis() == "Plot::Enabled") {
         PlotWindow *plotWnd = (PlotWindow*)item->data().value<void*>();
         if (plotWnd) {
+            plotWnd->SetWindowTitle(item->data(Qt::DisplayRole).toString());
             plotWnd->setVisible((item->checkState() == Qt::Checked ? true : false));
             if (item->checkState() == Qt::Checked)
                 plotWnd->activateWindow();

@@ -261,6 +261,11 @@ void PlotWindow::BuildConfig()
     QStandardItem* legend_root = new QStandardItem("Legend");
     QStandardItem* style_root = new QStandardItem("Style");
     QStandardItem* data_series_root = new QStandardItem("Data series");
+    x_axis_root->setEditable(false);
+    y_axis_root->setEditable(false);
+    legend_root->setEditable(false);
+    style_root->setEditable(false);
+    data_series_root->setEditable(false);
     _configModel->appendRow(x_axis_root);
     _configModel->appendRow(y_axis_root);
     _configModel->appendRow(legend_root);
@@ -270,7 +275,9 @@ void PlotWindow::BuildConfig()
     // x-Axis
     items.clear();
     item_title = new QStandardItem("Auto scroll");
+    item_title->setEditable(false);
     item = new QStandardItem();
+    item->setEditable(false);
     item->setCheckable(true);
     item->setCheckState(_configOption.x_axis_auto_scroll ? Qt::Checked : Qt::Unchecked);
     item->setWhatsThis("x-Axis::AutoScroll");
@@ -280,6 +287,7 @@ void PlotWindow::BuildConfig()
 
     items.clear();
     item_title = new QStandardItem("Scroll Window(s)");
+    item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
     item->setData(_configOption.x_axis_auto_scroll_window, Qt::EditRole);
@@ -290,6 +298,7 @@ void PlotWindow::BuildConfig()
 
     items.clear();
     item_title = new QStandardItem("Begin(s)");
+    item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
     item->setData(_configOption.x_axis_begin_sec, Qt::EditRole);
@@ -300,6 +309,7 @@ void PlotWindow::BuildConfig()
 
     items.clear();
     item_title = new QStandardItem("End(s)");
+    item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
     item->setData(_configOption.x_axis_end_sec, Qt::EditRole);
@@ -311,7 +321,9 @@ void PlotWindow::BuildConfig()
     // y-Axis
     items.clear();
     item_title = new QStandardItem("Auto scale");
+    item_title->setEditable(false);
     item = new QStandardItem();
+    item->setEditable(false);
     item->setCheckable(true);
     item->setCheckState(_configOption.y_axis_auto_scale ? Qt::Checked : Qt::Unchecked);
     item->setWhatsThis("y-Axis::AutoScale");
@@ -342,7 +354,9 @@ void PlotWindow::BuildConfig()
     // legend
     items.clear();
     item_title = new QStandardItem("Visible");
+    item_title->setEditable(false);
     item = new QStandardItem();
+    item->setEditable(false);
     item->setCheckable(true);
     item->setCheckState(_configOption.legend_visible ? Qt::Checked : Qt::Unchecked);
     item->setWhatsThis("Legend::Visible");
@@ -354,7 +368,7 @@ void PlotWindow::BuildConfig()
     item_title = new QStandardItem("Position");
     QStringList loc_options = {"Left-Top", "Left-Middle", "Left-Bottom", "Right-Top", "Right-Middle", "Right-Bottom"};
     item = new QStandardItem(loc_options[3]);
-    item->setEditable(true);
+    item->setEditable(false);
     item->setWhatsThis("Legend::Location");
     item->setData(QVariant(loc_options), Qt::UserRole);
     items.append(item_title);
@@ -364,6 +378,7 @@ void PlotWindow::BuildConfig()
     // style
     items.clear();
     item_title = new QStandardItem("Line width(1~5)");
+    item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
     item->setData(_configOption.line_width, Qt::EditRole);
@@ -407,7 +422,9 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         QStandardItem* item_title = new QStandardItem(name);
         QStandardItem* item_option = new QStandardItem();
 
+        item_title->setEditable(false);
         item_title->setSelectable(false);
+        item_option->setEditable(false);
         item_option->setCheckable(true);
         item_option->setCheckState(Qt::Checked);
         //item_option->setWhatsThis(QString("Data series::%s").arg(name));
