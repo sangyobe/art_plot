@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plotlistview->setModel(_plotListModel);
 
+    // connect menu action
+    connect(ui->actionNew, &QAction::triggered, this, &MainWindow::OnNewTriggered);
+    connect(ui->actionClear, &QAction::triggered, this, &MainWindow::OnClearTriggered);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::OnExitTriggered);
+
     bool connect_success;
     connect_success = connect(_plotListModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(OnConfigChanged(QStandardItem*)));
     Q_ASSERT(connect_success);
@@ -43,29 +48,44 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
     connect(plotWnd, SIGNAL(widgetHidden(QWidget*)), this, SLOT(OnPlotWndHidden(QWidget*)));
 
     QStandardItem* item = new QStandardItem(plotWnd->GetWindowTitle());
-    item->setEditable(false);
+    if (plotWnd->GetType() == PlotType::RT_PLOT) {
+        item->setEditable(false);
+    }
     item->setCheckable(true);
     item->setCheckState(Qt::Checked);
     item->setWhatsThis("Plot::Enabled");
     item->setData(QVariant::fromValue((void*)plotWnd));
 
-//    auto items = _plotListModel->findItems("Realtime plots", Qt::MatchExactly | Qt::MatchRecursive, 0);
-//    for (QStandardItem* rt_plot_root : items) {
-//        if (rt_plot_root->parent())
-//            continue;
 
-//        rt_plot_root->appendRow(item);
-//        break;
-//    }
-    _plotListModel->appendRow(item);
+    QString plot_group_name;
+    if (PlotType::RT_PLOT == plotWnd->GetType())
+        plot_group_name = "Realtime plots";
+    else
+        plot_group_name = "Imported plots";
+
+    auto items = _plotListModel->findItems(plot_group_name, Qt::MatchExactly | Qt::MatchRecursive, 0);
+    for (QStandardItem* plot_root : items) {
+        if (plot_root->parent())
+            continue;
+
+        plot_root->appendRow(item);
+        ui->plotlistview->expand(plot_root->index());
+
+        break;
+    }
 }
 
 void MainWindow::OnPlotWndHidden(QWidget* widget)
 {
-    QList<QStandardItem*> items = _plotListModel->findItems(((PlotWindow*)widget)->GetWindowTitle());
-    std::for_each(items.begin(), items.end(), [](QStandardItem* item) {
-        item->setCheckState(Qt::Unchecked);
-    });
+    for (int curIndex = 0; curIndex < _plotListModel->rowCount(); curIndex++) {
+        QStandardItem* plot_group = _plotListModel->item(curIndex);
+        for (int chiIndex = 0; chiIndex < plot_group->rowCount(); chiIndex++) {
+            QStandardItem* plot = plot_group->child(chiIndex);
+            if (plot && plot->data() == QVariant::fromValue((void*)widget)) {
+                plot->setCheckState(Qt::Unchecked);
+            }
+        }
+    }
 }
 
 void MainWindow::OnConfigChanged(QStandardItem *item)
@@ -111,10 +131,10 @@ void MainWindow::closeEvent(QCloseEvent* event)
     QMainWindow::closeEvent(event);
 }
 
-void MainWindow::on_actionNew_triggered()
+void MainWindow::OnNewTriggered()
 {
     PlotWindow* plotWnd;
-    plotWnd = new PlotWindow(this);
+    plotWnd = new PlotWindow(this, PlotType::IM_PLOT);
     plotWnd->SetWindowTitle("New Plot");
     plotWnd->AutoScale(false);
     plotWnd->AutoScroll(false);
@@ -123,13 +143,12 @@ void MainWindow::on_actionNew_triggered()
     AddPlot(plotWnd);
 }
 
-void MainWindow::on_actionExit_triggered()
+void MainWindow::OnExitTriggered()
 {
     qApp->exit();
 }
 
-
-void MainWindow::on_actionClear_triggered()
+void MainWindow::OnClearTriggered()
 {
     emit clearActionTriggered();
 }

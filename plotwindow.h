@@ -20,20 +20,24 @@ namespace Ui {
 class PlotWindow;
 }
 
+enum class PlotType { RT_PLOT, IM_PLOT };
+
 class PlotWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit PlotWindow(QWidget *parent = nullptr);
+    explicit PlotWindow(QWidget *parent = nullptr, PlotType type = PlotType::RT_PLOT);
     ~PlotWindow();
 
     PlotWidget *plot() const;
     QCPGraph *graph(int index) const;
 
 public:
-    int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0);
-    void ResetPlot();
+    int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0, bool visible = true);
+    void SetGraphVisible(const QString &name, bool visible);
+    void ResetPlot();   // clear data and remove all graphs
+    void ResetData();   // clear data only
     void Replot();
     void SetWindowTitle(const QString& title);
     QString GetWindowTitle() const;
@@ -49,6 +53,10 @@ public:
     void DataUpdated(double recv_time);
 
     void RecalculatePlotLayout();
+    PlotType GetType() { return _plotType; }
+
+protected:
+    void ExtendAll();
 
 protected:
     void hideEvent(QHideEvent* event);
@@ -65,15 +73,21 @@ private slots:
     void OnVertScrollBarChanged(int value);
     void OnXAxisRangeChanged(QCPRange range);
     void OnYAxisRangeChanged(QCPRange range);
-
-    void on_actionClear_triggered();
-    void on_actionImort_triggered();
-    void on_actionExport_triggered();
+    void OnSelectionChangedByUser();
+    void OnClearTriggered();
+    void OnResetTriggered();
+    void OnImportTriggered();
+    void OnAppendTriggered();
+    void OnExportTriggered();
+    void OnExtendAllTriggered();
+    void OnMousePressed(QMouseEvent*);
+    void OnMouseReleased(QMouseEvent*);
 
 private:
     Ui::PlotWindow *ui;
     PlotConfig* _plotConfig;
     QStandardItemModel* _configModel;
+    PlotType _plotType;
 
     class ConfigOption
     {

@@ -106,3 +106,39 @@ void PlotWidget::ShowPointToolTip(QMouseEvent *event)
     double y = this->yAxis->pixelToCoord(event->y());
     setToolTip(QString("%1, %2").arg(x).arg(y));
 }
+
+QCPRange PlotWidget::getKeyRange(bool &foundRange)
+{
+    QCPRange range;
+    foundRange = false;
+
+    for (auto graph : qAsConst(mGraphs)) {
+        QCPRange rng;
+        bool fnd;
+        rng = graph->getKeyRange(fnd);
+        if (fnd) {
+            range.expand(rng);
+            foundRange = true;
+        }
+    }
+
+    return range;
+}
+
+QCPRange PlotWidget::getValueRange(bool &foundRange)
+{
+    QCPRange range;
+    foundRange = false;
+
+    for (auto graph : qAsConst(mGraphs)) {
+        QCPRange rng;
+        bool fnd;
+        rng = graph->getValueRange(fnd);
+        if (fnd) {
+            range.expand(rng);
+            foundRange = true;
+        }
+    }
+
+    return range;
+}

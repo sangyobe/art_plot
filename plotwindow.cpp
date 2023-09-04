@@ -18,12 +18,35 @@ PlotWindow::ConfigOption::ConfigOption() :
     line_width(1)
 {}
 
-PlotWindow::PlotWindow(QWidget *parent) :
+PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     QMainWindow(parent),
     ui(new Ui::PlotWindow),
-    _configModel(nullptr)
+    _configModel(nullptr),
+    _plotType(type)
 {
     ui->setupUi(this);
+
+    //------------------------------------------------------------------
+    // Config menu
+    //
+    if (_plotType == PlotType::RT_PLOT) {
+        ui->actionImport->setDisabled(true);
+        ui->actionAppend->setDisabled(true);
+        ui->actionReset->setDisabled(true);
+    }
+    else if (_plotType == PlotType::IM_PLOT) {
+        ui->actionExport->setDisabled(true);
+#ifdef USE_EMUL_DATA
+        ui->actionImport->setDisabled(true);
+        ui->actionReset->setDisabled(true);
+#endif
+    }
+    connect(ui->actionClear, &QAction::triggered, this, &PlotWindow::OnClearTriggered);
+    connect(ui->actionReset, &QAction::triggered, this, &PlotWindow::OnResetTriggered);
+    connect(ui->actionImport, &QAction::triggered, this, &PlotWindow::OnImportTriggered);
+    connect(ui->actionAppend, &QAction::triggered, this, &PlotWindow::OnAppendTriggered);
+    connect(ui->actionExport, &QAction::triggered, this, &PlotWindow::OnExportTriggered);
+    connect(ui->actionExtend_All, &QAction::triggered, this, &PlotWindow::OnExtendAllTriggered);
     
     //------------------------------------------------------------------
     // Creat and set-up plot configuration(properties) panel
@@ -38,6 +61,11 @@ PlotWindow::PlotWindow(QWidget *parent) :
     //------------------------------------------------------------------
     // Config plot window
     //
+    ui->plotwidget->setPlottingHints(QCP::phNone
+        | QCP::phFastPolylines
+        | QCP::phImmediateRefresh
+    //  | QCP::phCacheLabels
+    );
     
     // legend
     ui->plotwidget->legend->setVisible(_configOption.legend_visible);
@@ -59,18 +87,28 @@ PlotWindow::PlotWindow(QWidget *parent) :
     //
     // set user interaction options
     //
-    // enable dragging using maouse
+    // enable dragging using mouse
     ui->plotwidget->setInteraction(QCP::iRangeDrag, true);
     // sellect enabled dragging direction
     ui->plotwidget->axisRect(0)->setRangeDrag(Qt::Vertical | Qt::Horizontal);
-    // enable zoom
+
+    // set initial dragging mode
+    ui->plotwidget->setSelectionRectMode(QCP::srmNone);
+    connect(ui->plotwidget, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(OnMousePressed(QMouseEvent*)));
+    connect(ui->plotwidget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(OnMouseReleased(QMouseEvent*)));
+
+
+    // enable zoom (by mouse wheel)
     ui->plotwidget->setInteraction(QCP::iRangeZoom, true);
     ui->plotwidget->axisRect(0)->setRangeZoom(Qt::Vertical | Qt::Horizontal);
     ui->plotwidget->axisRect(0)->setRangeZoomFactor(1.1, 1.1);
+
     // enable clicking items
-//    ui->plotwidget->setInteraction(QCP::iSelectPlottables);
-//    ui->plotwidget->setInteraction(QCP::iMultiSelect, true);
+    ui->plotwidget->setInteraction(QCP::iSelectPlottables);
+    //ui->plotwidget->setInteraction(QCP::iSelectLegend, true);
+    ui->plotwidget->setInteraction(QCP::iMultiSelect, false);
 //    ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
+    connect(ui->plotwidget, SIGNAL(selectionChangedByUser()), this, SLOT(OnSelectionChangedByUser()));
 
     // scroll-bars
     ui->horizontalScrollBar->setRange(0,  100000);
@@ -100,13 +138,14 @@ PlotWindow::PlotWindow(QWidget *parent) :
     //------------------------------------------------------------------
     // other initializations
     //
-    connect(this->parent(), SIGNAL(clearActionTriggered()), this, SLOT(on_actionClear_triggered()));
+    connect(this->parent(), SIGNAL(clearActionTriggered()), this, SLOT(OnClearTriggered()));
 
 #ifdef USE_EMUL_DATA
-    this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000);
+    this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000, false);
     this->AddGraph("Sin^2", LineColor<1>(), 1);
     this->AddGraph("Cos", LineColor<2>(), 2);
     this->AddGraph("Cos^2", LineColor<3>(), 2, LineScatterShape::ssTriangle, 500);
+    this->SetGraphVisible("Cos^2", false);
 
     _dataSource = std::unique_ptr<DataSourceEmul>(new DataSourceEmul("Sample Data Series"));
     connect(_dataSource.get(), SIGNAL(new_data(const DataSeriesEmul&)), this, SLOT(OnRecvEmul(const DataSeriesEmul&)));
@@ -131,6 +170,24 @@ QCPGraph *PlotWindow::graph(int index) const
 }
 
 void PlotWindow::ResetPlot()
+{
+    ResetData();
+
+    for( int g=ui->plotwidget->graphCount(); g>0; g--)
+    {
+        ui->plotwidget->removeGraph(g-1);
+    }
+
+    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+    foreach (QStandardItem* data_series_root, items) {
+        if (data_series_root->parent())
+            continue;
+
+        data_series_root->removeRows(0, data_series_root->rowCount());
+    }
+}
+
+void PlotWindow::ResetData()
 {
     for( int g=0; g<ui->plotwidget->graphCount(); g++ )
     {
@@ -400,7 +457,7 @@ void PlotWindow::BuildConfig()
     connect(_configModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(OnConfigChanged(QStandardItem*)));
 }
 
-int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_width, int scatter_shape, int scatter_skip)
+int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_width, int scatter_shape, int scatter_skip, bool visible)
 {
     QCPGraph *graph = ui->plotwidget->addGraph();
     graph->setName(name);
@@ -412,6 +469,8 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
     QCPScatterStyle sstyle((QCPScatterStyle::ScatterShape)scatter_shape);
     graph->setScatterStyle(sstyle);
     graph->setScatterSkip(scatter_skip);
+    graph->setAdaptiveSampling(true);
+    graph->setVisible(visible);
 
     auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
     QList<QStandardItem*> item_graph_visible;
@@ -426,12 +485,13 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         item_title->setSelectable(false);
         item_option->setEditable(false);
         item_option->setCheckable(true);
-        item_option->setCheckState(Qt::Checked);
+        item_option->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
         //item_option->setWhatsThis(QString("Data series::%s").arg(name));
         item_option->setWhatsThis(QString("Data series::Visible"));
         item_option->setSelectable(false);
         item_option->setData(QVariant::fromValue((void*)graph));
         item_option->setData(color, Qt::BackgroundRole);
+        item_option->setData(QVariant::fromValue(name), Qt::UserRole + 2);
         item_graph_visible.append(item_title);
         item_graph_visible.append(item_option);
         data_series_root->appendRow(item_graph_visible);
@@ -439,6 +499,14 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
     }
 
     return ui->plotwidget->graphCount();
+}
+
+void PlotWindow::SetGraphVisible(const QString &name, bool visible)
+{
+    const QStandardItem* item = FindFirstConfigOptionItem("Data series", name);
+    if (item) {
+        const_cast<QStandardItem*>(item)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+    }
 }
 
 void PlotWindow::OnConfigChanged(QStandardItem *item)
@@ -600,6 +668,19 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
     ui->verticalScrollBar->setPageStep(qRound(range.size()*100.0)); // adjust size of scroll bar slider
 }
 
+void PlotWindow::OnSelectionChangedByUser()
+{
+    qDebug() << "OnSelectionChangedByUser";
+    const QList<QCPGraph*> graphs = ui->plotwidget->selectedGraphs();
+    for (auto graph : qAsConst(graphs)) {
+        Q_UNUSED(graph); // (void)graph;
+    }
+    const QList<QCPLegend*> legends = ui->plotwidget->selectedLegends();
+    for (auto legend : qAsConst(legends)) {
+        Q_UNUSED(legend);
+    }
+}
+
 void PlotWindow::resizeEvent(QResizeEvent* event)
 {
     //qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
@@ -612,6 +693,51 @@ void PlotWindow::RecalculatePlotLayout()
     ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width()-18, ui->centralwidget->height()-18));
     ui->horizontalScrollBar->setGeometry(0, ui->centralwidget->height()-18, ui->centralwidget->width()-18, 18);
     ui->verticalScrollBar->setGeometry(ui->centralwidget->width()-18, 0, 18, ui->centralwidget->height()-18);
+}
+
+void PlotWindow::ExtendAll()
+{
+    bool found;
+    QCPRange range;
+    range = ui->plotwidget->getKeyRange(found);
+    if (found) {
+        //qDebug() << "key range: " << range.lower << "," << range.upper;
+
+        const QStandardItem* item = nullptr;
+        if (!_configOption.x_axis_auto_scroll) {
+            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setData(range.lower, Qt::EditRole);
+            }
+            item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setData(range.upper, Qt::EditRole);
+            }
+        }
+
+        AdjustPlotXRange(); // ui->plotwidget->xAxis->setRange(range);
+    }
+    range = ui->plotwidget->getValueRange(found);
+    if (found) {
+        //qDebug() << "val range: " << range.lower << "," << range.upper;
+        double extend = range.upper - range.lower;
+        range.lower -= (extend * 0.05);
+        range.upper += (extend * 0.05);
+
+        const QStandardItem* item = nullptr;
+        if (!_configOption.y_axis_auto_scale) {
+            item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setData(range.lower, Qt::EditRole);
+            }
+            item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+            if (item) {
+                const_cast<QStandardItem*>(item)->setData(range.upper, Qt::EditRole);
+            }
+        }
+
+        AdjustPlotYRange(); // ui->plotwidget->yAxis->setRange(range);
+    }
 }
 
 void PlotWindow::closeEvent(QCloseEvent* event) {
@@ -647,9 +773,9 @@ void PlotWindow::AdjustPlotYRange()
 const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item)
 {
     auto items = _configModel->findItems(item, Qt::MatchExactly | Qt::MatchRecursive, 0);
-    foreach (const QStandardItem* item, items) {
-        if (item->parent() && item->parent()->text() == cat) {
-            return item->parent()->child(item->row(), 1);
+    foreach (const QStandardItem* citem, items) {
+        if (citem->parent() && citem->parent()->text() == cat) {
+            return citem->parent()->child(citem->row(), 1);
         }
     }
     return nullptr;
@@ -705,27 +831,70 @@ void PlotWindow::OnRecvEmul(const DataSeriesEmul& data)
 }
 #endif
 
-void PlotWindow::on_actionClear_triggered()
+void PlotWindow::OnClearTriggered()
+{
+    ResetData();
+}
+
+void PlotWindow::OnResetTriggered()
 {
     ResetPlot();
 }
 
-void PlotWindow::on_actionImort_triggered()
+void PlotWindow::OnImportTriggered()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "", QDir::currentPath(), tr("CSV Files(.csv) (*.csv)"));
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files(.csv) (*.csv)"));
     if (filenames.empty())
         return;
 
+    // reset(clear) all graph and data before importing new graph and data
+    ResetPlot();
+
     qDebug() << "import files: " << filenames;
     ui->plotwidget->ImportFromCSV(filenames);
+
+    ExtendAll();
 }
 
-void PlotWindow::on_actionExport_triggered()
+void PlotWindow::OnAppendTriggered()
 {
-    QString export_dir = QFileDialog::getExistingDirectory(this, "", QDir::currentPath(), QFileDialog::ShowDirsOnly);
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files(.csv) (*.csv)"));
+    if (filenames.empty())
+        return;
+
+    qDebug() << "import files(append mode): " << filenames;
+    ui->plotwidget->ImportFromCSV(filenames);
+
+    //ExtendAll();
+}
+
+void PlotWindow::OnExportTriggered()
+{
+    QString export_dir = QFileDialog::getExistingDirectory(this, "Select a directory to export graphs and data into...", QDir::currentPath(), QFileDialog::ShowDirsOnly);
     if (export_dir.isNull())
         return;
 
     qDebug() << "export dir: " << export_dir;
     ui->plotwidget->ExportToCSV(export_dir);
 }
+
+void PlotWindow::OnExtendAllTriggered()
+{
+    ExtendAll();
+}
+
+void PlotWindow::OnMousePressed(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton) {
+        ui->plotwidget->setSelectionRectMode(QCP::srmZoom);
+    }
+    else {
+        ui->plotwidget->setSelectionRectMode(QCP::srmNone);
+    }
+}
+
+void PlotWindow::OnMouseReleased(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+}
+

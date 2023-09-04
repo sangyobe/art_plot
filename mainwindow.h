@@ -25,9 +25,9 @@ public slots:
     void OnItemClicked(QModelIndex index);
 
 private slots:
-    void on_actionNew_triggered();
-    void on_actionClear_triggered();
-    void on_actionExit_triggered();
+    void OnNewTriggered();
+    void OnClearTriggered();
+    void OnExitTriggered();
 
 signals:
     void clearActionTriggered();
