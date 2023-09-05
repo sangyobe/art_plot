@@ -79,6 +79,7 @@ private slots:
     void OnImportTriggered();
     void OnAppendTriggered();
     void OnExportTriggered();
+    void OnCloseTriggered();
     void OnExtendAllTriggered();
     void OnMousePressed(QMouseEvent*);
     void OnMouseReleased(QMouseEvent*);

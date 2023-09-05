@@ -35,7 +35,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
         ui->actionReset->setDisabled(true);
     }
     else if (_plotType == PlotType::IM_PLOT) {
-        ui->actionExport->setDisabled(true);
+        //ui->actionExport->setDisabled(true);
 #ifdef USE_EMUL_DATA
         ui->actionImport->setDisabled(true);
         ui->actionReset->setDisabled(true);
@@ -46,6 +46,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     connect(ui->actionImport, &QAction::triggered, this, &PlotWindow::OnImportTriggered);
     connect(ui->actionAppend, &QAction::triggered, this, &PlotWindow::OnAppendTriggered);
     connect(ui->actionExport, &QAction::triggered, this, &PlotWindow::OnExportTriggered);
+    connect(ui->actionClose, &QAction::triggered, this, &PlotWindow::OnCloseTriggered);
     connect(ui->actionExtend_All, &QAction::triggered, this, &PlotWindow::OnExtendAllTriggered);
     
     //------------------------------------------------------------------
@@ -876,6 +877,11 @@ void PlotWindow::OnExportTriggered()
 
     qDebug() << "export dir: " << export_dir;
     ui->plotwidget->ExportToCSV(export_dir);
+}
+
+void PlotWindow::OnCloseTriggered()
+{
+    this->close();
 }
 
 void PlotWindow::OnExtendAllTriggered()
