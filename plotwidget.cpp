@@ -117,8 +117,12 @@ QCPRange PlotWidget::getKeyRange(bool &foundRange)
         bool fnd;
         rng = graph->getKeyRange(fnd);
         if (fnd) {
-            range.expand(rng);
-            foundRange = true;
+            if (!foundRange) {
+                range = rng;
+                foundRange = true;
+            }
+            else
+                range.expand(rng);
         }
     }
 
@@ -135,8 +139,12 @@ QCPRange PlotWidget::getValueRange(bool &foundRange)
         bool fnd;
         rng = graph->getValueRange(fnd);
         if (fnd) {
-            range.expand(rng);
-            foundRange = true;
+            if (!foundRange) {
+                range = rng;
+                foundRange = true;
+            }
+            else
+                range.expand(rng);
         }
     }
 
