@@ -7,7 +7,7 @@
 #include <chrono>
 #include "plotwidget.h"
 
-#define USE_EMUL_DATA
+//#define USE_EMUL_DATA
 
 class PlotConfig;
 
@@ -60,6 +60,7 @@ protected:
 
 protected:
     void hideEvent(QHideEvent* event);
+    void keyPressEvent(QKeyEvent* event);
 
 signals:
     void widgetHidden(QWidget* widget);

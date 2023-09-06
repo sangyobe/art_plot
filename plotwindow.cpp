@@ -109,7 +109,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     //ui->plotwidget->setInteraction(QCP::iSelectLegend, true);
     ui->plotwidget->setInteraction(QCP::iMultiSelect, false);
 //    ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
-    connect(ui->plotwidget, SIGNAL(selectionChangedByUser()), this, SLOT(OnSelectionChangedByUser()));
+    //connect(ui->plotwidget, SIGNAL(selectionChangedByUser()), this, SLOT(OnSelectionChangedByUser()));
 
     // scroll-bars
     ui->horizontalScrollBar->setRange(0,  100000);
@@ -303,6 +303,18 @@ void PlotWindow::hideEvent(QHideEvent *event)
 {
     QMainWindow::hideEvent(event);
     emit widgetHidden(this);
+}
+
+void PlotWindow::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Space:
+        ExtendAll();
+        return;
+    default:
+        QMainWindow::keyPressEvent(event);
+    }
 }
 
 void PlotWindow::BuildConfig()
@@ -671,7 +683,7 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 
 void PlotWindow::OnSelectionChangedByUser()
 {
-    qDebug() << "OnSelectionChangedByUser";
+    //qDebug() << "OnSelectionChangedByUser";
     const QList<QCPGraph*> graphs = ui->plotwidget->selectedGraphs();
     for (auto graph : qAsConst(graphs)) {
         Q_UNUSED(graph); // (void)graph;
