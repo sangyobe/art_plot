@@ -2,6 +2,7 @@
 #include "plotconfig.h"
 #include "plotwindow.h"
 #include "ui_plotwindow.h"
+#include "itemviewdelegate.h"
 #include <cassert>
 #include <iostream>
 #include <memory>
@@ -15,6 +16,7 @@ PlotWindow::ConfigOption::ConfigOption() :
     y_axis_lbound(-1.0),
     y_axis_ubound(1.0),
     legend_visible(true),
+    legend_location(Qt::AlignRight | Qt::AlignTop),
     line_width(1)
 {}
 
@@ -403,6 +405,7 @@ void PlotWindow::BuildConfig()
 
     items.clear();
     item_title = new QStandardItem("Lower bound");
+    item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
     item->setData(_configOption.y_axis_lbound, Qt::EditRole);
@@ -413,6 +416,7 @@ void PlotWindow::BuildConfig()
 
     items.clear();
     item_title = new QStandardItem("Upper bound");
+    item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
     item->setData(_configOption.y_axis_ubound, Qt::EditRole);
@@ -436,11 +440,12 @@ void PlotWindow::BuildConfig()
 
     items.clear();
     item_title = new QStandardItem("Position");
+    item_title->setEditable(false);
     QStringList loc_options = {"Left-Top", "Left-Middle", "Left-Bottom", "Right-Top", "Right-Middle", "Right-Bottom"};
     item = new QStandardItem(loc_options[3]);
-    item->setEditable(false);
+    item->setEditable(true);
     item->setWhatsThis("Legend::Location");
-    item->setData(QVariant(loc_options), Qt::UserRole);
+    item->setData(QVariant(loc_options), static_cast<int>(ItemViewDelegate::Role::ComboBox));
     items.append(item_title);
     items.append(item);
     legend_root->appendRow(items);
@@ -456,7 +461,6 @@ void PlotWindow::BuildConfig()
     items.append(item_title);
     items.append(item);
     style_root->appendRow(items);
-
 
     _plotConfig->setConfigModel(_configModel);
 
@@ -613,6 +617,28 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
         _configOption.legend_visible = (item->checkState() == Qt::Checked ? true : false);
         ui->plotwidget->legend->setVisible(_configOption.legend_visible);
     }
+    else if (item->whatsThis() == "Legend::Location") {
+        QString loc = item->data(Qt::EditRole).toString();
+        if (loc == "Left-Top") {
+            _configOption.legend_location = Qt::AlignLeft | Qt::AlignTop;
+        }
+        else if (loc == "Left-Middle") {
+            _configOption.legend_location = Qt::AlignLeft | Qt::AlignVCenter;
+        }
+        else if (loc == "Left-Bottom") {
+            _configOption.legend_location = Qt::AlignLeft | Qt::AlignBottom;
+        }
+        else if (loc == "Right-Top") {
+            _configOption.legend_location = Qt::AlignRight | Qt::AlignTop;
+        }
+        else if (loc == "Right-Middle") {
+            _configOption.legend_location = Qt::AlignRight | Qt::AlignVCenter;
+        }
+        else if (loc == "Right-Bottom") {
+            _configOption.legend_location = Qt::AlignRight | Qt::AlignBottom;
+        }
+        ui->plotwidget->axisRect()->insetLayout()->setInsetAlignment(0, _configOption.legend_location);
+    }
     else if (item->whatsThis() == "Style::LineWidth") {
         _configOption.line_width = item->data(Qt::EditRole).toUInt();
 
@@ -717,7 +743,7 @@ void PlotWindow::ExtendAll()
         //qDebug() << "key range: " << range.lower << "," << range.upper;
 
         const QStandardItem* item = nullptr;
-        if (!_configOption.x_axis_auto_scroll) {
+        //if (!_configOption.x_axis_auto_scroll) {
             item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.lower, Qt::EditRole);
@@ -726,9 +752,10 @@ void PlotWindow::ExtendAll()
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.upper, Qt::EditRole);
             }
-        }
+        //}
 
-        AdjustPlotXRange(); // ui->plotwidget->xAxis->setRange(range);
+        //AdjustPlotXRange();
+        ui->plotwidget->xAxis->setRange(range);
     }
     range = ui->plotwidget->getValueRange(found);
     if (found) {
@@ -738,7 +765,7 @@ void PlotWindow::ExtendAll()
         range.upper += (extend * 0.05);
 
         const QStandardItem* item = nullptr;
-        if (!_configOption.y_axis_auto_scale) {
+        //if (!_configOption.y_axis_auto_scale) {
             item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.lower, Qt::EditRole);
@@ -747,9 +774,10 @@ void PlotWindow::ExtendAll()
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.upper, Qt::EditRole);
             }
-        }
+        //}
 
-        AdjustPlotYRange(); // ui->plotwidget->yAxis->setRange(range);
+        //AdjustPlotYRange();
+        ui->plotwidget->yAxis->setRange(range);
     }
 }
 

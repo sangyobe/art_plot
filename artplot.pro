@@ -28,6 +28,7 @@ SOURCES += \
         csvfile.cpp \
         datasource.cpp \
         datasourceemul.cpp \
+        itemviewdelegate.cpp \
         main.cpp \
         mainwindow.cpp \
         plotcentralwidget.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
         csvfile.h \
         datasource.h \
         datasourceemul.h \
+        itemviewdelegate.h \
         mainwindow.h \
         pconstants.h \
         plotcentralwidget.h \
@@ -58,24 +60,38 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix:!macx: LIBS += -L/usr/local/lib/ -ldtproto
-
-INCLUDEPATH += /usr/local/include
-DEPENDPATH += /usr/local/include
-
-unix:!macx: PRE_TARGETDEPS += /usr/local/lib/libdtproto.a
-
-unix:!macx: LIBS += -L/usr/local/lib/ -lprotobuf
-
-#INCLUDEPATH += /usr/local/include
-#DEPENDPATH += /usr/local/include
-
-#unix:!macx: PRE_TARGETDEPS += /usr/local/lib/libprotobuf.a
-
-unix:!macx: LIBS += -L/usr/local/lib/ -lecal_core
-
-#INCLUDEPATH += /usr/local/include
-#DEPENDPATH += /usr/local/include
-
 RESOURCES += \
     artplot.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -lprotobuf
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -lprotobuf
+else:unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lprotobuf
+
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/libprotobuf.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/libprotobuf.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/protobuf.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/protobuf.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libprotobuf.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -ldtproto
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -ldtproto
+else:unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -ldtproto
+
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/libdtproto.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/libdtproto.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/dtproto.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/dtproto.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libdtproto.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -lecal_core
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -lecal_core
+else:unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lecal_core
+
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/include

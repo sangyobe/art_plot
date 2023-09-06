@@ -103,6 +103,7 @@ private:
         double y_axis_lbound;
         double y_axis_ubound;
         bool legend_visible;
+        QFlags<Qt::AlignmentFlag> legend_location;
         unsigned int line_width;
     };
     ConfigOption _configOption;

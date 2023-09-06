@@ -1,5 +1,6 @@
 #include "plotconfig.h"
 #include "ui_plotconfig.h"
+#include "itemviewdelegate.h"
 #include <QSpinBox>
 #include <QDebug>
 
@@ -10,6 +11,11 @@ PlotConfig::PlotConfig(QWidget *parent) :
     ui(new Ui::PlotConfig)
 {
     ui->setupUi(this);
+
+    ItemViewDelegate* delegate = new ItemViewDelegate(ui->configview);
+    ui->configview->setItemDelegate(delegate);
+    ui->configview->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
 }
 
 PlotConfig::~PlotConfig()
