@@ -91,9 +91,7 @@ void MainWindow::OnPlotWndClosed(QWidget* widget)
                 PlotWindow *plotWnd = (PlotWindow*)plot->data().value<void*>();
                 if (plotWnd->GetType() == PlotType::IM_PLOT) {
                     plot_group->removeRow(plot->row());
-                    _plotWnds.removeIf([plotWnd](PlotWindow* wnd) {
-                        return (wnd == plotWnd);
-                    });
+                    _plotWnds.removeOne(plotWnd);
                 }
                 else {
                     plot->setCheckState(Qt::Unchecked);

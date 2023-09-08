@@ -115,8 +115,13 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
 
 void PlotWidget::ShowPointToolTip(QMouseEvent *event)
 {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
+    double x = this->xAxis->pixelToCoord(event->x());
+    double y = this->yAxis->pixelToCoord(event->y());
+#else
     double x = this->xAxis->pixelToCoord(event->position().x());
     double y = this->yAxis->pixelToCoord(event->position().y());
+#endif
     setToolTip(QString("%1, %2").arg(x).arg(y));
 }
 
