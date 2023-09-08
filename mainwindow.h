@@ -21,6 +21,7 @@ public:
 
 public slots:
     void OnPlotWndHidden(QWidget* widget);
+    void OnPlotWndClosed(QWidget* widget);
     void OnConfigChanged(QStandardItem* item);
     void OnItemClicked(QModelIndex index);
 

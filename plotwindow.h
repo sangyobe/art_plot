@@ -60,10 +60,13 @@ protected:
 
 protected:
     void hideEvent(QHideEvent* event);
+    void closeEvent(QCloseEvent*);
     void keyPressEvent(QKeyEvent* event);
+    void resizeEvent(QResizeEvent*);
 
 signals:
     void widgetHidden(QWidget* widget);
+    void widgetClosed(QWidget* widget);
 
 private:
     void BuildConfig();
@@ -109,9 +112,6 @@ private:
     ConfigOption _configOption;
 
 private:
-    void resizeEvent(QResizeEvent*);
-    void closeEvent(QCloseEvent*);
-
     void AdjustPlotXRange();
     void AdjustPlotYRange();
 

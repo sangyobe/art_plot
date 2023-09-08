@@ -307,6 +307,22 @@ void PlotWindow::hideEvent(QHideEvent *event)
     emit widgetHidden(this);
 }
 
+void PlotWindow::closeEvent(QCloseEvent* event) {
+    // save window geometry
+    QSettings settings("HMC::ArtTeam", "artPlot");
+    settings.setValue(windowTitle() + "/geometry", saveGeometry());
+    settings.setValue(windowTitle() + "/windowState", saveState());
+    QMainWindow::closeEvent(event);
+    emit widgetClosed(this);
+}
+
+void PlotWindow::resizeEvent(QResizeEvent* event)
+{
+    //qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
+    RecalculatePlotLayout();
+    QMainWindow::resizeEvent(event);
+}
+
 void PlotWindow::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key())
@@ -720,13 +736,6 @@ void PlotWindow::OnSelectionChangedByUser()
     }
 }
 
-void PlotWindow::resizeEvent(QResizeEvent* event)
-{
-    //qDebug() << "Width : " << this->width() << ", Height : " <<  this->height();
-    RecalculatePlotLayout();
-    QMainWindow::resizeEvent(event);
-}
-
 void PlotWindow::RecalculatePlotLayout()
 {
     ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width()-18, ui->centralwidget->height()-18));
@@ -779,14 +788,6 @@ void PlotWindow::ExtendAll()
         //AdjustPlotYRange();
         ui->plotwidget->yAxis->setRange(range);
     }
-}
-
-void PlotWindow::closeEvent(QCloseEvent* event) {
-    // save window geometry
-    QSettings settings("HMC::ArtTeam", "artPlot");
-    settings.setValue(windowTitle() + "/geometry", saveGeometry());
-    settings.setValue(windowTitle() + "/windowState", saveState());
-    QMainWindow::closeEvent(event);
 }
 
 void PlotWindow::AdjustPlotXRange()

@@ -46,13 +46,14 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
 {
     _plotWnds.push_back(plotWnd);
     connect(plotWnd, SIGNAL(widgetHidden(QWidget*)), this, SLOT(OnPlotWndHidden(QWidget*)));
+    connect(plotWnd, SIGNAL(widgetClosed(QWidget*)), this, SLOT(OnPlotWndClosed(QWidget*)));
 
     QStandardItem* item = new QStandardItem(plotWnd->GetWindowTitle());
     if (plotWnd->GetType() == PlotType::RT_PLOT) {
         item->setEditable(false);
+        item->setCheckable(true);
+        item->setCheckState(Qt::Checked);
     }
-    item->setCheckable(true);
-    item->setCheckState(Qt::Checked);
     item->setWhatsThis("Plot::Enabled");
     item->setData(QVariant::fromValue((void*)plotWnd));
 
@@ -77,12 +78,26 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
 
 void MainWindow::OnPlotWndHidden(QWidget* widget)
 {
+    Q_UNUSED(widget);
+}
+
+void MainWindow::OnPlotWndClosed(QWidget* widget)
+{
     for (int curIndex = 0; curIndex < _plotListModel->rowCount(); curIndex++) {
         QStandardItem* plot_group = _plotListModel->item(curIndex);
         for (int chiIndex = 0; chiIndex < plot_group->rowCount(); chiIndex++) {
             QStandardItem* plot = plot_group->child(chiIndex);
             if (plot && plot->data() == QVariant::fromValue((void*)widget)) {
-                plot->setCheckState(Qt::Unchecked);
+                PlotWindow *plotWnd = (PlotWindow*)plot->data().value<void*>();
+                if (plotWnd->GetType() == PlotType::IM_PLOT) {
+                    plot_group->removeRow(plot->row());
+                    _plotWnds.removeIf([plotWnd](PlotWindow* wnd) {
+                        return (wnd == plotWnd);
+                    });
+                }
+                else {
+                    plot->setCheckState(Qt::Unchecked);
+                }
             }
         }
     }
@@ -96,9 +111,11 @@ void MainWindow::OnConfigChanged(QStandardItem *item)
         PlotWindow *plotWnd = (PlotWindow*)item->data().value<void*>();
         if (plotWnd) {
             plotWnd->SetWindowTitle(item->data(Qt::DisplayRole).toString());
-            plotWnd->setVisible((item->checkState() == Qt::Checked ? true : false));
-            if (item->checkState() == Qt::Checked)
-                plotWnd->activateWindow();
+            if (item->isCheckable()) {
+                plotWnd->setVisible((item->checkState() == Qt::Checked ? true : false));
+                if (item->checkState() == Qt::Checked)
+                    plotWnd->activateWindow();
+            }
         }
     }
 }
@@ -135,6 +152,7 @@ void MainWindow::OnNewTriggered()
 {
     PlotWindow* plotWnd;
     plotWnd = new PlotWindow(this, PlotType::IM_PLOT);
+    plotWnd->setAttribute(Qt::WA_DeleteOnClose, true);
     plotWnd->SetWindowTitle("New Plot");
     plotWnd->AutoScale(false);
     plotWnd->AutoScroll(false);
