@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     // restore window geometry (size, position)
-    QSettings settings("HMC::ArtTeam", "artPlot");
+    QSettings settings("hmc", "artPlot");
     restoreGeometry(settings.value("geometry").toByteArray());
 }
 
@@ -140,7 +140,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
     //QApplication::closeAllWindows();
 
     // close itself
-    QSettings settings("HMC::ArtTeam", "artPlot");
+    QSettings settings("hmc", "artPlot");
     settings.setValue("geometry", saveGeometry());
     settings.setValue("state", saveState());
     QMainWindow::closeEvent(event);

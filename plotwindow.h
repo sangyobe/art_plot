@@ -41,19 +41,32 @@ public:
     void Replot();
     void SetWindowTitle(const QString& title);
     QString GetWindowTitle() const;
-    void ShowLegend(bool show);
     // config x-Axis
     void AutoScroll(bool on);
     void AutoScrollWindow(double dt_sec);
     void SetXRange(double ti, double tf);
+    void SetXBegin(double ti);
+    void SetXEnd(double tf);
     // config y-Axis
     void AutoScale(bool on);
     void SetYRange(double lbound, double ubound);
+    void SetYLBound(double lbound);
+    void SetYUBound(double ubound);
+    // config legend
+    void ShowLegend(bool show);
+    void SetLegendLocation(QFlags<Qt::AlignmentFlag> flag);
+    // config style
+    void SetLineWidth(int w);
 
     void DataUpdated(double recv_time);
 
     void RecalculatePlotLayout();
     PlotType GetType() { return _plotType; }
+
+    QByteArray savePlotConfig() const;
+    bool restorePlotConfig(const QByteArray &config);
+    QByteArray saveDataSeriesConfig() const;
+    bool restoreDataSeriesConfig(const QByteArray & config, const QString& name);
 
 protected:
     void ExtendAll();
@@ -87,6 +100,7 @@ private slots:
     void OnExtendAllTriggered();
     void OnMousePressed(QMouseEvent*);
     void OnMouseReleased(QMouseEvent*);
+    //void OnRangeChanged(const QCPRange &newRange, const QCPRange &oldRange);
 
 private:
     Ui::PlotWindow *ui;
@@ -107,7 +121,7 @@ private:
         double y_axis_ubound;
         bool legend_visible;
         QFlags<Qt::AlignmentFlag> legend_location;
-        unsigned int line_width;
+        unsigned int style_line_width;
     };
     ConfigOption _configOption;
 

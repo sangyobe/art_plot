@@ -8,16 +8,16 @@
 #include <memory>
 
 PlotWindow::ConfigOption::ConfigOption() :
-    x_axis_auto_scroll(false),
+    x_axis_auto_scroll(true),
     x_axis_auto_scroll_window(10.0),
     x_axis_begin_sec(0.0),
     x_axis_end_sec(1.0),
-    y_axis_auto_scale(false),
+    y_axis_auto_scale(true),
     y_axis_lbound(-1.0),
     y_axis_ubound(1.0),
     legend_visible(true),
     legend_location(Qt::AlignRight | Qt::AlignTop),
-    line_width(1)
+    style_line_width(1)
 {}
 
 PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
@@ -115,7 +115,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
 
     // scroll-bars
     ui->horizontalScrollBar->setRange(0,  100000);
-    ui->verticalScrollBar->setRange(-10000, 10000);
+    ui->verticalScrollBar->setRange(-100000, 100000);
     connect(ui->horizontalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(OnHorzScrollBarChanged(int)));
     connect(ui->verticalScrollBar,   SIGNAL(valueChanged(int)), this, SLOT(OnVertScrollBarChanged(int)));
     connect(ui->plotwidget->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(OnXAxisRangeChanged(QCPRange)));
@@ -142,6 +142,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     // other initializations
     //
     connect(this->parent(), SIGNAL(clearActionTriggered()), this, SLOT(OnClearTriggered()));
+    //connect(ui->plotwidget->yAxis, SIGNAL(rangeChanged(const QCPRange&, const QCPRange&)), this, SLOT(OnRangeChanged(const QCPRange&, const QCPRange&)));
 
 #ifdef USE_EMUL_DATA
     this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000, false);
@@ -220,22 +221,118 @@ void PlotWindow::SetWindowTitle(const QString &title)
     ui->plotwidget->setWindowTitle(title);
 
     // restore window geometry (size, position)
-    QSettings settings("HMC::ArtTeam", "artPlot");
+    QSettings settings("hmc", "artPlot");
     restoreGeometry(settings.value(title + "/geometry").toByteArray());
     restoreState(settings.value(title + "/windowState").toByteArray());
+    restorePlotConfig(settings.value(title + "/plotConfig").toByteArray());
+}
+
+QByteArray PlotWindow::savePlotConfig() const
+{
+    //qDebug() << "savePlotConfig";
+    QString configstr;
+    QTextStream str(&configstr);
+    str << "x-Axis::AutoScroll" << "," << _configOption.x_axis_auto_scroll << ","
+        << "x-Axis::AutoScrollWindow" << "," << _configOption.x_axis_auto_scroll_window << ","
+        << "x-Axis::Begin" << "," << _configOption.x_axis_begin_sec << ","
+        << "x-Axis::End" << "," << _configOption.x_axis_end_sec << ","
+        << "y-Axis::AutoScale" << "," << _configOption.y_axis_auto_scale << ","
+        << "y-Axis::LBound" << "," << _configOption.y_axis_lbound << ","
+        << "y-Axis::UBound" << "," << _configOption.y_axis_ubound << ","
+        << "Legend::Visible" << "," << _configOption.legend_visible << ","
+        << "Legend::Location" << "," << _configOption.legend_location << ","
+        << "Style::LineWidth" << "," << _configOption.style_line_width;
+    //qDebug() << configstr;
+    return configstr.toUtf8();
+}
+
+bool PlotWindow::restorePlotConfig(const QByteArray &config)
+{
+    QString configstr = QString::fromUtf8(config);
+    //qDebug() << "restorePlotConfig: " << configstr;
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1)) {
+        if ("x-Axis::AutoScroll" == items[idx]) {
+            AutoScroll(items[idx+1].toInt() == 0 ? false : true);
+        }
+        else if ("x-Axis::AutoScrollWindow" == items[idx]) {
+            AutoScrollWindow(items[idx+1].toDouble());
+        }
+//        else if ("x-Axis::Begin" == items[idx]) {
+//            SetXBegin(items[idx+1].toDouble());
+//        }
+//        else if ("x-Axis::End" == items[idx]) {
+//            SetXEnd(items[idx+1].toDouble());
+//        }
+        else if ("y-Axis::AutoScale" == items[idx]) {
+            AutoScale(items[idx+1].toInt() == 0 ? false : true);
+        }
+        else if ("y-Axis::LBound" == items[idx]) {
+            SetYLBound(items[idx+1].toDouble());
+        }
+        else if ("y-Axis::UBound" == items[idx]) {
+            SetYUBound(items[idx+1].toDouble());
+        }
+        else if ("Legend::Visible" == items[idx]) {
+            ShowLegend(items[idx+1].toInt() == 0 ? false : true);
+        }
+        else if ("Legend::Location" == items[idx]) {
+            SetLegendLocation(QFlags<Qt::AlignmentFlag>(items[idx+1].toInt()));
+        }
+        else if ("Style::LineWidth" == items[idx]) {
+            SetLineWidth(items[idx+1].toInt());
+        }
+
+        idx += 2;
+    }
+
+    return false;
+}
+
+QByteArray PlotWindow::saveDataSeriesConfig() const
+{
+    QString configstr;
+    QTextStream str(&configstr);
+
+    //qDebug() << "saveDataSeriesConfig";
+    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+    QList<QStandardItem*> item_graph_visible;
+    foreach (QStandardItem* data_series_root, items) {
+        if (data_series_root->parent())
+            continue;
+
+        for (int chiIndex = 0; chiIndex < data_series_root->rowCount(); chiIndex++) {
+            QStandardItem* data_name = data_series_root->child(chiIndex, 0);
+            QStandardItem* data_visible = data_series_root->child(chiIndex, 1);
+            str << data_name->data(Qt::DisplayRole).toString() << ",";
+            str << (data_visible->checkState() == Qt::Checked ? 1 : 0) << ",";
+        }
+        break;
+    }
+    //qDebug() << configstr;
+    return configstr.toUtf8();
+}
+
+bool PlotWindow::restoreDataSeriesConfig(const QByteArray & config, const QString & name)
+{
+    QString configstr = QString::fromUtf8(config);
+    //qDebug() << "restoreDataSeriesConfig: " << configstr;
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1)) {
+        if (name == items[idx]) {
+            SetGraphVisible(name, items[idx+1].toInt() == 0 ? false : true);
+            return true;
+        }
+
+        idx += 2;
+    }
+    return false;
 }
 
 QString PlotWindow::GetWindowTitle() const {
     return windowTitle();
-}
-
-void PlotWindow::ShowLegend(bool show)
-{
-    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Visible");
-    if (!item)
-        return;
-
-    const_cast<QStandardItem*>(item)->setCheckState(show? Qt::Checked : Qt::Unchecked);
 }
 
 void PlotWindow::AutoScroll(bool on)
@@ -258,14 +355,21 @@ void PlotWindow::AutoScrollWindow(double dt_sec)
 
 void PlotWindow::SetXRange(double ti, double tf)
 {
-    QStandardItem const * item;
+    SetXBegin(ti);
+    SetXEnd(tf);
+}
 
-    item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+void PlotWindow::SetXBegin(double ti)
+{
+    QStandardItem const * item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
     if (item) {
         const_cast<QStandardItem*>(item)->setData(ti, Qt::EditRole);
     }
+}
 
-    item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+void PlotWindow::SetXEnd(double tf)
+{
+    QStandardItem const * item = FindFirstConfigOptionItem("x-Axis", "End(s)");
     if (item) {
         const_cast<QStandardItem*>(item)->setData(tf, Qt::EditRole);
     }
@@ -282,16 +386,68 @@ void PlotWindow::AutoScale(bool on)
 
 void PlotWindow::SetYRange(double lbound, double ubound)
 {
-    QStandardItem const * item;
+    SetYLBound(lbound);
+    SetYUBound(ubound);
+}
 
-    item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+void PlotWindow::SetYLBound(double lbound)
+{
+    QStandardItem const * item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
     if (item) {
         const_cast<QStandardItem*>(item)->setData(lbound, Qt::EditRole);
     }
+}
 
-    item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+void PlotWindow::SetYUBound(double ubound)
+{
+    QStandardItem const * item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
     if (item) {
         const_cast<QStandardItem*>(item)->setData(ubound, Qt::EditRole);
+    }
+}
+
+void PlotWindow::ShowLegend(bool show)
+{
+    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Visible");
+    if (!item)
+        return;
+
+    const_cast<QStandardItem*>(item)->setCheckState(show? Qt::Checked : Qt::Unchecked);
+}
+
+void PlotWindow::SetLegendLocation(QFlags<Qt::AlignmentFlag> flag)
+{
+    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Location");
+    if (!item)
+        return;
+
+    switch (flag) {
+    case Qt::AlignLeft | Qt::AlignTop:
+        const_cast<QStandardItem*>(item)->setData("Left-Top", Qt::EditRole);
+        break;
+    case Qt::AlignLeft | Qt::AlignVCenter:
+        const_cast<QStandardItem*>(item)->setData("Left-Middle", Qt::EditRole);
+        break;
+    case Qt::AlignLeft | Qt::AlignBottom:
+        const_cast<QStandardItem*>(item)->setData("Left-Bottom", Qt::EditRole);
+        break;
+    case Qt::AlignRight | Qt::AlignTop:
+        const_cast<QStandardItem*>(item)->setData("Right-Top", Qt::EditRole);
+        break;
+    case Qt::AlignRight | Qt::AlignVCenter:
+        const_cast<QStandardItem*>(item)->setData("Right-Middle", Qt::EditRole);
+        break;
+    case Qt::AlignRight | Qt::AlignBottom:
+        const_cast<QStandardItem*>(item)->setData("Right-Bottom", Qt::EditRole);
+        break;
+    }
+}
+
+void PlotWindow::SetLineWidth(int w)
+{
+    QStandardItem const * item = FindFirstConfigOptionItem("Style", "Line width(1~5)");
+    if (item) {
+        const_cast<QStandardItem*>(item)->setData(w, Qt::EditRole);
     }
 }
 
@@ -309,9 +465,11 @@ void PlotWindow::hideEvent(QHideEvent *event)
 
 void PlotWindow::closeEvent(QCloseEvent* event) {
     // save window geometry
-    QSettings settings("HMC::ArtTeam", "artPlot");
+    QSettings settings("hmc", "artPlot");
     settings.setValue(windowTitle() + "/geometry", saveGeometry());
     settings.setValue(windowTitle() + "/windowState", saveState());
+    settings.setValue(windowTitle() + "/plotConfig", savePlotConfig());
+    settings.setValue(windowTitle() + "/dataSeriesConfig", saveDataSeriesConfig());
     QMainWindow::closeEvent(event);
     emit widgetClosed(this);
 }
@@ -391,6 +549,7 @@ void PlotWindow::BuildConfig()
     item->setEditable(true);
     item->setData(_configOption.x_axis_begin_sec, Qt::EditRole);
     item->setWhatsThis("x-Axis::Begin");
+    item->setEnabled(!_configOption.x_axis_auto_scroll);
     items.append(item_title);
     items.append(item);
     x_axis_root->appendRow(items);
@@ -402,6 +561,7 @@ void PlotWindow::BuildConfig()
     item->setEditable(true);
     item->setData(_configOption.x_axis_end_sec, Qt::EditRole);
     item->setWhatsThis("x-Axis::End");
+    item->setEnabled(!_configOption.x_axis_auto_scroll);
     items.append(item_title);
     items.append(item);
     x_axis_root->appendRow(items);
@@ -426,6 +586,7 @@ void PlotWindow::BuildConfig()
     item->setEditable(true);
     item->setData(_configOption.y_axis_lbound, Qt::EditRole);
     item->setWhatsThis("y-Axis::LBound");
+    item->setEnabled(!_configOption.y_axis_auto_scale);
     items.append(item_title);
     items.append(item);
     y_axis_root->appendRow(items);
@@ -437,6 +598,7 @@ void PlotWindow::BuildConfig()
     item->setEditable(true);
     item->setData(_configOption.y_axis_ubound, Qt::EditRole);
     item->setWhatsThis("y-Axis::UBound");
+    item->setEnabled(!_configOption.y_axis_auto_scale);
     items.append(item_title);
     items.append(item);
     y_axis_root->appendRow(items);
@@ -455,7 +617,7 @@ void PlotWindow::BuildConfig()
     legend_root->appendRow(items);
 
     items.clear();
-    item_title = new QStandardItem("Position");
+    item_title = new QStandardItem("Location");
     item_title->setEditable(false);
     QStringList loc_options = {"Left-Top", "Left-Middle", "Left-Bottom", "Right-Top", "Right-Middle", "Right-Bottom"};
     item = new QStandardItem(loc_options[3]);
@@ -472,7 +634,7 @@ void PlotWindow::BuildConfig()
     item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
-    item->setData(_configOption.line_width, Qt::EditRole);
+    item->setData(_configOption.style_line_width, Qt::EditRole);
     item->setWhatsThis("Style::LineWidth");
     items.append(item_title);
     items.append(item);
@@ -530,6 +692,9 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         data_series_root->appendRow(item_graph_visible);
         break;
     }
+
+    QSettings settings("hmc", "artPlot");
+    restoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig").toByteArray(), name);
 
     return ui->plotwidget->graphCount();
 }
@@ -656,27 +821,27 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
         ui->plotwidget->axisRect()->insetLayout()->setInsetAlignment(0, _configOption.legend_location);
     }
     else if (item->whatsThis() == "Style::LineWidth") {
-        _configOption.line_width = item->data(Qt::EditRole).toUInt();
+        _configOption.style_line_width = item->data(Qt::EditRole).toUInt();
 
-        if (_configOption.line_width >= 1 && _configOption.line_width <= 5) {
+        if (_configOption.style_line_width >= 1 && _configOption.style_line_width <= 5) {
             QPen pen;
             for (int i = 0; i < ui->plotwidget->graphCount(); ++i)
             {
                 pen = ui->plotwidget->graph(i)->pen();
-                pen.setWidth(_configOption.line_width);
+                pen.setWidth(_configOption.style_line_width);
                 ui->plotwidget->graph(i)->setPen(pen);
             }
         }
         else {
-            if (_configOption.line_width < 1)
-                _configOption.line_width = 1;
-            else if (_configOption.line_width > 5)
-                _configOption.line_width = 5;
+            if (_configOption.style_line_width < 1)
+                _configOption.style_line_width = 1;
+            else if (_configOption.style_line_width > 5)
+                _configOption.style_line_width = 5;
 
             QStandardItem const * item;
             item = FindFirstConfigOptionItem("Style", "Line width(1~5)");
             if (item) {
-                const_cast<QStandardItem*>(item)->setData(_configOption.line_width, Qt::EditRole);
+                const_cast<QStandardItem*>(item)->setData(_configOption.style_line_width, Qt::EditRole);
             }
         }
     }
@@ -718,7 +883,7 @@ void PlotWindow::OnXAxisRangeChanged(QCPRange range)
 
 void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 {
-    //qDebug() << "OnYAxisRangeChanged: center=" << range.center() << ", size=" << range.size();
+    //qDebug() << "OnYAxisRangeChanged: center=" << range.center() << "/" << qRound(-range.center()*100.0) << ", size=" << range.size();
     ui->verticalScrollBar->setValue(qRound(-range.center()*100.0)); // adjust position of scroll bar slider
     ui->verticalScrollBar->setPageStep(qRound(range.size()*100.0)); // adjust size of scroll bar slider
 }
@@ -749,8 +914,6 @@ void PlotWindow::ExtendAll()
     QCPRange range;
     range = ui->plotwidget->getKeyRange(found);
     if (found) {
-        //qDebug() << "key range: " << range.lower << "," << range.upper;
-
         const QStandardItem* item = nullptr;
         //if (!_configOption.x_axis_auto_scroll) {
             item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
@@ -768,7 +931,6 @@ void PlotWindow::ExtendAll()
     }
     range = ui->plotwidget->getValueRange(found);
     if (found) {
-        //qDebug() << "val range: " << range.lower << "," << range.upper;
         double extend = range.upper - range.lower;
         range.lower -= (extend * 0.05);
         range.upper += (extend * 0.05);
@@ -805,10 +967,12 @@ void PlotWindow::AdjustPlotYRange()
 {
     if (!_configOption.y_axis_auto_scale)
     {
+        if (_configOption.y_axis_lbound < _configOption.y_axis_ubound) {
         ui->plotwidget->yAxis->setRange(
             _configOption.y_axis_lbound,
             _configOption.y_axis_ubound
             );
+        }
     }
 }
 
@@ -945,3 +1109,9 @@ void PlotWindow::OnMouseReleased(QMouseEvent *event)
     Q_UNUSED(event);
 }
 
+//void PlotWindow::OnRangeChanged(const QCPRange &newRange, const QCPRange &oldRange)
+//{
+//    qDebug() << "OnRangeChanged" << oldRange.lower << "," << oldRange.upper << " -> " << newRange.lower << "," << newRange.upper;
+//    Q_UNUSED(newRange);
+//    Q_UNUSED(oldRange);
+//}
