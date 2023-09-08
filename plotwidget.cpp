@@ -1,6 +1,5 @@
 #include "plotwidget.h"
 #include "plotwindow.h"
-#include "pconstants.h"
 #include <QDebug>
 
 PlotWidget::PlotWidget(QWidget *parent) :
@@ -59,7 +58,10 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
         }
 
         int parse_header = 0;
-        QCPGraph* graph = nullptr;
+        QList<QCPGraph*> graphs;
+        int graph_base_idx = -1;
+        int graph_header_item_count = 9;
+        int graph_count = 0;
 
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
@@ -75,25 +77,36 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
 
             if (parse_header == 0) {
 
-                QString name = elements[0].toStdString().c_str();
-                //int line_style = elements[1].toInt();
-                QColor line_color(elements[2].toInt(), elements[3].toInt(), elements[4].toInt());
-                int line_width = elements[5].toInt();
-                int scatter_shape = elements[6].toInt();
-                //double scatter_size = elements[7].toDouble();
-                int scatter_skip = elements[8].toInt();
+                int hidx = 0; // header item index
+                while (elements.size() >= (hidx + graph_header_item_count))
+                {
+                    QString name = elements[hidx + 0].toStdString().c_str();
+                    if (name.isEmpty())
+                        break;
+                    //int line_style = elements[hidx + 1].toInt();
+                    QColor line_color(elements[hidx + 2].toInt(),
+                                      elements[hidx + 3].toInt(),
+                                      elements[hidx + 4].toInt());
+                    int line_width = elements[hidx + 5].toInt();
+                    int scatter_shape = elements[hidx + 6].toInt();
+                    //double scatter_size = elements[hidx + 7].toDouble();
+                    int scatter_skip = elements[hidx + 8].toInt();
 
-                int idx = static_cast<PlotWindow*>(parent()->parent())->AddGraph(name, line_color, line_width, scatter_shape, scatter_skip);
-                graph = mGraphs[idx-1];
+                    int idx = static_cast<PlotWindow*>(parent()->parent())->AddGraph(name, line_color, line_width, scatter_shape, scatter_skip);
+                    if (graph_count == 0)
+                        graph_base_idx = (idx - 1); // AddGraph returns graph count not index
+                    graph_count++;
+                    hidx += graph_header_item_count;
+                }
 
                 parse_header = 1;
                 continue;
             }
 
             double key = elements[0].toDouble();
-            double val = elements[1].toDouble();
-            graph->addData(key, val);
-
+            for (int gidx = 0; gidx < graph_count; gidx++) {
+                mGraphs[graph_base_idx + gidx]->addData(key, elements[gidx+1].toDouble());
+            }
         }
 
         file.close();
@@ -102,8 +115,8 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
 
 void PlotWidget::ShowPointToolTip(QMouseEvent *event)
 {
-    double x = this->xAxis->pixelToCoord(event->x());
-    double y = this->yAxis->pixelToCoord(event->y());
+    double x = this->xAxis->pixelToCoord(event->position().x());
+    double y = this->yAxis->pixelToCoord(event->position().y());
     setToolTip(QString("%1, %2").arg(x).arg(y));
 }
 
