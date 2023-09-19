@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStandardItem>
+#include <QMutex>
 #include <memory>
 #include <chrono>
 #include "plotwidget.h"
@@ -35,6 +36,7 @@ public:
 
 public:
     int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0, bool visible = true);
+    void AddData(int gid, double key, double value);
     void SetGraphVisible(const QString &name, bool visible);
     void ResetPlot();   // clear data and remove all graphs
     void ResetData();   // clear data only
@@ -138,6 +140,7 @@ private:
     std::atomic<double> _lastRecvTime;
     std::atomic<bool> _isNewDataReceived;
     std::unique_ptr<QTimer> _refreshPlotTimer;
+    QMutex _graphDataGuard;
 
 #ifdef USE_EMUL_DATA
 public slots:

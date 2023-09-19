@@ -14,7 +14,7 @@
 //#define ENABLE_ORIENTATION_PLOT
 //#define ENABLE_ANGULAR_VEL_PLOT
 //#define ENABLE_FOOT_CONTACT_PLOT
-//#define ENABLE_CPG_PHI_PLOT
+#define ENABLE_CPG_PHI_PLOT
 //#define ENABLE_CPG_CPG_PLOT
 #define ENABLE_JOINT_POSISION_PLOT
 //#define ENABLE_JOINT_VELOCITY_PLOT
@@ -33,49 +33,49 @@ void OnRecvControlStateActual(
   // (double)state.header().time_stamp().nanos() * 1e-9;
   double curTime = clock * 1e-3;
   if (plot_comPos) {
-    plot_comPos->graph(3)->addData(curTime,
+    plot_comPos->AddData(3, curTime,
                                    state.state().posworld2comwrtworld().x());
-    plot_comPos->graph(4)->addData(curTime,
+    plot_comPos->AddData(4, curTime,
                                    state.state().posworld2comwrtworld().y());
-    plot_comPos->graph(5)->addData(curTime,
+    plot_comPos->AddData(5, curTime,
                                    state.state().posworld2comwrtworld().z());
     plot_comPos->DataUpdated(curTime);
   }
   if (plot_comVel) {
-    plot_comVel->graph(3)->addData(curTime,
+    plot_comVel->AddData(3, curTime,
                                    state.state().velworld2comwrtworld().x());
-    plot_comVel->graph(4)->addData(curTime,
+    plot_comVel->AddData(4, curTime,
                                    state.state().velworld2comwrtworld().y());
-    plot_comVel->graph(5)->addData(curTime,
+    plot_comVel->AddData(5, curTime,
                                    state.state().velworld2comwrtworld().z());
     plot_comVel->DataUpdated(curTime);
   }
   if (plot_orient) {
-    plot_orient->graph(3)->addData(curTime,
+    plot_orient->AddData(3, curTime,
                                    state.state().euleranglebodywrtworld().r());
-    plot_orient->graph(4)->addData(curTime,
+    plot_orient->AddData(4, curTime,
                                    state.state().euleranglebodywrtworld().p());
-    plot_orient->graph(5)->addData(curTime,
+    plot_orient->AddData(5, curTime,
                                    state.state().euleranglebodywrtworld().y());
     plot_orient->DataUpdated(curTime);
   }
   if (plot_angVel) {
-    plot_angVel->graph(3)->addData(curTime,
+    plot_angVel->AddData(3, curTime,
                                    state.state().angularvelbodywrtworld().r());
-    plot_angVel->graph(4)->addData(curTime,
+    plot_angVel->AddData(4, curTime,
                                    state.state().angularvelbodywrtworld().p());
-    plot_angVel->graph(5)->addData(curTime,
+    plot_angVel->AddData(5, curTime,
                                    state.state().angularvelbodywrtworld().y());
     plot_angVel->DataUpdated(curTime);
   }
   if (plot_contact) {
-    plot_contact->graph(0)->addData(curTime,
+    plot_contact->AddData(0, curTime,
                                     (state.state().contact().a1() ? 1.0 : 0.0));
-    plot_contact->graph(1)->addData(curTime,
+    plot_contact->AddData(1, curTime,
                                     (state.state().contact().a2() ? 1.0 : 0.0));
-    plot_contact->graph(2)->addData(curTime,
+    plot_contact->AddData(2, curTime,
                                     (state.state().contact().a3() ? 1.0 : 0.0));
-    plot_contact->graph(3)->addData(curTime,
+    plot_contact->AddData(3, curTime,
                                     (state.state().contact().a4() ? 1.0 : 0.0));
     plot_contact->DataUpdated(curTime);
   }
@@ -111,38 +111,38 @@ void OnRecvControlStateDesired(
   // (double)state.header().time_stamp().nanos() * 1e-9;
   double curTime = clock * 1e-3;
   if (plot_comPos) {
-    plot_comPos->graph(0)->addData(curTime,
+    plot_comPos->AddData(0, curTime,
                                    state.state().posworld2comwrtworld().x());
-    plot_comPos->graph(1)->addData(curTime,
+    plot_comPos->AddData(1, curTime,
                                    state.state().posworld2comwrtworld().y());
-    plot_comPos->graph(2)->addData(curTime,
+    plot_comPos->AddData(2, curTime,
                                    state.state().posworld2comwrtworld().z());
     plot_comPos->DataUpdated(curTime);
   }
   if (plot_comVel) {
-    plot_comVel->graph(0)->addData(curTime,
+    plot_comVel->AddData(0,curTime,
                                    state.state().velworld2comwrtworld().x());
-    plot_comVel->graph(1)->addData(curTime,
+    plot_comVel->AddData(1, curTime,
                                    state.state().velworld2comwrtworld().y());
-    plot_comVel->graph(2)->addData(curTime,
+    plot_comVel->AddData(2, curTime,
                                    state.state().velworld2comwrtworld().z());
     plot_comVel->DataUpdated(curTime);
   }
   if (plot_orient) {
-    plot_orient->graph(0)->addData(curTime,
+    plot_orient->AddData(0, curTime,
                                    state.state().euleranglebodywrtworld().r());
-    plot_orient->graph(1)->addData(curTime,
+    plot_orient->AddData(1, curTime,
                                    state.state().euleranglebodywrtworld().p());
-    plot_orient->graph(2)->addData(curTime,
+    plot_orient->AddData(2, curTime,
                                    state.state().euleranglebodywrtworld().y());
     plot_orient->DataUpdated(curTime);
   }
   if (plot_angVel) {
-    plot_angVel->graph(0)->addData(curTime,
+    plot_angVel->AddData(0, curTime,
                                    state.state().angularvelbodywrtworld().r());
-    plot_angVel->graph(1)->addData(curTime,
+    plot_angVel->AddData(1, curTime,
                                    state.state().angularvelbodywrtworld().p());
-    plot_angVel->graph(2)->addData(curTime,
+    plot_angVel->AddData(2, curTime,
                                    state.state().angularvelbodywrtworld().y());
     plot_angVel->DataUpdated(curTime);
   }
@@ -177,17 +177,17 @@ void OnRecvCpgState(const char *topic_name,
   // (double)state.header().time_stamp().nanos() * 1e-9;
   double curTime = clock * 1e-3;
   if (plot_phi) {
-    plot_phi->graph(0)->addData(curTime, state.state().phi().a1());
-    plot_phi->graph(1)->addData(curTime, state.state().phi().a2());
-    plot_phi->graph(2)->addData(curTime, state.state().phi().a3());
-    plot_phi->graph(3)->addData(curTime, state.state().phi().a4());
+    plot_phi->AddData(0, curTime, state.state().phi().a1());
+    plot_phi->AddData(1, curTime, state.state().phi().a2());
+    plot_phi->AddData(2, curTime, state.state().phi().a3());
+    plot_phi->AddData(3, curTime, state.state().phi().a4());
     plot_phi->DataUpdated(curTime);
   }
   if (plot_cpg) {
-    plot_cpg->graph(0)->addData(curTime, state.state().cpg().a1());
-    plot_cpg->graph(1)->addData(curTime, state.state().cpg().a2());
-    plot_cpg->graph(2)->addData(curTime, state.state().cpg().a3());
-    plot_cpg->graph(3)->addData(curTime, state.state().cpg().a4());
+    plot_cpg->AddData(0, curTime, state.state().cpg().a1());
+    plot_cpg->AddData(1, curTime, state.state().cpg().a2());
+    plot_cpg->AddData(2, curTime, state.state().cpg().a3());
+    plot_cpg->AddData(3, curTime, state.state().cpg().a4());
     plot_cpg->DataUpdated(curTime);
   }
 
@@ -226,49 +226,49 @@ void OnRecvJointState(const char *topic_name,
 
   if (plot_pos) {
     for (int ji = 0; ji < jdof; ji++) {
-      plot_pos->graph(ji)->addData(
-          curTime, state.state().joint_state_des(ji).position());
-      plot_pos->graph(ji + jdof)->addData(
-          curTime, state.state().joint_state_act(ji).position());
+      plot_pos->AddData(
+          ji, curTime, state.state().joint_state_des(ji).position());
+      plot_pos->AddData(
+          ji + jdof, curTime, state.state().joint_state_act(ji).position());
     }
     plot_pos->DataUpdated(curTime);
   }
   if (plot_vel) {
     for (int ji = 0; ji < jdof; ji++) {
-      plot_vel->graph(ji)->addData(
-          curTime, state.state().joint_state_des(ji).velocity());
-      plot_vel->graph(ji + jdof)->addData(
-          curTime, state.state().joint_state_act(ji).velocity());
+      plot_vel->AddData(
+          ji, curTime, state.state().joint_state_des(ji).velocity());
+      plot_vel->AddData(
+          ji + jdof, curTime, state.state().joint_state_act(ji).velocity());
     }
     plot_vel->DataUpdated(curTime);
   }
   if (plot_acc) {
     for (int ji = 0; ji < jdof; ji++) {
-      plot_acc->graph(ji)->addData(
-          curTime, state.state().joint_state_des(ji).acceleration());
-      plot_acc->graph(ji + jdof)->addData(
-          curTime, state.state().joint_state_act(ji).acceleration());
+      plot_acc->AddData(
+          ji, curTime, state.state().joint_state_des(ji).acceleration());
+      plot_acc->AddData(
+          ji + jdof, curTime, state.state().joint_state_act(ji).acceleration());
     }
     plot_acc->DataUpdated(curTime);
   }
   if (plot_tau) {
     for (int ji = 0; ji < jdof; ji++) {
-      plot_tau->graph(ji)->addData(curTime,
+      plot_tau->AddData(ji, curTime,
                                    state.state().joint_state_des(ji).torque());
-      plot_tau->graph(ji + jdof)->addData(
-          curTime, state.state().joint_state_act(ji).torque());
+      plot_tau->AddData(
+          ji + jdof, curTime, state.state().joint_state_act(ji).torque());
     }
     plot_tau->DataUpdated(curTime);
   }
   if (plot_absEnc) {
     for (int ji = 0; ji < jdof; ji++) {
-      plot_absEnc->graph(ji)->addData(curTime, state.state().abs_encoder(ji));
+      plot_absEnc->AddData(ji, curTime, state.state().abs_encoder(ji));
     }
     plot_absEnc->DataUpdated(curTime);
   }
   if (plot_incEnc) {
     for (int ji = 0; ji < jdof; ji++) {
-      plot_incEnc->graph(ji)->addData(curTime, state.state().inc_encoder(ji));
+      plot_incEnc->AddData(ji, curTime, state.state().inc_encoder(ji));
     }
     plot_incEnc->DataUpdated(curTime);
   }

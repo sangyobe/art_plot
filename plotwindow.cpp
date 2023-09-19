@@ -173,6 +173,66 @@ QCPGraph *PlotWindow::graph(int index) const
     return ui->plotwidget->graph(index);
 }
 
+int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_width, int scatter_shape, int scatter_skip, bool visible)
+{
+    QCPGraph *graph = ui->plotwidget->addGraph();
+    graph->setName(name);
+    // line style
+    graph->setLineStyle(QCPGraph::lsLine/*lsStepRight*/);
+    QPen pen(color);
+    pen.setWidth(line_width);
+    graph->setPen(pen);
+    QCPScatterStyle sstyle((QCPScatterStyle::ScatterShape)scatter_shape);
+    graph->setScatterStyle(sstyle);
+    graph->setScatterSkip(scatter_skip);
+    graph->setAdaptiveSampling(true);
+    graph->setVisible(visible);
+
+    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+    QList<QStandardItem*> item_graph_visible;
+    foreach (QStandardItem* data_series_root, items) {
+        if (data_series_root->parent())
+            continue;
+
+        QStandardItem* item_title = new QStandardItem(name);
+        QStandardItem* item_option = new QStandardItem();
+
+        item_title->setEditable(false);
+        item_title->setSelectable(false);
+        item_option->setEditable(false);
+        item_option->setCheckable(true);
+        item_option->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+        //item_option->setWhatsThis(QString("Data series::%s").arg(name));
+        item_option->setWhatsThis(QString("Data series::Visible"));
+        item_option->setSelectable(false);
+        item_option->setData(QVariant::fromValue((void*)graph));
+        item_option->setData(color, Qt::BackgroundRole);
+        item_option->setData(QVariant::fromValue(name), Qt::UserRole + 2);
+        item_graph_visible.append(item_title);
+        item_graph_visible.append(item_option);
+        data_series_root->appendRow(item_graph_visible);
+        break;
+    }
+
+    QSettings settings("hmc", "artPlot");
+    restoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig").toByteArray(), name);
+
+    return ui->plotwidget->graphCount();
+}
+
+void PlotWindow::AddData(int gid, double key, double value)
+{
+    QMutexLocker locker(&_graphDataGuard);
+    ui->plotwidget->graph(gid)->addData(key, value);
+}
+
+void PlotWindow::SetGraphVisible(const QString &name, bool visible)
+{
+    const QStandardItem* item = FindFirstConfigOptionItem("Data series", name);
+    if (item) {
+        const_cast<QStandardItem*>(item)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+    }
+}
 void PlotWindow::ResetPlot()
 {
     ResetData();
@@ -193,6 +253,8 @@ void PlotWindow::ResetPlot()
 
 void PlotWindow::ResetData()
 {
+    QMutexLocker locker(&_graphDataGuard);
+
     for( int g=0; g<ui->plotwidget->graphCount(); g++ )
     {
         ui->plotwidget->graph(g)->data().data()->clear();
@@ -212,6 +274,7 @@ void PlotWindow::ResetData()
 
 void PlotWindow::Replot()
 {
+    QMutexLocker locker(&_graphDataGuard);
     ui->plotwidget->replot();
 }
 
@@ -652,61 +715,6 @@ void PlotWindow::BuildConfig()
     connect(_configModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(OnConfigChanged(QStandardItem*)));
 }
 
-int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_width, int scatter_shape, int scatter_skip, bool visible)
-{
-    QCPGraph *graph = ui->plotwidget->addGraph();
-    graph->setName(name);
-    // line style
-    graph->setLineStyle(QCPGraph::lsLine/*lsStepRight*/);
-    QPen pen(color);
-    pen.setWidth(line_width);
-    graph->setPen(pen);
-    QCPScatterStyle sstyle((QCPScatterStyle::ScatterShape)scatter_shape);
-    graph->setScatterStyle(sstyle);
-    graph->setScatterSkip(scatter_skip);
-    graph->setAdaptiveSampling(true);
-    graph->setVisible(visible);
-
-    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
-    QList<QStandardItem*> item_graph_visible;
-    foreach (QStandardItem* data_series_root, items) {
-        if (data_series_root->parent())
-            continue;
-
-        QStandardItem* item_title = new QStandardItem(name);
-        QStandardItem* item_option = new QStandardItem();
-
-        item_title->setEditable(false);
-        item_title->setSelectable(false);
-        item_option->setEditable(false);
-        item_option->setCheckable(true);
-        item_option->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
-        //item_option->setWhatsThis(QString("Data series::%s").arg(name));
-        item_option->setWhatsThis(QString("Data series::Visible"));
-        item_option->setSelectable(false);
-        item_option->setData(QVariant::fromValue((void*)graph));
-        item_option->setData(color, Qt::BackgroundRole);
-        item_option->setData(QVariant::fromValue(name), Qt::UserRole + 2);
-        item_graph_visible.append(item_title);
-        item_graph_visible.append(item_option);
-        data_series_root->appendRow(item_graph_visible);
-        break;
-    }
-
-    QSettings settings("hmc", "artPlot");
-    restoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig").toByteArray(), name);
-
-    return ui->plotwidget->graphCount();
-}
-
-void PlotWindow::SetGraphVisible(const QString &name, bool visible)
-{
-    const QStandardItem* item = FindFirstConfigOptionItem("Data series", name);
-    if (item) {
-        const_cast<QStandardItem*>(item)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
-    }
-}
-
 void PlotWindow::OnConfigChanged(QStandardItem *item)
 {
     //qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
@@ -768,7 +776,7 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(false);
             }
-            ui->plotwidget->yAxis->rescale(false);
+            ui->plotwidget->yAxis->rescale(true);
         }
         else {
             double lb = ui->plotwidget->yAxis->range().lower;
@@ -994,6 +1002,8 @@ const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, c
 void PlotWindow::OnRefreshPlot()
 {
     //qDebug() << "PlotWindow::OnRefreshPlot";
+
+    QMutexLocker locker(&_graphDataGuard);
 
     if (_isNewDataReceived) {
         _isNewDataReceived = false; // reset switch!
