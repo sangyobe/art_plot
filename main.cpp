@@ -25,7 +25,7 @@
 
 void OnRecvControlStateActual(
     const char *topic_name,
-    const art_protocol::quadip::ControlStateTimeStamped &state,
+    const dtproto::quadip::ControlStateTimeStamped &state,
     const long long time, const long long clock, PlotWindow *plot_comPos,
     PlotWindow *plot_comVel, PlotWindow *plot_orient, PlotWindow *plot_angVel,
     PlotWindow *plot_contact) {
@@ -104,7 +104,7 @@ void OnRecvControlStateActual(
 
 void OnRecvControlStateDesired(
     const char *topic_name,
-    const art_protocol::quadip::ControlStateTimeStamped &state,
+    const dtproto::quadip::ControlStateTimeStamped &state,
     const long long time, const long long clock, PlotWindow *plot_comPos,
     PlotWindow *plot_comVel, PlotWindow *plot_orient, PlotWindow *plot_angVel) {
   // double curTime = (double)state.header().time_stamp().seconds() +
@@ -170,7 +170,7 @@ void OnRecvControlStateDesired(
 }
 
 void OnRecvCpgState(const char *topic_name,
-                    const art_protocol::quadip::CpgStateTimeStamped &state,
+                    const dtproto::quadip::CpgStateTimeStamped &state,
                     const long long time, const long long clock,
                     PlotWindow *plot_phi, PlotWindow *plot_cpg) {
   // double curTime = (double)state.header().time_stamp().seconds() +
@@ -214,7 +214,7 @@ void OnRecvCpgState(const char *topic_name,
 }
 
 void OnRecvJointState(const char *topic_name,
-                      const art_protocol::quadip::JointStateTimeStamped &state,
+                      const dtproto::quadip::JointStateTimeStamped &state,
                       const long long time, const long long clock,
                       PlotWindow *plot_pos, PlotWindow *plot_vel,
                       PlotWindow *plot_acc, PlotWindow *plot_tau,
@@ -380,9 +380,9 @@ int main(int argc, char *argv[])
 #endif
 
     // 데이터 연결
-    eCAL::protobuf::CSubscriber<art_protocol::quadip::ControlStateTimeStamped>
+    eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
         sub_control_state_act("ControlStateActual");
-    eCAL::protobuf::CSubscriber<art_protocol::quadip::ControlStateTimeStamped>
+    eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
         sub_control_state_des("ControlStateDesired");
     sub_control_state_act.AddReceiveCallback(std::bind(
         OnRecvControlStateActual, std::placeholders::_1, std::placeholders::_2,
@@ -425,7 +425,7 @@ int main(int argc, char *argv[])
     plotToolbox.AddPlot(cpgStatePlot_cpg.get());
 #endif
 
-    eCAL::protobuf::CSubscriber<art_protocol::quadip::CpgStateTimeStamped>
+    eCAL::protobuf::CSubscriber<dtproto::quadip::CpgStateTimeStamped>
         sub_cpg_state("CpgState");
     sub_cpg_state.AddReceiveCallback(
         std::bind(OnRecvCpgState, std::placeholders::_1, std::placeholders::_2,
@@ -511,7 +511,7 @@ int main(int argc, char *argv[])
     plotToolbox.AddPlot(jointStatePlot_incEnc.get());
 #endif
 
-    eCAL::protobuf::CSubscriber<art_protocol::quadip::JointStateTimeStamped>
+    eCAL::protobuf::CSubscriber<dtproto::quadip::JointStateTimeStamped>
         sub_joint_state("JointState");
     sub_joint_state.AddReceiveCallback(std::bind(
         OnRecvJointState, std::placeholders::_1, std::placeholders::_2,

@@ -38,6 +38,7 @@ public:
     int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0, bool visible = true);
     void AddData(int gid, double key, double value);
     void SetGraphVisible(const QString &name, bool visible);
+    void SelectGraph(const QString &name, int index = -1);
     void ResetPlot();   // clear data and remove all graphs
     void ResetData();   // clear data only
     void Replot();
@@ -88,6 +89,7 @@ private:
 
 private slots:
     void OnConfigChanged(QStandardItem* item);
+    void OnConfigItemGraphClicked(QString name, int index);
     void OnHorzScrollBarChanged(int value);
     void OnVertScrollBarChanged(int value);
     void OnXAxisRangeChanged(QCPRange range);

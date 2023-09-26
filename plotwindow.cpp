@@ -57,6 +57,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     _plotConfig = new PlotConfig(this);
     _plotConfig->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea, _plotConfig);
+    connect(_plotConfig, SIGNAL(graphItemClicked(QString, int)), this, SLOT(OnConfigItemGraphClicked(QString, int)));
 
     BuildConfig();
     
@@ -108,10 +109,10 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
 
     // enable clicking items
     ui->plotwidget->setInteraction(QCP::iSelectPlottables);
-    //ui->plotwidget->setInteraction(QCP::iSelectLegend, true);
+    ui->plotwidget->setInteraction(QCP::iSelectLegend, true);
     ui->plotwidget->setInteraction(QCP::iMultiSelect, false);
-//    ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
-    //connect(ui->plotwidget, SIGNAL(selectionChangedByUser()), this, SLOT(OnSelectionChangedByUser()));
+    //ui->plotwidget->setMultiSelectModifier(Qt::ControlModifier);
+    connect(ui->plotwidget, SIGNAL(selectionChangedByUser()), this, SLOT(OnSelectionChangedByUser()));
 
     // scroll-bars
     ui->horizontalScrollBar->setRange(0,  100000);
@@ -186,6 +187,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
     graph->setScatterStyle(sstyle);
     graph->setScatterSkip(scatter_skip);
     graph->setAdaptiveSampling(true);
+    graph->setSelectable(QCP::stWhole);
     graph->setVisible(visible);
 
     auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
@@ -198,7 +200,8 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         QStandardItem* item_option = new QStandardItem();
 
         item_title->setEditable(false);
-        item_title->setSelectable(false);
+        item_title->setSelectable(true);
+        item_title->setWhatsThis(QString("Data series::__name__"));
         item_option->setEditable(false);
         item_option->setCheckable(true);
         item_option->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
@@ -233,6 +236,33 @@ void PlotWindow::SetGraphVisible(const QString &name, bool visible)
         const_cast<QStandardItem*>(item)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
     }
 }
+
+void PlotWindow::SelectGraph(const QString &name, int index)
+{
+    int foundItemIndex = -1;
+
+    if (index >= 0 && index < ui->plotwidget->graphCount()) {
+        if (ui->plotwidget->graph(index)->name() == name)
+            foundItemIndex = index;
+    }
+    else {
+        for (int i=0; i<ui->plotwidget->graphCount(); i++) {
+            if (ui->plotwidget->graph(i)->name() == name) {
+                foundItemIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (foundItemIndex >= 0) {
+        ui->plotwidget->graph(foundItemIndex)->setSelectable(QCP::stWhole);
+        QCPDataSelection selection;
+        QCPDataRange range(0, 1);
+        selection.addDataRange(range);
+        ui->plotwidget->graph(foundItemIndex)->setSelection(selection);
+    }
+}
+
 void PlotWindow::ResetPlot()
 {
     ResetData();
@@ -862,6 +892,11 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     }
 }
 
+void PlotWindow::OnConfigItemGraphClicked(QString name, int index)
+{
+    this->SelectGraph(name, index);
+}
+
 void PlotWindow::OnHorzScrollBarChanged(int value)
 {
     //qDebug() << "OnHorzScrollBarChanged: value=" << value;
@@ -898,14 +933,20 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 
 void PlotWindow::OnSelectionChangedByUser()
 {
-    //qDebug() << "OnSelectionChangedByUser";
+    qDebug() << "OnSelectionChangedByUser";
     const QList<QCPGraph*> graphs = ui->plotwidget->selectedGraphs();
     for (auto graph : qAsConst(graphs)) {
         Q_UNUSED(graph); // (void)graph;
     }
     const QList<QCPLegend*> legends = ui->plotwidget->selectedLegends();
     for (auto legend : qAsConst(legends)) {
-        Q_UNUSED(legend);
+        for (int i=0; i<legend->itemCount(); i++) {
+            QCPPlottableLegendItem* item = dynamic_cast<QCPPlottableLegendItem*>(legend->item(i));
+            if (item) {
+                SelectGraph(item->plottable()->name());
+                break;
+            }
+        }
     }
 }
 
@@ -1106,7 +1147,11 @@ void PlotWindow::OnExtendAllTriggered()
 
 void PlotWindow::OnMousePressed(QMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton) {
+    Qt::KeyboardModifiers km = QGuiApplication::keyboardModifiers();
+    if (event->button() == Qt::LeftButton && (km & Qt::ShiftModifier)) {
+        ui->plotwidget->setSelectionRectMode((QCP::srmSelect));
+    }
+    else if (event->button() == Qt::RightButton) {
         ui->plotwidget->setSelectionRectMode(QCP::srmZoom);
     }
     else {

@@ -19,6 +19,11 @@ public:
 
     void setConfigModel(QAbstractItemModel* configModel);
 
+private slots:
+    void OnItemClicked(const QModelIndex& index);
+signals:
+    void graphItemClicked(QString name, int index);
+
 private:
     Ui::PlotConfig *ui;
 };
