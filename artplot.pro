@@ -63,35 +63,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     artplot.qrc
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -lprotobuf
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -lprotobuf
-else:unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lprotobuf
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/include
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/libprotobuf.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/libprotobuf.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/protobuf.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/protobuf.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libprotobuf.a
+#win32:INCLUDEPATH += "d:/Projects/include"
+unix:INCLUDEPATH += "/usr/local/include"
+unix:INCLUDEPATH += "/home/sean/.local/include"
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -ldtproto
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -ldtproto
-else:unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -ldtproto
+unix:DEPENDPATH += "/usr/local/include"
+unix:DEPENDPATH += "/home/sean/.local/include"
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/include
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/libdtproto.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/libdtproto.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/release/dtproto.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/debug/dtproto.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libdtproto.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -lecal_core
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -lecal_core
-else:unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lecal_core
-
-INCLUDEPATH += $$PWD/../../../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/include
+unix: LIBS += -L/usr/local/lib/ -lprotobuf
+unix: LIBS += -L/usr/local/lib/ -ldtproto
+unix: LIBS += -L/usr/local/lib/ -ldtproto_grpc
+unix: LIBS += -L/usr/local/lib/ -lecal_core
+unix: LIBS += -L/home/sean/.local/lib/ -lgrpc++
+unix: LIBS += -L/home/sean/.local/lib/ -lgrpc++_reflection

@@ -4,9 +4,9 @@
 #include <QApplication>
 #include <QDebug>
 #include <dtProto/QuadIP.pb.h>
-#include <ecal/ecal.h>
-#include <ecal/msg/protobuf/subscriber.h>
 
+//#define MDW_ECAL
+#define MDW_GRPC
 //#define PRINT_PUB_SUB_INFO
 
 #define ENABLE_COM_POS_PLOT
@@ -22,6 +22,17 @@
 //#define ENABLE_JOINT_TORQUE_PLOT
 //#define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 //#define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
+
+#ifdef MDW_ECAL
+#include <ecal/ecal.h>
+#include <ecal/msg/protobuf/subscriber.h>
+#endif
+
+#ifdef MDW_GRPC
+#include <grpc/grpc.h>
+#include <grpcpp/grpcpp.h>
+#endif
+
 
 void OnRecvControlStateActual(
     const char *topic_name,
@@ -303,8 +314,10 @@ int main(int argc, char *argv[])
     plotToolbox.setWindowFlag(Qt::WindowStaysOnTopHint);
     plotToolbox.show();
 
+#ifdef MDW_ECAL
     eCAL::Initialize(0, nullptr, "art_plot::QuadIP::ControlStatus");
     eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "proc info");
+#endif
 
     /**
      * @brief controlStatePlot
@@ -380,6 +393,7 @@ int main(int argc, char *argv[])
 #endif
 
     // 데이터 연결
+#ifdef MDW_ECAL
     eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
         sub_control_state_act("ControlStateActual");
     eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
@@ -395,6 +409,8 @@ int main(int argc, char *argv[])
         std::placeholders::_3, std::placeholders::_4,
         controlStatePlot_comPos.get(), controlStatePlot_comVel.get(),
         controlStatePlot_orient.get(), controlStatePlot_angVel.get()));
+#endif
+
 
     /**
      * @brief cpgStatePlot
@@ -425,12 +441,14 @@ int main(int argc, char *argv[])
     plotToolbox.AddPlot(cpgStatePlot_cpg.get());
 #endif
 
+#ifdef MDW_ECAL
     eCAL::protobuf::CSubscriber<dtproto::quadip::CpgStateTimeStamped>
         sub_cpg_state("CpgState");
     sub_cpg_state.AddReceiveCallback(
         std::bind(OnRecvCpgState, std::placeholders::_1, std::placeholders::_2,
                   std::placeholders::_3, std::placeholders::_4,
                   cpgStatePlot_phi.get(), cpgStatePlot_cpg.get()));
+#endif
 
     /**
      * @brief jointStatePlot
@@ -511,6 +529,7 @@ int main(int argc, char *argv[])
     plotToolbox.AddPlot(jointStatePlot_incEnc.get());
 #endif
 
+#ifdef MDW_ECAL
     eCAL::protobuf::CSubscriber<dtproto::quadip::JointStateTimeStamped>
         sub_joint_state("JointState");
     sub_joint_state.AddReceiveCallback(std::bind(
@@ -519,6 +538,7 @@ int main(int argc, char *argv[])
         jointStatePlot_vel.get(), jointStatePlot_acc.get(),
         jointStatePlot_tau.get(), jointStatePlot_absEnc.get(),
         jointStatePlot_incEnc.get()));
+#endif
 
     // Start main application(event-loop)
     return app.exec();
