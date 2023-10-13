@@ -5,8 +5,8 @@
 #include <QDebug>
 #include <dtProto/QuadIP.pb.h>
 
-//#define MDW_ECAL
-#define MDW_GRPC
+//#define USE_TRANSPORT_ECAL
+#define USE_TRANSPORT_GRPC
 //#define PRINT_PUB_SUB_INFO
 
 #define ENABLE_COM_POS_PLOT
@@ -23,15 +23,34 @@
 //#define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 //#define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 
-#ifdef MDW_ECAL
+#ifdef USE_TRANSPORT_ECAL
 #include <ecal/ecal.h>
 #include <ecal/msg/protobuf/subscriber.h>
 #endif
 
-#ifdef MDW_GRPC
+#ifdef USE_TRANSPORT_GRPC
 #include <grpc/grpc.h>
-#include <grpcpp/grpcpp.h>
+#include <grpc/grpc.h>
+#include <grpcpp/channel.h>
+#include <grpcpp/client_context.h>
+#include <grpcpp/create_channel.h>
+#include <grpcpp/security/credentials.h>
+#include <dtProto/QuadIP.grpc.pb.h>
 #endif
+
+
+
+class DataClient {
+public:
+    DataClient() {}
+
+    void OnRecvControlStateActual();
+    void OnRecvControlStateDesired();
+    void OnRecvCpgState();
+    void OnRecvJointState();
+private:
+};
+
 
 
 void OnRecvControlStateActual(
@@ -314,7 +333,7 @@ int main(int argc, char *argv[])
     plotToolbox.setWindowFlag(Qt::WindowStaysOnTopHint);
     plotToolbox.show();
 
-#ifdef MDW_ECAL
+#ifdef USE_TRANSPORT_ECAL
     eCAL::Initialize(0, nullptr, "art_plot::QuadIP::ControlStatus");
     eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "proc info");
 #endif
@@ -393,7 +412,7 @@ int main(int argc, char *argv[])
 #endif
 
     // 데이터 연결
-#ifdef MDW_ECAL
+#ifdef USE_TRANSPORT_ECAL
     eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
         sub_control_state_act("ControlStateActual");
     eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
@@ -441,7 +460,7 @@ int main(int argc, char *argv[])
     plotToolbox.AddPlot(cpgStatePlot_cpg.get());
 #endif
 
-#ifdef MDW_ECAL
+#ifdef USE_TRANSPORT_ECAL
     eCAL::protobuf::CSubscriber<dtproto::quadip::CpgStateTimeStamped>
         sub_cpg_state("CpgState");
     sub_cpg_state.AddReceiveCallback(
@@ -529,7 +548,7 @@ int main(int argc, char *argv[])
     plotToolbox.AddPlot(jointStatePlot_incEnc.get());
 #endif
 
-#ifdef MDW_ECAL
+#ifdef USE_TRANSPORT_ECAL
     eCAL::protobuf::CSubscriber<dtproto::quadip::JointStateTimeStamped>
         sub_joint_state("JointState");
     sub_joint_state.AddReceiveCallback(std::bind(
