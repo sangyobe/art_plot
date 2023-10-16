@@ -3,7 +3,6 @@
 #include "plotwindow.h"
 #include <QApplication>
 #include <QDebug>
-#include <dtProto/QuadIP.pb.h>
 
 //#define USE_TRANSPORT_ECAL
 #define USE_TRANSPORT_GRPC
@@ -29,301 +28,248 @@
 #endif
 
 #ifdef USE_TRANSPORT_GRPC
-#include <grpc/grpc.h>
-#include <grpc/grpc.h>
-#include <grpcpp/channel.h>
-#include <grpcpp/client_context.h>
-#include <grpcpp/create_channel.h>
-#include <grpcpp/security/credentials.h>
-#include <dtProto/QuadIP.grpc.pb.h>
+#include <dtProto/Service.grpc.pb.h>
+#include <dtCore/src/dtDAQ/grpc/dtStateSubscriberGrpc.hpp>
 #endif
 
+#include "QuadIP.pb.h"
 
 
 class DataClient {
 public:
     DataClient() {}
 
-    void OnRecvControlStateActual();
-    void OnRecvControlStateDesired();
-    void OnRecvCpgState();
-    void OnRecvJointState();
+    void OnRecvQuadIpStateTimeStamped(const char *topic_name,
+                                      const dtproto::quadip::QuadIpStateTimeStamped &state,
+                                      const long long time, const long long clock)
+    {
+        double curTime = clock * 1e-3;
+        OnRecvQuadIpState(curTime, state.state());
+
+#ifdef PRINT_PUB_SUB_INFO
+        qDebug() << "------------------------------------------";
+        qDebug() << " QuadIP State ";
+        qDebug() << "------------------------------------------";
+        qDebug() << "topic name   : " << topic_name;
+        qDebug() << "topic time   : " << time;
+        qDebug() << "topic clock  : " << clock;
+        qDebug() << "------------------------------------------";
+        qDebug() << " Header ";
+        qDebug() << "------------------------------------------";
+        qDebug() << "seq          : " << state.header().seq();
+        qDebug() << "timestamp(s) : " << curTime;
+        qDebug() << "------------------------------------------";
+        qDebug() << "";
+#else
+        Q_UNUSED(topic_name);
+        Q_UNUSED(state);
+        Q_UNUSED(time);
+        Q_UNUSED(clock);
+#endif // PRINT_PUB_SUB_INFO
+    }
+
+    void OnRecvQuadIpState(const double curTime, const dtproto::quadip::QuadIpState &state)
+    {
+        OnRecvCpgState(curTime, state.cpgstate());
+        OnRecvControlStateActual(curTime, state.controlstateactual());
+        OnRecvControlStateDesired(curTime, state.controlstatedesired());
+        OnRecvJointState(curTime, state.jointstate());
+    }
+
+    void OnRecvControlStateActual(const double curTime, const dtproto::quadip::ControlState &state)
+    {
+        if (_plot_comPos) {
+            _plot_comPos->AddData(3, curTime,
+                                 state.posworld2comwrtworld().x());
+            _plot_comPos->AddData(4, curTime,
+                                 state.posworld2comwrtworld().y());
+            _plot_comPos->AddData(5, curTime,
+                                 state.posworld2comwrtworld().z());
+            _plot_comPos->DataUpdated(curTime);
+        }
+        if (_plot_comVel) {
+            _plot_comVel->AddData(3, curTime,
+                                 state.velworld2comwrtworld().x());
+            _plot_comVel->AddData(4, curTime,
+                                 state.velworld2comwrtworld().y());
+            _plot_comVel->AddData(5, curTime,
+                                 state.velworld2comwrtworld().z());
+            _plot_comVel->DataUpdated(curTime);
+        }
+        if (_plot_orient) {
+            _plot_orient->AddData(3, curTime,
+                                 state.euleranglebodywrtworld().r());
+            _plot_orient->AddData(4, curTime,
+                                 state.euleranglebodywrtworld().p());
+            _plot_orient->AddData(5, curTime,
+                                 state.euleranglebodywrtworld().y());
+            _plot_orient->DataUpdated(curTime);
+        }
+        if (_plot_angVel) {
+            _plot_angVel->AddData(3, curTime,
+                                 state.angularvelbodywrtworld().r());
+            _plot_angVel->AddData(4, curTime,
+                                 state.angularvelbodywrtworld().p());
+            _plot_angVel->AddData(5, curTime,
+                                 state.angularvelbodywrtworld().y());
+            _plot_angVel->DataUpdated(curTime);
+        }
+        if (_plot_contact) {
+            _plot_contact->AddData(0, curTime,
+                                  (state.contact().a1() ? 1.0 : 0.0));
+            _plot_contact->AddData(1, curTime,
+                                  (state.contact().a2() ? 1.0 : 0.0));
+            _plot_contact->AddData(2, curTime,
+                                  (state.contact().a3() ? 1.0 : 0.0));
+            _plot_contact->AddData(3, curTime,
+                                  (state.contact().a4() ? 1.0 : 0.0));
+            _plot_contact->DataUpdated(curTime);
+        }
+    }
+
+    void OnRecvControlStateDesired(const double curTime, const dtproto::quadip::ControlState &state)
+    {
+        if (_plot_comPos) {
+            _plot_comPos->AddData(0, curTime,
+                                 state.posworld2comwrtworld().x());
+            _plot_comPos->AddData(1, curTime,
+                                 state.posworld2comwrtworld().y());
+            _plot_comPos->AddData(2, curTime,
+                                 state.posworld2comwrtworld().z());
+            _plot_comPos->DataUpdated(curTime);
+        }
+        if (_plot_comVel) {
+            _plot_comVel->AddData(0,curTime,
+                                 state.velworld2comwrtworld().x());
+            _plot_comVel->AddData(1, curTime,
+                                 state.velworld2comwrtworld().y());
+            _plot_comVel->AddData(2, curTime,
+                                 state.velworld2comwrtworld().z());
+            _plot_comVel->DataUpdated(curTime);
+        }
+        if (_plot_orient) {
+            _plot_orient->AddData(0, curTime,
+                                 state.euleranglebodywrtworld().r());
+            _plot_orient->AddData(1, curTime,
+                                 state.euleranglebodywrtworld().p());
+            _plot_orient->AddData(2, curTime,
+                                 state.euleranglebodywrtworld().y());
+            _plot_orient->DataUpdated(curTime);
+        }
+        if (_plot_angVel) {
+            _plot_angVel->AddData(0, curTime,
+                                 state.angularvelbodywrtworld().r());
+            _plot_angVel->AddData(1, curTime,
+                                 state.angularvelbodywrtworld().p());
+            _plot_angVel->AddData(2, curTime,
+                                 state.angularvelbodywrtworld().y());
+            _plot_angVel->DataUpdated(curTime);
+        }
+    }
+
+    void OnRecvCpgState(const double curTime, const dtproto::quadip::CpgState &state)
+    {
+        if (_plot_cpgPhi) {
+            _plot_cpgPhi->AddData(0, curTime, state.phi().a1());
+            _plot_cpgPhi->AddData(1, curTime, state.phi().a2());
+            _plot_cpgPhi->AddData(2, curTime, state.phi().a3());
+            _plot_cpgPhi->AddData(3, curTime, state.phi().a4());
+            _plot_cpgPhi->DataUpdated(curTime);
+        }
+        if (_plot_cpgCpg) {
+            _plot_cpgCpg->AddData(0, curTime, state.cpg().a1());
+            _plot_cpgCpg->AddData(1, curTime, state.cpg().a2());
+            _plot_cpgCpg->AddData(2, curTime, state.cpg().a3());
+            _plot_cpgCpg->AddData(3, curTime, state.cpg().a4());
+            _plot_cpgCpg->DataUpdated(curTime);
+        }
+    }
+
+    void OnRecvJointState(const double curTime, const dtproto::quadip::JointState &state)
+    {
+        constexpr int jdof = 12;
+        if (_plot_jointPos) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointPos->AddData(
+                    ji, curTime, state.joint_state_des(ji).position());
+                _plot_jointPos->AddData(
+                    ji + jdof, curTime, state.joint_state_act(ji).position());
+            }
+            _plot_jointPos->DataUpdated(curTime);
+        }
+        if (_plot_jointVel) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointVel->AddData(
+                    ji, curTime, state.joint_state_des(ji).velocity());
+                _plot_jointVel->AddData(
+                    ji + jdof, curTime, state.joint_state_act(ji).velocity());
+            }
+            _plot_jointVel->DataUpdated(curTime);
+        }
+        if (_plot_jointAcc) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointAcc->AddData(
+                    ji, curTime, state.joint_state_des(ji).acceleration());
+                _plot_jointAcc->AddData(
+                    ji + jdof, curTime, state.joint_state_act(ji).acceleration());
+            }
+            _plot_jointAcc->DataUpdated(curTime);
+        }
+        if (_plot_jointTau) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointTau->AddData(ji, curTime,
+                                  state.joint_state_des(ji).torque());
+                _plot_jointTau->AddData(
+                    ji + jdof, curTime, state.joint_state_act(ji).torque());
+            }
+            _plot_jointTau->DataUpdated(curTime);
+        }
+        if (_plot_absEnc) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_absEnc->AddData(ji, curTime, state.abs_encoder(ji));
+            }
+            _plot_absEnc->DataUpdated(curTime);
+        }
+        if (_plot_incEnc) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_incEnc->AddData(ji, curTime, state.inc_encoder(ji));
+            }
+            _plot_incEnc->DataUpdated(curTime);
+        }
+    }
+
+public:
+    void SetPlotComPos(PlotWindow* wnd) { _plot_comPos = wnd; }
+    void SetPlotComVel(PlotWindow* wnd) { _plot_comVel = wnd; }
+    void SetPlotOrient(PlotWindow* wnd) { _plot_orient = wnd; }
+    void SetPlotAngVel(PlotWindow* wnd) { _plot_angVel = wnd; }
+    void SetPlotContact(PlotWindow* wnd) { _plot_contact = wnd; }
+    void SetPlotCpgCpg(PlotWindow* wnd) { _plot_cpgCpg = wnd; }
+    void SetPlotCpgPhi(PlotWindow* wnd) { _plot_cpgPhi = wnd; }
+    void SetPlotJointPos(PlotWindow* wnd) { _plot_jointPos = wnd; }
+    void SetPlotJointVel(PlotWindow* wnd) { _plot_jointVel = wnd; }
+    void SetPlotJointAcc(PlotWindow* wnd) { _plot_jointAcc = wnd; }
+    void SetPlotJointTau(PlotWindow* wnd) { _plot_jointTau = wnd; }
+    void SetPlotAbsEnc(PlotWindow* wnd) { _plot_absEnc = wnd; }
+    void SetPlotIncEnc(PlotWindow* wnd) { _plot_incEnc = wnd; }
 private:
+    PlotWindow *_plot_comPos{nullptr};
+    PlotWindow *_plot_comVel{nullptr};
+    PlotWindow *_plot_orient{nullptr};
+    PlotWindow *_plot_angVel{nullptr};
+    PlotWindow *_plot_contact{nullptr};
+    PlotWindow *_plot_cpgCpg{nullptr};
+    PlotWindow *_plot_cpgPhi{nullptr};
+    PlotWindow *_plot_jointPos{nullptr};
+    PlotWindow *_plot_jointVel{nullptr};
+    PlotWindow *_plot_jointAcc{nullptr};
+    PlotWindow *_plot_jointTau{nullptr};
+    PlotWindow *_plot_incEnc{nullptr};
+    PlotWindow *_plot_absEnc{nullptr};
 };
 
 
 
-void OnRecvControlStateActual(
-    const char *topic_name,
-    const dtproto::quadip::ControlStateTimeStamped &state,
-    const long long time, const long long clock, PlotWindow *plot_comPos,
-    PlotWindow *plot_comVel, PlotWindow *plot_orient, PlotWindow *plot_angVel,
-    PlotWindow *plot_contact) {
-  // double curTime = (double)state.header().time_stamp().seconds() +
-  // (double)state.header().time_stamp().nanos() * 1e-9;
-  double curTime = clock * 1e-3;
-  if (plot_comPos) {
-    plot_comPos->AddData(3, curTime,
-                                   state.state().posworld2comwrtworld().x());
-    plot_comPos->AddData(4, curTime,
-                                   state.state().posworld2comwrtworld().y());
-    plot_comPos->AddData(5, curTime,
-                                   state.state().posworld2comwrtworld().z());
-    plot_comPos->DataUpdated(curTime);
-  }
-  if (plot_comVel) {
-    plot_comVel->AddData(3, curTime,
-                                   state.state().velworld2comwrtworld().x());
-    plot_comVel->AddData(4, curTime,
-                                   state.state().velworld2comwrtworld().y());
-    plot_comVel->AddData(5, curTime,
-                                   state.state().velworld2comwrtworld().z());
-    plot_comVel->DataUpdated(curTime);
-  }
-  if (plot_orient) {
-    plot_orient->AddData(3, curTime,
-                                   state.state().euleranglebodywrtworld().r());
-    plot_orient->AddData(4, curTime,
-                                   state.state().euleranglebodywrtworld().p());
-    plot_orient->AddData(5, curTime,
-                                   state.state().euleranglebodywrtworld().y());
-    plot_orient->DataUpdated(curTime);
-  }
-  if (plot_angVel) {
-    plot_angVel->AddData(3, curTime,
-                                   state.state().angularvelbodywrtworld().r());
-    plot_angVel->AddData(4, curTime,
-                                   state.state().angularvelbodywrtworld().p());
-    plot_angVel->AddData(5, curTime,
-                                   state.state().angularvelbodywrtworld().y());
-    plot_angVel->DataUpdated(curTime);
-  }
-  if (plot_contact) {
-    plot_contact->AddData(0, curTime,
-                                    (state.state().contact().a1() ? 1.0 : 0.0));
-    plot_contact->AddData(1, curTime,
-                                    (state.state().contact().a2() ? 1.0 : 0.0));
-    plot_contact->AddData(2, curTime,
-                                    (state.state().contact().a3() ? 1.0 : 0.0));
-    plot_contact->AddData(3, curTime,
-                                    (state.state().contact().a4() ? 1.0 : 0.0));
-    plot_contact->DataUpdated(curTime);
-  }
-
-#ifdef PRINT_PUB_SUB_INFO
-  qDebug() << "------------------------------------------";
-  qDebug() << " QuadIP Control State ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "topic name   : " << topic_name;
-  qDebug() << "topic time   : " << time;
-  qDebug() << "topic clock  : " << clock;
-  qDebug() << "------------------------------------------";
-  qDebug() << " Header ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "seq          : " << state.header().seq();
-  qDebug() << "timestamp(s) : " << curTime;
-  qDebug() << "------------------------------------------";
-  qDebug() << "";
-#else
-  Q_UNUSED(topic_name);
-  Q_UNUSED(state);
-  Q_UNUSED(time);
-  Q_UNUSED(clock);
-#endif // PRINT_PUB_SUB_INFO
-}
-
-void OnRecvControlStateDesired(
-    const char *topic_name,
-    const dtproto::quadip::ControlStateTimeStamped &state,
-    const long long time, const long long clock, PlotWindow *plot_comPos,
-    PlotWindow *plot_comVel, PlotWindow *plot_orient, PlotWindow *plot_angVel) {
-  // double curTime = (double)state.header().time_stamp().seconds() +
-  // (double)state.header().time_stamp().nanos() * 1e-9;
-  double curTime = clock * 1e-3;
-  if (plot_comPos) {
-    plot_comPos->AddData(0, curTime,
-                                   state.state().posworld2comwrtworld().x());
-    plot_comPos->AddData(1, curTime,
-                                   state.state().posworld2comwrtworld().y());
-    plot_comPos->AddData(2, curTime,
-                                   state.state().posworld2comwrtworld().z());
-    plot_comPos->DataUpdated(curTime);
-  }
-  if (plot_comVel) {
-    plot_comVel->AddData(0,curTime,
-                                   state.state().velworld2comwrtworld().x());
-    plot_comVel->AddData(1, curTime,
-                                   state.state().velworld2comwrtworld().y());
-    plot_comVel->AddData(2, curTime,
-                                   state.state().velworld2comwrtworld().z());
-    plot_comVel->DataUpdated(curTime);
-  }
-  if (plot_orient) {
-    plot_orient->AddData(0, curTime,
-                                   state.state().euleranglebodywrtworld().r());
-    plot_orient->AddData(1, curTime,
-                                   state.state().euleranglebodywrtworld().p());
-    plot_orient->AddData(2, curTime,
-                                   state.state().euleranglebodywrtworld().y());
-    plot_orient->DataUpdated(curTime);
-  }
-  if (plot_angVel) {
-    plot_angVel->AddData(0, curTime,
-                                   state.state().angularvelbodywrtworld().r());
-    plot_angVel->AddData(1, curTime,
-                                   state.state().angularvelbodywrtworld().p());
-    plot_angVel->AddData(2, curTime,
-                                   state.state().angularvelbodywrtworld().y());
-    plot_angVel->DataUpdated(curTime);
-  }
-
-#ifdef PRINT_PUB_SUB_INFO
-  qDebug() << "------------------------------------------";
-  qDebug() << " QuadIP Control State ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "topic name   : " << topic_name;
-  qDebug() << "topic time   : " << time;
-  qDebug() << "topic clock  : " << clock;
-  qDebug() << "------------------------------------------";
-  qDebug() << " Header ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "seq          : " << state.header().seq();
-  qDebug() << "timestamp(s) : " << curTime;
-  qDebug() << "------------------------------------------";
-  qDebug() << "";
-#else
-  Q_UNUSED(topic_name);
-  Q_UNUSED(state);
-  Q_UNUSED(time);
-  Q_UNUSED(clock);
-#endif // PRINT_PUB_SUB_INFO
-}
-
-void OnRecvCpgState(const char *topic_name,
-                    const dtproto::quadip::CpgStateTimeStamped &state,
-                    const long long time, const long long clock,
-                    PlotWindow *plot_phi, PlotWindow *plot_cpg) {
-  // double curTime = (double)state.header().time_stamp().seconds() +
-  // (double)state.header().time_stamp().nanos() * 1e-9;
-  double curTime = clock * 1e-3;
-  if (plot_phi) {
-    plot_phi->AddData(0, curTime, state.state().phi().a1());
-    plot_phi->AddData(1, curTime, state.state().phi().a2());
-    plot_phi->AddData(2, curTime, state.state().phi().a3());
-    plot_phi->AddData(3, curTime, state.state().phi().a4());
-    plot_phi->DataUpdated(curTime);
-  }
-  if (plot_cpg) {
-    plot_cpg->AddData(0, curTime, state.state().cpg().a1());
-    plot_cpg->AddData(1, curTime, state.state().cpg().a2());
-    plot_cpg->AddData(2, curTime, state.state().cpg().a3());
-    plot_cpg->AddData(3, curTime, state.state().cpg().a4());
-    plot_cpg->DataUpdated(curTime);
-  }
-
-#ifdef PRINT_PUB_SUB_INFO
-  qDebug() << "------------------------------------------";
-  qDebug() << " QuadIP Cpg State ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "topic name   : " << topic_name;
-  qDebug() << "topic time   : " << time;
-  qDebug() << "topic clock  : " << clock;
-  qDebug() << "------------------------------------------";
-  qDebug() << " Header ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "seq          : " << state.header().seq();
-  qDebug() << "timestamp(s) : " << curTime;
-  qDebug() << "------------------------------------------";
-  qDebug() << "";
-#else
-  Q_UNUSED(topic_name);
-  Q_UNUSED(state);
-  Q_UNUSED(time);
-  Q_UNUSED(clock);
-#endif // PRINT_PUB_SUB_INFO
-}
-
-void OnRecvJointState(const char *topic_name,
-                      const dtproto::quadip::JointStateTimeStamped &state,
-                      const long long time, const long long clock,
-                      PlotWindow *plot_pos, PlotWindow *plot_vel,
-                      PlotWindow *plot_acc, PlotWindow *plot_tau,
-                      PlotWindow *plot_absEnc, PlotWindow *plot_incEnc) {
-  constexpr int jdof = 12;
-  // double curTime = (double)state.header().time_stamp().seconds() +
-  // (double)state.header().time_stamp().nanos() * 1e-9;
-  double curTime = clock * 1e-3;
-
-  if (plot_pos) {
-    for (int ji = 0; ji < jdof; ji++) {
-      plot_pos->AddData(
-          ji, curTime, state.state().joint_state_des(ji).position());
-      plot_pos->AddData(
-          ji + jdof, curTime, state.state().joint_state_act(ji).position());
-    }
-    plot_pos->DataUpdated(curTime);
-  }
-  if (plot_vel) {
-    for (int ji = 0; ji < jdof; ji++) {
-      plot_vel->AddData(
-          ji, curTime, state.state().joint_state_des(ji).velocity());
-      plot_vel->AddData(
-          ji + jdof, curTime, state.state().joint_state_act(ji).velocity());
-    }
-    plot_vel->DataUpdated(curTime);
-  }
-  if (plot_acc) {
-    for (int ji = 0; ji < jdof; ji++) {
-      plot_acc->AddData(
-          ji, curTime, state.state().joint_state_des(ji).acceleration());
-      plot_acc->AddData(
-          ji + jdof, curTime, state.state().joint_state_act(ji).acceleration());
-    }
-    plot_acc->DataUpdated(curTime);
-  }
-  if (plot_tau) {
-    for (int ji = 0; ji < jdof; ji++) {
-      plot_tau->AddData(ji, curTime,
-                                   state.state().joint_state_des(ji).torque());
-      plot_tau->AddData(
-          ji + jdof, curTime, state.state().joint_state_act(ji).torque());
-    }
-    plot_tau->DataUpdated(curTime);
-  }
-  if (plot_absEnc) {
-    for (int ji = 0; ji < jdof; ji++) {
-      plot_absEnc->AddData(ji, curTime, state.state().abs_encoder(ji));
-    }
-    plot_absEnc->DataUpdated(curTime);
-  }
-  if (plot_incEnc) {
-    for (int ji = 0; ji < jdof; ji++) {
-      plot_incEnc->AddData(ji, curTime, state.state().inc_encoder(ji));
-    }
-    plot_incEnc->DataUpdated(curTime);
-  }
-
-#ifdef PRINT_PUB_SUB_INFO
-  qDebug() << "------------------------------------------";
-  qDebug() << " QuadIP Joint State ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "topic name   : " << topic_name;
-  qDebug() << "topic time   : " << time;
-  qDebug() << "topic clock  : " << clock;
-  qDebug() << "------------------------------------------";
-  qDebug() << " Header ";
-  qDebug() << "------------------------------------------";
-  qDebug() << "seq          : " << state.header().seq();
-  qDebug() << "timestamp(s) : " << curTime;
-  qDebug() << "------------------------------------------";
-  qDebug() << "";
-#else
-  Q_UNUSED(topic_name);
-  Q_UNUSED(state);
-  Q_UNUSED(time);
-  Q_UNUSED(clock);
-#endif // PRINT_PUB_SUB_INFO
-}
 
 int main(int argc, char *argv[])
 {
@@ -337,6 +283,9 @@ int main(int argc, char *argv[])
     eCAL::Initialize(0, nullptr, "art_plot::QuadIP::ControlStatus");
     eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "proc info");
 #endif
+#ifdef USE_TRANSPORT_GRPC
+#endif
+    DataClient plotDataHandler;
 
     /**
      * @brief controlStatePlot
@@ -355,6 +304,7 @@ int main(int argc, char *argv[])
     controlStatePlot_comPos->AddGraph("Com.z.actual", LineColor<5>());
     controlStatePlot_comPos->show();
     plotToolbox.AddPlot(controlStatePlot_comPos.get());
+    plotDataHandler.SetPlotComPos(controlStatePlot_comPos.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_comVel;
@@ -369,6 +319,7 @@ int main(int argc, char *argv[])
     controlStatePlot_comVel->AddGraph("Com.Vz.actual", LineColor<5>());
     controlStatePlot_comVel->show();
     plotToolbox.AddPlot(controlStatePlot_comVel.get());
+    plotDataHandler.SetPlotComVel(controlStatePlot_comVel.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_orient;
@@ -383,6 +334,7 @@ int main(int argc, char *argv[])
     controlStatePlot_orient->AddGraph("Euler.z.actual", LineColor<11>());
     controlStatePlot_orient->show();
     plotToolbox.AddPlot(controlStatePlot_orient.get());
+    plotDataHandler.SetPlotOrient(controlStatePlot_orient.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_angVel;
@@ -397,6 +349,7 @@ int main(int argc, char *argv[])
     controlStatePlot_angVel->AddGraph("AngularVel.z.actual", LineColor<11>());
     controlStatePlot_angVel->show();
     plotToolbox.AddPlot(controlStatePlot_angVel.get());
+    plotDataHandler.SetPlotAngVel(controlStatePlot_angVel.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_contact;
@@ -409,25 +362,7 @@ int main(int argc, char *argv[])
     controlStatePlot_contact->AddGraph("BR", LineColor<15>());
     controlStatePlot_contact->show();
     plotToolbox.AddPlot(controlStatePlot_contact.get());
-#endif
-
-    // 데이터 연결
-#ifdef USE_TRANSPORT_ECAL
-    eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
-        sub_control_state_act("ControlStateActual");
-    eCAL::protobuf::CSubscriber<dtproto::quadip::ControlStateTimeStamped>
-        sub_control_state_des("ControlStateDesired");
-    sub_control_state_act.AddReceiveCallback(std::bind(
-        OnRecvControlStateActual, std::placeholders::_1, std::placeholders::_2,
-        std::placeholders::_3, std::placeholders::_4,
-        controlStatePlot_comPos.get(), controlStatePlot_comVel.get(),
-        controlStatePlot_orient.get(), controlStatePlot_angVel.get(),
-        controlStatePlot_contact.get()));
-    sub_control_state_des.AddReceiveCallback(std::bind(
-        OnRecvControlStateDesired, std::placeholders::_1, std::placeholders::_2,
-        std::placeholders::_3, std::placeholders::_4,
-        controlStatePlot_comPos.get(), controlStatePlot_comVel.get(),
-        controlStatePlot_orient.get(), controlStatePlot_angVel.get()));
+    plotDataHandler.SetPlotContact(controlStatePlot_contact.get());
 #endif
 
 
@@ -446,6 +381,7 @@ int main(int argc, char *argv[])
     cpgStatePlot_phi->AddGraph("Phi.a4", LineColor<13>());
     cpgStatePlot_phi->show();
     plotToolbox.AddPlot(cpgStatePlot_phi.get());
+    plotDataHandler.SetPlotCpgPhi(cpgStatePlot_phi.get());
 #endif
 
     std::unique_ptr<PlotWindow> cpgStatePlot_cpg;
@@ -458,16 +394,9 @@ int main(int argc, char *argv[])
     cpgStatePlot_cpg->AddGraph("Cpg.a4", LineColor<13>());
     cpgStatePlot_cpg->show();
     plotToolbox.AddPlot(cpgStatePlot_cpg.get());
+    plotDataHandler.SetPlotCpgCpg(cpgStatePlot_cpg.get());
 #endif
 
-#ifdef USE_TRANSPORT_ECAL
-    eCAL::protobuf::CSubscriber<dtproto::quadip::CpgStateTimeStamped>
-        sub_cpg_state("CpgState");
-    sub_cpg_state.AddReceiveCallback(
-        std::bind(OnRecvCpgState, std::placeholders::_1, std::placeholders::_2,
-                  std::placeholders::_3, std::placeholders::_4,
-                  cpgStatePlot_phi.get(), cpgStatePlot_cpg.get()));
-#endif
 
     /**
      * @brief jointStatePlot
@@ -486,6 +415,7 @@ int main(int argc, char *argv[])
     }
     jointStatePlot_pos->show();
     plotToolbox.AddPlot(jointStatePlot_pos.get());
+    plotDataHandler.SetPlotJointPos(jointStatePlot_pos.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_vel;
@@ -498,6 +428,7 @@ int main(int argc, char *argv[])
     }
     jointStatePlot_vel->show();
     plotToolbox.AddPlot(jointStatePlot_vel.get());
+    plotDataHandler.SetPlotJointVel(jointStatePlot_vel.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_acc;
@@ -511,6 +442,7 @@ int main(int argc, char *argv[])
     }
     jointStatePlot_acc->show();
     plotToolbox.AddPlot(jointStatePlot_acc.get());
+    plotDataHandler.SetPlotJointAcc(jointStatePlot_acc.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_tau;
@@ -524,6 +456,7 @@ int main(int argc, char *argv[])
     }
     jointStatePlot_tau->show();
     plotToolbox.AddPlot(jointStatePlot_tau.get());
+    plotDataHandler.SetPlotJointTau(jointStatePlot_tau.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_absEnc;
@@ -535,6 +468,7 @@ int main(int argc, char *argv[])
     }
     jointStatePlot_absEnc->show();
     plotToolbox.AddPlot(jointStatePlot_absEnc.get());
+    plotDataHandler.SetPlotAbsEnc(jointStatePlot_absEnc.get());
 #endif
 
     std::unique_ptr<PlotWindow> jointStatePlot_incEnc;
@@ -546,18 +480,27 @@ int main(int argc, char *argv[])
     }
     jointStatePlot_incEnc->show();
     plotToolbox.AddPlot(jointStatePlot_incEnc.get());
+    plotDataHandler.SetPlotIncEnc(jointStatePlot_incEnc.get());
 #endif
 
+
+    // 데이터 연결
 #ifdef USE_TRANSPORT_ECAL
-    eCAL::protobuf::CSubscriber<dtproto::quadip::JointStateTimeStamped>
-        sub_joint_state("JointState");
-    sub_joint_state.AddReceiveCallback(std::bind(
-        OnRecvJointState, std::placeholders::_1, std::placeholders::_2,
-        std::placeholders::_3, std::placeholders::_4, jointStatePlot_pos.get(),
-        jointStatePlot_vel.get(), jointStatePlot_acc.get(),
-        jointStatePlot_tau.get(), jointStatePlot_absEnc.get(),
-        jointStatePlot_incEnc.get()));
+    eCAL::protobuf::CSubscriber<dtproto::quadip::QuadIpStateTimeStamped>
+        sub_quadip_state("RobotState");
+    sub_quadip_state.AddReceiveCallback(std::bind(
+        &DataClient::OnRecvQuadIpStateTimeStamped, &plotDataHandler,
+        std::placeholders::_1, std::placeholders::_2,
+        std::placeholders::_3, std::placeholders::_4));
 #endif
+#ifdef USE_TRANSPORT_GRPC
+    dtCore::dtStateSubscriberGrpc<dtproto::quadip::QuadIpStateTimeStamped> sub_quadip_state("RobotState", "0.0.0.0:50051");
+
+    std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [](dtproto::quadip::QuadIpStateTimeStamped& msg) {
+    };
+    sub_quadip_state.RegMessageHandler(handler);
+#endif
+
 
     // Start main application(event-loop)
     return app.exec();
