@@ -25,37 +25,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++14
 
 SOURCES += \
-        QuadIP.pb.cc \
-        csvfile.cpp \
-        datasource.cpp \
-        datasourceemul.cpp \
-        itemviewdelegate.cpp \
-        main.cpp \
-        mainwindow.cpp \
-        plotcentralwidget.cpp \
-        plotconfig.cpp \
-        plotwidget.cpp \
-        plotwindow.cpp \
-        qcustomplot.cpp
+        src/QuadIP.pb.cc \
+        src/csvfile.cpp \
+        src/datasource.cpp \
+        src/datasourceemul.cpp \
+        src/itemviewdelegate.cpp \
+        src/main.cpp \
+        src/mainwindow.cpp \
+        src/plotcentralwidget.cpp \
+        src/plotconfig.cpp \
+        src/plotwidget.cpp \
+        src/plotwindow.cpp \
+        src/qcustomplot.cpp
 
 HEADERS += \
-        QuadIP.pb.h \
-        csvfile.h \
-        datasource.h \
-        datasourceemul.h \
-        itemviewdelegate.h \
-        mainwindow.h \
-        pconstants.h \
-        plotcentralwidget.h \
-        plotconfig.h \
-        plotwidget.h \
-        plotwindow.h \
-        qcustomplot.h
+        src/QuadIP.pb.h \
+        src/csvfile.h \
+        src/datasource.h \
+        src/datasourceemul.h \
+        src/itemviewdelegate.h \
+        src/mainwindow.h \
+        src/pconstants.h \
+        src/plotcentralwidget.h \
+        src/plotconfig.h \
+        src/plotwidget.h \
+        src/plotwindow.h \
+        src/qcustomplot.h
 
 FORMS += \
-        mainwindow.ui \
-        plotconfig.ui \
-        plotwindow.ui
+        src/mainwindow.ui \
+        src/plotconfig.ui \
+        src/plotwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -63,7 +63,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    artplot.qrc
+    src/artplot.qrc
 
 
 
@@ -79,7 +79,7 @@ unix: LIBS += -L/usr/local/lib/
 unix: LIBS += -L/home/sean/.local/lib/
 unix: LIBS += -lprotobuf
 unix: LIBS += -lgrpc++
-unix: LIBS += -lgrpc++_reflection
+#unix: LIBS += -lgrpc++_reflection
 unix: LIBS += -ldtproto
 unix: LIBS += -ldtproto_grpc
 unix: LIBS += -lecal_core

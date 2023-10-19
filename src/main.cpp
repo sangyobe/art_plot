@@ -496,7 +496,9 @@ int main(int argc, char *argv[])
 #ifdef USE_TRANSPORT_GRPC
     dtCore::dtStateSubscriberGrpc<dtproto::quadip::QuadIpStateTimeStamped> sub_quadip_state("RobotState", "0.0.0.0:50051");
 
-    std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [](dtproto::quadip::QuadIpStateTimeStamped& msg) {
+    std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [&plotDataHandler](dtproto::quadip::QuadIpStateTimeStamped& msg) {\
+        static long long seq = 0;
+        plotDataHandler.OnRecvQuadIpStateTimeStamped("", msg, 0, seq++);
     };
     sub_quadip_state.RegMessageHandler(handler);
 #endif
