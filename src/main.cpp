@@ -8,17 +8,20 @@
 #define USE_TRANSPORT_GRPC
 //#define PRINT_PUB_SUB_INFO
 
-#define ENABLE_COM_POS_PLOT
+//#define ROBOT_QUADIP
+#define ROBOT_WOLY
+
+//#define ENABLE_COM_POS_PLOT
 //#define ENABLE_COM_VEL_PLOT
 //#define ENABLE_ORIENTATION_PLOT
 //#define ENABLE_ANGULAR_VEL_PLOT
 //#define ENABLE_FOOT_CONTACT_PLOT
-#define ENABLE_CPG_PHI_PLOT
+//#define ENABLE_CPG_PHI_PLOT
 //#define ENABLE_CPG_CPG_PLOT
 #define ENABLE_JOINT_POSISION_PLOT
-//#define ENABLE_JOINT_VELOCITY_PLOT
+#define ENABLE_JOINT_VELOCITY_PLOT
 //#define ENABLE_JOINT_ACCELERATION_PLOT
-//#define ENABLE_JOINT_TORQUE_PLOT
+#define ENABLE_JOINT_TORQUE_PLOT
 //#define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 //#define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 
@@ -32,13 +35,114 @@
 #include <dtCore/src/dtDAQ/grpc/dtStateSubscriberGrpc.hpp>
 #endif
 
+#ifdef ROBOT_QUADIP
 #include "QuadIP.pb.h"
+constexpr int jdof = 12;
+#endif
+#ifdef ROBOT_WOLY
+#include "Woly.pb.h"
+constexpr int jdof = 16;
+#endif
 
 
 class DataClient {
 public:
     DataClient() {}
 
+#ifdef ROBOT_WOLY
+    void OnRecvWolyStateTimeStamped(const char *topic_name,
+                                      const dtproto::woly::WolyStateTimeStamped &state,
+                                      const long long time, const long long clock)
+    {
+        double curTime = clock * 1e-3;
+        OnRecvWolyState(curTime, state.state());
+
+#ifdef PRINT_PUB_SUB_INFO
+        qDebug() << "------------------------------------------";
+        qDebug() << " QuadIP State ";
+        qDebug() << "------------------------------------------";
+        qDebug() << "topic name   : " << topic_name;
+        qDebug() << "topic time   : " << time;
+        qDebug() << "topic clock  : " << clock;
+        qDebug() << "------------------------------------------";
+        qDebug() << " Header ";
+        qDebug() << "------------------------------------------";
+        qDebug() << "seq          : " << state.header().seq();
+        qDebug() << "timestamp(s) : " << curTime;
+        qDebug() << "------------------------------------------";
+        qDebug() << "";
+#else
+        Q_UNUSED(topic_name);
+        Q_UNUSED(state);
+        Q_UNUSED(time);
+        Q_UNUSED(clock);
+#endif // PRINT_PUB_SUB_INFO
+    }
+
+    void OnRecvWolyState(const double curTime, const dtproto::woly::WolyState &state)
+    {
+        //OnRecvCpgState(curTime, state.cpgstate());
+        //OnRecvControlStateActual(curTime, state.controlstateactual());
+        //OnRecvControlStateDesired(curTime, state.controlstatedesired());
+        OnRecvJointState(curTime, state.jointdata());
+    }
+
+    void OnRecvJointState(const double curTime, const dtproto::woly::JointData &state)
+    {
+        if (_plot_jointPos) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointPos->AddData(
+                    2*ji, curTime, state.joints(ji).despos_rad());
+                _plot_jointPos->AddData(
+                    2*ji+1, curTime, state.joints(ji).actpos_rad());
+            }
+            _plot_jointPos->DataUpdated(curTime);
+        }
+        if (_plot_jointVel) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointVel->AddData(
+                    2*ji, curTime, state.joints(ji).desvel_rps());
+                _plot_jointVel->AddData(
+                    2*ji+1, curTime, state.joints(ji).actvel_rps());
+            }
+            _plot_jointVel->DataUpdated(curTime);
+        }
+        if (_plot_jointAcc) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointAcc->AddData(
+                    2*ji, curTime, state.joints(ji).desacc_rpss());
+                _plot_jointAcc->AddData(
+                    2*ji+1, curTime, state.joints(ji).desacc_rpss());
+            }
+            _plot_jointAcc->DataUpdated(curTime);
+        }
+        if (_plot_jointTau) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_jointTau->AddData(
+                    2*ji, curTime, state.joints(ji).destorq_nm());
+                _plot_jointTau->AddData(
+                    2*ji+1, curTime, state.joints(ji).acttorq_nm());
+            }
+            _plot_jointTau->DataUpdated(curTime);
+        }
+        if (_plot_absEnc) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_absEnc->AddData(ji, curTime, state.joints(ji).abspos_cnt());
+            }
+            _plot_absEnc->DataUpdated(curTime);
+        }
+        if (_plot_incEnc) {
+            for (int ji = 0; ji < jdof; ji++) {
+                _plot_incEnc->AddData(ji, curTime, state.joints(ji).incpos_cnt());
+            }
+            _plot_incEnc->DataUpdated(curTime);
+        }
+    }
+#endif
+
+
+#ifdef ROBOT_QUADIP
+public:
     void OnRecvQuadIpStateTimeStamped(const char *topic_name,
                                       const dtproto::quadip::QuadIpStateTimeStamped &state,
                                       const long long time, const long long clock)
@@ -187,40 +291,39 @@ public:
 
     void OnRecvJointState(const double curTime, const dtproto::quadip::JointState &state)
     {
-        constexpr int jdof = 12;
         if (_plot_jointPos) {
             for (int ji = 0; ji < jdof; ji++) {
                 _plot_jointPos->AddData(
-                    ji, curTime, state.joint_state_des(ji).position());
+                    2*ji, curTime, state.joint_state_des(ji).position());
                 _plot_jointPos->AddData(
-                    ji + jdof, curTime, state.joint_state_act(ji).position());
+                    2*ji+1, curTime, state.joint_state_act(ji).position());
             }
             _plot_jointPos->DataUpdated(curTime);
         }
         if (_plot_jointVel) {
             for (int ji = 0; ji < jdof; ji++) {
                 _plot_jointVel->AddData(
-                    ji, curTime, state.joint_state_des(ji).velocity());
+                    2*ji, curTime, state.joint_state_des(ji).velocity());
                 _plot_jointVel->AddData(
-                    ji + jdof, curTime, state.joint_state_act(ji).velocity());
+                    2*ji+1, curTime, state.joint_state_act(ji).velocity());
             }
             _plot_jointVel->DataUpdated(curTime);
         }
         if (_plot_jointAcc) {
             for (int ji = 0; ji < jdof; ji++) {
                 _plot_jointAcc->AddData(
-                    ji, curTime, state.joint_state_des(ji).acceleration());
+                    2*ji, curTime, state.joint_state_des(ji).acceleration());
                 _plot_jointAcc->AddData(
-                    ji + jdof, curTime, state.joint_state_act(ji).acceleration());
+                    2*ji+1, curTime, state.joint_state_act(ji).acceleration());
             }
             _plot_jointAcc->DataUpdated(curTime);
         }
         if (_plot_jointTau) {
             for (int ji = 0; ji < jdof; ji++) {
-                _plot_jointTau->AddData(ji, curTime,
-                                  state.joint_state_des(ji).torque());
                 _plot_jointTau->AddData(
-                    ji + jdof, curTime, state.joint_state_act(ji).torque());
+                    2*ji, curTime, state.joint_state_des(ji).torque());
+                _plot_jointTau->AddData(
+                    2*ji+1, curTime, state.joint_state_act(ji).torque());
             }
             _plot_jointTau->DataUpdated(curTime);
         }
@@ -237,6 +340,7 @@ public:
             _plot_incEnc->DataUpdated(curTime);
         }
     }
+#endif
 
 public:
     void SetPlotComPos(PlotWindow* wnd) { _plot_comPos = wnd; }
@@ -402,9 +506,6 @@ int main(int argc, char *argv[])
      * @brief jointStatePlot
      * JointStateTimestamp Plot
      */
-    constexpr int jdof = 12;
-    Q_UNUSED(jdof);
-
     std::unique_ptr<PlotWindow> jointStatePlot_pos;
 #ifdef ENABLE_JOINT_POSISION_PLOT
     jointStatePlot_pos = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
@@ -494,15 +595,25 @@ int main(int argc, char *argv[])
         std::placeholders::_3, std::placeholders::_4));
 #endif
 #ifdef USE_TRANSPORT_GRPC
+#ifdef ROBOT_QUADIP
     dtCore::dtStateSubscriberGrpc<dtproto::quadip::QuadIpStateTimeStamped> sub_quadip_state("RobotState", "0.0.0.0:50051");
 
-    std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [&plotDataHandler](dtproto::quadip::QuadIpStateTimeStamped& msg) {\
+    std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [&plotDataHandler](dtproto::quadip::QuadIpStateTimeStamped& msg) {
         static long long seq = 0;
         plotDataHandler.OnRecvQuadIpStateTimeStamped("", msg, 0, seq++);
     };
     sub_quadip_state.RegMessageHandler(handler);
 #endif
+#ifdef ROBOT_WOLY
+    dtCore::dtStateSubscriberGrpc<dtproto::woly::WolyStateTimeStamped> sub_woly_state("RobotState", "0.0.0.0:50051");
 
+    std::function<void(dtproto::woly::WolyStateTimeStamped&)> handler = [&plotDataHandler](dtproto::woly::WolyStateTimeStamped& msg) {
+        static long long seq = 0;
+        plotDataHandler.OnRecvWolyStateTimeStamped("", msg, 0, seq++);
+    };
+    sub_woly_state.RegMessageHandler(handler);
+#endif
+#endif
 
     // Start main application(event-loop)
     return app.exec();
