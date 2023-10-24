@@ -34,6 +34,8 @@
 #include "dtProto/geometry_msgs/Point.pb.h"
 #include "dtProto/geometry_msgs/Wrench.pb.h"
 #include "dtProto/geometry_msgs/Orientation.pb.h"
+#include "dtProto/geometry_msgs/Matrix.pb.h"
+#include "dtProto/geometry_msgs/Vector.pb.h"
 #include "dtProto/sensor_msgs/Imu.pb.h"
 #include "dtProto/sensor_msgs/Joy.pb.h"
 // @@protoc_insertion_point(includes)
@@ -52,6 +54,9 @@ struct TableStruct_Woly_2eproto {
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Woly_2eproto;
 namespace dtproto {
 namespace woly {
+class ControlState;
+struct ControlStateDefaultTypeInternal;
+extern ControlStateDefaultTypeInternal _ControlState_default_instance_;
 class JointData;
 struct JointDataDefaultTypeInternal;
 extern JointDataDefaultTypeInternal _JointData_default_instance_;
@@ -70,6 +75,7 @@ extern WolyStateTimeStampedDefaultTypeInternal _WolyStateTimeStamped_default_ins
 }  // namespace woly
 }  // namespace dtproto
 PROTOBUF_NAMESPACE_OPEN
+template<> ::dtproto::woly::ControlState* Arena::CreateMaybeMessage<::dtproto::woly::ControlState>(Arena*);
 template<> ::dtproto::woly::JointData* Arena::CreateMaybeMessage<::dtproto::woly::JointData>(Arena*);
 template<> ::dtproto::woly::JointState* Arena::CreateMaybeMessage<::dtproto::woly::JointState>(Arena*);
 template<> ::dtproto::woly::TaskState* Arena::CreateMaybeMessage<::dtproto::woly::TaskState>(Arena*);
@@ -861,6 +867,463 @@ class JointData final :
 };
 // -------------------------------------------------------------------
 
+class ControlState final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dtproto.woly.ControlState) */ {
+ public:
+  inline ControlState() : ControlState(nullptr) {}
+  ~ControlState() override;
+  explicit PROTOBUF_CONSTEXPR ControlState(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ControlState(const ControlState& from);
+  ControlState(ControlState&& from) noexcept
+    : ControlState() {
+    *this = ::std::move(from);
+  }
+
+  inline ControlState& operator=(const ControlState& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ControlState& operator=(ControlState&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ControlState& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ControlState* internal_default_instance() {
+    return reinterpret_cast<const ControlState*>(
+               &_ControlState_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(ControlState& a, ControlState& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ControlState* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ControlState* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ControlState* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ControlState>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ControlState& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const ControlState& from) {
+    ControlState::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ControlState* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dtproto.woly.ControlState";
+  }
+  protected:
+  explicit ControlState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPosWorld2FootWrtWorldFieldNumber = 9,
+    kVelWorld2FootWrtWorldFieldNumber = 10,
+    kPosBody2FootWrtWorldFieldNumber = 11,
+    kVelBody2FootWrtWorldFieldNumber = 12,
+    kPosBody2FootWrtBodyFieldNumber = 13,
+    kVelBody2FootWrtBodyFieldNumber = 14,
+    kPosWorld2ComWrtWorldFieldNumber = 1,
+    kVelWorld2ComWrtWorldFieldNumber = 2,
+    kPosWorld2BodyWrtWorldFieldNumber = 3,
+    kVelWorld2BodyWrtWorldFieldNumber = 4,
+    kEulerAngleBodyWrtWorldFieldNumber = 5,
+    kAngularVelBodyWrtWorldFieldNumber = 6,
+    kAngularVelBodyWrtBodyFieldNumber = 7,
+    kAngularMomentumBodyWrtWorldFieldNumber = 8,
+    kRotBodyWrtWorldFieldNumber = 15,
+    kContactFieldNumber = 16,
+  };
+  // repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
+  int posworld2footwrtworld_size() const;
+  private:
+  int _internal_posworld2footwrtworld_size() const;
+  public:
+  void clear_posworld2footwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_posworld2footwrtworld(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_posworld2footwrtworld();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_posworld2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_posworld2footwrtworld();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& posworld2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_posworld2footwrtworld();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      posworld2footwrtworld() const;
+
+  // repeated .dtproto.geometry_msgs.Point3d velWorld2FootWrtWorld = 10;
+  int velworld2footwrtworld_size() const;
+  private:
+  int _internal_velworld2footwrtworld_size() const;
+  public:
+  void clear_velworld2footwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_velworld2footwrtworld(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_velworld2footwrtworld();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_velworld2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_velworld2footwrtworld();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& velworld2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_velworld2footwrtworld();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      velworld2footwrtworld() const;
+
+  // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtWorld = 11;
+  int posbody2footwrtworld_size() const;
+  private:
+  int _internal_posbody2footwrtworld_size() const;
+  public:
+  void clear_posbody2footwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_posbody2footwrtworld(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_posbody2footwrtworld();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_posbody2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_posbody2footwrtworld();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& posbody2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_posbody2footwrtworld();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      posbody2footwrtworld() const;
+
+  // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtWorld = 12;
+  int velbody2footwrtworld_size() const;
+  private:
+  int _internal_velbody2footwrtworld_size() const;
+  public:
+  void clear_velbody2footwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_velbody2footwrtworld(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_velbody2footwrtworld();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_velbody2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_velbody2footwrtworld();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& velbody2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_velbody2footwrtworld();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      velbody2footwrtworld() const;
+
+  // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtBody = 13;
+  int posbody2footwrtbody_size() const;
+  private:
+  int _internal_posbody2footwrtbody_size() const;
+  public:
+  void clear_posbody2footwrtbody();
+  ::dtproto::geometry_msgs::Point3d* mutable_posbody2footwrtbody(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_posbody2footwrtbody();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_posbody2footwrtbody(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_posbody2footwrtbody();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& posbody2footwrtbody(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_posbody2footwrtbody();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      posbody2footwrtbody() const;
+
+  // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtBody = 14;
+  int velbody2footwrtbody_size() const;
+  private:
+  int _internal_velbody2footwrtbody_size() const;
+  public:
+  void clear_velbody2footwrtbody();
+  ::dtproto::geometry_msgs::Point3d* mutable_velbody2footwrtbody(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_velbody2footwrtbody();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_velbody2footwrtbody(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_velbody2footwrtbody();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& velbody2footwrtbody(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_velbody2footwrtbody();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      velbody2footwrtbody() const;
+
+  // .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
+  bool has_posworld2comwrtworld() const;
+  private:
+  bool _internal_has_posworld2comwrtworld() const;
+  public:
+  void clear_posworld2comwrtworld();
+  const ::dtproto::geometry_msgs::Point3d& posworld2comwrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_posworld2comwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_posworld2comwrtworld();
+  void set_allocated_posworld2comwrtworld(::dtproto::geometry_msgs::Point3d* posworld2comwrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_posworld2comwrtworld() const;
+  ::dtproto::geometry_msgs::Point3d* _internal_mutable_posworld2comwrtworld();
+  public:
+  void unsafe_arena_set_allocated_posworld2comwrtworld(
+      ::dtproto::geometry_msgs::Point3d* posworld2comwrtworld);
+  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_posworld2comwrtworld();
+
+  // .dtproto.geometry_msgs.Point3d velWorld2ComWrtWorld = 2;
+  bool has_velworld2comwrtworld() const;
+  private:
+  bool _internal_has_velworld2comwrtworld() const;
+  public:
+  void clear_velworld2comwrtworld();
+  const ::dtproto::geometry_msgs::Point3d& velworld2comwrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_velworld2comwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_velworld2comwrtworld();
+  void set_allocated_velworld2comwrtworld(::dtproto::geometry_msgs::Point3d* velworld2comwrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_velworld2comwrtworld() const;
+  ::dtproto::geometry_msgs::Point3d* _internal_mutable_velworld2comwrtworld();
+  public:
+  void unsafe_arena_set_allocated_velworld2comwrtworld(
+      ::dtproto::geometry_msgs::Point3d* velworld2comwrtworld);
+  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_velworld2comwrtworld();
+
+  // .dtproto.geometry_msgs.Point3d posWorld2BodyWrtWorld = 3;
+  bool has_posworld2bodywrtworld() const;
+  private:
+  bool _internal_has_posworld2bodywrtworld() const;
+  public:
+  void clear_posworld2bodywrtworld();
+  const ::dtproto::geometry_msgs::Point3d& posworld2bodywrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_posworld2bodywrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_posworld2bodywrtworld();
+  void set_allocated_posworld2bodywrtworld(::dtproto::geometry_msgs::Point3d* posworld2bodywrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_posworld2bodywrtworld() const;
+  ::dtproto::geometry_msgs::Point3d* _internal_mutable_posworld2bodywrtworld();
+  public:
+  void unsafe_arena_set_allocated_posworld2bodywrtworld(
+      ::dtproto::geometry_msgs::Point3d* posworld2bodywrtworld);
+  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_posworld2bodywrtworld();
+
+  // .dtproto.geometry_msgs.Point3d velWorld2BodyWrtWorld = 4;
+  bool has_velworld2bodywrtworld() const;
+  private:
+  bool _internal_has_velworld2bodywrtworld() const;
+  public:
+  void clear_velworld2bodywrtworld();
+  const ::dtproto::geometry_msgs::Point3d& velworld2bodywrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_velworld2bodywrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_velworld2bodywrtworld();
+  void set_allocated_velworld2bodywrtworld(::dtproto::geometry_msgs::Point3d* velworld2bodywrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_velworld2bodywrtworld() const;
+  ::dtproto::geometry_msgs::Point3d* _internal_mutable_velworld2bodywrtworld();
+  public:
+  void unsafe_arena_set_allocated_velworld2bodywrtworld(
+      ::dtproto::geometry_msgs::Point3d* velworld2bodywrtworld);
+  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_velworld2bodywrtworld();
+
+  // .dtproto.geometry_msgs.Euler eulerAngleBodyWrtWorld = 5;
+  bool has_euleranglebodywrtworld() const;
+  private:
+  bool _internal_has_euleranglebodywrtworld() const;
+  public:
+  void clear_euleranglebodywrtworld();
+  const ::dtproto::geometry_msgs::Euler& euleranglebodywrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Euler* release_euleranglebodywrtworld();
+  ::dtproto::geometry_msgs::Euler* mutable_euleranglebodywrtworld();
+  void set_allocated_euleranglebodywrtworld(::dtproto::geometry_msgs::Euler* euleranglebodywrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Euler& _internal_euleranglebodywrtworld() const;
+  ::dtproto::geometry_msgs::Euler* _internal_mutable_euleranglebodywrtworld();
+  public:
+  void unsafe_arena_set_allocated_euleranglebodywrtworld(
+      ::dtproto::geometry_msgs::Euler* euleranglebodywrtworld);
+  ::dtproto::geometry_msgs::Euler* unsafe_arena_release_euleranglebodywrtworld();
+
+  // .dtproto.geometry_msgs.Euler angularVelBodyWrtWorld = 6;
+  bool has_angularvelbodywrtworld() const;
+  private:
+  bool _internal_has_angularvelbodywrtworld() const;
+  public:
+  void clear_angularvelbodywrtworld();
+  const ::dtproto::geometry_msgs::Euler& angularvelbodywrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Euler* release_angularvelbodywrtworld();
+  ::dtproto::geometry_msgs::Euler* mutable_angularvelbodywrtworld();
+  void set_allocated_angularvelbodywrtworld(::dtproto::geometry_msgs::Euler* angularvelbodywrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Euler& _internal_angularvelbodywrtworld() const;
+  ::dtproto::geometry_msgs::Euler* _internal_mutable_angularvelbodywrtworld();
+  public:
+  void unsafe_arena_set_allocated_angularvelbodywrtworld(
+      ::dtproto::geometry_msgs::Euler* angularvelbodywrtworld);
+  ::dtproto::geometry_msgs::Euler* unsafe_arena_release_angularvelbodywrtworld();
+
+  // .dtproto.geometry_msgs.Euler angularVelBodyWrtBody = 7;
+  bool has_angularvelbodywrtbody() const;
+  private:
+  bool _internal_has_angularvelbodywrtbody() const;
+  public:
+  void clear_angularvelbodywrtbody();
+  const ::dtproto::geometry_msgs::Euler& angularvelbodywrtbody() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Euler* release_angularvelbodywrtbody();
+  ::dtproto::geometry_msgs::Euler* mutable_angularvelbodywrtbody();
+  void set_allocated_angularvelbodywrtbody(::dtproto::geometry_msgs::Euler* angularvelbodywrtbody);
+  private:
+  const ::dtproto::geometry_msgs::Euler& _internal_angularvelbodywrtbody() const;
+  ::dtproto::geometry_msgs::Euler* _internal_mutable_angularvelbodywrtbody();
+  public:
+  void unsafe_arena_set_allocated_angularvelbodywrtbody(
+      ::dtproto::geometry_msgs::Euler* angularvelbodywrtbody);
+  ::dtproto::geometry_msgs::Euler* unsafe_arena_release_angularvelbodywrtbody();
+
+  // .dtproto.geometry_msgs.Point3d angularMomentumBodyWrtWorld = 8;
+  bool has_angularmomentumbodywrtworld() const;
+  private:
+  bool _internal_has_angularmomentumbodywrtworld() const;
+  public:
+  void clear_angularmomentumbodywrtworld();
+  const ::dtproto::geometry_msgs::Point3d& angularmomentumbodywrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_angularmomentumbodywrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_angularmomentumbodywrtworld();
+  void set_allocated_angularmomentumbodywrtworld(::dtproto::geometry_msgs::Point3d* angularmomentumbodywrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_angularmomentumbodywrtworld() const;
+  ::dtproto::geometry_msgs::Point3d* _internal_mutable_angularmomentumbodywrtworld();
+  public:
+  void unsafe_arena_set_allocated_angularmomentumbodywrtworld(
+      ::dtproto::geometry_msgs::Point3d* angularmomentumbodywrtworld);
+  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_angularmomentumbodywrtworld();
+
+  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+  bool has_rotbodywrtworld() const;
+  private:
+  bool _internal_has_rotbodywrtworld() const;
+  public:
+  void clear_rotbodywrtworld();
+  const ::dtproto::geometry_msgs::Matrix3d& rotbodywrtworld() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Matrix3d* release_rotbodywrtworld();
+  ::dtproto::geometry_msgs::Matrix3d* mutable_rotbodywrtworld();
+  void set_allocated_rotbodywrtworld(::dtproto::geometry_msgs::Matrix3d* rotbodywrtworld);
+  private:
+  const ::dtproto::geometry_msgs::Matrix3d& _internal_rotbodywrtworld() const;
+  ::dtproto::geometry_msgs::Matrix3d* _internal_mutable_rotbodywrtworld();
+  public:
+  void unsafe_arena_set_allocated_rotbodywrtworld(
+      ::dtproto::geometry_msgs::Matrix3d* rotbodywrtworld);
+  ::dtproto::geometry_msgs::Matrix3d* unsafe_arena_release_rotbodywrtworld();
+
+  // .dtproto.geometry_msgs.Vector4b contact = 16;
+  bool has_contact() const;
+  private:
+  bool _internal_has_contact() const;
+  public:
+  void clear_contact();
+  const ::dtproto::geometry_msgs::Vector4b& contact() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4b* release_contact();
+  ::dtproto::geometry_msgs::Vector4b* mutable_contact();
+  void set_allocated_contact(::dtproto::geometry_msgs::Vector4b* contact);
+  private:
+  const ::dtproto::geometry_msgs::Vector4b& _internal_contact() const;
+  ::dtproto::geometry_msgs::Vector4b* _internal_mutable_contact();
+  public:
+  void unsafe_arena_set_allocated_contact(
+      ::dtproto::geometry_msgs::Vector4b* contact);
+  ::dtproto::geometry_msgs::Vector4b* unsafe_arena_release_contact();
+
+  // @@protoc_insertion_point(class_scope:dtproto.woly.ControlState)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > posworld2footwrtworld_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > velworld2footwrtworld_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > posbody2footwrtworld_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > velbody2footwrtworld_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > posbody2footwrtbody_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > velbody2footwrtbody_;
+    ::dtproto::geometry_msgs::Point3d* posworld2comwrtworld_;
+    ::dtproto::geometry_msgs::Point3d* velworld2comwrtworld_;
+    ::dtproto::geometry_msgs::Point3d* posworld2bodywrtworld_;
+    ::dtproto::geometry_msgs::Point3d* velworld2bodywrtworld_;
+    ::dtproto::geometry_msgs::Euler* euleranglebodywrtworld_;
+    ::dtproto::geometry_msgs::Euler* angularvelbodywrtworld_;
+    ::dtproto::geometry_msgs::Euler* angularvelbodywrtbody_;
+    ::dtproto::geometry_msgs::Point3d* angularmomentumbodywrtworld_;
+    ::dtproto::geometry_msgs::Matrix3d* rotbodywrtworld_;
+    ::dtproto::geometry_msgs::Vector4b* contact_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_Woly_2eproto;
+};
+// -------------------------------------------------------------------
+
 class WolyState final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dtproto.woly.WolyState) */ {
  public:
@@ -909,7 +1372,7 @@ class WolyState final :
                &_WolyState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(WolyState& a, WolyState& b) {
     a.Swap(&b);
@@ -987,6 +1450,8 @@ class WolyState final :
     kTaskStateActualFieldNumber = 3,
     kImuFieldNumber = 4,
     kJoystickFieldNumber = 5,
+    kControlStateDesiredFieldNumber = 7,
+    kControlStateActualFieldNumber = 8,
   };
   // .dtproto.woly.JointData jointData = 1;
   bool has_jointdata() const;
@@ -1078,6 +1543,42 @@ class WolyState final :
       ::dtproto::sensor_msgs::Joy* joystick);
   ::dtproto::sensor_msgs::Joy* unsafe_arena_release_joystick();
 
+  // .dtproto.woly.ControlState controlStateDesired = 7;
+  bool has_controlstatedesired() const;
+  private:
+  bool _internal_has_controlstatedesired() const;
+  public:
+  void clear_controlstatedesired();
+  const ::dtproto::woly::ControlState& controlstatedesired() const;
+  PROTOBUF_NODISCARD ::dtproto::woly::ControlState* release_controlstatedesired();
+  ::dtproto::woly::ControlState* mutable_controlstatedesired();
+  void set_allocated_controlstatedesired(::dtproto::woly::ControlState* controlstatedesired);
+  private:
+  const ::dtproto::woly::ControlState& _internal_controlstatedesired() const;
+  ::dtproto::woly::ControlState* _internal_mutable_controlstatedesired();
+  public:
+  void unsafe_arena_set_allocated_controlstatedesired(
+      ::dtproto::woly::ControlState* controlstatedesired);
+  ::dtproto::woly::ControlState* unsafe_arena_release_controlstatedesired();
+
+  // .dtproto.woly.ControlState controlStateActual = 8;
+  bool has_controlstateactual() const;
+  private:
+  bool _internal_has_controlstateactual() const;
+  public:
+  void clear_controlstateactual();
+  const ::dtproto::woly::ControlState& controlstateactual() const;
+  PROTOBUF_NODISCARD ::dtproto::woly::ControlState* release_controlstateactual();
+  ::dtproto::woly::ControlState* mutable_controlstateactual();
+  void set_allocated_controlstateactual(::dtproto::woly::ControlState* controlstateactual);
+  private:
+  const ::dtproto::woly::ControlState& _internal_controlstateactual() const;
+  ::dtproto::woly::ControlState* _internal_mutable_controlstateactual();
+  public:
+  void unsafe_arena_set_allocated_controlstateactual(
+      ::dtproto::woly::ControlState* controlstateactual);
+  ::dtproto::woly::ControlState* unsafe_arena_release_controlstateactual();
+
   // @@protoc_insertion_point(class_scope:dtproto.woly.WolyState)
  private:
   class _Internal;
@@ -1091,6 +1592,8 @@ class WolyState final :
     ::dtproto::woly::TaskState* taskstateactual_;
     ::dtproto::sensor_msgs::Imu* imu_;
     ::dtproto::sensor_msgs::Joy* joystick_;
+    ::dtproto::woly::ControlState* controlstatedesired_;
+    ::dtproto::woly::ControlState* controlstateactual_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1146,7 +1649,7 @@ class WolyStateTimeStamped final :
                &_WolyStateTimeStamped_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(WolyStateTimeStamped& a, WolyStateTimeStamped& b) {
     a.Swap(&b);
@@ -2309,6 +2812,1082 @@ JointData::joints() const {
 
 // -------------------------------------------------------------------
 
+// ControlState
+
+// .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
+inline bool ControlState::_internal_has_posworld2comwrtworld() const {
+  return this != internal_default_instance() && _impl_.posworld2comwrtworld_ != nullptr;
+}
+inline bool ControlState::has_posworld2comwrtworld() const {
+  return _internal_has_posworld2comwrtworld();
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_posworld2comwrtworld() const {
+  const ::dtproto::geometry_msgs::Point3d* p = _impl_.posworld2comwrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
+      ::dtproto::geometry_msgs::_Point3d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::posworld2comwrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.posWorld2ComWrtWorld)
+  return _internal_posworld2comwrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_posworld2comwrtworld(
+    ::dtproto::geometry_msgs::Point3d* posworld2comwrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.posworld2comwrtworld_);
+  }
+  _impl_.posworld2comwrtworld_ = posworld2comwrtworld;
+  if (posworld2comwrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.posWorld2ComWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::release_posworld2comwrtworld() {
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.posworld2comwrtworld_;
+  _impl_.posworld2comwrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::unsafe_arena_release_posworld2comwrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.posWorld2ComWrtWorld)
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.posworld2comwrtworld_;
+  _impl_.posworld2comwrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_mutable_posworld2comwrtworld() {
+  
+  if (_impl_.posworld2comwrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
+    _impl_.posworld2comwrtworld_ = p;
+  }
+  return _impl_.posworld2comwrtworld_;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_posworld2comwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_posworld2comwrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.posWorld2ComWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_posworld2comwrtworld(::dtproto::geometry_msgs::Point3d* posworld2comwrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.posworld2comwrtworld_);
+  }
+  if (posworld2comwrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(posworld2comwrtworld));
+    if (message_arena != submessage_arena) {
+      posworld2comwrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, posworld2comwrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.posworld2comwrtworld_ = posworld2comwrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.posWorld2ComWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Point3d velWorld2ComWrtWorld = 2;
+inline bool ControlState::_internal_has_velworld2comwrtworld() const {
+  return this != internal_default_instance() && _impl_.velworld2comwrtworld_ != nullptr;
+}
+inline bool ControlState::has_velworld2comwrtworld() const {
+  return _internal_has_velworld2comwrtworld();
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_velworld2comwrtworld() const {
+  const ::dtproto::geometry_msgs::Point3d* p = _impl_.velworld2comwrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
+      ::dtproto::geometry_msgs::_Point3d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::velworld2comwrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.velWorld2ComWrtWorld)
+  return _internal_velworld2comwrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_velworld2comwrtworld(
+    ::dtproto::geometry_msgs::Point3d* velworld2comwrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.velworld2comwrtworld_);
+  }
+  _impl_.velworld2comwrtworld_ = velworld2comwrtworld;
+  if (velworld2comwrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.velWorld2ComWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::release_velworld2comwrtworld() {
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.velworld2comwrtworld_;
+  _impl_.velworld2comwrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::unsafe_arena_release_velworld2comwrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.velWorld2ComWrtWorld)
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.velworld2comwrtworld_;
+  _impl_.velworld2comwrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_mutable_velworld2comwrtworld() {
+  
+  if (_impl_.velworld2comwrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
+    _impl_.velworld2comwrtworld_ = p;
+  }
+  return _impl_.velworld2comwrtworld_;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_velworld2comwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_velworld2comwrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.velWorld2ComWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_velworld2comwrtworld(::dtproto::geometry_msgs::Point3d* velworld2comwrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.velworld2comwrtworld_);
+  }
+  if (velworld2comwrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(velworld2comwrtworld));
+    if (message_arena != submessage_arena) {
+      velworld2comwrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, velworld2comwrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.velworld2comwrtworld_ = velworld2comwrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.velWorld2ComWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Point3d posWorld2BodyWrtWorld = 3;
+inline bool ControlState::_internal_has_posworld2bodywrtworld() const {
+  return this != internal_default_instance() && _impl_.posworld2bodywrtworld_ != nullptr;
+}
+inline bool ControlState::has_posworld2bodywrtworld() const {
+  return _internal_has_posworld2bodywrtworld();
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_posworld2bodywrtworld() const {
+  const ::dtproto::geometry_msgs::Point3d* p = _impl_.posworld2bodywrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
+      ::dtproto::geometry_msgs::_Point3d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::posworld2bodywrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.posWorld2BodyWrtWorld)
+  return _internal_posworld2bodywrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_posworld2bodywrtworld(
+    ::dtproto::geometry_msgs::Point3d* posworld2bodywrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.posworld2bodywrtworld_);
+  }
+  _impl_.posworld2bodywrtworld_ = posworld2bodywrtworld;
+  if (posworld2bodywrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.posWorld2BodyWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::release_posworld2bodywrtworld() {
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.posworld2bodywrtworld_;
+  _impl_.posworld2bodywrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::unsafe_arena_release_posworld2bodywrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.posWorld2BodyWrtWorld)
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.posworld2bodywrtworld_;
+  _impl_.posworld2bodywrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_mutable_posworld2bodywrtworld() {
+  
+  if (_impl_.posworld2bodywrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
+    _impl_.posworld2bodywrtworld_ = p;
+  }
+  return _impl_.posworld2bodywrtworld_;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_posworld2bodywrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_posworld2bodywrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.posWorld2BodyWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_posworld2bodywrtworld(::dtproto::geometry_msgs::Point3d* posworld2bodywrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.posworld2bodywrtworld_);
+  }
+  if (posworld2bodywrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(posworld2bodywrtworld));
+    if (message_arena != submessage_arena) {
+      posworld2bodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, posworld2bodywrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.posworld2bodywrtworld_ = posworld2bodywrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.posWorld2BodyWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Point3d velWorld2BodyWrtWorld = 4;
+inline bool ControlState::_internal_has_velworld2bodywrtworld() const {
+  return this != internal_default_instance() && _impl_.velworld2bodywrtworld_ != nullptr;
+}
+inline bool ControlState::has_velworld2bodywrtworld() const {
+  return _internal_has_velworld2bodywrtworld();
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_velworld2bodywrtworld() const {
+  const ::dtproto::geometry_msgs::Point3d* p = _impl_.velworld2bodywrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
+      ::dtproto::geometry_msgs::_Point3d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::velworld2bodywrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.velWorld2BodyWrtWorld)
+  return _internal_velworld2bodywrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_velworld2bodywrtworld(
+    ::dtproto::geometry_msgs::Point3d* velworld2bodywrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.velworld2bodywrtworld_);
+  }
+  _impl_.velworld2bodywrtworld_ = velworld2bodywrtworld;
+  if (velworld2bodywrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.velWorld2BodyWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::release_velworld2bodywrtworld() {
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.velworld2bodywrtworld_;
+  _impl_.velworld2bodywrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::unsafe_arena_release_velworld2bodywrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.velWorld2BodyWrtWorld)
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.velworld2bodywrtworld_;
+  _impl_.velworld2bodywrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_mutable_velworld2bodywrtworld() {
+  
+  if (_impl_.velworld2bodywrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
+    _impl_.velworld2bodywrtworld_ = p;
+  }
+  return _impl_.velworld2bodywrtworld_;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_velworld2bodywrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_velworld2bodywrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.velWorld2BodyWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_velworld2bodywrtworld(::dtproto::geometry_msgs::Point3d* velworld2bodywrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.velworld2bodywrtworld_);
+  }
+  if (velworld2bodywrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(velworld2bodywrtworld));
+    if (message_arena != submessage_arena) {
+      velworld2bodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, velworld2bodywrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.velworld2bodywrtworld_ = velworld2bodywrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.velWorld2BodyWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Euler eulerAngleBodyWrtWorld = 5;
+inline bool ControlState::_internal_has_euleranglebodywrtworld() const {
+  return this != internal_default_instance() && _impl_.euleranglebodywrtworld_ != nullptr;
+}
+inline bool ControlState::has_euleranglebodywrtworld() const {
+  return _internal_has_euleranglebodywrtworld();
+}
+inline const ::dtproto::geometry_msgs::Euler& ControlState::_internal_euleranglebodywrtworld() const {
+  const ::dtproto::geometry_msgs::Euler* p = _impl_.euleranglebodywrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Euler&>(
+      ::dtproto::geometry_msgs::_Euler_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Euler& ControlState::euleranglebodywrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.eulerAngleBodyWrtWorld)
+  return _internal_euleranglebodywrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_euleranglebodywrtworld(
+    ::dtproto::geometry_msgs::Euler* euleranglebodywrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.euleranglebodywrtworld_);
+  }
+  _impl_.euleranglebodywrtworld_ = euleranglebodywrtworld;
+  if (euleranglebodywrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.eulerAngleBodyWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::release_euleranglebodywrtworld() {
+  
+  ::dtproto::geometry_msgs::Euler* temp = _impl_.euleranglebodywrtworld_;
+  _impl_.euleranglebodywrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::unsafe_arena_release_euleranglebodywrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.eulerAngleBodyWrtWorld)
+  
+  ::dtproto::geometry_msgs::Euler* temp = _impl_.euleranglebodywrtworld_;
+  _impl_.euleranglebodywrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::_internal_mutable_euleranglebodywrtworld() {
+  
+  if (_impl_.euleranglebodywrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Euler>(GetArenaForAllocation());
+    _impl_.euleranglebodywrtworld_ = p;
+  }
+  return _impl_.euleranglebodywrtworld_;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::mutable_euleranglebodywrtworld() {
+  ::dtproto::geometry_msgs::Euler* _msg = _internal_mutable_euleranglebodywrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.eulerAngleBodyWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_euleranglebodywrtworld(::dtproto::geometry_msgs::Euler* euleranglebodywrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.euleranglebodywrtworld_);
+  }
+  if (euleranglebodywrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(euleranglebodywrtworld));
+    if (message_arena != submessage_arena) {
+      euleranglebodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, euleranglebodywrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.euleranglebodywrtworld_ = euleranglebodywrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.eulerAngleBodyWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Euler angularVelBodyWrtWorld = 6;
+inline bool ControlState::_internal_has_angularvelbodywrtworld() const {
+  return this != internal_default_instance() && _impl_.angularvelbodywrtworld_ != nullptr;
+}
+inline bool ControlState::has_angularvelbodywrtworld() const {
+  return _internal_has_angularvelbodywrtworld();
+}
+inline const ::dtproto::geometry_msgs::Euler& ControlState::_internal_angularvelbodywrtworld() const {
+  const ::dtproto::geometry_msgs::Euler* p = _impl_.angularvelbodywrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Euler&>(
+      ::dtproto::geometry_msgs::_Euler_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Euler& ControlState::angularvelbodywrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.angularVelBodyWrtWorld)
+  return _internal_angularvelbodywrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_angularvelbodywrtworld(
+    ::dtproto::geometry_msgs::Euler* angularvelbodywrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.angularvelbodywrtworld_);
+  }
+  _impl_.angularvelbodywrtworld_ = angularvelbodywrtworld;
+  if (angularvelbodywrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.angularVelBodyWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::release_angularvelbodywrtworld() {
+  
+  ::dtproto::geometry_msgs::Euler* temp = _impl_.angularvelbodywrtworld_;
+  _impl_.angularvelbodywrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::unsafe_arena_release_angularvelbodywrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.angularVelBodyWrtWorld)
+  
+  ::dtproto::geometry_msgs::Euler* temp = _impl_.angularvelbodywrtworld_;
+  _impl_.angularvelbodywrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::_internal_mutable_angularvelbodywrtworld() {
+  
+  if (_impl_.angularvelbodywrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Euler>(GetArenaForAllocation());
+    _impl_.angularvelbodywrtworld_ = p;
+  }
+  return _impl_.angularvelbodywrtworld_;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::mutable_angularvelbodywrtworld() {
+  ::dtproto::geometry_msgs::Euler* _msg = _internal_mutable_angularvelbodywrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.angularVelBodyWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_angularvelbodywrtworld(::dtproto::geometry_msgs::Euler* angularvelbodywrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.angularvelbodywrtworld_);
+  }
+  if (angularvelbodywrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(angularvelbodywrtworld));
+    if (message_arena != submessage_arena) {
+      angularvelbodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, angularvelbodywrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.angularvelbodywrtworld_ = angularvelbodywrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.angularVelBodyWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Euler angularVelBodyWrtBody = 7;
+inline bool ControlState::_internal_has_angularvelbodywrtbody() const {
+  return this != internal_default_instance() && _impl_.angularvelbodywrtbody_ != nullptr;
+}
+inline bool ControlState::has_angularvelbodywrtbody() const {
+  return _internal_has_angularvelbodywrtbody();
+}
+inline const ::dtproto::geometry_msgs::Euler& ControlState::_internal_angularvelbodywrtbody() const {
+  const ::dtproto::geometry_msgs::Euler* p = _impl_.angularvelbodywrtbody_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Euler&>(
+      ::dtproto::geometry_msgs::_Euler_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Euler& ControlState::angularvelbodywrtbody() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.angularVelBodyWrtBody)
+  return _internal_angularvelbodywrtbody();
+}
+inline void ControlState::unsafe_arena_set_allocated_angularvelbodywrtbody(
+    ::dtproto::geometry_msgs::Euler* angularvelbodywrtbody) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.angularvelbodywrtbody_);
+  }
+  _impl_.angularvelbodywrtbody_ = angularvelbodywrtbody;
+  if (angularvelbodywrtbody) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.angularVelBodyWrtBody)
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::release_angularvelbodywrtbody() {
+  
+  ::dtproto::geometry_msgs::Euler* temp = _impl_.angularvelbodywrtbody_;
+  _impl_.angularvelbodywrtbody_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::unsafe_arena_release_angularvelbodywrtbody() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.angularVelBodyWrtBody)
+  
+  ::dtproto::geometry_msgs::Euler* temp = _impl_.angularvelbodywrtbody_;
+  _impl_.angularvelbodywrtbody_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::_internal_mutable_angularvelbodywrtbody() {
+  
+  if (_impl_.angularvelbodywrtbody_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Euler>(GetArenaForAllocation());
+    _impl_.angularvelbodywrtbody_ = p;
+  }
+  return _impl_.angularvelbodywrtbody_;
+}
+inline ::dtproto::geometry_msgs::Euler* ControlState::mutable_angularvelbodywrtbody() {
+  ::dtproto::geometry_msgs::Euler* _msg = _internal_mutable_angularvelbodywrtbody();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.angularVelBodyWrtBody)
+  return _msg;
+}
+inline void ControlState::set_allocated_angularvelbodywrtbody(::dtproto::geometry_msgs::Euler* angularvelbodywrtbody) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.angularvelbodywrtbody_);
+  }
+  if (angularvelbodywrtbody) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(angularvelbodywrtbody));
+    if (message_arena != submessage_arena) {
+      angularvelbodywrtbody = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, angularvelbodywrtbody, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.angularvelbodywrtbody_ = angularvelbodywrtbody;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.angularVelBodyWrtBody)
+}
+
+// .dtproto.geometry_msgs.Point3d angularMomentumBodyWrtWorld = 8;
+inline bool ControlState::_internal_has_angularmomentumbodywrtworld() const {
+  return this != internal_default_instance() && _impl_.angularmomentumbodywrtworld_ != nullptr;
+}
+inline bool ControlState::has_angularmomentumbodywrtworld() const {
+  return _internal_has_angularmomentumbodywrtworld();
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_angularmomentumbodywrtworld() const {
+  const ::dtproto::geometry_msgs::Point3d* p = _impl_.angularmomentumbodywrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
+      ::dtproto::geometry_msgs::_Point3d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::angularmomentumbodywrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.angularMomentumBodyWrtWorld)
+  return _internal_angularmomentumbodywrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_angularmomentumbodywrtworld(
+    ::dtproto::geometry_msgs::Point3d* angularmomentumbodywrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.angularmomentumbodywrtworld_);
+  }
+  _impl_.angularmomentumbodywrtworld_ = angularmomentumbodywrtworld;
+  if (angularmomentumbodywrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.angularMomentumBodyWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::release_angularmomentumbodywrtworld() {
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.angularmomentumbodywrtworld_;
+  _impl_.angularmomentumbodywrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::unsafe_arena_release_angularmomentumbodywrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.angularMomentumBodyWrtWorld)
+  
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.angularmomentumbodywrtworld_;
+  _impl_.angularmomentumbodywrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_mutable_angularmomentumbodywrtworld() {
+  
+  if (_impl_.angularmomentumbodywrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
+    _impl_.angularmomentumbodywrtworld_ = p;
+  }
+  return _impl_.angularmomentumbodywrtworld_;
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_angularmomentumbodywrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_angularmomentumbodywrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.angularMomentumBodyWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_angularmomentumbodywrtworld(::dtproto::geometry_msgs::Point3d* angularmomentumbodywrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.angularmomentumbodywrtworld_);
+  }
+  if (angularmomentumbodywrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(angularmomentumbodywrtworld));
+    if (message_arena != submessage_arena) {
+      angularmomentumbodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, angularmomentumbodywrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.angularmomentumbodywrtworld_ = angularmomentumbodywrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.angularMomentumBodyWrtWorld)
+}
+
+// repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
+inline int ControlState::_internal_posworld2footwrtworld_size() const {
+  return _impl_.posworld2footwrtworld_.size();
+}
+inline int ControlState::posworld2footwrtworld_size() const {
+  return _internal_posworld2footwrtworld_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_posworld2footwrtworld(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.posWorld2FootWrtWorld)
+  return _impl_.posworld2footwrtworld_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_posworld2footwrtworld() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.woly.ControlState.posWorld2FootWrtWorld)
+  return &_impl_.posworld2footwrtworld_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_posworld2footwrtworld(int index) const {
+  return _impl_.posworld2footwrtworld_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::posworld2footwrtworld(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.posWorld2FootWrtWorld)
+  return _internal_posworld2footwrtworld(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_posworld2footwrtworld() {
+  return _impl_.posworld2footwrtworld_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_posworld2footwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_posworld2footwrtworld();
+  // @@protoc_insertion_point(field_add:dtproto.woly.ControlState.posWorld2FootWrtWorld)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::posworld2footwrtworld() const {
+  // @@protoc_insertion_point(field_list:dtproto.woly.ControlState.posWorld2FootWrtWorld)
+  return _impl_.posworld2footwrtworld_;
+}
+
+// repeated .dtproto.geometry_msgs.Point3d velWorld2FootWrtWorld = 10;
+inline int ControlState::_internal_velworld2footwrtworld_size() const {
+  return _impl_.velworld2footwrtworld_.size();
+}
+inline int ControlState::velworld2footwrtworld_size() const {
+  return _internal_velworld2footwrtworld_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_velworld2footwrtworld(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.velWorld2FootWrtWorld)
+  return _impl_.velworld2footwrtworld_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_velworld2footwrtworld() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.woly.ControlState.velWorld2FootWrtWorld)
+  return &_impl_.velworld2footwrtworld_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_velworld2footwrtworld(int index) const {
+  return _impl_.velworld2footwrtworld_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::velworld2footwrtworld(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.velWorld2FootWrtWorld)
+  return _internal_velworld2footwrtworld(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_velworld2footwrtworld() {
+  return _impl_.velworld2footwrtworld_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_velworld2footwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_velworld2footwrtworld();
+  // @@protoc_insertion_point(field_add:dtproto.woly.ControlState.velWorld2FootWrtWorld)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::velworld2footwrtworld() const {
+  // @@protoc_insertion_point(field_list:dtproto.woly.ControlState.velWorld2FootWrtWorld)
+  return _impl_.velworld2footwrtworld_;
+}
+
+// repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtWorld = 11;
+inline int ControlState::_internal_posbody2footwrtworld_size() const {
+  return _impl_.posbody2footwrtworld_.size();
+}
+inline int ControlState::posbody2footwrtworld_size() const {
+  return _internal_posbody2footwrtworld_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_posbody2footwrtworld(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.posBody2FootWrtWorld)
+  return _impl_.posbody2footwrtworld_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_posbody2footwrtworld() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.woly.ControlState.posBody2FootWrtWorld)
+  return &_impl_.posbody2footwrtworld_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_posbody2footwrtworld(int index) const {
+  return _impl_.posbody2footwrtworld_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::posbody2footwrtworld(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.posBody2FootWrtWorld)
+  return _internal_posbody2footwrtworld(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_posbody2footwrtworld() {
+  return _impl_.posbody2footwrtworld_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_posbody2footwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_posbody2footwrtworld();
+  // @@protoc_insertion_point(field_add:dtproto.woly.ControlState.posBody2FootWrtWorld)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::posbody2footwrtworld() const {
+  // @@protoc_insertion_point(field_list:dtproto.woly.ControlState.posBody2FootWrtWorld)
+  return _impl_.posbody2footwrtworld_;
+}
+
+// repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtWorld = 12;
+inline int ControlState::_internal_velbody2footwrtworld_size() const {
+  return _impl_.velbody2footwrtworld_.size();
+}
+inline int ControlState::velbody2footwrtworld_size() const {
+  return _internal_velbody2footwrtworld_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_velbody2footwrtworld(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.velBody2FootWrtWorld)
+  return _impl_.velbody2footwrtworld_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_velbody2footwrtworld() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.woly.ControlState.velBody2FootWrtWorld)
+  return &_impl_.velbody2footwrtworld_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_velbody2footwrtworld(int index) const {
+  return _impl_.velbody2footwrtworld_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::velbody2footwrtworld(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.velBody2FootWrtWorld)
+  return _internal_velbody2footwrtworld(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_velbody2footwrtworld() {
+  return _impl_.velbody2footwrtworld_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_velbody2footwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_velbody2footwrtworld();
+  // @@protoc_insertion_point(field_add:dtproto.woly.ControlState.velBody2FootWrtWorld)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::velbody2footwrtworld() const {
+  // @@protoc_insertion_point(field_list:dtproto.woly.ControlState.velBody2FootWrtWorld)
+  return _impl_.velbody2footwrtworld_;
+}
+
+// repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtBody = 13;
+inline int ControlState::_internal_posbody2footwrtbody_size() const {
+  return _impl_.posbody2footwrtbody_.size();
+}
+inline int ControlState::posbody2footwrtbody_size() const {
+  return _internal_posbody2footwrtbody_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_posbody2footwrtbody(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.posBody2FootWrtBody)
+  return _impl_.posbody2footwrtbody_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_posbody2footwrtbody() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.woly.ControlState.posBody2FootWrtBody)
+  return &_impl_.posbody2footwrtbody_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_posbody2footwrtbody(int index) const {
+  return _impl_.posbody2footwrtbody_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::posbody2footwrtbody(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.posBody2FootWrtBody)
+  return _internal_posbody2footwrtbody(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_posbody2footwrtbody() {
+  return _impl_.posbody2footwrtbody_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_posbody2footwrtbody() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_posbody2footwrtbody();
+  // @@protoc_insertion_point(field_add:dtproto.woly.ControlState.posBody2FootWrtBody)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::posbody2footwrtbody() const {
+  // @@protoc_insertion_point(field_list:dtproto.woly.ControlState.posBody2FootWrtBody)
+  return _impl_.posbody2footwrtbody_;
+}
+
+// repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtBody = 14;
+inline int ControlState::_internal_velbody2footwrtbody_size() const {
+  return _impl_.velbody2footwrtbody_.size();
+}
+inline int ControlState::velbody2footwrtbody_size() const {
+  return _internal_velbody2footwrtbody_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_velbody2footwrtbody(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.velBody2FootWrtBody)
+  return _impl_.velbody2footwrtbody_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_velbody2footwrtbody() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.woly.ControlState.velBody2FootWrtBody)
+  return &_impl_.velbody2footwrtbody_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_velbody2footwrtbody(int index) const {
+  return _impl_.velbody2footwrtbody_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::velbody2footwrtbody(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.velBody2FootWrtBody)
+  return _internal_velbody2footwrtbody(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_velbody2footwrtbody() {
+  return _impl_.velbody2footwrtbody_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_velbody2footwrtbody() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_velbody2footwrtbody();
+  // @@protoc_insertion_point(field_add:dtproto.woly.ControlState.velBody2FootWrtBody)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::velbody2footwrtbody() const {
+  // @@protoc_insertion_point(field_list:dtproto.woly.ControlState.velBody2FootWrtBody)
+  return _impl_.velbody2footwrtbody_;
+}
+
+// .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+inline bool ControlState::_internal_has_rotbodywrtworld() const {
+  return this != internal_default_instance() && _impl_.rotbodywrtworld_ != nullptr;
+}
+inline bool ControlState::has_rotbodywrtworld() const {
+  return _internal_has_rotbodywrtworld();
+}
+inline const ::dtproto::geometry_msgs::Matrix3d& ControlState::_internal_rotbodywrtworld() const {
+  const ::dtproto::geometry_msgs::Matrix3d* p = _impl_.rotbodywrtworld_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Matrix3d&>(
+      ::dtproto::geometry_msgs::_Matrix3d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Matrix3d& ControlState::rotbodywrtworld() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.rotBodyWrtWorld)
+  return _internal_rotbodywrtworld();
+}
+inline void ControlState::unsafe_arena_set_allocated_rotbodywrtworld(
+    ::dtproto::geometry_msgs::Matrix3d* rotbodywrtworld) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.rotbodywrtworld_);
+  }
+  _impl_.rotbodywrtworld_ = rotbodywrtworld;
+  if (rotbodywrtworld) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.rotBodyWrtWorld)
+}
+inline ::dtproto::geometry_msgs::Matrix3d* ControlState::release_rotbodywrtworld() {
+  
+  ::dtproto::geometry_msgs::Matrix3d* temp = _impl_.rotbodywrtworld_;
+  _impl_.rotbodywrtworld_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Matrix3d* ControlState::unsafe_arena_release_rotbodywrtworld() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.rotBodyWrtWorld)
+  
+  ::dtproto::geometry_msgs::Matrix3d* temp = _impl_.rotbodywrtworld_;
+  _impl_.rotbodywrtworld_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Matrix3d* ControlState::_internal_mutable_rotbodywrtworld() {
+  
+  if (_impl_.rotbodywrtworld_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Matrix3d>(GetArenaForAllocation());
+    _impl_.rotbodywrtworld_ = p;
+  }
+  return _impl_.rotbodywrtworld_;
+}
+inline ::dtproto::geometry_msgs::Matrix3d* ControlState::mutable_rotbodywrtworld() {
+  ::dtproto::geometry_msgs::Matrix3d* _msg = _internal_mutable_rotbodywrtworld();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.rotBodyWrtWorld)
+  return _msg;
+}
+inline void ControlState::set_allocated_rotbodywrtworld(::dtproto::geometry_msgs::Matrix3d* rotbodywrtworld) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.rotbodywrtworld_);
+  }
+  if (rotbodywrtworld) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(rotbodywrtworld));
+    if (message_arena != submessage_arena) {
+      rotbodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, rotbodywrtworld, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.rotbodywrtworld_ = rotbodywrtworld;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.rotBodyWrtWorld)
+}
+
+// .dtproto.geometry_msgs.Vector4b contact = 16;
+inline bool ControlState::_internal_has_contact() const {
+  return this != internal_default_instance() && _impl_.contact_ != nullptr;
+}
+inline bool ControlState::has_contact() const {
+  return _internal_has_contact();
+}
+inline const ::dtproto::geometry_msgs::Vector4b& ControlState::_internal_contact() const {
+  const ::dtproto::geometry_msgs::Vector4b* p = _impl_.contact_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4b&>(
+      ::dtproto::geometry_msgs::_Vector4b_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4b& ControlState::contact() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.ControlState.contact)
+  return _internal_contact();
+}
+inline void ControlState::unsafe_arena_set_allocated_contact(
+    ::dtproto::geometry_msgs::Vector4b* contact) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.contact_);
+  }
+  _impl_.contact_ = contact;
+  if (contact) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.ControlState.contact)
+}
+inline ::dtproto::geometry_msgs::Vector4b* ControlState::release_contact() {
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.contact_;
+  _impl_.contact_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* ControlState::unsafe_arena_release_contact() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.ControlState.contact)
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.contact_;
+  _impl_.contact_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* ControlState::_internal_mutable_contact() {
+  
+  if (_impl_.contact_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4b>(GetArenaForAllocation());
+    _impl_.contact_ = p;
+  }
+  return _impl_.contact_;
+}
+inline ::dtproto::geometry_msgs::Vector4b* ControlState::mutable_contact() {
+  ::dtproto::geometry_msgs::Vector4b* _msg = _internal_mutable_contact();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.ControlState.contact)
+  return _msg;
+}
+inline void ControlState::set_allocated_contact(::dtproto::geometry_msgs::Vector4b* contact) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.contact_);
+  }
+  if (contact) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(contact));
+    if (message_arena != submessage_arena) {
+      contact = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, contact, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.contact_ = contact;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.ControlState.contact)
+}
+
+// -------------------------------------------------------------------
+
 // WolyState
 
 // .dtproto.woly.JointData jointData = 1;
@@ -2751,6 +4330,186 @@ inline void WolyState::set_allocated_joystick(::dtproto::sensor_msgs::Joy* joyst
   // @@protoc_insertion_point(field_set_allocated:dtproto.woly.WolyState.joystick)
 }
 
+// .dtproto.woly.ControlState controlStateDesired = 7;
+inline bool WolyState::_internal_has_controlstatedesired() const {
+  return this != internal_default_instance() && _impl_.controlstatedesired_ != nullptr;
+}
+inline bool WolyState::has_controlstatedesired() const {
+  return _internal_has_controlstatedesired();
+}
+inline void WolyState::clear_controlstatedesired() {
+  if (GetArenaForAllocation() == nullptr && _impl_.controlstatedesired_ != nullptr) {
+    delete _impl_.controlstatedesired_;
+  }
+  _impl_.controlstatedesired_ = nullptr;
+}
+inline const ::dtproto::woly::ControlState& WolyState::_internal_controlstatedesired() const {
+  const ::dtproto::woly::ControlState* p = _impl_.controlstatedesired_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::woly::ControlState&>(
+      ::dtproto::woly::_ControlState_default_instance_);
+}
+inline const ::dtproto::woly::ControlState& WolyState::controlstatedesired() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.WolyState.controlStateDesired)
+  return _internal_controlstatedesired();
+}
+inline void WolyState::unsafe_arena_set_allocated_controlstatedesired(
+    ::dtproto::woly::ControlState* controlstatedesired) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.controlstatedesired_);
+  }
+  _impl_.controlstatedesired_ = controlstatedesired;
+  if (controlstatedesired) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.WolyState.controlStateDesired)
+}
+inline ::dtproto::woly::ControlState* WolyState::release_controlstatedesired() {
+  
+  ::dtproto::woly::ControlState* temp = _impl_.controlstatedesired_;
+  _impl_.controlstatedesired_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::woly::ControlState* WolyState::unsafe_arena_release_controlstatedesired() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.WolyState.controlStateDesired)
+  
+  ::dtproto::woly::ControlState* temp = _impl_.controlstatedesired_;
+  _impl_.controlstatedesired_ = nullptr;
+  return temp;
+}
+inline ::dtproto::woly::ControlState* WolyState::_internal_mutable_controlstatedesired() {
+  
+  if (_impl_.controlstatedesired_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::woly::ControlState>(GetArenaForAllocation());
+    _impl_.controlstatedesired_ = p;
+  }
+  return _impl_.controlstatedesired_;
+}
+inline ::dtproto::woly::ControlState* WolyState::mutable_controlstatedesired() {
+  ::dtproto::woly::ControlState* _msg = _internal_mutable_controlstatedesired();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.WolyState.controlStateDesired)
+  return _msg;
+}
+inline void WolyState::set_allocated_controlstatedesired(::dtproto::woly::ControlState* controlstatedesired) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.controlstatedesired_;
+  }
+  if (controlstatedesired) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(controlstatedesired);
+    if (message_arena != submessage_arena) {
+      controlstatedesired = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, controlstatedesired, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.controlstatedesired_ = controlstatedesired;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.WolyState.controlStateDesired)
+}
+
+// .dtproto.woly.ControlState controlStateActual = 8;
+inline bool WolyState::_internal_has_controlstateactual() const {
+  return this != internal_default_instance() && _impl_.controlstateactual_ != nullptr;
+}
+inline bool WolyState::has_controlstateactual() const {
+  return _internal_has_controlstateactual();
+}
+inline void WolyState::clear_controlstateactual() {
+  if (GetArenaForAllocation() == nullptr && _impl_.controlstateactual_ != nullptr) {
+    delete _impl_.controlstateactual_;
+  }
+  _impl_.controlstateactual_ = nullptr;
+}
+inline const ::dtproto::woly::ControlState& WolyState::_internal_controlstateactual() const {
+  const ::dtproto::woly::ControlState* p = _impl_.controlstateactual_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::woly::ControlState&>(
+      ::dtproto::woly::_ControlState_default_instance_);
+}
+inline const ::dtproto::woly::ControlState& WolyState::controlstateactual() const {
+  // @@protoc_insertion_point(field_get:dtproto.woly.WolyState.controlStateActual)
+  return _internal_controlstateactual();
+}
+inline void WolyState::unsafe_arena_set_allocated_controlstateactual(
+    ::dtproto::woly::ControlState* controlstateactual) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.controlstateactual_);
+  }
+  _impl_.controlstateactual_ = controlstateactual;
+  if (controlstateactual) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.woly.WolyState.controlStateActual)
+}
+inline ::dtproto::woly::ControlState* WolyState::release_controlstateactual() {
+  
+  ::dtproto::woly::ControlState* temp = _impl_.controlstateactual_;
+  _impl_.controlstateactual_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::woly::ControlState* WolyState::unsafe_arena_release_controlstateactual() {
+  // @@protoc_insertion_point(field_release:dtproto.woly.WolyState.controlStateActual)
+  
+  ::dtproto::woly::ControlState* temp = _impl_.controlstateactual_;
+  _impl_.controlstateactual_ = nullptr;
+  return temp;
+}
+inline ::dtproto::woly::ControlState* WolyState::_internal_mutable_controlstateactual() {
+  
+  if (_impl_.controlstateactual_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::woly::ControlState>(GetArenaForAllocation());
+    _impl_.controlstateactual_ = p;
+  }
+  return _impl_.controlstateactual_;
+}
+inline ::dtproto::woly::ControlState* WolyState::mutable_controlstateactual() {
+  ::dtproto::woly::ControlState* _msg = _internal_mutable_controlstateactual();
+  // @@protoc_insertion_point(field_mutable:dtproto.woly.WolyState.controlStateActual)
+  return _msg;
+}
+inline void WolyState::set_allocated_controlstateactual(::dtproto::woly::ControlState* controlstateactual) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.controlstateactual_;
+  }
+  if (controlstateactual) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(controlstateactual);
+    if (message_arena != submessage_arena) {
+      controlstateactual = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, controlstateactual, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.controlstateactual_ = controlstateactual;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.woly.WolyState.controlStateActual)
+}
+
 // -------------------------------------------------------------------
 
 // WolyStateTimeStamped
@@ -2933,6 +4692,8 @@ inline void WolyStateTimeStamped::set_allocated_state(::dtproto::woly::WolyState
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

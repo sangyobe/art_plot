@@ -85,6 +85,34 @@ struct JointDataDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 JointDataDefaultTypeInternal _JointData_default_instance_;
+PROTOBUF_CONSTEXPR ControlState::ControlState(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.posworld2footwrtworld_)*/{}
+  , /*decltype(_impl_.velworld2footwrtworld_)*/{}
+  , /*decltype(_impl_.posbody2footwrtworld_)*/{}
+  , /*decltype(_impl_.velbody2footwrtworld_)*/{}
+  , /*decltype(_impl_.posbody2footwrtbody_)*/{}
+  , /*decltype(_impl_.velbody2footwrtbody_)*/{}
+  , /*decltype(_impl_.posworld2comwrtworld_)*/nullptr
+  , /*decltype(_impl_.velworld2comwrtworld_)*/nullptr
+  , /*decltype(_impl_.posworld2bodywrtworld_)*/nullptr
+  , /*decltype(_impl_.velworld2bodywrtworld_)*/nullptr
+  , /*decltype(_impl_.euleranglebodywrtworld_)*/nullptr
+  , /*decltype(_impl_.angularvelbodywrtworld_)*/nullptr
+  , /*decltype(_impl_.angularvelbodywrtbody_)*/nullptr
+  , /*decltype(_impl_.angularmomentumbodywrtworld_)*/nullptr
+  , /*decltype(_impl_.rotbodywrtworld_)*/nullptr
+  , /*decltype(_impl_.contact_)*/nullptr
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct ControlStateDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ControlStateDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ControlStateDefaultTypeInternal() {}
+  union {
+    ControlState _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlStateDefaultTypeInternal _ControlState_default_instance_;
 PROTOBUF_CONSTEXPR WolyState::WolyState(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.jointdata_)*/nullptr
@@ -92,6 +120,8 @@ PROTOBUF_CONSTEXPR WolyState::WolyState(
   , /*decltype(_impl_.taskstateactual_)*/nullptr
   , /*decltype(_impl_.imu_)*/nullptr
   , /*decltype(_impl_.joystick_)*/nullptr
+  , /*decltype(_impl_.controlstatedesired_)*/nullptr
+  , /*decltype(_impl_.controlstateactual_)*/nullptr
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct WolyStateDefaultTypeInternal {
   PROTOBUF_CONSTEXPR WolyStateDefaultTypeInternal()
@@ -118,7 +148,7 @@ struct WolyStateTimeStampedDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WolyStateTimeStampedDefaultTypeInternal _WolyStateTimeStamped_default_instance_;
 }  // namespace woly
 }  // namespace dtproto
-static ::_pb::Metadata file_level_metadata_Woly_2eproto[5];
+static ::_pb::Metadata file_level_metadata_Woly_2eproto[6];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Woly_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Woly_2eproto = nullptr;
 
@@ -169,6 +199,28 @@ const uint32_t TableStruct_Woly_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(pro
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dtproto::woly::JointData, _impl_.joints_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.posworld2comwrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.velworld2comwrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.posworld2bodywrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.velworld2bodywrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.euleranglebodywrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.angularvelbodywrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.angularvelbodywrtbody_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.angularmomentumbodywrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.posworld2footwrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.velworld2footwrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.posbody2footwrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.velbody2footwrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.posbody2footwrtbody_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.velbody2footwrtbody_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.rotbodywrtworld_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::ControlState, _impl_.contact_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyState, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -179,6 +231,8 @@ const uint32_t TableStruct_Woly_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(pro
   PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyState, _impl_.taskstateactual_),
   PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyState, _impl_.imu_),
   PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyState, _impl_.joystick_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyState, _impl_.controlstatedesired_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyState, _impl_.controlstateactual_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dtproto::woly::WolyStateTimeStamped, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -192,14 +246,16 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 0, -1, -1, sizeof(::dtproto::woly::TaskState)},
   { 14, -1, -1, sizeof(::dtproto::woly::JointState)},
   { 38, -1, -1, sizeof(::dtproto::woly::JointData)},
-  { 45, -1, -1, sizeof(::dtproto::woly::WolyState)},
-  { 56, -1, -1, sizeof(::dtproto::woly::WolyStateTimeStamped)},
+  { 45, -1, -1, sizeof(::dtproto::woly::ControlState)},
+  { 67, -1, -1, sizeof(::dtproto::woly::WolyState)},
+  { 80, -1, -1, sizeof(::dtproto::woly::WolyStateTimeStamped)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
   &::dtproto::woly::_TaskState_default_instance_._instance,
   &::dtproto::woly::_JointState_default_instance_._instance,
   &::dtproto::woly::_JointData_default_instance_._instance,
+  &::dtproto::woly::_ControlState_default_instance_._instance,
   &::dtproto::woly::_WolyState_default_instance_._instance,
   &::dtproto::woly::_WolyStateTimeStamped_default_instance_._instance,
 };
@@ -209,41 +265,73 @@ const char descriptor_table_protodef_Woly_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "msgs/Header.proto\032!dtProto/geometry_msgs"
   "/Point.proto\032\"dtProto/geometry_msgs/Wren"
   "ch.proto\032\'dtProto/geometry_msgs/Orientat"
-  "ion.proto\032\035dtProto/sensor_msgs/Imu.proto"
-  "\032\035dtProto/sensor_msgs/Joy.proto\"\340\002\n\tTask"
-  "State\022+\n\003pos\030\001 \001(\0132\036.dtproto.geometry_ms"
-  "gs.Point3d\022,\n\003rot\030\002 \001(\0132\037.dtproto.geomet"
-  "ry_msgs.Rotation\022.\n\006linVel\030\003 \001(\0132\036.dtpro"
-  "to.geometry_msgs.Point3d\022.\n\006angVel\030\004 \001(\013"
-  "2\036.dtproto.geometry_msgs.Point3d\022-\n\005forc"
-  "e\030\005 \001(\0132\036.dtproto.geometry_msgs.Point3d\022"
-  ".\n\006moment\030\006 \001(\0132\036.dtproto.geometry_msgs."
-  "Point3d\022-\n\006wrench\030\007 \001(\0132\035.dtproto.geomet"
-  "ry_msgs.Wrench\022\n\n\002id\030\010 \001(\r\"\374\002\n\nJointStat"
-  "e\022\022\n\nstatusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001"
-  "(\r\022\026\n\016incPos_ofs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_"
-  "cnt\030\004 \001(\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_"
-  "cnt\030\006 \001(\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp"
-  "_C\030\010 \001(\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt"
-  "_V\030\n \001(\002\022\022\n\nactPos_rad\030\013 \001(\001\022\022\n\nactAux_r"
-  "ad\030\014 \001(\001\022\022\n\nactVel_rps\030\r \001(\001\022\022\n\nactTorq_"
-  "Nm\030\016 \001(\001\022\022\n\ndesPos_rad\030\017 \001(\001\022\022\n\ndesVel_r"
-  "ps\030\020 \001(\001\022\023\n\013desAcc_rpss\030\021 \001(\001\022\022\n\ndesTorq"
-  "_Nm\030\022 \001(\001\"5\n\tJointData\022(\n\006joints\030\001 \003(\0132\030"
-  ".dtproto.woly.JointState\"\357\001\n\tWolyState\022*"
-  "\n\tjointData\030\001 \001(\0132\027.dtproto.woly.JointDa"
-  "ta\0221\n\020taskStateDesired\030\002 \001(\0132\027.dtproto.w"
-  "oly.TaskState\0220\n\017taskStateActual\030\003 \001(\0132\027"
-  ".dtproto.woly.TaskState\022%\n\003imu\030\004 \001(\0132\030.d"
-  "tproto.sensor_msgs.Imu\022*\n\010joystick\030\005 \001(\013"
-  "2\030.dtproto.sensor_msgs.Joy\"h\n\024WolyStateT"
-  "imeStamped\022(\n\006header\030\001 \001(\0132\030.dtproto.std"
-  "_msgs.Header\022&\n\005state\030\002 \001(\0132\027.dtproto.wo"
-  "ly.WolyStateb\006proto3"
+  "ion.proto\032\"dtProto/geometry_msgs/Matrix."
+  "proto\032\"dtProto/geometry_msgs/Vector.prot"
+  "o\032\035dtProto/sensor_msgs/Imu.proto\032\035dtProt"
+  "o/sensor_msgs/Joy.proto\"\340\002\n\tTaskState\022+\n"
+  "\003pos\030\001 \001(\0132\036.dtproto.geometry_msgs.Point"
+  "3d\022,\n\003rot\030\002 \001(\0132\037.dtproto.geometry_msgs."
+  "Rotation\022.\n\006linVel\030\003 \001(\0132\036.dtproto.geome"
+  "try_msgs.Point3d\022.\n\006angVel\030\004 \001(\0132\036.dtpro"
+  "to.geometry_msgs.Point3d\022-\n\005force\030\005 \001(\0132"
+  "\036.dtproto.geometry_msgs.Point3d\022.\n\006momen"
+  "t\030\006 \001(\0132\036.dtproto.geometry_msgs.Point3d\022"
+  "-\n\006wrench\030\007 \001(\0132\035.dtproto.geometry_msgs."
+  "Wrench\022\n\n\002id\030\010 \001(\r\"\374\002\n\nJointState\022\022\n\nsta"
+  "tusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r\022\026\n\016in"
+  "cPos_ofs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt\030\004 \001("
+  "\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt\030\006 \001("
+  "\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030\010 \001(\002"
+  "\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030\n \001(\002"
+  "\022\022\n\nactPos_rad\030\013 \001(\001\022\022\n\nactAux_rad\030\014 \001(\001"
+  "\022\022\n\nactVel_rps\030\r \001(\001\022\022\n\nactTorq_Nm\030\016 \001(\001"
+  "\022\022\n\ndesPos_rad\030\017 \001(\001\022\022\n\ndesVel_rps\030\020 \001(\001"
+  "\022\023\n\013desAcc_rpss\030\021 \001(\001\022\022\n\ndesTorq_Nm\030\022 \001("
+  "\001\"5\n\tJointData\022(\n\006joints\030\001 \003(\0132\030.dtproto"
+  ".woly.JointState\"\346\007\n\014ControlState\022<\n\024pos"
+  "World2ComWrtWorld\030\001 \001(\0132\036.dtproto.geomet"
+  "ry_msgs.Point3d\022<\n\024velWorld2ComWrtWorld\030"
+  "\002 \001(\0132\036.dtproto.geometry_msgs.Point3d\022=\n"
+  "\025posWorld2BodyWrtWorld\030\003 \001(\0132\036.dtproto.g"
+  "eometry_msgs.Point3d\022=\n\025velWorld2BodyWrt"
+  "World\030\004 \001(\0132\036.dtproto.geometry_msgs.Poin"
+  "t3d\022<\n\026eulerAngleBodyWrtWorld\030\005 \001(\0132\034.dt"
+  "proto.geometry_msgs.Euler\022<\n\026angularVelB"
+  "odyWrtWorld\030\006 \001(\0132\034.dtproto.geometry_msg"
+  "s.Euler\022;\n\025angularVelBodyWrtBody\030\007 \001(\0132\034"
+  ".dtproto.geometry_msgs.Euler\022C\n\033angularM"
+  "omentumBodyWrtWorld\030\010 \001(\0132\036.dtproto.geom"
+  "etry_msgs.Point3d\022=\n\025posWorld2FootWrtWor"
+  "ld\030\t \003(\0132\036.dtproto.geometry_msgs.Point3d"
+  "\022=\n\025velWorld2FootWrtWorld\030\n \003(\0132\036.dtprot"
+  "o.geometry_msgs.Point3d\022<\n\024posBody2FootW"
+  "rtWorld\030\013 \003(\0132\036.dtproto.geometry_msgs.Po"
+  "int3d\022<\n\024velBody2FootWrtWorld\030\014 \003(\0132\036.dt"
+  "proto.geometry_msgs.Point3d\022;\n\023posBody2F"
+  "ootWrtBody\030\r \003(\0132\036.dtproto.geometry_msgs"
+  ".Point3d\022;\n\023velBody2FootWrtBody\030\016 \003(\0132\036."
+  "dtproto.geometry_msgs.Point3d\0228\n\017rotBody"
+  "WrtWorld\030\017 \001(\0132\037.dtproto.geometry_msgs.M"
+  "atrix3d\0220\n\007contact\030\020 \001(\0132\037.dtproto.geome"
+  "try_msgs.Vector4b\"\340\002\n\tWolyState\022*\n\tjoint"
+  "Data\030\001 \001(\0132\027.dtproto.woly.JointData\0221\n\020t"
+  "askStateDesired\030\002 \001(\0132\027.dtproto.woly.Tas"
+  "kState\0220\n\017taskStateActual\030\003 \001(\0132\027.dtprot"
+  "o.woly.TaskState\022%\n\003imu\030\004 \001(\0132\030.dtproto."
+  "sensor_msgs.Imu\022*\n\010joystick\030\005 \001(\0132\030.dtpr"
+  "oto.sensor_msgs.Joy\0227\n\023controlStateDesir"
+  "ed\030\007 \001(\0132\032.dtproto.woly.ControlState\0226\n\022"
+  "controlStateActual\030\010 \001(\0132\032.dtproto.woly."
+  "ControlState\"h\n\024WolyStateTimeStamped\022(\n\006"
+  "header\030\001 \001(\0132\030.dtproto.std_msgs.Header\022&"
+  "\n\005state\030\002 \001(\0132\027.dtproto.woly.WolyStateb\006"
+  "proto3"
   ;
-static const ::_pbi::DescriptorTable* const descriptor_table_Woly_2eproto_deps[6] = {
+static const ::_pbi::DescriptorTable* const descriptor_table_Woly_2eproto_deps[8] = {
+  &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fMatrix_2eproto,
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fOrientation_2eproto,
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fPoint_2eproto,
+  &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fVector_2eproto,
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fWrench_2eproto,
   &::descriptor_table_dtProto_2fsensor_5fmsgs_2fImu_2eproto,
   &::descriptor_table_dtProto_2fsensor_5fmsgs_2fJoy_2eproto,
@@ -251,9 +339,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Woly_2eproto_deps[6
 };
 static ::_pbi::once_flag descriptor_table_Woly_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Woly_2eproto = {
-    false, false, 1380, descriptor_table_protodef_Woly_2eproto,
+    false, false, 2566, descriptor_table_protodef_Woly_2eproto,
     "Woly.proto",
-    &descriptor_table_Woly_2eproto_once, descriptor_table_Woly_2eproto_deps, 6, 5,
+    &descriptor_table_Woly_2eproto_once, descriptor_table_Woly_2eproto_deps, 8, 6,
     schemas, file_default_instances, TableStruct_Woly_2eproto::offsets,
     file_level_metadata_Woly_2eproto, file_level_enum_descriptors_Woly_2eproto,
     file_level_service_descriptors_Woly_2eproto,
@@ -1693,6 +1781,855 @@ void JointData::InternalSwap(JointData* other) {
 
 // ===================================================================
 
+class ControlState::_Internal {
+ public:
+  static const ::dtproto::geometry_msgs::Point3d& posworld2comwrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Point3d& velworld2comwrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posworld2bodywrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Point3d& velworld2bodywrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Euler& euleranglebodywrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Euler& angularvelbodywrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Euler& angularvelbodywrtbody(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Point3d& angularmomentumbodywrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Matrix3d& rotbodywrtworld(const ControlState* msg);
+  static const ::dtproto::geometry_msgs::Vector4b& contact(const ControlState* msg);
+};
+
+const ::dtproto::geometry_msgs::Point3d&
+ControlState::_Internal::posworld2comwrtworld(const ControlState* msg) {
+  return *msg->_impl_.posworld2comwrtworld_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+ControlState::_Internal::velworld2comwrtworld(const ControlState* msg) {
+  return *msg->_impl_.velworld2comwrtworld_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+ControlState::_Internal::posworld2bodywrtworld(const ControlState* msg) {
+  return *msg->_impl_.posworld2bodywrtworld_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+ControlState::_Internal::velworld2bodywrtworld(const ControlState* msg) {
+  return *msg->_impl_.velworld2bodywrtworld_;
+}
+const ::dtproto::geometry_msgs::Euler&
+ControlState::_Internal::euleranglebodywrtworld(const ControlState* msg) {
+  return *msg->_impl_.euleranglebodywrtworld_;
+}
+const ::dtproto::geometry_msgs::Euler&
+ControlState::_Internal::angularvelbodywrtworld(const ControlState* msg) {
+  return *msg->_impl_.angularvelbodywrtworld_;
+}
+const ::dtproto::geometry_msgs::Euler&
+ControlState::_Internal::angularvelbodywrtbody(const ControlState* msg) {
+  return *msg->_impl_.angularvelbodywrtbody_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+ControlState::_Internal::angularmomentumbodywrtworld(const ControlState* msg) {
+  return *msg->_impl_.angularmomentumbodywrtworld_;
+}
+const ::dtproto::geometry_msgs::Matrix3d&
+ControlState::_Internal::rotbodywrtworld(const ControlState* msg) {
+  return *msg->_impl_.rotbodywrtworld_;
+}
+const ::dtproto::geometry_msgs::Vector4b&
+ControlState::_Internal::contact(const ControlState* msg) {
+  return *msg->_impl_.contact_;
+}
+void ControlState::clear_posworld2comwrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posworld2comwrtworld_ != nullptr) {
+    delete _impl_.posworld2comwrtworld_;
+  }
+  _impl_.posworld2comwrtworld_ = nullptr;
+}
+void ControlState::clear_velworld2comwrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.velworld2comwrtworld_ != nullptr) {
+    delete _impl_.velworld2comwrtworld_;
+  }
+  _impl_.velworld2comwrtworld_ = nullptr;
+}
+void ControlState::clear_posworld2bodywrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posworld2bodywrtworld_ != nullptr) {
+    delete _impl_.posworld2bodywrtworld_;
+  }
+  _impl_.posworld2bodywrtworld_ = nullptr;
+}
+void ControlState::clear_velworld2bodywrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.velworld2bodywrtworld_ != nullptr) {
+    delete _impl_.velworld2bodywrtworld_;
+  }
+  _impl_.velworld2bodywrtworld_ = nullptr;
+}
+void ControlState::clear_euleranglebodywrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.euleranglebodywrtworld_ != nullptr) {
+    delete _impl_.euleranglebodywrtworld_;
+  }
+  _impl_.euleranglebodywrtworld_ = nullptr;
+}
+void ControlState::clear_angularvelbodywrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.angularvelbodywrtworld_ != nullptr) {
+    delete _impl_.angularvelbodywrtworld_;
+  }
+  _impl_.angularvelbodywrtworld_ = nullptr;
+}
+void ControlState::clear_angularvelbodywrtbody() {
+  if (GetArenaForAllocation() == nullptr && _impl_.angularvelbodywrtbody_ != nullptr) {
+    delete _impl_.angularvelbodywrtbody_;
+  }
+  _impl_.angularvelbodywrtbody_ = nullptr;
+}
+void ControlState::clear_angularmomentumbodywrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.angularmomentumbodywrtworld_ != nullptr) {
+    delete _impl_.angularmomentumbodywrtworld_;
+  }
+  _impl_.angularmomentumbodywrtworld_ = nullptr;
+}
+void ControlState::clear_posworld2footwrtworld() {
+  _impl_.posworld2footwrtworld_.Clear();
+}
+void ControlState::clear_velworld2footwrtworld() {
+  _impl_.velworld2footwrtworld_.Clear();
+}
+void ControlState::clear_posbody2footwrtworld() {
+  _impl_.posbody2footwrtworld_.Clear();
+}
+void ControlState::clear_velbody2footwrtworld() {
+  _impl_.velbody2footwrtworld_.Clear();
+}
+void ControlState::clear_posbody2footwrtbody() {
+  _impl_.posbody2footwrtbody_.Clear();
+}
+void ControlState::clear_velbody2footwrtbody() {
+  _impl_.velbody2footwrtbody_.Clear();
+}
+void ControlState::clear_rotbodywrtworld() {
+  if (GetArenaForAllocation() == nullptr && _impl_.rotbodywrtworld_ != nullptr) {
+    delete _impl_.rotbodywrtworld_;
+  }
+  _impl_.rotbodywrtworld_ = nullptr;
+}
+void ControlState::clear_contact() {
+  if (GetArenaForAllocation() == nullptr && _impl_.contact_ != nullptr) {
+    delete _impl_.contact_;
+  }
+  _impl_.contact_ = nullptr;
+}
+ControlState::ControlState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.woly.ControlState)
+}
+ControlState::ControlState(const ControlState& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ControlState* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.posworld2footwrtworld_){from._impl_.posworld2footwrtworld_}
+    , decltype(_impl_.velworld2footwrtworld_){from._impl_.velworld2footwrtworld_}
+    , decltype(_impl_.posbody2footwrtworld_){from._impl_.posbody2footwrtworld_}
+    , decltype(_impl_.velbody2footwrtworld_){from._impl_.velbody2footwrtworld_}
+    , decltype(_impl_.posbody2footwrtbody_){from._impl_.posbody2footwrtbody_}
+    , decltype(_impl_.velbody2footwrtbody_){from._impl_.velbody2footwrtbody_}
+    , decltype(_impl_.posworld2comwrtworld_){nullptr}
+    , decltype(_impl_.velworld2comwrtworld_){nullptr}
+    , decltype(_impl_.posworld2bodywrtworld_){nullptr}
+    , decltype(_impl_.velworld2bodywrtworld_){nullptr}
+    , decltype(_impl_.euleranglebodywrtworld_){nullptr}
+    , decltype(_impl_.angularvelbodywrtworld_){nullptr}
+    , decltype(_impl_.angularvelbodywrtbody_){nullptr}
+    , decltype(_impl_.angularmomentumbodywrtworld_){nullptr}
+    , decltype(_impl_.rotbodywrtworld_){nullptr}
+    , decltype(_impl_.contact_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_posworld2comwrtworld()) {
+    _this->_impl_.posworld2comwrtworld_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posworld2comwrtworld_);
+  }
+  if (from._internal_has_velworld2comwrtworld()) {
+    _this->_impl_.velworld2comwrtworld_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.velworld2comwrtworld_);
+  }
+  if (from._internal_has_posworld2bodywrtworld()) {
+    _this->_impl_.posworld2bodywrtworld_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posworld2bodywrtworld_);
+  }
+  if (from._internal_has_velworld2bodywrtworld()) {
+    _this->_impl_.velworld2bodywrtworld_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.velworld2bodywrtworld_);
+  }
+  if (from._internal_has_euleranglebodywrtworld()) {
+    _this->_impl_.euleranglebodywrtworld_ = new ::dtproto::geometry_msgs::Euler(*from._impl_.euleranglebodywrtworld_);
+  }
+  if (from._internal_has_angularvelbodywrtworld()) {
+    _this->_impl_.angularvelbodywrtworld_ = new ::dtproto::geometry_msgs::Euler(*from._impl_.angularvelbodywrtworld_);
+  }
+  if (from._internal_has_angularvelbodywrtbody()) {
+    _this->_impl_.angularvelbodywrtbody_ = new ::dtproto::geometry_msgs::Euler(*from._impl_.angularvelbodywrtbody_);
+  }
+  if (from._internal_has_angularmomentumbodywrtworld()) {
+    _this->_impl_.angularmomentumbodywrtworld_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.angularmomentumbodywrtworld_);
+  }
+  if (from._internal_has_rotbodywrtworld()) {
+    _this->_impl_.rotbodywrtworld_ = new ::dtproto::geometry_msgs::Matrix3d(*from._impl_.rotbodywrtworld_);
+  }
+  if (from._internal_has_contact()) {
+    _this->_impl_.contact_ = new ::dtproto::geometry_msgs::Vector4b(*from._impl_.contact_);
+  }
+  // @@protoc_insertion_point(copy_constructor:dtproto.woly.ControlState)
+}
+
+inline void ControlState::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.posworld2footwrtworld_){arena}
+    , decltype(_impl_.velworld2footwrtworld_){arena}
+    , decltype(_impl_.posbody2footwrtworld_){arena}
+    , decltype(_impl_.velbody2footwrtworld_){arena}
+    , decltype(_impl_.posbody2footwrtbody_){arena}
+    , decltype(_impl_.velbody2footwrtbody_){arena}
+    , decltype(_impl_.posworld2comwrtworld_){nullptr}
+    , decltype(_impl_.velworld2comwrtworld_){nullptr}
+    , decltype(_impl_.posworld2bodywrtworld_){nullptr}
+    , decltype(_impl_.velworld2bodywrtworld_){nullptr}
+    , decltype(_impl_.euleranglebodywrtworld_){nullptr}
+    , decltype(_impl_.angularvelbodywrtworld_){nullptr}
+    , decltype(_impl_.angularvelbodywrtbody_){nullptr}
+    , decltype(_impl_.angularmomentumbodywrtworld_){nullptr}
+    , decltype(_impl_.rotbodywrtworld_){nullptr}
+    , decltype(_impl_.contact_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+ControlState::~ControlState() {
+  // @@protoc_insertion_point(destructor:dtproto.woly.ControlState)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ControlState::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.posworld2footwrtworld_.~RepeatedPtrField();
+  _impl_.velworld2footwrtworld_.~RepeatedPtrField();
+  _impl_.posbody2footwrtworld_.~RepeatedPtrField();
+  _impl_.velbody2footwrtworld_.~RepeatedPtrField();
+  _impl_.posbody2footwrtbody_.~RepeatedPtrField();
+  _impl_.velbody2footwrtbody_.~RepeatedPtrField();
+  if (this != internal_default_instance()) delete _impl_.posworld2comwrtworld_;
+  if (this != internal_default_instance()) delete _impl_.velworld2comwrtworld_;
+  if (this != internal_default_instance()) delete _impl_.posworld2bodywrtworld_;
+  if (this != internal_default_instance()) delete _impl_.velworld2bodywrtworld_;
+  if (this != internal_default_instance()) delete _impl_.euleranglebodywrtworld_;
+  if (this != internal_default_instance()) delete _impl_.angularvelbodywrtworld_;
+  if (this != internal_default_instance()) delete _impl_.angularvelbodywrtbody_;
+  if (this != internal_default_instance()) delete _impl_.angularmomentumbodywrtworld_;
+  if (this != internal_default_instance()) delete _impl_.rotbodywrtworld_;
+  if (this != internal_default_instance()) delete _impl_.contact_;
+}
+
+void ControlState::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void ControlState::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.woly.ControlState)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.posworld2footwrtworld_.Clear();
+  _impl_.velworld2footwrtworld_.Clear();
+  _impl_.posbody2footwrtworld_.Clear();
+  _impl_.velbody2footwrtworld_.Clear();
+  _impl_.posbody2footwrtbody_.Clear();
+  _impl_.velbody2footwrtbody_.Clear();
+  if (GetArenaForAllocation() == nullptr && _impl_.posworld2comwrtworld_ != nullptr) {
+    delete _impl_.posworld2comwrtworld_;
+  }
+  _impl_.posworld2comwrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.velworld2comwrtworld_ != nullptr) {
+    delete _impl_.velworld2comwrtworld_;
+  }
+  _impl_.velworld2comwrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posworld2bodywrtworld_ != nullptr) {
+    delete _impl_.posworld2bodywrtworld_;
+  }
+  _impl_.posworld2bodywrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.velworld2bodywrtworld_ != nullptr) {
+    delete _impl_.velworld2bodywrtworld_;
+  }
+  _impl_.velworld2bodywrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.euleranglebodywrtworld_ != nullptr) {
+    delete _impl_.euleranglebodywrtworld_;
+  }
+  _impl_.euleranglebodywrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.angularvelbodywrtworld_ != nullptr) {
+    delete _impl_.angularvelbodywrtworld_;
+  }
+  _impl_.angularvelbodywrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.angularvelbodywrtbody_ != nullptr) {
+    delete _impl_.angularvelbodywrtbody_;
+  }
+  _impl_.angularvelbodywrtbody_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.angularmomentumbodywrtworld_ != nullptr) {
+    delete _impl_.angularmomentumbodywrtworld_;
+  }
+  _impl_.angularmomentumbodywrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.rotbodywrtworld_ != nullptr) {
+    delete _impl_.rotbodywrtworld_;
+  }
+  _impl_.rotbodywrtworld_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.contact_ != nullptr) {
+    delete _impl_.contact_;
+  }
+  _impl_.contact_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ControlState::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posworld2comwrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d velWorld2ComWrtWorld = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velworld2comwrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posWorld2BodyWrtWorld = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posworld2bodywrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d velWorld2BodyWrtWorld = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velworld2bodywrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Euler eulerAngleBodyWrtWorld = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_euleranglebodywrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Euler angularVelBodyWrtWorld = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          ptr = ctx->ParseMessage(_internal_mutable_angularvelbodywrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Euler angularVelBodyWrtBody = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr = ctx->ParseMessage(_internal_mutable_angularvelbodywrtbody(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d angularMomentumBodyWrtWorld = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+          ptr = ctx->ParseMessage(_internal_mutable_angularmomentumbodywrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_posworld2footwrtworld(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<74>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.geometry_msgs.Point3d velWorld2FootWrtWorld = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_velworld2footwrtworld(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtWorld = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_posbody2footwrtworld(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtWorld = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 98)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_velbody2footwrtworld(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<98>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtBody = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 106)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_posbody2footwrtbody(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<106>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtBody = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 114)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_velbody2footwrtbody(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<114>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+      case 15:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
+          ptr = ctx->ParseMessage(_internal_mutable_rotbodywrtworld(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector4b contact = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 130)) {
+          ptr = ctx->ParseMessage(_internal_mutable_contact(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ControlState::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.woly.ControlState)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
+  if (this->_internal_has_posworld2comwrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::posworld2comwrtworld(this),
+        _Internal::posworld2comwrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velWorld2ComWrtWorld = 2;
+  if (this->_internal_has_velworld2comwrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::velworld2comwrtworld(this),
+        _Internal::velworld2comwrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posWorld2BodyWrtWorld = 3;
+  if (this->_internal_has_posworld2bodywrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::posworld2bodywrtworld(this),
+        _Internal::posworld2bodywrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velWorld2BodyWrtWorld = 4;
+  if (this->_internal_has_velworld2bodywrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, _Internal::velworld2bodywrtworld(this),
+        _Internal::velworld2bodywrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Euler eulerAngleBodyWrtWorld = 5;
+  if (this->_internal_has_euleranglebodywrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(5, _Internal::euleranglebodywrtworld(this),
+        _Internal::euleranglebodywrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Euler angularVelBodyWrtWorld = 6;
+  if (this->_internal_has_angularvelbodywrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(6, _Internal::angularvelbodywrtworld(this),
+        _Internal::angularvelbodywrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Euler angularVelBodyWrtBody = 7;
+  if (this->_internal_has_angularvelbodywrtbody()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(7, _Internal::angularvelbodywrtbody(this),
+        _Internal::angularvelbodywrtbody(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d angularMomentumBodyWrtWorld = 8;
+  if (this->_internal_has_angularmomentumbodywrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(8, _Internal::angularmomentumbodywrtworld(this),
+        _Internal::angularmomentumbodywrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_posworld2footwrtworld_size()); i < n; i++) {
+    const auto& repfield = this->_internal_posworld2footwrtworld(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(9, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d velWorld2FootWrtWorld = 10;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_velworld2footwrtworld_size()); i < n; i++) {
+    const auto& repfield = this->_internal_velworld2footwrtworld(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(10, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtWorld = 11;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_posbody2footwrtworld_size()); i < n; i++) {
+    const auto& repfield = this->_internal_posbody2footwrtworld(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(11, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtWorld = 12;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_velbody2footwrtworld_size()); i < n; i++) {
+    const auto& repfield = this->_internal_velbody2footwrtworld(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(12, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtBody = 13;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_posbody2footwrtbody_size()); i < n; i++) {
+    const auto& repfield = this->_internal_posbody2footwrtbody(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(13, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtBody = 14;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_velbody2footwrtbody_size()); i < n; i++) {
+    const auto& repfield = this->_internal_velbody2footwrtbody(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(14, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+  if (this->_internal_has_rotbodywrtworld()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(15, _Internal::rotbodywrtworld(this),
+        _Internal::rotbodywrtworld(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector4b contact = 16;
+  if (this->_internal_has_contact()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(16, _Internal::contact(this),
+        _Internal::contact(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.woly.ControlState)
+  return target;
+}
+
+size_t ControlState::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.woly.ControlState)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
+  total_size += 1UL * this->_internal_posworld2footwrtworld_size();
+  for (const auto& msg : this->_impl_.posworld2footwrtworld_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d velWorld2FootWrtWorld = 10;
+  total_size += 1UL * this->_internal_velworld2footwrtworld_size();
+  for (const auto& msg : this->_impl_.velworld2footwrtworld_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtWorld = 11;
+  total_size += 1UL * this->_internal_posbody2footwrtworld_size();
+  for (const auto& msg : this->_impl_.posbody2footwrtworld_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtWorld = 12;
+  total_size += 1UL * this->_internal_velbody2footwrtworld_size();
+  for (const auto& msg : this->_impl_.velbody2footwrtworld_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d posBody2FootWrtBody = 13;
+  total_size += 1UL * this->_internal_posbody2footwrtbody_size();
+  for (const auto& msg : this->_impl_.posbody2footwrtbody_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.geometry_msgs.Point3d velBody2FootWrtBody = 14;
+  total_size += 1UL * this->_internal_velbody2footwrtbody_size();
+  for (const auto& msg : this->_impl_.velbody2footwrtbody_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
+  if (this->_internal_has_posworld2comwrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posworld2comwrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velWorld2ComWrtWorld = 2;
+  if (this->_internal_has_velworld2comwrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.velworld2comwrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posWorld2BodyWrtWorld = 3;
+  if (this->_internal_has_posworld2bodywrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posworld2bodywrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velWorld2BodyWrtWorld = 4;
+  if (this->_internal_has_velworld2bodywrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.velworld2bodywrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Euler eulerAngleBodyWrtWorld = 5;
+  if (this->_internal_has_euleranglebodywrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.euleranglebodywrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Euler angularVelBodyWrtWorld = 6;
+  if (this->_internal_has_angularvelbodywrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.angularvelbodywrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Euler angularVelBodyWrtBody = 7;
+  if (this->_internal_has_angularvelbodywrtbody()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.angularvelbodywrtbody_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d angularMomentumBodyWrtWorld = 8;
+  if (this->_internal_has_angularmomentumbodywrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.angularmomentumbodywrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+  if (this->_internal_has_rotbodywrtworld()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.rotbodywrtworld_);
+  }
+
+  // .dtproto.geometry_msgs.Vector4b contact = 16;
+  if (this->_internal_has_contact()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.contact_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ControlState::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    ControlState::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ControlState::GetClassData() const { return &_class_data_; }
+
+
+void ControlState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ControlState*>(&to_msg);
+  auto& from = static_cast<const ControlState&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.woly.ControlState)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.posworld2footwrtworld_.MergeFrom(from._impl_.posworld2footwrtworld_);
+  _this->_impl_.velworld2footwrtworld_.MergeFrom(from._impl_.velworld2footwrtworld_);
+  _this->_impl_.posbody2footwrtworld_.MergeFrom(from._impl_.posbody2footwrtworld_);
+  _this->_impl_.velbody2footwrtworld_.MergeFrom(from._impl_.velbody2footwrtworld_);
+  _this->_impl_.posbody2footwrtbody_.MergeFrom(from._impl_.posbody2footwrtbody_);
+  _this->_impl_.velbody2footwrtbody_.MergeFrom(from._impl_.velbody2footwrtbody_);
+  if (from._internal_has_posworld2comwrtworld()) {
+    _this->_internal_mutable_posworld2comwrtworld()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posworld2comwrtworld());
+  }
+  if (from._internal_has_velworld2comwrtworld()) {
+    _this->_internal_mutable_velworld2comwrtworld()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_velworld2comwrtworld());
+  }
+  if (from._internal_has_posworld2bodywrtworld()) {
+    _this->_internal_mutable_posworld2bodywrtworld()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posworld2bodywrtworld());
+  }
+  if (from._internal_has_velworld2bodywrtworld()) {
+    _this->_internal_mutable_velworld2bodywrtworld()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_velworld2bodywrtworld());
+  }
+  if (from._internal_has_euleranglebodywrtworld()) {
+    _this->_internal_mutable_euleranglebodywrtworld()->::dtproto::geometry_msgs::Euler::MergeFrom(
+        from._internal_euleranglebodywrtworld());
+  }
+  if (from._internal_has_angularvelbodywrtworld()) {
+    _this->_internal_mutable_angularvelbodywrtworld()->::dtproto::geometry_msgs::Euler::MergeFrom(
+        from._internal_angularvelbodywrtworld());
+  }
+  if (from._internal_has_angularvelbodywrtbody()) {
+    _this->_internal_mutable_angularvelbodywrtbody()->::dtproto::geometry_msgs::Euler::MergeFrom(
+        from._internal_angularvelbodywrtbody());
+  }
+  if (from._internal_has_angularmomentumbodywrtworld()) {
+    _this->_internal_mutable_angularmomentumbodywrtworld()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_angularmomentumbodywrtworld());
+  }
+  if (from._internal_has_rotbodywrtworld()) {
+    _this->_internal_mutable_rotbodywrtworld()->::dtproto::geometry_msgs::Matrix3d::MergeFrom(
+        from._internal_rotbodywrtworld());
+  }
+  if (from._internal_has_contact()) {
+    _this->_internal_mutable_contact()->::dtproto::geometry_msgs::Vector4b::MergeFrom(
+        from._internal_contact());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ControlState::CopyFrom(const ControlState& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.woly.ControlState)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ControlState::IsInitialized() const {
+  return true;
+}
+
+void ControlState::InternalSwap(ControlState* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.posworld2footwrtworld_.InternalSwap(&other->_impl_.posworld2footwrtworld_);
+  _impl_.velworld2footwrtworld_.InternalSwap(&other->_impl_.velworld2footwrtworld_);
+  _impl_.posbody2footwrtworld_.InternalSwap(&other->_impl_.posbody2footwrtworld_);
+  _impl_.velbody2footwrtworld_.InternalSwap(&other->_impl_.velbody2footwrtworld_);
+  _impl_.posbody2footwrtbody_.InternalSwap(&other->_impl_.posbody2footwrtbody_);
+  _impl_.velbody2footwrtbody_.InternalSwap(&other->_impl_.velbody2footwrtbody_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ControlState, _impl_.contact_)
+      + sizeof(ControlState::_impl_.contact_)
+      - PROTOBUF_FIELD_OFFSET(ControlState, _impl_.posworld2comwrtworld_)>(
+          reinterpret_cast<char*>(&_impl_.posworld2comwrtworld_),
+          reinterpret_cast<char*>(&other->_impl_.posworld2comwrtworld_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ControlState::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_Woly_2eproto_getter, &descriptor_table_Woly_2eproto_once,
+      file_level_metadata_Woly_2eproto[3]);
+}
+
+// ===================================================================
+
 class WolyState::_Internal {
  public:
   static const ::dtproto::woly::JointData& jointdata(const WolyState* msg);
@@ -1700,6 +2637,8 @@ class WolyState::_Internal {
   static const ::dtproto::woly::TaskState& taskstateactual(const WolyState* msg);
   static const ::dtproto::sensor_msgs::Imu& imu(const WolyState* msg);
   static const ::dtproto::sensor_msgs::Joy& joystick(const WolyState* msg);
+  static const ::dtproto::woly::ControlState& controlstatedesired(const WolyState* msg);
+  static const ::dtproto::woly::ControlState& controlstateactual(const WolyState* msg);
 };
 
 const ::dtproto::woly::JointData&
@@ -1721,6 +2660,14 @@ WolyState::_Internal::imu(const WolyState* msg) {
 const ::dtproto::sensor_msgs::Joy&
 WolyState::_Internal::joystick(const WolyState* msg) {
   return *msg->_impl_.joystick_;
+}
+const ::dtproto::woly::ControlState&
+WolyState::_Internal::controlstatedesired(const WolyState* msg) {
+  return *msg->_impl_.controlstatedesired_;
+}
+const ::dtproto::woly::ControlState&
+WolyState::_Internal::controlstateactual(const WolyState* msg) {
+  return *msg->_impl_.controlstateactual_;
 }
 void WolyState::clear_imu() {
   if (GetArenaForAllocation() == nullptr && _impl_.imu_ != nullptr) {
@@ -1749,6 +2696,8 @@ WolyState::WolyState(const WolyState& from)
     , decltype(_impl_.taskstateactual_){nullptr}
     , decltype(_impl_.imu_){nullptr}
     , decltype(_impl_.joystick_){nullptr}
+    , decltype(_impl_.controlstatedesired_){nullptr}
+    , decltype(_impl_.controlstateactual_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -1767,6 +2716,12 @@ WolyState::WolyState(const WolyState& from)
   if (from._internal_has_joystick()) {
     _this->_impl_.joystick_ = new ::dtproto::sensor_msgs::Joy(*from._impl_.joystick_);
   }
+  if (from._internal_has_controlstatedesired()) {
+    _this->_impl_.controlstatedesired_ = new ::dtproto::woly::ControlState(*from._impl_.controlstatedesired_);
+  }
+  if (from._internal_has_controlstateactual()) {
+    _this->_impl_.controlstateactual_ = new ::dtproto::woly::ControlState(*from._impl_.controlstateactual_);
+  }
   // @@protoc_insertion_point(copy_constructor:dtproto.woly.WolyState)
 }
 
@@ -1780,6 +2735,8 @@ inline void WolyState::SharedCtor(
     , decltype(_impl_.taskstateactual_){nullptr}
     , decltype(_impl_.imu_){nullptr}
     , decltype(_impl_.joystick_){nullptr}
+    , decltype(_impl_.controlstatedesired_){nullptr}
+    , decltype(_impl_.controlstateactual_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -1800,6 +2757,8 @@ inline void WolyState::SharedDtor() {
   if (this != internal_default_instance()) delete _impl_.taskstateactual_;
   if (this != internal_default_instance()) delete _impl_.imu_;
   if (this != internal_default_instance()) delete _impl_.joystick_;
+  if (this != internal_default_instance()) delete _impl_.controlstatedesired_;
+  if (this != internal_default_instance()) delete _impl_.controlstateactual_;
 }
 
 void WolyState::SetCachedSize(int size) const {
@@ -1832,6 +2791,14 @@ void WolyState::Clear() {
     delete _impl_.joystick_;
   }
   _impl_.joystick_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.controlstatedesired_ != nullptr) {
+    delete _impl_.controlstatedesired_;
+  }
+  _impl_.controlstatedesired_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.controlstateactual_ != nullptr) {
+    delete _impl_.controlstateactual_;
+  }
+  _impl_.controlstateactual_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1877,6 +2844,22 @@ const char* WolyState::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_joystick(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.woly.ControlState controlStateDesired = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr = ctx->ParseMessage(_internal_mutable_controlstatedesired(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.woly.ControlState controlStateActual = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+          ptr = ctx->ParseMessage(_internal_mutable_controlstateactual(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1945,6 +2928,20 @@ uint8_t* WolyState::_InternalSerialize(
         _Internal::joystick(this).GetCachedSize(), target, stream);
   }
 
+  // .dtproto.woly.ControlState controlStateDesired = 7;
+  if (this->_internal_has_controlstatedesired()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(7, _Internal::controlstatedesired(this),
+        _Internal::controlstatedesired(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.woly.ControlState controlStateActual = 8;
+  if (this->_internal_has_controlstateactual()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(8, _Internal::controlstateactual(this),
+        _Internal::controlstateactual(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1996,6 +2993,20 @@ size_t WolyState::ByteSizeLong() const {
         *_impl_.joystick_);
   }
 
+  // .dtproto.woly.ControlState controlStateDesired = 7;
+  if (this->_internal_has_controlstatedesired()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.controlstatedesired_);
+  }
+
+  // .dtproto.woly.ControlState controlStateActual = 8;
+  if (this->_internal_has_controlstateactual()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.controlstateactual_);
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2034,6 +3045,14 @@ void WolyState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROT
     _this->_internal_mutable_joystick()->::dtproto::sensor_msgs::Joy::MergeFrom(
         from._internal_joystick());
   }
+  if (from._internal_has_controlstatedesired()) {
+    _this->_internal_mutable_controlstatedesired()->::dtproto::woly::ControlState::MergeFrom(
+        from._internal_controlstatedesired());
+  }
+  if (from._internal_has_controlstateactual()) {
+    _this->_internal_mutable_controlstateactual()->::dtproto::woly::ControlState::MergeFrom(
+        from._internal_controlstateactual());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2052,8 +3071,8 @@ void WolyState::InternalSwap(WolyState* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(WolyState, _impl_.joystick_)
-      + sizeof(WolyState::_impl_.joystick_)
+      PROTOBUF_FIELD_OFFSET(WolyState, _impl_.controlstateactual_)
+      + sizeof(WolyState::_impl_.controlstateactual_)
       - PROTOBUF_FIELD_OFFSET(WolyState, _impl_.jointdata_)>(
           reinterpret_cast<char*>(&_impl_.jointdata_),
           reinterpret_cast<char*>(&other->_impl_.jointdata_));
@@ -2062,7 +3081,7 @@ void WolyState::InternalSwap(WolyState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata WolyState::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Woly_2eproto_getter, &descriptor_table_Woly_2eproto_once,
-      file_level_metadata_Woly_2eproto[3]);
+      file_level_metadata_Woly_2eproto[4]);
 }
 
 // ===================================================================
@@ -2307,7 +3326,7 @@ void WolyStateTimeStamped::InternalSwap(WolyStateTimeStamped* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata WolyStateTimeStamped::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Woly_2eproto_getter, &descriptor_table_Woly_2eproto_once,
-      file_level_metadata_Woly_2eproto[4]);
+      file_level_metadata_Woly_2eproto[5]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2325,6 +3344,10 @@ Arena::CreateMaybeMessage< ::dtproto::woly::JointState >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::dtproto::woly::JointData*
 Arena::CreateMaybeMessage< ::dtproto::woly::JointData >(Arena* arena) {
   return Arena::CreateMessageInternal< ::dtproto::woly::JointData >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dtproto::woly::ControlState*
+Arena::CreateMaybeMessage< ::dtproto::woly::ControlState >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::woly::ControlState >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dtproto::woly::WolyState*
 Arena::CreateMaybeMessage< ::dtproto::woly::WolyState >(Arena* arena) {

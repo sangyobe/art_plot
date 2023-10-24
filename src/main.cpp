@@ -24,6 +24,7 @@
 #define ENABLE_JOINT_TORQUE_PLOT
 //#define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 //#define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
+#define ENABLE_FOOT_TRAJECTORY_PLOT
 
 #ifdef USE_TRANSPORT_ECAL
 #include <ecal/ecal.h>
@@ -42,6 +43,7 @@ constexpr int jdof = 12;
 #ifdef ROBOT_WOLY
 #include "Woly.pb.h"
 constexpr int jdof = 16;
+constexpr int legnum = 4;
 #endif
 
 
@@ -82,9 +84,39 @@ public:
     void OnRecvWolyState(const double curTime, const dtproto::woly::WolyState &state)
     {
         //OnRecvCpgState(curTime, state.cpgstate());
-        //OnRecvControlStateActual(curTime, state.controlstateactual());
-        //OnRecvControlStateDesired(curTime, state.controlstatedesired());
+        OnRecvControlStateActual(curTime, state.controlstateactual());
+        OnRecvControlStateDesired(curTime, state.controlstatedesired());
         OnRecvJointState(curTime, state.jointdata());
+    }
+
+    void OnRecvControlStateActual(const double curTime, const dtproto::woly::ControlState &state)
+    {
+        if (_plot_footPos) {
+            for (int li = 0; li < legnum; li++) {
+                _plot_footPos->AddData(6*li + 3, curTime,
+                                    state.posbody2footwrtbody(li).x());
+                _plot_footPos->AddData(6*li + 4, curTime,
+                                    state.posbody2footwrtbody(li).y());
+                _plot_footPos->AddData(6*li + 5, curTime,
+                                    state.posbody2footwrtbody(li).z());
+            }
+            _plot_footPos->DataUpdated(curTime);
+        }
+    }
+
+    void OnRecvControlStateDesired(const double curTime, const dtproto::woly::ControlState &state)
+    {
+        if (_plot_footPos) {
+            for (int li = 0; li < legnum; li++) {
+                _plot_footPos->AddData(6*li + 0, curTime,
+                                    state.posbody2footwrtbody(li).x());
+                _plot_footPos->AddData(6*li + 1, curTime,
+                                    state.posbody2footwrtbody(li).y());
+                _plot_footPos->AddData(6*li + 2, curTime,
+                                    state.posbody2footwrtbody(li).z());
+            }
+            _plot_footPos->DataUpdated(curTime);
+        }
     }
 
     void OnRecvJointState(const double curTime, const dtproto::woly::JointData &state)
@@ -348,6 +380,7 @@ public:
     void SetPlotOrient(PlotWindow* wnd) { _plot_orient = wnd; }
     void SetPlotAngVel(PlotWindow* wnd) { _plot_angVel = wnd; }
     void SetPlotContact(PlotWindow* wnd) { _plot_contact = wnd; }
+    void SetPlotFootPos(PlotWindow* wnd) { _plot_footPos = wnd; }
     void SetPlotCpgCpg(PlotWindow* wnd) { _plot_cpgCpg = wnd; }
     void SetPlotCpgPhi(PlotWindow* wnd) { _plot_cpgPhi = wnd; }
     void SetPlotJointPos(PlotWindow* wnd) { _plot_jointPos = wnd; }
@@ -361,6 +394,7 @@ private:
     PlotWindow *_plot_comVel{nullptr};
     PlotWindow *_plot_orient{nullptr};
     PlotWindow *_plot_angVel{nullptr};
+    PlotWindow *_plot_footPos{nullptr};
     PlotWindow *_plot_contact{nullptr};
     PlotWindow *_plot_cpgCpg{nullptr};
     PlotWindow *_plot_cpgPhi{nullptr};
@@ -454,6 +488,39 @@ int main(int argc, char *argv[])
     controlStatePlot_angVel->show();
     plotToolbox.AddPlot(controlStatePlot_angVel.get());
     plotDataHandler.SetPlotAngVel(controlStatePlot_angVel.get());
+#endif
+
+    std::unique_ptr<PlotWindow> controlStatePlot_footPos;
+#ifdef ENABLE_FOOT_TRAJECTORY_PLOT
+    controlStatePlot_footPos = std::unique_ptr<PlotWindow>(new PlotWindow(&plotToolbox));
+    controlStatePlot_footPos->SetWindowTitle("Foot trajectory wrt Body");
+    controlStatePlot_footPos->AddGraph("FL.x.desired", LineColor<0>());
+    controlStatePlot_footPos->AddGraph("FL.y.desired", LineColor<1>());
+    controlStatePlot_footPos->AddGraph("FL.z.desired", LineColor<2>());
+    controlStatePlot_footPos->AddGraph("FL.x.actual", LineColor<3>());
+    controlStatePlot_footPos->AddGraph("FL.y.actual", LineColor<4>());
+    controlStatePlot_footPos->AddGraph("FL.z.actual", LineColor<5>());
+    controlStatePlot_footPos->AddGraph("BL.x.desired", LineColor<6>());
+    controlStatePlot_footPos->AddGraph("BL.y.desired", LineColor<7>());
+    controlStatePlot_footPos->AddGraph("BL.z.desired", LineColor<8>());
+    controlStatePlot_footPos->AddGraph("BL.x.actual", LineColor<9>());
+    controlStatePlot_footPos->AddGraph("BL.y.actual", LineColor<10>());
+    controlStatePlot_footPos->AddGraph("BL.z.actual", LineColor<11>());
+    controlStatePlot_footPos->AddGraph("FR.x.desired", LineColor<12>());
+    controlStatePlot_footPos->AddGraph("FR.y.desired", LineColor<13>());
+    controlStatePlot_footPos->AddGraph("FR.z.desired", LineColor<14>());
+    controlStatePlot_footPos->AddGraph("FR.x.actual", LineColor<15>());
+    controlStatePlot_footPos->AddGraph("FR.y.actual", LineColor<16>());
+    controlStatePlot_footPos->AddGraph("FR.z.actual", LineColor<17>());
+    controlStatePlot_footPos->AddGraph("BR.x.desired", LineColor<18>());
+    controlStatePlot_footPos->AddGraph("BR.y.desired", LineColor<19>());
+    controlStatePlot_footPos->AddGraph("BR.z.desired", LineColor<20>());
+    controlStatePlot_footPos->AddGraph("BR.x.actual", LineColor<21>());
+    controlStatePlot_footPos->AddGraph("BR.y.actual", LineColor<22>());
+    controlStatePlot_footPos->AddGraph("BR.z.actual", LineColor<23>());
+    controlStatePlot_footPos->show();
+    plotToolbox.AddPlot(controlStatePlot_footPos.get());
+    plotDataHandler.SetPlotFootPos(controlStatePlot_footPos.get());
 #endif
 
     std::unique_ptr<PlotWindow> controlStatePlot_contact;
@@ -605,7 +672,7 @@ int main(int argc, char *argv[])
     sub_quadip_state.RegMessageHandler(handler);
 #endif
 #ifdef ROBOT_WOLY
-    dtCore::dtStateSubscriberGrpc<dtproto::woly::WolyStateTimeStamped> sub_woly_state("RobotState", "0.0.0.0:50051");
+    dtCore::dtStateSubscriberGrpc<dtproto::woly::WolyStateTimeStamped> sub_woly_state("RobotState", "10.0.0.10:50051");
 
     std::function<void(dtproto::woly::WolyStateTimeStamped&)> handler = [&plotDataHandler](dtproto::woly::WolyStateTimeStamped& msg) {
         static long long seq = 0;
