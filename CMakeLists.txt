@@ -21,6 +21,7 @@ find_package(gRPC CONFIG REQUIRED)
 
 file(GLOB PROJECT_SOURCES
     "src/*.cpp"
+    "src/*.hpp"
     "src/*.ui"
     "src/*.h"
     "src/*.qrc"
