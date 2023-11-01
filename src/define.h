@@ -11,7 +11,8 @@
 // Select a robot type
 //
 //#define ROBOT_QUADIP
-#define ROBOT_WOLY
+//#define ROBOT_WOLY
+#define ROBOT_LEOQUAD
 
 #ifdef ROBOT_QUADIP
 #define ROBOT_NAME "Quad-IP"
@@ -20,6 +21,10 @@
 #ifdef ROBOT_WOLY
 #define ROBOT_NAME "Woly"
 #define APP_NAME "ArtPlot (Woly)"
+#endif
+#ifdef ROBOT_LEOQUAD
+#define ROBOT_NAME "LEOquad"
+#define APP_NAME "ArtPlot (LEOquad)"
 #endif
 
 #endif // DEFINE_H

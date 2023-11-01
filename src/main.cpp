@@ -11,6 +11,7 @@
 
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
+#include "LeoQuadDataHandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,9 @@ int main(int argc, char *argv[])
 #endif
 #ifdef ROBOT_WOLY
     std::unique_ptr<WolyDataHandler> dataHandler = std::make_unique<WolyDataHandler>(&plotToolbox);
+#endif
+#ifdef ROBOT_LEOQUAD
+    std::unique_ptr<LeoQuadDataHandler> dataHandler = std::make_unique<LeoQuadDataHandler>(&plotToolbox);
 #endif
 
     // Start main application(event-loop)
