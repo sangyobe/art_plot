@@ -307,88 +307,83 @@ void LeoQuadDataHandler::OnRecvLeoQuadStateTimeStamped(const char *topic_name,
 void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto::leoquad::LeoQuadState &state)
 {
     //OnRecvCpgState(curTime, state.cpgstate());
-    OnRecvControlStateActual(curTime, state.controlstateactual());
-    OnRecvControlStateDesired(curTime, state.controlstatedesired());
-    OnRecvJointState(curTime, state.jointdata());
+    OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
+    OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
 }
 
-void LeoQuadDataHandler::OnRecvControlStateActual(const double curTime, const dtproto::leoquad::ControlState &state)
+void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto::leoquad::ControlState &actState, const dtproto::leoquad::ControlState &desState)
 {
     if (_plot_footPos) {
         for (int li = 0; li < legnum; li++) {
             _plot_footPos->AddData(6*li + 3, curTime,
-                                state.posbody2footwrtbody(li).x());
+                                actState.posbody2footwrtbody(li).x());
             _plot_footPos->AddData(6*li + 4, curTime,
-                                state.posbody2footwrtbody(li).y());
+                                actState.posbody2footwrtbody(li).y());
             _plot_footPos->AddData(6*li + 5, curTime,
-                                state.posbody2footwrtbody(li).z());
-        }
-        _plot_footPos->DataUpdated(curTime);
-    }
-}
+                                actState.posbody2footwrtbody(li).z());
 
-void LeoQuadDataHandler::OnRecvControlStateDesired(const double curTime, const dtproto::leoquad::ControlState &state)
-{
-    if (_plot_footPos) {
-        for (int li = 0; li < legnum; li++) {
             _plot_footPos->AddData(6*li + 0, curTime,
-                                state.posbody2footwrtbody(li).x());
+                                desState.posbody2footwrtbody(li).x());
             _plot_footPos->AddData(6*li + 1, curTime,
-                                state.posbody2footwrtbody(li).y());
+                                desState.posbody2footwrtbody(li).y());
             _plot_footPos->AddData(6*li + 2, curTime,
-                                state.posbody2footwrtbody(li).z());
+                                desState.posbody2footwrtbody(li).z());
         }
         _plot_footPos->DataUpdated(curTime);
     }
+
 }
 
-void LeoQuadDataHandler::OnRecvJointState(const double curTime, const dtproto::leoquad::JointData &state)
+void LeoQuadDataHandler::OnRecvJointState(const double curTime,
+    const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointState> &state,
+    const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &actData,
+    const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData)
 {
     if (_plot_jointPos) {
         for (int ji = 0; ji < jdof; ji++) {
             _plot_jointPos->AddData(
-                2*ji, curTime, state.joints(ji).despos_rad());
+                2*ji, curTime, desData.Get(ji).pos_rad());
             _plot_jointPos->AddData(
-                2*ji+1, curTime, state.joints(ji).actpos_rad());
+                2*ji+1, curTime, actData.Get(ji).pos_rad());
         }
         _plot_jointPos->DataUpdated(curTime);
     }
     if (_plot_jointVel) {
         for (int ji = 0; ji < jdof; ji++) {
             _plot_jointVel->AddData(
-                2*ji, curTime, state.joints(ji).desvel_rps());
+                2*ji, curTime, desData.Get(ji).vel_rps());
             _plot_jointVel->AddData(
-                2*ji+1, curTime, state.joints(ji).actvel_rps());
+                2*ji+1, curTime, actData.Get(ji).vel_rps());
         }
         _plot_jointVel->DataUpdated(curTime);
     }
     if (_plot_jointAcc) {
         for (int ji = 0; ji < jdof; ji++) {
             _plot_jointAcc->AddData(
-                2*ji, curTime, state.joints(ji).desacc_rpss());
+                2*ji, curTime, desData.Get(ji).acc_rpss());
             _plot_jointAcc->AddData(
-                2*ji+1, curTime, state.joints(ji).desacc_rpss());
+                2*ji+1, curTime, actData.Get(ji).acc_rpss());
         }
         _plot_jointAcc->DataUpdated(curTime);
     }
     if (_plot_jointTau) {
         for (int ji = 0; ji < jdof; ji++) {
             _plot_jointTau->AddData(
-                2*ji, curTime, state.joints(ji).destorq_nm());
+                2*ji, curTime, desData.Get(ji).torq_nm());
             _plot_jointTau->AddData(
-                2*ji+1, curTime, state.joints(ji).acttorq_nm());
+                2*ji+1, curTime, actData.Get(ji).torq_nm());
         }
         _plot_jointTau->DataUpdated(curTime);
     }
     if (_plot_absEnc) {
         for (int ji = 0; ji < jdof; ji++) {
-            _plot_absEnc->AddData(ji, curTime, state.joints(ji).abspos_cnt());
+            _plot_absEnc->AddData(ji, curTime, state.Get(ji).abspos_cnt());
         }
         _plot_absEnc->DataUpdated(curTime);
     }
     if (_plot_incEnc) {
         for (int ji = 0; ji < jdof; ji++) {
-            _plot_incEnc->AddData(ji, curTime, state.joints(ji).incpos_cnt());
+            _plot_incEnc->AddData(ji, curTime, state.Get(ji).incpos_cnt());
         }
         _plot_incEnc->DataUpdated(curTime);
     }

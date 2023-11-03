@@ -31,9 +31,12 @@ private:
                                       const long long time, const long long clock);
 
     void OnRecvLeoQuadState(const double curTime, const dtproto::leoquad::LeoQuadState &state);
-    void OnRecvControlStateActual(const double curTime, const dtproto::leoquad::ControlState &state);
-    void OnRecvControlStateDesired(const double curTime, const dtproto::leoquad::ControlState &state);
-    void OnRecvJointState(const double curTime, const dtproto::leoquad::JointData &state);
+    void OnRecvControlState(const double curTime, const dtproto::leoquad::ControlState &actState, const dtproto::leoquad::ControlState &desState);
+    void OnRecvJointState(const double curTime,
+        const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointState> &state,
+        const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &actData,
+        const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData);
+
 
 private:
     std::unique_ptr<PlotWindow> _plot_comPos;

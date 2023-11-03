@@ -57,6 +57,9 @@ namespace leoquad {
 class ControlState;
 struct ControlStateDefaultTypeInternal;
 extern ControlStateDefaultTypeInternal _ControlState_default_instance_;
+class CpgState;
+struct CpgStateDefaultTypeInternal;
+extern CpgStateDefaultTypeInternal _CpgState_default_instance_;
 class JointData;
 struct JointDataDefaultTypeInternal;
 extern JointDataDefaultTypeInternal _JointData_default_instance_;
@@ -76,6 +79,7 @@ extern TaskStateDefaultTypeInternal _TaskState_default_instance_;
 }  // namespace dtproto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::dtproto::leoquad::ControlState* Arena::CreateMaybeMessage<::dtproto::leoquad::ControlState>(Arena*);
+template<> ::dtproto::leoquad::CpgState* Arena::CreateMaybeMessage<::dtproto::leoquad::CpgState>(Arena*);
 template<> ::dtproto::leoquad::JointData* Arena::CreateMaybeMessage<::dtproto::leoquad::JointData>(Arena*);
 template<> ::dtproto::leoquad::JointState* Arena::CreateMaybeMessage<::dtproto::leoquad::JointState>(Arena*);
 template<> ::dtproto::leoquad::LeoQuadState* Arena::CreateMaybeMessage<::dtproto::leoquad::LeoQuadState>(Arena*);
@@ -506,14 +510,6 @@ class JointState final :
     kMcuTempCFieldNumber = 8,
     kInvTempCFieldNumber = 9,
     kInputVoltVFieldNumber = 10,
-    kActPosRadFieldNumber = 11,
-    kActAuxRadFieldNumber = 12,
-    kActVelRpsFieldNumber = 13,
-    kActTorqNmFieldNumber = 14,
-    kDesPosRadFieldNumber = 15,
-    kDesVelRpsFieldNumber = 16,
-    kDesAccRpssFieldNumber = 17,
-    kDesTorqNmFieldNumber = 18,
   };
   // uint32 statusWord = 1;
   void clear_statusword();
@@ -605,78 +601,6 @@ class JointState final :
   void _internal_set_inputvolt_v(float value);
   public:
 
-  // double actPos_rad = 11;
-  void clear_actpos_rad();
-  double actpos_rad() const;
-  void set_actpos_rad(double value);
-  private:
-  double _internal_actpos_rad() const;
-  void _internal_set_actpos_rad(double value);
-  public:
-
-  // double actAux_rad = 12;
-  void clear_actaux_rad();
-  double actaux_rad() const;
-  void set_actaux_rad(double value);
-  private:
-  double _internal_actaux_rad() const;
-  void _internal_set_actaux_rad(double value);
-  public:
-
-  // double actVel_rps = 13;
-  void clear_actvel_rps();
-  double actvel_rps() const;
-  void set_actvel_rps(double value);
-  private:
-  double _internal_actvel_rps() const;
-  void _internal_set_actvel_rps(double value);
-  public:
-
-  // double actTorq_Nm = 14;
-  void clear_acttorq_nm();
-  double acttorq_nm() const;
-  void set_acttorq_nm(double value);
-  private:
-  double _internal_acttorq_nm() const;
-  void _internal_set_acttorq_nm(double value);
-  public:
-
-  // double desPos_rad = 15;
-  void clear_despos_rad();
-  double despos_rad() const;
-  void set_despos_rad(double value);
-  private:
-  double _internal_despos_rad() const;
-  void _internal_set_despos_rad(double value);
-  public:
-
-  // double desVel_rps = 16;
-  void clear_desvel_rps();
-  double desvel_rps() const;
-  void set_desvel_rps(double value);
-  private:
-  double _internal_desvel_rps() const;
-  void _internal_set_desvel_rps(double value);
-  public:
-
-  // double desAcc_rpss = 17;
-  void clear_desacc_rpss();
-  double desacc_rpss() const;
-  void set_desacc_rpss(double value);
-  private:
-  double _internal_desacc_rpss() const;
-  void _internal_set_desacc_rpss(double value);
-  public:
-
-  // double desTorq_Nm = 18;
-  void clear_destorq_nm();
-  double destorq_nm() const;
-  void set_destorq_nm(double value);
-  private:
-  double _internal_destorq_nm() const;
-  void _internal_set_destorq_nm(double value);
-  public:
-
   // @@protoc_insertion_point(class_scope:dtproto.leoquad.JointState)
  private:
   class _Internal;
@@ -695,14 +619,6 @@ class JointState final :
     float mcutemp_c_;
     float invtemp_c_;
     float inputvolt_v_;
-    double actpos_rad_;
-    double actaux_rad_;
-    double actvel_rps_;
-    double acttorq_nm_;
-    double despos_rad_;
-    double desvel_rps_;
-    double desacc_rpss_;
-    double destorq_nm_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -831,25 +747,56 @@ class JointData final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kJointsFieldNumber = 1,
+    kPosRadFieldNumber = 1,
+    kPosAuxRadFieldNumber = 2,
+    kVelRpsFieldNumber = 3,
+    kAccRpssFieldNumber = 4,
+    kTorqNmFieldNumber = 5,
   };
-  // repeated .dtproto.leoquad.JointState joints = 1;
-  int joints_size() const;
+  // double pos_rad = 1;
+  void clear_pos_rad();
+  double pos_rad() const;
+  void set_pos_rad(double value);
   private:
-  int _internal_joints_size() const;
+  double _internal_pos_rad() const;
+  void _internal_set_pos_rad(double value);
   public:
-  void clear_joints();
-  ::dtproto::leoquad::JointState* mutable_joints(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >*
-      mutable_joints();
+
+  // double posAux_rad = 2;
+  void clear_posaux_rad();
+  double posaux_rad() const;
+  void set_posaux_rad(double value);
   private:
-  const ::dtproto::leoquad::JointState& _internal_joints(int index) const;
-  ::dtproto::leoquad::JointState* _internal_add_joints();
+  double _internal_posaux_rad() const;
+  void _internal_set_posaux_rad(double value);
   public:
-  const ::dtproto::leoquad::JointState& joints(int index) const;
-  ::dtproto::leoquad::JointState* add_joints();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >&
-      joints() const;
+
+  // double vel_rps = 3;
+  void clear_vel_rps();
+  double vel_rps() const;
+  void set_vel_rps(double value);
+  private:
+  double _internal_vel_rps() const;
+  void _internal_set_vel_rps(double value);
+  public:
+
+  // double acc_rpss = 4;
+  void clear_acc_rpss();
+  double acc_rpss() const;
+  void set_acc_rpss(double value);
+  private:
+  double _internal_acc_rpss() const;
+  void _internal_set_acc_rpss(double value);
+  public:
+
+  // double torq_Nm = 5;
+  void clear_torq_nm();
+  double torq_nm() const;
+  void set_torq_nm(double value);
+  private:
+  double _internal_torq_nm() const;
+  void _internal_set_torq_nm(double value);
+  public:
 
   // @@protoc_insertion_point(class_scope:dtproto.leoquad.JointData)
  private:
@@ -859,7 +806,11 @@ class JointData final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState > joints_;
+    double pos_rad_;
+    double posaux_rad_;
+    double vel_rps_;
+    double acc_rpss_;
+    double torq_nm_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1324,6 +1275,465 @@ class ControlState final :
 };
 // -------------------------------------------------------------------
 
+class CpgState final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dtproto.leoquad.CpgState) */ {
+ public:
+  inline CpgState() : CpgState(nullptr) {}
+  ~CpgState() override;
+  explicit PROTOBUF_CONSTEXPR CpgState(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CpgState(const CpgState& from);
+  CpgState(CpgState&& from) noexcept
+    : CpgState() {
+    *this = ::std::move(from);
+  }
+
+  inline CpgState& operator=(const CpgState& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CpgState& operator=(CpgState&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CpgState& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CpgState* internal_default_instance() {
+    return reinterpret_cast<const CpgState*>(
+               &_CpgState_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(CpgState& a, CpgState& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CpgState* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CpgState* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CpgState* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CpgState>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CpgState& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CpgState& from) {
+    CpgState::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CpgState* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dtproto.leoquad.CpgState";
+  }
+  protected:
+  explicit CpgState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPeriodsFieldNumber = 1,
+    kPhasesFieldNumber = 2,
+    kPhiFieldNumber = 3,
+    kPhiToGoFieldNumber = 4,
+    kPhiStFieldNumber = 5,
+    kPhiSwFieldNumber = 6,
+    kCpgFieldNumber = 7,
+    kContactFieldNumber = 8,
+    kPhaseChangeFlagFieldNumber = 9,
+    kPeriodChangeFlagFieldNumber = 10,
+    kPhaseDiffFieldNumber = 11,
+    kPhiTranFieldNumber = 12,
+    kPhiTranStFieldNumber = 13,
+    kPhiTranSwFieldNumber = 14,
+    kStepFieldNumber = 15,
+    kDtFieldNumber = 16,
+    kAirFieldNumber = 17,
+  };
+  // .dtproto.geometry_msgs.Vector2d periods = 1;
+  bool has_periods() const;
+  private:
+  bool _internal_has_periods() const;
+  public:
+  void clear_periods();
+  const ::dtproto::geometry_msgs::Vector2d& periods() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector2d* release_periods();
+  ::dtproto::geometry_msgs::Vector2d* mutable_periods();
+  void set_allocated_periods(::dtproto::geometry_msgs::Vector2d* periods);
+  private:
+  const ::dtproto::geometry_msgs::Vector2d& _internal_periods() const;
+  ::dtproto::geometry_msgs::Vector2d* _internal_mutable_periods();
+  public:
+  void unsafe_arena_set_allocated_periods(
+      ::dtproto::geometry_msgs::Vector2d* periods);
+  ::dtproto::geometry_msgs::Vector2d* unsafe_arena_release_periods();
+
+  // .dtproto.geometry_msgs.Vector4d phases = 2;
+  bool has_phases() const;
+  private:
+  bool _internal_has_phases() const;
+  public:
+  void clear_phases();
+  const ::dtproto::geometry_msgs::Vector4d& phases() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phases();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phases();
+  void set_allocated_phases(::dtproto::geometry_msgs::Vector4d* phases);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phases() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phases();
+  public:
+  void unsafe_arena_set_allocated_phases(
+      ::dtproto::geometry_msgs::Vector4d* phases);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phases();
+
+  // .dtproto.geometry_msgs.Vector4d phi = 3;
+  bool has_phi() const;
+  private:
+  bool _internal_has_phi() const;
+  public:
+  void clear_phi();
+  const ::dtproto::geometry_msgs::Vector4d& phi() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phi();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phi();
+  void set_allocated_phi(::dtproto::geometry_msgs::Vector4d* phi);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phi() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phi();
+  public:
+  void unsafe_arena_set_allocated_phi(
+      ::dtproto::geometry_msgs::Vector4d* phi);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phi();
+
+  // .dtproto.geometry_msgs.Vector4d phiToGo = 4;
+  bool has_phitogo() const;
+  private:
+  bool _internal_has_phitogo() const;
+  public:
+  void clear_phitogo();
+  const ::dtproto::geometry_msgs::Vector4d& phitogo() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phitogo();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phitogo();
+  void set_allocated_phitogo(::dtproto::geometry_msgs::Vector4d* phitogo);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phitogo() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phitogo();
+  public:
+  void unsafe_arena_set_allocated_phitogo(
+      ::dtproto::geometry_msgs::Vector4d* phitogo);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phitogo();
+
+  // .dtproto.geometry_msgs.Vector4d phiSt = 5;
+  bool has_phist() const;
+  private:
+  bool _internal_has_phist() const;
+  public:
+  void clear_phist();
+  const ::dtproto::geometry_msgs::Vector4d& phist() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phist();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phist();
+  void set_allocated_phist(::dtproto::geometry_msgs::Vector4d* phist);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phist() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phist();
+  public:
+  void unsafe_arena_set_allocated_phist(
+      ::dtproto::geometry_msgs::Vector4d* phist);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phist();
+
+  // .dtproto.geometry_msgs.Vector4d phiSw = 6;
+  bool has_phisw() const;
+  private:
+  bool _internal_has_phisw() const;
+  public:
+  void clear_phisw();
+  const ::dtproto::geometry_msgs::Vector4d& phisw() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phisw();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phisw();
+  void set_allocated_phisw(::dtproto::geometry_msgs::Vector4d* phisw);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phisw() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phisw();
+  public:
+  void unsafe_arena_set_allocated_phisw(
+      ::dtproto::geometry_msgs::Vector4d* phisw);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phisw();
+
+  // .dtproto.geometry_msgs.Vector4d cpg = 7;
+  bool has_cpg() const;
+  private:
+  bool _internal_has_cpg() const;
+  public:
+  void clear_cpg();
+  const ::dtproto::geometry_msgs::Vector4d& cpg() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_cpg();
+  ::dtproto::geometry_msgs::Vector4d* mutable_cpg();
+  void set_allocated_cpg(::dtproto::geometry_msgs::Vector4d* cpg);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_cpg() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_cpg();
+  public:
+  void unsafe_arena_set_allocated_cpg(
+      ::dtproto::geometry_msgs::Vector4d* cpg);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_cpg();
+
+  // .dtproto.geometry_msgs.Vector4b contact = 8;
+  bool has_contact() const;
+  private:
+  bool _internal_has_contact() const;
+  public:
+  void clear_contact();
+  const ::dtproto::geometry_msgs::Vector4b& contact() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4b* release_contact();
+  ::dtproto::geometry_msgs::Vector4b* mutable_contact();
+  void set_allocated_contact(::dtproto::geometry_msgs::Vector4b* contact);
+  private:
+  const ::dtproto::geometry_msgs::Vector4b& _internal_contact() const;
+  ::dtproto::geometry_msgs::Vector4b* _internal_mutable_contact();
+  public:
+  void unsafe_arena_set_allocated_contact(
+      ::dtproto::geometry_msgs::Vector4b* contact);
+  ::dtproto::geometry_msgs::Vector4b* unsafe_arena_release_contact();
+
+  // .dtproto.geometry_msgs.Vector4b phaseChangeFlag = 9;
+  bool has_phasechangeflag() const;
+  private:
+  bool _internal_has_phasechangeflag() const;
+  public:
+  void clear_phasechangeflag();
+  const ::dtproto::geometry_msgs::Vector4b& phasechangeflag() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4b* release_phasechangeflag();
+  ::dtproto::geometry_msgs::Vector4b* mutable_phasechangeflag();
+  void set_allocated_phasechangeflag(::dtproto::geometry_msgs::Vector4b* phasechangeflag);
+  private:
+  const ::dtproto::geometry_msgs::Vector4b& _internal_phasechangeflag() const;
+  ::dtproto::geometry_msgs::Vector4b* _internal_mutable_phasechangeflag();
+  public:
+  void unsafe_arena_set_allocated_phasechangeflag(
+      ::dtproto::geometry_msgs::Vector4b* phasechangeflag);
+  ::dtproto::geometry_msgs::Vector4b* unsafe_arena_release_phasechangeflag();
+
+  // .dtproto.geometry_msgs.Vector4b periodChangeFlag = 10;
+  bool has_periodchangeflag() const;
+  private:
+  bool _internal_has_periodchangeflag() const;
+  public:
+  void clear_periodchangeflag();
+  const ::dtproto::geometry_msgs::Vector4b& periodchangeflag() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4b* release_periodchangeflag();
+  ::dtproto::geometry_msgs::Vector4b* mutable_periodchangeflag();
+  void set_allocated_periodchangeflag(::dtproto::geometry_msgs::Vector4b* periodchangeflag);
+  private:
+  const ::dtproto::geometry_msgs::Vector4b& _internal_periodchangeflag() const;
+  ::dtproto::geometry_msgs::Vector4b* _internal_mutable_periodchangeflag();
+  public:
+  void unsafe_arena_set_allocated_periodchangeflag(
+      ::dtproto::geometry_msgs::Vector4b* periodchangeflag);
+  ::dtproto::geometry_msgs::Vector4b* unsafe_arena_release_periodchangeflag();
+
+  // .dtproto.geometry_msgs.Vector4d phaseDiff = 11;
+  bool has_phasediff() const;
+  private:
+  bool _internal_has_phasediff() const;
+  public:
+  void clear_phasediff();
+  const ::dtproto::geometry_msgs::Vector4d& phasediff() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phasediff();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phasediff();
+  void set_allocated_phasediff(::dtproto::geometry_msgs::Vector4d* phasediff);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phasediff() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phasediff();
+  public:
+  void unsafe_arena_set_allocated_phasediff(
+      ::dtproto::geometry_msgs::Vector4d* phasediff);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phasediff();
+
+  // .dtproto.geometry_msgs.Vector4d phiTran = 12;
+  bool has_phitran() const;
+  private:
+  bool _internal_has_phitran() const;
+  public:
+  void clear_phitran();
+  const ::dtproto::geometry_msgs::Vector4d& phitran() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phitran();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phitran();
+  void set_allocated_phitran(::dtproto::geometry_msgs::Vector4d* phitran);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phitran() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phitran();
+  public:
+  void unsafe_arena_set_allocated_phitran(
+      ::dtproto::geometry_msgs::Vector4d* phitran);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phitran();
+
+  // .dtproto.geometry_msgs.Vector4d phiTranSt = 13;
+  bool has_phitranst() const;
+  private:
+  bool _internal_has_phitranst() const;
+  public:
+  void clear_phitranst();
+  const ::dtproto::geometry_msgs::Vector4d& phitranst() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phitranst();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phitranst();
+  void set_allocated_phitranst(::dtproto::geometry_msgs::Vector4d* phitranst);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phitranst() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phitranst();
+  public:
+  void unsafe_arena_set_allocated_phitranst(
+      ::dtproto::geometry_msgs::Vector4d* phitranst);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phitranst();
+
+  // .dtproto.geometry_msgs.Vector4d phiTranSw = 14;
+  bool has_phitransw() const;
+  private:
+  bool _internal_has_phitransw() const;
+  public:
+  void clear_phitransw();
+  const ::dtproto::geometry_msgs::Vector4d& phitransw() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4d* release_phitransw();
+  ::dtproto::geometry_msgs::Vector4d* mutable_phitransw();
+  void set_allocated_phitransw(::dtproto::geometry_msgs::Vector4d* phitransw);
+  private:
+  const ::dtproto::geometry_msgs::Vector4d& _internal_phitransw() const;
+  ::dtproto::geometry_msgs::Vector4d* _internal_mutable_phitransw();
+  public:
+  void unsafe_arena_set_allocated_phitransw(
+      ::dtproto::geometry_msgs::Vector4d* phitransw);
+  ::dtproto::geometry_msgs::Vector4d* unsafe_arena_release_phitransw();
+
+  // .dtproto.geometry_msgs.Vector4i32 step = 15;
+  bool has_step() const;
+  private:
+  bool _internal_has_step() const;
+  public:
+  void clear_step();
+  const ::dtproto::geometry_msgs::Vector4i32& step() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Vector4i32* release_step();
+  ::dtproto::geometry_msgs::Vector4i32* mutable_step();
+  void set_allocated_step(::dtproto::geometry_msgs::Vector4i32* step);
+  private:
+  const ::dtproto::geometry_msgs::Vector4i32& _internal_step() const;
+  ::dtproto::geometry_msgs::Vector4i32* _internal_mutable_step();
+  public:
+  void unsafe_arena_set_allocated_step(
+      ::dtproto::geometry_msgs::Vector4i32* step);
+  ::dtproto::geometry_msgs::Vector4i32* unsafe_arena_release_step();
+
+  // double dt = 16;
+  void clear_dt();
+  double dt() const;
+  void set_dt(double value);
+  private:
+  double _internal_dt() const;
+  void _internal_set_dt(double value);
+  public:
+
+  // bool air = 17;
+  void clear_air();
+  bool air() const;
+  void set_air(bool value);
+  private:
+  bool _internal_air() const;
+  void _internal_set_air(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:dtproto.leoquad.CpgState)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::dtproto::geometry_msgs::Vector2d* periods_;
+    ::dtproto::geometry_msgs::Vector4d* phases_;
+    ::dtproto::geometry_msgs::Vector4d* phi_;
+    ::dtproto::geometry_msgs::Vector4d* phitogo_;
+    ::dtproto::geometry_msgs::Vector4d* phist_;
+    ::dtproto::geometry_msgs::Vector4d* phisw_;
+    ::dtproto::geometry_msgs::Vector4d* cpg_;
+    ::dtproto::geometry_msgs::Vector4b* contact_;
+    ::dtproto::geometry_msgs::Vector4b* phasechangeflag_;
+    ::dtproto::geometry_msgs::Vector4b* periodchangeflag_;
+    ::dtproto::geometry_msgs::Vector4d* phasediff_;
+    ::dtproto::geometry_msgs::Vector4d* phitran_;
+    ::dtproto::geometry_msgs::Vector4d* phitranst_;
+    ::dtproto::geometry_msgs::Vector4d* phitransw_;
+    ::dtproto::geometry_msgs::Vector4i32* step_;
+    double dt_;
+    bool air_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_LeoQuad_2eproto;
+};
+// -------------------------------------------------------------------
+
 class LeoQuadState final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dtproto.leoquad.LeoQuadState) */ {
  public:
@@ -1372,7 +1782,7 @@ class LeoQuadState final :
                &_LeoQuadState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(LeoQuadState& a, LeoQuadState& b) {
     a.Swap(&b);
@@ -1445,69 +1855,108 @@ class LeoQuadState final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kJointDataFieldNumber = 1,
-    kTaskStateDesiredFieldNumber = 2,
-    kTaskStateActualFieldNumber = 3,
-    kImuFieldNumber = 4,
-    kJoystickFieldNumber = 5,
-    kControlStateDesiredFieldNumber = 7,
-    kControlStateActualFieldNumber = 8,
+    kJointStateFieldNumber = 1,
+    kActJointDataFieldNumber = 2,
+    kDesJointDataFieldNumber = 3,
+    kDesTaskStateFieldNumber = 4,
+    kActTaskStateFieldNumber = 5,
+    kImuFieldNumber = 6,
+    kJoystickFieldNumber = 7,
+    kActControlStateFieldNumber = 8,
+    kDesControlStateFieldNumber = 9,
+    kCpgStateFieldNumber = 10,
   };
-  // .dtproto.leoquad.JointData jointData = 1;
-  bool has_jointdata() const;
+  // repeated .dtproto.leoquad.JointState jointState = 1;
+  int jointstate_size() const;
   private:
-  bool _internal_has_jointdata() const;
+  int _internal_jointstate_size() const;
   public:
-  void clear_jointdata();
-  const ::dtproto::leoquad::JointData& jointdata() const;
-  PROTOBUF_NODISCARD ::dtproto::leoquad::JointData* release_jointdata();
-  ::dtproto::leoquad::JointData* mutable_jointdata();
-  void set_allocated_jointdata(::dtproto::leoquad::JointData* jointdata);
+  void clear_jointstate();
+  ::dtproto::leoquad::JointState* mutable_jointstate(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >*
+      mutable_jointstate();
   private:
-  const ::dtproto::leoquad::JointData& _internal_jointdata() const;
-  ::dtproto::leoquad::JointData* _internal_mutable_jointdata();
+  const ::dtproto::leoquad::JointState& _internal_jointstate(int index) const;
+  ::dtproto::leoquad::JointState* _internal_add_jointstate();
   public:
-  void unsafe_arena_set_allocated_jointdata(
-      ::dtproto::leoquad::JointData* jointdata);
-  ::dtproto::leoquad::JointData* unsafe_arena_release_jointdata();
+  const ::dtproto::leoquad::JointState& jointstate(int index) const;
+  ::dtproto::leoquad::JointState* add_jointstate();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >&
+      jointstate() const;
 
-  // .dtproto.leoquad.TaskState taskStateDesired = 2;
-  bool has_taskstatedesired() const;
+  // repeated .dtproto.leoquad.JointData actJointData = 2;
+  int actjointdata_size() const;
   private:
-  bool _internal_has_taskstatedesired() const;
+  int _internal_actjointdata_size() const;
   public:
-  void clear_taskstatedesired();
-  const ::dtproto::leoquad::TaskState& taskstatedesired() const;
-  PROTOBUF_NODISCARD ::dtproto::leoquad::TaskState* release_taskstatedesired();
-  ::dtproto::leoquad::TaskState* mutable_taskstatedesired();
-  void set_allocated_taskstatedesired(::dtproto::leoquad::TaskState* taskstatedesired);
+  void clear_actjointdata();
+  ::dtproto::leoquad::JointData* mutable_actjointdata(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >*
+      mutable_actjointdata();
   private:
-  const ::dtproto::leoquad::TaskState& _internal_taskstatedesired() const;
-  ::dtproto::leoquad::TaskState* _internal_mutable_taskstatedesired();
+  const ::dtproto::leoquad::JointData& _internal_actjointdata(int index) const;
+  ::dtproto::leoquad::JointData* _internal_add_actjointdata();
   public:
-  void unsafe_arena_set_allocated_taskstatedesired(
-      ::dtproto::leoquad::TaskState* taskstatedesired);
-  ::dtproto::leoquad::TaskState* unsafe_arena_release_taskstatedesired();
+  const ::dtproto::leoquad::JointData& actjointdata(int index) const;
+  ::dtproto::leoquad::JointData* add_actjointdata();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >&
+      actjointdata() const;
 
-  // .dtproto.leoquad.TaskState taskStateActual = 3;
-  bool has_taskstateactual() const;
+  // repeated .dtproto.leoquad.JointData desJointData = 3;
+  int desjointdata_size() const;
   private:
-  bool _internal_has_taskstateactual() const;
+  int _internal_desjointdata_size() const;
   public:
-  void clear_taskstateactual();
-  const ::dtproto::leoquad::TaskState& taskstateactual() const;
-  PROTOBUF_NODISCARD ::dtproto::leoquad::TaskState* release_taskstateactual();
-  ::dtproto::leoquad::TaskState* mutable_taskstateactual();
-  void set_allocated_taskstateactual(::dtproto::leoquad::TaskState* taskstateactual);
+  void clear_desjointdata();
+  ::dtproto::leoquad::JointData* mutable_desjointdata(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >*
+      mutable_desjointdata();
   private:
-  const ::dtproto::leoquad::TaskState& _internal_taskstateactual() const;
-  ::dtproto::leoquad::TaskState* _internal_mutable_taskstateactual();
+  const ::dtproto::leoquad::JointData& _internal_desjointdata(int index) const;
+  ::dtproto::leoquad::JointData* _internal_add_desjointdata();
   public:
-  void unsafe_arena_set_allocated_taskstateactual(
-      ::dtproto::leoquad::TaskState* taskstateactual);
-  ::dtproto::leoquad::TaskState* unsafe_arena_release_taskstateactual();
+  const ::dtproto::leoquad::JointData& desjointdata(int index) const;
+  ::dtproto::leoquad::JointData* add_desjointdata();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >&
+      desjointdata() const;
 
-  // .dtproto.sensor_msgs.Imu imu = 4;
+  // .dtproto.leoquad.TaskState desTaskState = 4;
+  bool has_destaskstate() const;
+  private:
+  bool _internal_has_destaskstate() const;
+  public:
+  void clear_destaskstate();
+  const ::dtproto::leoquad::TaskState& destaskstate() const;
+  PROTOBUF_NODISCARD ::dtproto::leoquad::TaskState* release_destaskstate();
+  ::dtproto::leoquad::TaskState* mutable_destaskstate();
+  void set_allocated_destaskstate(::dtproto::leoquad::TaskState* destaskstate);
+  private:
+  const ::dtproto::leoquad::TaskState& _internal_destaskstate() const;
+  ::dtproto::leoquad::TaskState* _internal_mutable_destaskstate();
+  public:
+  void unsafe_arena_set_allocated_destaskstate(
+      ::dtproto::leoquad::TaskState* destaskstate);
+  ::dtproto::leoquad::TaskState* unsafe_arena_release_destaskstate();
+
+  // .dtproto.leoquad.TaskState actTaskState = 5;
+  bool has_acttaskstate() const;
+  private:
+  bool _internal_has_acttaskstate() const;
+  public:
+  void clear_acttaskstate();
+  const ::dtproto::leoquad::TaskState& acttaskstate() const;
+  PROTOBUF_NODISCARD ::dtproto::leoquad::TaskState* release_acttaskstate();
+  ::dtproto::leoquad::TaskState* mutable_acttaskstate();
+  void set_allocated_acttaskstate(::dtproto::leoquad::TaskState* acttaskstate);
+  private:
+  const ::dtproto::leoquad::TaskState& _internal_acttaskstate() const;
+  ::dtproto::leoquad::TaskState* _internal_mutable_acttaskstate();
+  public:
+  void unsafe_arena_set_allocated_acttaskstate(
+      ::dtproto::leoquad::TaskState* acttaskstate);
+  ::dtproto::leoquad::TaskState* unsafe_arena_release_acttaskstate();
+
+  // .dtproto.sensor_msgs.Imu imu = 6;
   bool has_imu() const;
   private:
   bool _internal_has_imu() const;
@@ -1525,7 +1974,7 @@ class LeoQuadState final :
       ::dtproto::sensor_msgs::Imu* imu);
   ::dtproto::sensor_msgs::Imu* unsafe_arena_release_imu();
 
-  // .dtproto.sensor_msgs.Joy joystick = 5;
+  // .dtproto.sensor_msgs.Joy joystick = 7;
   bool has_joystick() const;
   private:
   bool _internal_has_joystick() const;
@@ -1543,41 +1992,59 @@ class LeoQuadState final :
       ::dtproto::sensor_msgs::Joy* joystick);
   ::dtproto::sensor_msgs::Joy* unsafe_arena_release_joystick();
 
-  // .dtproto.leoquad.ControlState controlStateDesired = 7;
-  bool has_controlstatedesired() const;
+  // .dtproto.leoquad.ControlState actControlState = 8;
+  bool has_actcontrolstate() const;
   private:
-  bool _internal_has_controlstatedesired() const;
+  bool _internal_has_actcontrolstate() const;
   public:
-  void clear_controlstatedesired();
-  const ::dtproto::leoquad::ControlState& controlstatedesired() const;
-  PROTOBUF_NODISCARD ::dtproto::leoquad::ControlState* release_controlstatedesired();
-  ::dtproto::leoquad::ControlState* mutable_controlstatedesired();
-  void set_allocated_controlstatedesired(::dtproto::leoquad::ControlState* controlstatedesired);
+  void clear_actcontrolstate();
+  const ::dtproto::leoquad::ControlState& actcontrolstate() const;
+  PROTOBUF_NODISCARD ::dtproto::leoquad::ControlState* release_actcontrolstate();
+  ::dtproto::leoquad::ControlState* mutable_actcontrolstate();
+  void set_allocated_actcontrolstate(::dtproto::leoquad::ControlState* actcontrolstate);
   private:
-  const ::dtproto::leoquad::ControlState& _internal_controlstatedesired() const;
-  ::dtproto::leoquad::ControlState* _internal_mutable_controlstatedesired();
+  const ::dtproto::leoquad::ControlState& _internal_actcontrolstate() const;
+  ::dtproto::leoquad::ControlState* _internal_mutable_actcontrolstate();
   public:
-  void unsafe_arena_set_allocated_controlstatedesired(
-      ::dtproto::leoquad::ControlState* controlstatedesired);
-  ::dtproto::leoquad::ControlState* unsafe_arena_release_controlstatedesired();
+  void unsafe_arena_set_allocated_actcontrolstate(
+      ::dtproto::leoquad::ControlState* actcontrolstate);
+  ::dtproto::leoquad::ControlState* unsafe_arena_release_actcontrolstate();
 
-  // .dtproto.leoquad.ControlState controlStateActual = 8;
-  bool has_controlstateactual() const;
+  // .dtproto.leoquad.ControlState desControlState = 9;
+  bool has_descontrolstate() const;
   private:
-  bool _internal_has_controlstateactual() const;
+  bool _internal_has_descontrolstate() const;
   public:
-  void clear_controlstateactual();
-  const ::dtproto::leoquad::ControlState& controlstateactual() const;
-  PROTOBUF_NODISCARD ::dtproto::leoquad::ControlState* release_controlstateactual();
-  ::dtproto::leoquad::ControlState* mutable_controlstateactual();
-  void set_allocated_controlstateactual(::dtproto::leoquad::ControlState* controlstateactual);
+  void clear_descontrolstate();
+  const ::dtproto::leoquad::ControlState& descontrolstate() const;
+  PROTOBUF_NODISCARD ::dtproto::leoquad::ControlState* release_descontrolstate();
+  ::dtproto::leoquad::ControlState* mutable_descontrolstate();
+  void set_allocated_descontrolstate(::dtproto::leoquad::ControlState* descontrolstate);
   private:
-  const ::dtproto::leoquad::ControlState& _internal_controlstateactual() const;
-  ::dtproto::leoquad::ControlState* _internal_mutable_controlstateactual();
+  const ::dtproto::leoquad::ControlState& _internal_descontrolstate() const;
+  ::dtproto::leoquad::ControlState* _internal_mutable_descontrolstate();
   public:
-  void unsafe_arena_set_allocated_controlstateactual(
-      ::dtproto::leoquad::ControlState* controlstateactual);
-  ::dtproto::leoquad::ControlState* unsafe_arena_release_controlstateactual();
+  void unsafe_arena_set_allocated_descontrolstate(
+      ::dtproto::leoquad::ControlState* descontrolstate);
+  ::dtproto::leoquad::ControlState* unsafe_arena_release_descontrolstate();
+
+  // .dtproto.leoquad.CpgState cpgState = 10;
+  bool has_cpgstate() const;
+  private:
+  bool _internal_has_cpgstate() const;
+  public:
+  void clear_cpgstate();
+  const ::dtproto::leoquad::CpgState& cpgstate() const;
+  PROTOBUF_NODISCARD ::dtproto::leoquad::CpgState* release_cpgstate();
+  ::dtproto::leoquad::CpgState* mutable_cpgstate();
+  void set_allocated_cpgstate(::dtproto::leoquad::CpgState* cpgstate);
+  private:
+  const ::dtproto::leoquad::CpgState& _internal_cpgstate() const;
+  ::dtproto::leoquad::CpgState* _internal_mutable_cpgstate();
+  public:
+  void unsafe_arena_set_allocated_cpgstate(
+      ::dtproto::leoquad::CpgState* cpgstate);
+  ::dtproto::leoquad::CpgState* unsafe_arena_release_cpgstate();
 
   // @@protoc_insertion_point(class_scope:dtproto.leoquad.LeoQuadState)
  private:
@@ -1587,13 +2054,16 @@ class LeoQuadState final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::dtproto::leoquad::JointData* jointdata_;
-    ::dtproto::leoquad::TaskState* taskstatedesired_;
-    ::dtproto::leoquad::TaskState* taskstateactual_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState > jointstate_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData > actjointdata_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData > desjointdata_;
+    ::dtproto::leoquad::TaskState* destaskstate_;
+    ::dtproto::leoquad::TaskState* acttaskstate_;
     ::dtproto::sensor_msgs::Imu* imu_;
     ::dtproto::sensor_msgs::Joy* joystick_;
-    ::dtproto::leoquad::ControlState* controlstatedesired_;
-    ::dtproto::leoquad::ControlState* controlstateactual_;
+    ::dtproto::leoquad::ControlState* actcontrolstate_;
+    ::dtproto::leoquad::ControlState* descontrolstate_;
+    ::dtproto::leoquad::CpgState* cpgstate_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1649,7 +2119,7 @@ class LeoQuadStateTimeStamped final :
                &_LeoQuadStateTimeStamped_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(LeoQuadStateTimeStamped& a, LeoQuadStateTimeStamped& b) {
     a.Swap(&b);
@@ -2606,208 +3076,108 @@ inline void JointState::set_inputvolt_v(float value) {
   // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.inputVolt_V)
 }
 
-// double actPos_rad = 11;
-inline void JointState::clear_actpos_rad() {
-  _impl_.actpos_rad_ = 0;
-}
-inline double JointState::_internal_actpos_rad() const {
-  return _impl_.actpos_rad_;
-}
-inline double JointState::actpos_rad() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.actPos_rad)
-  return _internal_actpos_rad();
-}
-inline void JointState::_internal_set_actpos_rad(double value) {
-  
-  _impl_.actpos_rad_ = value;
-}
-inline void JointState::set_actpos_rad(double value) {
-  _internal_set_actpos_rad(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.actPos_rad)
-}
-
-// double actAux_rad = 12;
-inline void JointState::clear_actaux_rad() {
-  _impl_.actaux_rad_ = 0;
-}
-inline double JointState::_internal_actaux_rad() const {
-  return _impl_.actaux_rad_;
-}
-inline double JointState::actaux_rad() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.actAux_rad)
-  return _internal_actaux_rad();
-}
-inline void JointState::_internal_set_actaux_rad(double value) {
-  
-  _impl_.actaux_rad_ = value;
-}
-inline void JointState::set_actaux_rad(double value) {
-  _internal_set_actaux_rad(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.actAux_rad)
-}
-
-// double actVel_rps = 13;
-inline void JointState::clear_actvel_rps() {
-  _impl_.actvel_rps_ = 0;
-}
-inline double JointState::_internal_actvel_rps() const {
-  return _impl_.actvel_rps_;
-}
-inline double JointState::actvel_rps() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.actVel_rps)
-  return _internal_actvel_rps();
-}
-inline void JointState::_internal_set_actvel_rps(double value) {
-  
-  _impl_.actvel_rps_ = value;
-}
-inline void JointState::set_actvel_rps(double value) {
-  _internal_set_actvel_rps(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.actVel_rps)
-}
-
-// double actTorq_Nm = 14;
-inline void JointState::clear_acttorq_nm() {
-  _impl_.acttorq_nm_ = 0;
-}
-inline double JointState::_internal_acttorq_nm() const {
-  return _impl_.acttorq_nm_;
-}
-inline double JointState::acttorq_nm() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.actTorq_Nm)
-  return _internal_acttorq_nm();
-}
-inline void JointState::_internal_set_acttorq_nm(double value) {
-  
-  _impl_.acttorq_nm_ = value;
-}
-inline void JointState::set_acttorq_nm(double value) {
-  _internal_set_acttorq_nm(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.actTorq_Nm)
-}
-
-// double desPos_rad = 15;
-inline void JointState::clear_despos_rad() {
-  _impl_.despos_rad_ = 0;
-}
-inline double JointState::_internal_despos_rad() const {
-  return _impl_.despos_rad_;
-}
-inline double JointState::despos_rad() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.desPos_rad)
-  return _internal_despos_rad();
-}
-inline void JointState::_internal_set_despos_rad(double value) {
-  
-  _impl_.despos_rad_ = value;
-}
-inline void JointState::set_despos_rad(double value) {
-  _internal_set_despos_rad(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.desPos_rad)
-}
-
-// double desVel_rps = 16;
-inline void JointState::clear_desvel_rps() {
-  _impl_.desvel_rps_ = 0;
-}
-inline double JointState::_internal_desvel_rps() const {
-  return _impl_.desvel_rps_;
-}
-inline double JointState::desvel_rps() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.desVel_rps)
-  return _internal_desvel_rps();
-}
-inline void JointState::_internal_set_desvel_rps(double value) {
-  
-  _impl_.desvel_rps_ = value;
-}
-inline void JointState::set_desvel_rps(double value) {
-  _internal_set_desvel_rps(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.desVel_rps)
-}
-
-// double desAcc_rpss = 17;
-inline void JointState::clear_desacc_rpss() {
-  _impl_.desacc_rpss_ = 0;
-}
-inline double JointState::_internal_desacc_rpss() const {
-  return _impl_.desacc_rpss_;
-}
-inline double JointState::desacc_rpss() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.desAcc_rpss)
-  return _internal_desacc_rpss();
-}
-inline void JointState::_internal_set_desacc_rpss(double value) {
-  
-  _impl_.desacc_rpss_ = value;
-}
-inline void JointState::set_desacc_rpss(double value) {
-  _internal_set_desacc_rpss(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.desAcc_rpss)
-}
-
-// double desTorq_Nm = 18;
-inline void JointState::clear_destorq_nm() {
-  _impl_.destorq_nm_ = 0;
-}
-inline double JointState::_internal_destorq_nm() const {
-  return _impl_.destorq_nm_;
-}
-inline double JointState::destorq_nm() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.desTorq_Nm)
-  return _internal_destorq_nm();
-}
-inline void JointState::_internal_set_destorq_nm(double value) {
-  
-  _impl_.destorq_nm_ = value;
-}
-inline void JointState::set_destorq_nm(double value) {
-  _internal_set_destorq_nm(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.desTorq_Nm)
-}
-
 // -------------------------------------------------------------------
 
 // JointData
 
-// repeated .dtproto.leoquad.JointState joints = 1;
-inline int JointData::_internal_joints_size() const {
-  return _impl_.joints_.size();
+// double pos_rad = 1;
+inline void JointData::clear_pos_rad() {
+  _impl_.pos_rad_ = 0;
 }
-inline int JointData::joints_size() const {
-  return _internal_joints_size();
+inline double JointData::_internal_pos_rad() const {
+  return _impl_.pos_rad_;
 }
-inline void JointData::clear_joints() {
-  _impl_.joints_.Clear();
+inline double JointData::pos_rad() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointData.pos_rad)
+  return _internal_pos_rad();
 }
-inline ::dtproto::leoquad::JointState* JointData::mutable_joints(int index) {
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.JointData.joints)
-  return _impl_.joints_.Mutable(index);
+inline void JointData::_internal_set_pos_rad(double value) {
+  
+  _impl_.pos_rad_ = value;
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >*
-JointData::mutable_joints() {
-  // @@protoc_insertion_point(field_mutable_list:dtproto.leoquad.JointData.joints)
-  return &_impl_.joints_;
+inline void JointData::set_pos_rad(double value) {
+  _internal_set_pos_rad(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointData.pos_rad)
 }
-inline const ::dtproto::leoquad::JointState& JointData::_internal_joints(int index) const {
-  return _impl_.joints_.Get(index);
+
+// double posAux_rad = 2;
+inline void JointData::clear_posaux_rad() {
+  _impl_.posaux_rad_ = 0;
 }
-inline const ::dtproto::leoquad::JointState& JointData::joints(int index) const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointData.joints)
-  return _internal_joints(index);
+inline double JointData::_internal_posaux_rad() const {
+  return _impl_.posaux_rad_;
 }
-inline ::dtproto::leoquad::JointState* JointData::_internal_add_joints() {
-  return _impl_.joints_.Add();
+inline double JointData::posaux_rad() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointData.posAux_rad)
+  return _internal_posaux_rad();
 }
-inline ::dtproto::leoquad::JointState* JointData::add_joints() {
-  ::dtproto::leoquad::JointState* _add = _internal_add_joints();
-  // @@protoc_insertion_point(field_add:dtproto.leoquad.JointData.joints)
-  return _add;
+inline void JointData::_internal_set_posaux_rad(double value) {
+  
+  _impl_.posaux_rad_ = value;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >&
-JointData::joints() const {
-  // @@protoc_insertion_point(field_list:dtproto.leoquad.JointData.joints)
-  return _impl_.joints_;
+inline void JointData::set_posaux_rad(double value) {
+  _internal_set_posaux_rad(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointData.posAux_rad)
+}
+
+// double vel_rps = 3;
+inline void JointData::clear_vel_rps() {
+  _impl_.vel_rps_ = 0;
+}
+inline double JointData::_internal_vel_rps() const {
+  return _impl_.vel_rps_;
+}
+inline double JointData::vel_rps() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointData.vel_rps)
+  return _internal_vel_rps();
+}
+inline void JointData::_internal_set_vel_rps(double value) {
+  
+  _impl_.vel_rps_ = value;
+}
+inline void JointData::set_vel_rps(double value) {
+  _internal_set_vel_rps(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointData.vel_rps)
+}
+
+// double acc_rpss = 4;
+inline void JointData::clear_acc_rpss() {
+  _impl_.acc_rpss_ = 0;
+}
+inline double JointData::_internal_acc_rpss() const {
+  return _impl_.acc_rpss_;
+}
+inline double JointData::acc_rpss() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointData.acc_rpss)
+  return _internal_acc_rpss();
+}
+inline void JointData::_internal_set_acc_rpss(double value) {
+  
+  _impl_.acc_rpss_ = value;
+}
+inline void JointData::set_acc_rpss(double value) {
+  _internal_set_acc_rpss(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointData.acc_rpss)
+}
+
+// double torq_Nm = 5;
+inline void JointData::clear_torq_nm() {
+  _impl_.torq_nm_ = 0;
+}
+inline double JointData::_internal_torq_nm() const {
+  return _impl_.torq_nm_;
+}
+inline double JointData::torq_nm() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointData.torq_Nm)
+  return _internal_torq_nm();
+}
+inline void JointData::_internal_set_torq_nm(double value) {
+  
+  _impl_.torq_nm_ = value;
+}
+inline void JointData::set_torq_nm(double value) {
+  _internal_set_torq_nm(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointData.torq_Nm)
 }
 
 // -------------------------------------------------------------------
@@ -3888,137 +4258,1486 @@ inline void ControlState::set_allocated_contact(::dtproto::geometry_msgs::Vector
 
 // -------------------------------------------------------------------
 
+// CpgState
+
+// .dtproto.geometry_msgs.Vector2d periods = 1;
+inline bool CpgState::_internal_has_periods() const {
+  return this != internal_default_instance() && _impl_.periods_ != nullptr;
+}
+inline bool CpgState::has_periods() const {
+  return _internal_has_periods();
+}
+inline const ::dtproto::geometry_msgs::Vector2d& CpgState::_internal_periods() const {
+  const ::dtproto::geometry_msgs::Vector2d* p = _impl_.periods_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector2d&>(
+      ::dtproto::geometry_msgs::_Vector2d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector2d& CpgState::periods() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.periods)
+  return _internal_periods();
+}
+inline void CpgState::unsafe_arena_set_allocated_periods(
+    ::dtproto::geometry_msgs::Vector2d* periods) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.periods_);
+  }
+  _impl_.periods_ = periods;
+  if (periods) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.periods)
+}
+inline ::dtproto::geometry_msgs::Vector2d* CpgState::release_periods() {
+  
+  ::dtproto::geometry_msgs::Vector2d* temp = _impl_.periods_;
+  _impl_.periods_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector2d* CpgState::unsafe_arena_release_periods() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.periods)
+  
+  ::dtproto::geometry_msgs::Vector2d* temp = _impl_.periods_;
+  _impl_.periods_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector2d* CpgState::_internal_mutable_periods() {
+  
+  if (_impl_.periods_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector2d>(GetArenaForAllocation());
+    _impl_.periods_ = p;
+  }
+  return _impl_.periods_;
+}
+inline ::dtproto::geometry_msgs::Vector2d* CpgState::mutable_periods() {
+  ::dtproto::geometry_msgs::Vector2d* _msg = _internal_mutable_periods();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.periods)
+  return _msg;
+}
+inline void CpgState::set_allocated_periods(::dtproto::geometry_msgs::Vector2d* periods) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.periods_);
+  }
+  if (periods) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(periods));
+    if (message_arena != submessage_arena) {
+      periods = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, periods, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.periods_ = periods;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.periods)
+}
+
+// .dtproto.geometry_msgs.Vector4d phases = 2;
+inline bool CpgState::_internal_has_phases() const {
+  return this != internal_default_instance() && _impl_.phases_ != nullptr;
+}
+inline bool CpgState::has_phases() const {
+  return _internal_has_phases();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phases() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phases_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phases() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phases)
+  return _internal_phases();
+}
+inline void CpgState::unsafe_arena_set_allocated_phases(
+    ::dtproto::geometry_msgs::Vector4d* phases) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phases_);
+  }
+  _impl_.phases_ = phases;
+  if (phases) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phases)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phases() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phases_;
+  _impl_.phases_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phases() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phases)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phases_;
+  _impl_.phases_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phases() {
+  
+  if (_impl_.phases_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phases_ = p;
+  }
+  return _impl_.phases_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phases() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phases();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phases)
+  return _msg;
+}
+inline void CpgState::set_allocated_phases(::dtproto::geometry_msgs::Vector4d* phases) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phases_);
+  }
+  if (phases) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phases));
+    if (message_arena != submessage_arena) {
+      phases = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phases, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phases_ = phases;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phases)
+}
+
+// .dtproto.geometry_msgs.Vector4d phi = 3;
+inline bool CpgState::_internal_has_phi() const {
+  return this != internal_default_instance() && _impl_.phi_ != nullptr;
+}
+inline bool CpgState::has_phi() const {
+  return _internal_has_phi();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phi() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phi_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phi() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phi)
+  return _internal_phi();
+}
+inline void CpgState::unsafe_arena_set_allocated_phi(
+    ::dtproto::geometry_msgs::Vector4d* phi) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phi_);
+  }
+  _impl_.phi_ = phi;
+  if (phi) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phi)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phi() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phi_;
+  _impl_.phi_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phi() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phi)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phi_;
+  _impl_.phi_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phi() {
+  
+  if (_impl_.phi_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phi_ = p;
+  }
+  return _impl_.phi_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phi() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phi();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phi)
+  return _msg;
+}
+inline void CpgState::set_allocated_phi(::dtproto::geometry_msgs::Vector4d* phi) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phi_);
+  }
+  if (phi) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phi));
+    if (message_arena != submessage_arena) {
+      phi = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phi, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phi_ = phi;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phi)
+}
+
+// .dtproto.geometry_msgs.Vector4d phiToGo = 4;
+inline bool CpgState::_internal_has_phitogo() const {
+  return this != internal_default_instance() && _impl_.phitogo_ != nullptr;
+}
+inline bool CpgState::has_phitogo() const {
+  return _internal_has_phitogo();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phitogo() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phitogo_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phitogo() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phiToGo)
+  return _internal_phitogo();
+}
+inline void CpgState::unsafe_arena_set_allocated_phitogo(
+    ::dtproto::geometry_msgs::Vector4d* phitogo) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitogo_);
+  }
+  _impl_.phitogo_ = phitogo;
+  if (phitogo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phiToGo)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phitogo() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitogo_;
+  _impl_.phitogo_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phitogo() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phiToGo)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitogo_;
+  _impl_.phitogo_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phitogo() {
+  
+  if (_impl_.phitogo_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phitogo_ = p;
+  }
+  return _impl_.phitogo_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phitogo() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phitogo();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phiToGo)
+  return _msg;
+}
+inline void CpgState::set_allocated_phitogo(::dtproto::geometry_msgs::Vector4d* phitogo) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitogo_);
+  }
+  if (phitogo) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phitogo));
+    if (message_arena != submessage_arena) {
+      phitogo = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phitogo, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phitogo_ = phitogo;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phiToGo)
+}
+
+// .dtproto.geometry_msgs.Vector4d phiSt = 5;
+inline bool CpgState::_internal_has_phist() const {
+  return this != internal_default_instance() && _impl_.phist_ != nullptr;
+}
+inline bool CpgState::has_phist() const {
+  return _internal_has_phist();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phist() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phist_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phist() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phiSt)
+  return _internal_phist();
+}
+inline void CpgState::unsafe_arena_set_allocated_phist(
+    ::dtproto::geometry_msgs::Vector4d* phist) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phist_);
+  }
+  _impl_.phist_ = phist;
+  if (phist) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phiSt)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phist() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phist_;
+  _impl_.phist_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phist() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phiSt)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phist_;
+  _impl_.phist_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phist() {
+  
+  if (_impl_.phist_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phist_ = p;
+  }
+  return _impl_.phist_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phist() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phist();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phiSt)
+  return _msg;
+}
+inline void CpgState::set_allocated_phist(::dtproto::geometry_msgs::Vector4d* phist) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phist_);
+  }
+  if (phist) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phist));
+    if (message_arena != submessage_arena) {
+      phist = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phist, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phist_ = phist;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phiSt)
+}
+
+// .dtproto.geometry_msgs.Vector4d phiSw = 6;
+inline bool CpgState::_internal_has_phisw() const {
+  return this != internal_default_instance() && _impl_.phisw_ != nullptr;
+}
+inline bool CpgState::has_phisw() const {
+  return _internal_has_phisw();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phisw() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phisw_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phisw() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phiSw)
+  return _internal_phisw();
+}
+inline void CpgState::unsafe_arena_set_allocated_phisw(
+    ::dtproto::geometry_msgs::Vector4d* phisw) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phisw_);
+  }
+  _impl_.phisw_ = phisw;
+  if (phisw) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phiSw)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phisw() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phisw_;
+  _impl_.phisw_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phisw() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phiSw)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phisw_;
+  _impl_.phisw_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phisw() {
+  
+  if (_impl_.phisw_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phisw_ = p;
+  }
+  return _impl_.phisw_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phisw() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phisw();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phiSw)
+  return _msg;
+}
+inline void CpgState::set_allocated_phisw(::dtproto::geometry_msgs::Vector4d* phisw) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phisw_);
+  }
+  if (phisw) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phisw));
+    if (message_arena != submessage_arena) {
+      phisw = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phisw, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phisw_ = phisw;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phiSw)
+}
+
+// .dtproto.geometry_msgs.Vector4d cpg = 7;
+inline bool CpgState::_internal_has_cpg() const {
+  return this != internal_default_instance() && _impl_.cpg_ != nullptr;
+}
+inline bool CpgState::has_cpg() const {
+  return _internal_has_cpg();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_cpg() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.cpg_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::cpg() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.cpg)
+  return _internal_cpg();
+}
+inline void CpgState::unsafe_arena_set_allocated_cpg(
+    ::dtproto::geometry_msgs::Vector4d* cpg) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.cpg_);
+  }
+  _impl_.cpg_ = cpg;
+  if (cpg) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.cpg)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_cpg() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.cpg_;
+  _impl_.cpg_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_cpg() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.cpg)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.cpg_;
+  _impl_.cpg_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_cpg() {
+  
+  if (_impl_.cpg_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.cpg_ = p;
+  }
+  return _impl_.cpg_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_cpg() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_cpg();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.cpg)
+  return _msg;
+}
+inline void CpgState::set_allocated_cpg(::dtproto::geometry_msgs::Vector4d* cpg) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.cpg_);
+  }
+  if (cpg) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cpg));
+    if (message_arena != submessage_arena) {
+      cpg = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cpg, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.cpg_ = cpg;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.cpg)
+}
+
+// .dtproto.geometry_msgs.Vector4b contact = 8;
+inline bool CpgState::_internal_has_contact() const {
+  return this != internal_default_instance() && _impl_.contact_ != nullptr;
+}
+inline bool CpgState::has_contact() const {
+  return _internal_has_contact();
+}
+inline const ::dtproto::geometry_msgs::Vector4b& CpgState::_internal_contact() const {
+  const ::dtproto::geometry_msgs::Vector4b* p = _impl_.contact_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4b&>(
+      ::dtproto::geometry_msgs::_Vector4b_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4b& CpgState::contact() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.contact)
+  return _internal_contact();
+}
+inline void CpgState::unsafe_arena_set_allocated_contact(
+    ::dtproto::geometry_msgs::Vector4b* contact) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.contact_);
+  }
+  _impl_.contact_ = contact;
+  if (contact) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.contact)
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::release_contact() {
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.contact_;
+  _impl_.contact_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::unsafe_arena_release_contact() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.contact)
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.contact_;
+  _impl_.contact_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::_internal_mutable_contact() {
+  
+  if (_impl_.contact_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4b>(GetArenaForAllocation());
+    _impl_.contact_ = p;
+  }
+  return _impl_.contact_;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::mutable_contact() {
+  ::dtproto::geometry_msgs::Vector4b* _msg = _internal_mutable_contact();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.contact)
+  return _msg;
+}
+inline void CpgState::set_allocated_contact(::dtproto::geometry_msgs::Vector4b* contact) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.contact_);
+  }
+  if (contact) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(contact));
+    if (message_arena != submessage_arena) {
+      contact = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, contact, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.contact_ = contact;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.contact)
+}
+
+// .dtproto.geometry_msgs.Vector4b phaseChangeFlag = 9;
+inline bool CpgState::_internal_has_phasechangeflag() const {
+  return this != internal_default_instance() && _impl_.phasechangeflag_ != nullptr;
+}
+inline bool CpgState::has_phasechangeflag() const {
+  return _internal_has_phasechangeflag();
+}
+inline const ::dtproto::geometry_msgs::Vector4b& CpgState::_internal_phasechangeflag() const {
+  const ::dtproto::geometry_msgs::Vector4b* p = _impl_.phasechangeflag_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4b&>(
+      ::dtproto::geometry_msgs::_Vector4b_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4b& CpgState::phasechangeflag() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phaseChangeFlag)
+  return _internal_phasechangeflag();
+}
+inline void CpgState::unsafe_arena_set_allocated_phasechangeflag(
+    ::dtproto::geometry_msgs::Vector4b* phasechangeflag) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phasechangeflag_);
+  }
+  _impl_.phasechangeflag_ = phasechangeflag;
+  if (phasechangeflag) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phaseChangeFlag)
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::release_phasechangeflag() {
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.phasechangeflag_;
+  _impl_.phasechangeflag_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::unsafe_arena_release_phasechangeflag() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phaseChangeFlag)
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.phasechangeflag_;
+  _impl_.phasechangeflag_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::_internal_mutable_phasechangeflag() {
+  
+  if (_impl_.phasechangeflag_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4b>(GetArenaForAllocation());
+    _impl_.phasechangeflag_ = p;
+  }
+  return _impl_.phasechangeflag_;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::mutable_phasechangeflag() {
+  ::dtproto::geometry_msgs::Vector4b* _msg = _internal_mutable_phasechangeflag();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phaseChangeFlag)
+  return _msg;
+}
+inline void CpgState::set_allocated_phasechangeflag(::dtproto::geometry_msgs::Vector4b* phasechangeflag) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phasechangeflag_);
+  }
+  if (phasechangeflag) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phasechangeflag));
+    if (message_arena != submessage_arena) {
+      phasechangeflag = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phasechangeflag, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phasechangeflag_ = phasechangeflag;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phaseChangeFlag)
+}
+
+// .dtproto.geometry_msgs.Vector4b periodChangeFlag = 10;
+inline bool CpgState::_internal_has_periodchangeflag() const {
+  return this != internal_default_instance() && _impl_.periodchangeflag_ != nullptr;
+}
+inline bool CpgState::has_periodchangeflag() const {
+  return _internal_has_periodchangeflag();
+}
+inline const ::dtproto::geometry_msgs::Vector4b& CpgState::_internal_periodchangeflag() const {
+  const ::dtproto::geometry_msgs::Vector4b* p = _impl_.periodchangeflag_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4b&>(
+      ::dtproto::geometry_msgs::_Vector4b_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4b& CpgState::periodchangeflag() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.periodChangeFlag)
+  return _internal_periodchangeflag();
+}
+inline void CpgState::unsafe_arena_set_allocated_periodchangeflag(
+    ::dtproto::geometry_msgs::Vector4b* periodchangeflag) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.periodchangeflag_);
+  }
+  _impl_.periodchangeflag_ = periodchangeflag;
+  if (periodchangeflag) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.periodChangeFlag)
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::release_periodchangeflag() {
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.periodchangeflag_;
+  _impl_.periodchangeflag_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::unsafe_arena_release_periodchangeflag() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.periodChangeFlag)
+  
+  ::dtproto::geometry_msgs::Vector4b* temp = _impl_.periodchangeflag_;
+  _impl_.periodchangeflag_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::_internal_mutable_periodchangeflag() {
+  
+  if (_impl_.periodchangeflag_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4b>(GetArenaForAllocation());
+    _impl_.periodchangeflag_ = p;
+  }
+  return _impl_.periodchangeflag_;
+}
+inline ::dtproto::geometry_msgs::Vector4b* CpgState::mutable_periodchangeflag() {
+  ::dtproto::geometry_msgs::Vector4b* _msg = _internal_mutable_periodchangeflag();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.periodChangeFlag)
+  return _msg;
+}
+inline void CpgState::set_allocated_periodchangeflag(::dtproto::geometry_msgs::Vector4b* periodchangeflag) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.periodchangeflag_);
+  }
+  if (periodchangeflag) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(periodchangeflag));
+    if (message_arena != submessage_arena) {
+      periodchangeflag = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, periodchangeflag, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.periodchangeflag_ = periodchangeflag;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.periodChangeFlag)
+}
+
+// .dtproto.geometry_msgs.Vector4d phaseDiff = 11;
+inline bool CpgState::_internal_has_phasediff() const {
+  return this != internal_default_instance() && _impl_.phasediff_ != nullptr;
+}
+inline bool CpgState::has_phasediff() const {
+  return _internal_has_phasediff();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phasediff() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phasediff_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phasediff() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phaseDiff)
+  return _internal_phasediff();
+}
+inline void CpgState::unsafe_arena_set_allocated_phasediff(
+    ::dtproto::geometry_msgs::Vector4d* phasediff) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phasediff_);
+  }
+  _impl_.phasediff_ = phasediff;
+  if (phasediff) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phaseDiff)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phasediff() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phasediff_;
+  _impl_.phasediff_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phasediff() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phaseDiff)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phasediff_;
+  _impl_.phasediff_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phasediff() {
+  
+  if (_impl_.phasediff_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phasediff_ = p;
+  }
+  return _impl_.phasediff_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phasediff() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phasediff();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phaseDiff)
+  return _msg;
+}
+inline void CpgState::set_allocated_phasediff(::dtproto::geometry_msgs::Vector4d* phasediff) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phasediff_);
+  }
+  if (phasediff) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phasediff));
+    if (message_arena != submessage_arena) {
+      phasediff = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phasediff, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phasediff_ = phasediff;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phaseDiff)
+}
+
+// .dtproto.geometry_msgs.Vector4d phiTran = 12;
+inline bool CpgState::_internal_has_phitran() const {
+  return this != internal_default_instance() && _impl_.phitran_ != nullptr;
+}
+inline bool CpgState::has_phitran() const {
+  return _internal_has_phitran();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phitran() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phitran_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phitran() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phiTran)
+  return _internal_phitran();
+}
+inline void CpgState::unsafe_arena_set_allocated_phitran(
+    ::dtproto::geometry_msgs::Vector4d* phitran) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitran_);
+  }
+  _impl_.phitran_ = phitran;
+  if (phitran) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phiTran)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phitran() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitran_;
+  _impl_.phitran_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phitran() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phiTran)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitran_;
+  _impl_.phitran_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phitran() {
+  
+  if (_impl_.phitran_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phitran_ = p;
+  }
+  return _impl_.phitran_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phitran() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phitran();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phiTran)
+  return _msg;
+}
+inline void CpgState::set_allocated_phitran(::dtproto::geometry_msgs::Vector4d* phitran) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitran_);
+  }
+  if (phitran) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phitran));
+    if (message_arena != submessage_arena) {
+      phitran = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phitran, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phitran_ = phitran;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phiTran)
+}
+
+// .dtproto.geometry_msgs.Vector4d phiTranSt = 13;
+inline bool CpgState::_internal_has_phitranst() const {
+  return this != internal_default_instance() && _impl_.phitranst_ != nullptr;
+}
+inline bool CpgState::has_phitranst() const {
+  return _internal_has_phitranst();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phitranst() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phitranst_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phitranst() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phiTranSt)
+  return _internal_phitranst();
+}
+inline void CpgState::unsafe_arena_set_allocated_phitranst(
+    ::dtproto::geometry_msgs::Vector4d* phitranst) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitranst_);
+  }
+  _impl_.phitranst_ = phitranst;
+  if (phitranst) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phiTranSt)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phitranst() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitranst_;
+  _impl_.phitranst_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phitranst() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phiTranSt)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitranst_;
+  _impl_.phitranst_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phitranst() {
+  
+  if (_impl_.phitranst_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phitranst_ = p;
+  }
+  return _impl_.phitranst_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phitranst() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phitranst();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phiTranSt)
+  return _msg;
+}
+inline void CpgState::set_allocated_phitranst(::dtproto::geometry_msgs::Vector4d* phitranst) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitranst_);
+  }
+  if (phitranst) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phitranst));
+    if (message_arena != submessage_arena) {
+      phitranst = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phitranst, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phitranst_ = phitranst;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phiTranSt)
+}
+
+// .dtproto.geometry_msgs.Vector4d phiTranSw = 14;
+inline bool CpgState::_internal_has_phitransw() const {
+  return this != internal_default_instance() && _impl_.phitransw_ != nullptr;
+}
+inline bool CpgState::has_phitransw() const {
+  return _internal_has_phitransw();
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::_internal_phitransw() const {
+  const ::dtproto::geometry_msgs::Vector4d* p = _impl_.phitransw_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4d&>(
+      ::dtproto::geometry_msgs::_Vector4d_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4d& CpgState::phitransw() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.phiTranSw)
+  return _internal_phitransw();
+}
+inline void CpgState::unsafe_arena_set_allocated_phitransw(
+    ::dtproto::geometry_msgs::Vector4d* phitransw) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitransw_);
+  }
+  _impl_.phitransw_ = phitransw;
+  if (phitransw) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.phiTranSw)
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::release_phitransw() {
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitransw_;
+  _impl_.phitransw_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::unsafe_arena_release_phitransw() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.phiTranSw)
+  
+  ::dtproto::geometry_msgs::Vector4d* temp = _impl_.phitransw_;
+  _impl_.phitransw_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::_internal_mutable_phitransw() {
+  
+  if (_impl_.phitransw_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4d>(GetArenaForAllocation());
+    _impl_.phitransw_ = p;
+  }
+  return _impl_.phitransw_;
+}
+inline ::dtproto::geometry_msgs::Vector4d* CpgState::mutable_phitransw() {
+  ::dtproto::geometry_msgs::Vector4d* _msg = _internal_mutable_phitransw();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.phiTranSw)
+  return _msg;
+}
+inline void CpgState::set_allocated_phitransw(::dtproto::geometry_msgs::Vector4d* phitransw) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.phitransw_);
+  }
+  if (phitransw) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(phitransw));
+    if (message_arena != submessage_arena) {
+      phitransw = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, phitransw, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.phitransw_ = phitransw;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.phiTranSw)
+}
+
+// .dtproto.geometry_msgs.Vector4i32 step = 15;
+inline bool CpgState::_internal_has_step() const {
+  return this != internal_default_instance() && _impl_.step_ != nullptr;
+}
+inline bool CpgState::has_step() const {
+  return _internal_has_step();
+}
+inline const ::dtproto::geometry_msgs::Vector4i32& CpgState::_internal_step() const {
+  const ::dtproto::geometry_msgs::Vector4i32* p = _impl_.step_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Vector4i32&>(
+      ::dtproto::geometry_msgs::_Vector4i32_default_instance_);
+}
+inline const ::dtproto::geometry_msgs::Vector4i32& CpgState::step() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.step)
+  return _internal_step();
+}
+inline void CpgState::unsafe_arena_set_allocated_step(
+    ::dtproto::geometry_msgs::Vector4i32* step) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.step_);
+  }
+  _impl_.step_ = step;
+  if (step) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.CpgState.step)
+}
+inline ::dtproto::geometry_msgs::Vector4i32* CpgState::release_step() {
+  
+  ::dtproto::geometry_msgs::Vector4i32* temp = _impl_.step_;
+  _impl_.step_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4i32* CpgState::unsafe_arena_release_step() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.CpgState.step)
+  
+  ::dtproto::geometry_msgs::Vector4i32* temp = _impl_.step_;
+  _impl_.step_ = nullptr;
+  return temp;
+}
+inline ::dtproto::geometry_msgs::Vector4i32* CpgState::_internal_mutable_step() {
+  
+  if (_impl_.step_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Vector4i32>(GetArenaForAllocation());
+    _impl_.step_ = p;
+  }
+  return _impl_.step_;
+}
+inline ::dtproto::geometry_msgs::Vector4i32* CpgState::mutable_step() {
+  ::dtproto::geometry_msgs::Vector4i32* _msg = _internal_mutable_step();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.CpgState.step)
+  return _msg;
+}
+inline void CpgState::set_allocated_step(::dtproto::geometry_msgs::Vector4i32* step) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.step_);
+  }
+  if (step) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(step));
+    if (message_arena != submessage_arena) {
+      step = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, step, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.step_ = step;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.CpgState.step)
+}
+
+// double dt = 16;
+inline void CpgState::clear_dt() {
+  _impl_.dt_ = 0;
+}
+inline double CpgState::_internal_dt() const {
+  return _impl_.dt_;
+}
+inline double CpgState::dt() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.dt)
+  return _internal_dt();
+}
+inline void CpgState::_internal_set_dt(double value) {
+  
+  _impl_.dt_ = value;
+}
+inline void CpgState::set_dt(double value) {
+  _internal_set_dt(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.CpgState.dt)
+}
+
+// bool air = 17;
+inline void CpgState::clear_air() {
+  _impl_.air_ = false;
+}
+inline bool CpgState::_internal_air() const {
+  return _impl_.air_;
+}
+inline bool CpgState::air() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.CpgState.air)
+  return _internal_air();
+}
+inline void CpgState::_internal_set_air(bool value) {
+  
+  _impl_.air_ = value;
+}
+inline void CpgState::set_air(bool value) {
+  _internal_set_air(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.CpgState.air)
+}
+
+// -------------------------------------------------------------------
+
 // LeoQuadState
 
-// .dtproto.leoquad.JointData jointData = 1;
-inline bool LeoQuadState::_internal_has_jointdata() const {
-  return this != internal_default_instance() && _impl_.jointdata_ != nullptr;
+// repeated .dtproto.leoquad.JointState jointState = 1;
+inline int LeoQuadState::_internal_jointstate_size() const {
+  return _impl_.jointstate_.size();
 }
-inline bool LeoQuadState::has_jointdata() const {
-  return _internal_has_jointdata();
+inline int LeoQuadState::jointstate_size() const {
+  return _internal_jointstate_size();
 }
-inline void LeoQuadState::clear_jointdata() {
-  if (GetArenaForAllocation() == nullptr && _impl_.jointdata_ != nullptr) {
-    delete _impl_.jointdata_;
-  }
-  _impl_.jointdata_ = nullptr;
+inline void LeoQuadState::clear_jointstate() {
+  _impl_.jointstate_.Clear();
 }
-inline const ::dtproto::leoquad::JointData& LeoQuadState::_internal_jointdata() const {
-  const ::dtproto::leoquad::JointData* p = _impl_.jointdata_;
-  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::JointData&>(
-      ::dtproto::leoquad::_JointData_default_instance_);
+inline ::dtproto::leoquad::JointState* LeoQuadState::mutable_jointstate(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.jointState)
+  return _impl_.jointstate_.Mutable(index);
 }
-inline const ::dtproto::leoquad::JointData& LeoQuadState::jointdata() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.jointData)
-  return _internal_jointdata();
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >*
+LeoQuadState::mutable_jointstate() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.leoquad.LeoQuadState.jointState)
+  return &_impl_.jointstate_;
 }
-inline void LeoQuadState::unsafe_arena_set_allocated_jointdata(
-    ::dtproto::leoquad::JointData* jointdata) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.jointdata_);
-  }
-  _impl_.jointdata_ = jointdata;
-  if (jointdata) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.jointData)
+inline const ::dtproto::leoquad::JointState& LeoQuadState::_internal_jointstate(int index) const {
+  return _impl_.jointstate_.Get(index);
 }
-inline ::dtproto::leoquad::JointData* LeoQuadState::release_jointdata() {
-  
-  ::dtproto::leoquad::JointData* temp = _impl_.jointdata_;
-  _impl_.jointdata_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
+inline const ::dtproto::leoquad::JointState& LeoQuadState::jointstate(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.jointState)
+  return _internal_jointstate(index);
 }
-inline ::dtproto::leoquad::JointData* LeoQuadState::unsafe_arena_release_jointdata() {
-  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.jointData)
-  
-  ::dtproto::leoquad::JointData* temp = _impl_.jointdata_;
-  _impl_.jointdata_ = nullptr;
-  return temp;
+inline ::dtproto::leoquad::JointState* LeoQuadState::_internal_add_jointstate() {
+  return _impl_.jointstate_.Add();
 }
-inline ::dtproto::leoquad::JointData* LeoQuadState::_internal_mutable_jointdata() {
-  
-  if (_impl_.jointdata_ == nullptr) {
-    auto* p = CreateMaybeMessage<::dtproto::leoquad::JointData>(GetArenaForAllocation());
-    _impl_.jointdata_ = p;
-  }
-  return _impl_.jointdata_;
+inline ::dtproto::leoquad::JointState* LeoQuadState::add_jointstate() {
+  ::dtproto::leoquad::JointState* _add = _internal_add_jointstate();
+  // @@protoc_insertion_point(field_add:dtproto.leoquad.LeoQuadState.jointState)
+  return _add;
 }
-inline ::dtproto::leoquad::JointData* LeoQuadState::mutable_jointdata() {
-  ::dtproto::leoquad::JointData* _msg = _internal_mutable_jointdata();
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.jointData)
-  return _msg;
-}
-inline void LeoQuadState::set_allocated_jointdata(::dtproto::leoquad::JointData* jointdata) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.jointdata_;
-  }
-  if (jointdata) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(jointdata);
-    if (message_arena != submessage_arena) {
-      jointdata = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, jointdata, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  _impl_.jointdata_ = jointdata;
-  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.jointData)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointState >&
+LeoQuadState::jointstate() const {
+  // @@protoc_insertion_point(field_list:dtproto.leoquad.LeoQuadState.jointState)
+  return _impl_.jointstate_;
 }
 
-// .dtproto.leoquad.TaskState taskStateDesired = 2;
-inline bool LeoQuadState::_internal_has_taskstatedesired() const {
-  return this != internal_default_instance() && _impl_.taskstatedesired_ != nullptr;
+// repeated .dtproto.leoquad.JointData actJointData = 2;
+inline int LeoQuadState::_internal_actjointdata_size() const {
+  return _impl_.actjointdata_.size();
 }
-inline bool LeoQuadState::has_taskstatedesired() const {
-  return _internal_has_taskstatedesired();
+inline int LeoQuadState::actjointdata_size() const {
+  return _internal_actjointdata_size();
 }
-inline void LeoQuadState::clear_taskstatedesired() {
-  if (GetArenaForAllocation() == nullptr && _impl_.taskstatedesired_ != nullptr) {
-    delete _impl_.taskstatedesired_;
+inline void LeoQuadState::clear_actjointdata() {
+  _impl_.actjointdata_.Clear();
+}
+inline ::dtproto::leoquad::JointData* LeoQuadState::mutable_actjointdata(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.actJointData)
+  return _impl_.actjointdata_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >*
+LeoQuadState::mutable_actjointdata() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.leoquad.LeoQuadState.actJointData)
+  return &_impl_.actjointdata_;
+}
+inline const ::dtproto::leoquad::JointData& LeoQuadState::_internal_actjointdata(int index) const {
+  return _impl_.actjointdata_.Get(index);
+}
+inline const ::dtproto::leoquad::JointData& LeoQuadState::actjointdata(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.actJointData)
+  return _internal_actjointdata(index);
+}
+inline ::dtproto::leoquad::JointData* LeoQuadState::_internal_add_actjointdata() {
+  return _impl_.actjointdata_.Add();
+}
+inline ::dtproto::leoquad::JointData* LeoQuadState::add_actjointdata() {
+  ::dtproto::leoquad::JointData* _add = _internal_add_actjointdata();
+  // @@protoc_insertion_point(field_add:dtproto.leoquad.LeoQuadState.actJointData)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >&
+LeoQuadState::actjointdata() const {
+  // @@protoc_insertion_point(field_list:dtproto.leoquad.LeoQuadState.actJointData)
+  return _impl_.actjointdata_;
+}
+
+// repeated .dtproto.leoquad.JointData desJointData = 3;
+inline int LeoQuadState::_internal_desjointdata_size() const {
+  return _impl_.desjointdata_.size();
+}
+inline int LeoQuadState::desjointdata_size() const {
+  return _internal_desjointdata_size();
+}
+inline void LeoQuadState::clear_desjointdata() {
+  _impl_.desjointdata_.Clear();
+}
+inline ::dtproto::leoquad::JointData* LeoQuadState::mutable_desjointdata(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.desJointData)
+  return _impl_.desjointdata_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >*
+LeoQuadState::mutable_desjointdata() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.leoquad.LeoQuadState.desJointData)
+  return &_impl_.desjointdata_;
+}
+inline const ::dtproto::leoquad::JointData& LeoQuadState::_internal_desjointdata(int index) const {
+  return _impl_.desjointdata_.Get(index);
+}
+inline const ::dtproto::leoquad::JointData& LeoQuadState::desjointdata(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.desJointData)
+  return _internal_desjointdata(index);
+}
+inline ::dtproto::leoquad::JointData* LeoQuadState::_internal_add_desjointdata() {
+  return _impl_.desjointdata_.Add();
+}
+inline ::dtproto::leoquad::JointData* LeoQuadState::add_desjointdata() {
+  ::dtproto::leoquad::JointData* _add = _internal_add_desjointdata();
+  // @@protoc_insertion_point(field_add:dtproto.leoquad.LeoQuadState.desJointData)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::leoquad::JointData >&
+LeoQuadState::desjointdata() const {
+  // @@protoc_insertion_point(field_list:dtproto.leoquad.LeoQuadState.desJointData)
+  return _impl_.desjointdata_;
+}
+
+// .dtproto.leoquad.TaskState desTaskState = 4;
+inline bool LeoQuadState::_internal_has_destaskstate() const {
+  return this != internal_default_instance() && _impl_.destaskstate_ != nullptr;
+}
+inline bool LeoQuadState::has_destaskstate() const {
+  return _internal_has_destaskstate();
+}
+inline void LeoQuadState::clear_destaskstate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.destaskstate_ != nullptr) {
+    delete _impl_.destaskstate_;
   }
-  _impl_.taskstatedesired_ = nullptr;
+  _impl_.destaskstate_ = nullptr;
 }
-inline const ::dtproto::leoquad::TaskState& LeoQuadState::_internal_taskstatedesired() const {
-  const ::dtproto::leoquad::TaskState* p = _impl_.taskstatedesired_;
+inline const ::dtproto::leoquad::TaskState& LeoQuadState::_internal_destaskstate() const {
+  const ::dtproto::leoquad::TaskState* p = _impl_.destaskstate_;
   return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::TaskState&>(
       ::dtproto::leoquad::_TaskState_default_instance_);
 }
-inline const ::dtproto::leoquad::TaskState& LeoQuadState::taskstatedesired() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.taskStateDesired)
-  return _internal_taskstatedesired();
+inline const ::dtproto::leoquad::TaskState& LeoQuadState::destaskstate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.desTaskState)
+  return _internal_destaskstate();
 }
-inline void LeoQuadState::unsafe_arena_set_allocated_taskstatedesired(
-    ::dtproto::leoquad::TaskState* taskstatedesired) {
+inline void LeoQuadState::unsafe_arena_set_allocated_destaskstate(
+    ::dtproto::leoquad::TaskState* destaskstate) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.taskstatedesired_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.destaskstate_);
   }
-  _impl_.taskstatedesired_ = taskstatedesired;
-  if (taskstatedesired) {
+  _impl_.destaskstate_ = destaskstate;
+  if (destaskstate) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.taskStateDesired)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.desTaskState)
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::release_taskstatedesired() {
+inline ::dtproto::leoquad::TaskState* LeoQuadState::release_destaskstate() {
   
-  ::dtproto::leoquad::TaskState* temp = _impl_.taskstatedesired_;
-  _impl_.taskstatedesired_ = nullptr;
+  ::dtproto::leoquad::TaskState* temp = _impl_.destaskstate_;
+  _impl_.destaskstate_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -4030,85 +5749,85 @@ inline ::dtproto::leoquad::TaskState* LeoQuadState::release_taskstatedesired() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::unsafe_arena_release_taskstatedesired() {
-  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.taskStateDesired)
+inline ::dtproto::leoquad::TaskState* LeoQuadState::unsafe_arena_release_destaskstate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.desTaskState)
   
-  ::dtproto::leoquad::TaskState* temp = _impl_.taskstatedesired_;
-  _impl_.taskstatedesired_ = nullptr;
+  ::dtproto::leoquad::TaskState* temp = _impl_.destaskstate_;
+  _impl_.destaskstate_ = nullptr;
   return temp;
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::_internal_mutable_taskstatedesired() {
+inline ::dtproto::leoquad::TaskState* LeoQuadState::_internal_mutable_destaskstate() {
   
-  if (_impl_.taskstatedesired_ == nullptr) {
+  if (_impl_.destaskstate_ == nullptr) {
     auto* p = CreateMaybeMessage<::dtproto::leoquad::TaskState>(GetArenaForAllocation());
-    _impl_.taskstatedesired_ = p;
+    _impl_.destaskstate_ = p;
   }
-  return _impl_.taskstatedesired_;
+  return _impl_.destaskstate_;
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::mutable_taskstatedesired() {
-  ::dtproto::leoquad::TaskState* _msg = _internal_mutable_taskstatedesired();
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.taskStateDesired)
+inline ::dtproto::leoquad::TaskState* LeoQuadState::mutable_destaskstate() {
+  ::dtproto::leoquad::TaskState* _msg = _internal_mutable_destaskstate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.desTaskState)
   return _msg;
 }
-inline void LeoQuadState::set_allocated_taskstatedesired(::dtproto::leoquad::TaskState* taskstatedesired) {
+inline void LeoQuadState::set_allocated_destaskstate(::dtproto::leoquad::TaskState* destaskstate) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.taskstatedesired_;
+    delete _impl_.destaskstate_;
   }
-  if (taskstatedesired) {
+  if (destaskstate) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(taskstatedesired);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(destaskstate);
     if (message_arena != submessage_arena) {
-      taskstatedesired = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, taskstatedesired, submessage_arena);
+      destaskstate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, destaskstate, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.taskstatedesired_ = taskstatedesired;
-  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.taskStateDesired)
+  _impl_.destaskstate_ = destaskstate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.desTaskState)
 }
 
-// .dtproto.leoquad.TaskState taskStateActual = 3;
-inline bool LeoQuadState::_internal_has_taskstateactual() const {
-  return this != internal_default_instance() && _impl_.taskstateactual_ != nullptr;
+// .dtproto.leoquad.TaskState actTaskState = 5;
+inline bool LeoQuadState::_internal_has_acttaskstate() const {
+  return this != internal_default_instance() && _impl_.acttaskstate_ != nullptr;
 }
-inline bool LeoQuadState::has_taskstateactual() const {
-  return _internal_has_taskstateactual();
+inline bool LeoQuadState::has_acttaskstate() const {
+  return _internal_has_acttaskstate();
 }
-inline void LeoQuadState::clear_taskstateactual() {
-  if (GetArenaForAllocation() == nullptr && _impl_.taskstateactual_ != nullptr) {
-    delete _impl_.taskstateactual_;
+inline void LeoQuadState::clear_acttaskstate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.acttaskstate_ != nullptr) {
+    delete _impl_.acttaskstate_;
   }
-  _impl_.taskstateactual_ = nullptr;
+  _impl_.acttaskstate_ = nullptr;
 }
-inline const ::dtproto::leoquad::TaskState& LeoQuadState::_internal_taskstateactual() const {
-  const ::dtproto::leoquad::TaskState* p = _impl_.taskstateactual_;
+inline const ::dtproto::leoquad::TaskState& LeoQuadState::_internal_acttaskstate() const {
+  const ::dtproto::leoquad::TaskState* p = _impl_.acttaskstate_;
   return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::TaskState&>(
       ::dtproto::leoquad::_TaskState_default_instance_);
 }
-inline const ::dtproto::leoquad::TaskState& LeoQuadState::taskstateactual() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.taskStateActual)
-  return _internal_taskstateactual();
+inline const ::dtproto::leoquad::TaskState& LeoQuadState::acttaskstate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.actTaskState)
+  return _internal_acttaskstate();
 }
-inline void LeoQuadState::unsafe_arena_set_allocated_taskstateactual(
-    ::dtproto::leoquad::TaskState* taskstateactual) {
+inline void LeoQuadState::unsafe_arena_set_allocated_acttaskstate(
+    ::dtproto::leoquad::TaskState* acttaskstate) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.taskstateactual_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.acttaskstate_);
   }
-  _impl_.taskstateactual_ = taskstateactual;
-  if (taskstateactual) {
+  _impl_.acttaskstate_ = acttaskstate;
+  if (acttaskstate) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.taskStateActual)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.actTaskState)
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::release_taskstateactual() {
+inline ::dtproto::leoquad::TaskState* LeoQuadState::release_acttaskstate() {
   
-  ::dtproto::leoquad::TaskState* temp = _impl_.taskstateactual_;
-  _impl_.taskstateactual_ = nullptr;
+  ::dtproto::leoquad::TaskState* temp = _impl_.acttaskstate_;
+  _impl_.acttaskstate_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -4120,47 +5839,47 @@ inline ::dtproto::leoquad::TaskState* LeoQuadState::release_taskstateactual() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::unsafe_arena_release_taskstateactual() {
-  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.taskStateActual)
+inline ::dtproto::leoquad::TaskState* LeoQuadState::unsafe_arena_release_acttaskstate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.actTaskState)
   
-  ::dtproto::leoquad::TaskState* temp = _impl_.taskstateactual_;
-  _impl_.taskstateactual_ = nullptr;
+  ::dtproto::leoquad::TaskState* temp = _impl_.acttaskstate_;
+  _impl_.acttaskstate_ = nullptr;
   return temp;
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::_internal_mutable_taskstateactual() {
+inline ::dtproto::leoquad::TaskState* LeoQuadState::_internal_mutable_acttaskstate() {
   
-  if (_impl_.taskstateactual_ == nullptr) {
+  if (_impl_.acttaskstate_ == nullptr) {
     auto* p = CreateMaybeMessage<::dtproto::leoquad::TaskState>(GetArenaForAllocation());
-    _impl_.taskstateactual_ = p;
+    _impl_.acttaskstate_ = p;
   }
-  return _impl_.taskstateactual_;
+  return _impl_.acttaskstate_;
 }
-inline ::dtproto::leoquad::TaskState* LeoQuadState::mutable_taskstateactual() {
-  ::dtproto::leoquad::TaskState* _msg = _internal_mutable_taskstateactual();
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.taskStateActual)
+inline ::dtproto::leoquad::TaskState* LeoQuadState::mutable_acttaskstate() {
+  ::dtproto::leoquad::TaskState* _msg = _internal_mutable_acttaskstate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.actTaskState)
   return _msg;
 }
-inline void LeoQuadState::set_allocated_taskstateactual(::dtproto::leoquad::TaskState* taskstateactual) {
+inline void LeoQuadState::set_allocated_acttaskstate(::dtproto::leoquad::TaskState* acttaskstate) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.taskstateactual_;
+    delete _impl_.acttaskstate_;
   }
-  if (taskstateactual) {
+  if (acttaskstate) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(taskstateactual);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(acttaskstate);
     if (message_arena != submessage_arena) {
-      taskstateactual = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, taskstateactual, submessage_arena);
+      acttaskstate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, acttaskstate, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.taskstateactual_ = taskstateactual;
-  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.taskStateActual)
+  _impl_.acttaskstate_ = acttaskstate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.actTaskState)
 }
 
-// .dtproto.sensor_msgs.Imu imu = 4;
+// .dtproto.sensor_msgs.Imu imu = 6;
 inline bool LeoQuadState::_internal_has_imu() const {
   return this != internal_default_instance() && _impl_.imu_ != nullptr;
 }
@@ -4245,7 +5964,7 @@ inline void LeoQuadState::set_allocated_imu(::dtproto::sensor_msgs::Imu* imu) {
   // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.imu)
 }
 
-// .dtproto.sensor_msgs.Joy joystick = 5;
+// .dtproto.sensor_msgs.Joy joystick = 7;
 inline bool LeoQuadState::_internal_has_joystick() const {
   return this != internal_default_instance() && _impl_.joystick_ != nullptr;
 }
@@ -4330,45 +6049,45 @@ inline void LeoQuadState::set_allocated_joystick(::dtproto::sensor_msgs::Joy* jo
   // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.joystick)
 }
 
-// .dtproto.leoquad.ControlState controlStateDesired = 7;
-inline bool LeoQuadState::_internal_has_controlstatedesired() const {
-  return this != internal_default_instance() && _impl_.controlstatedesired_ != nullptr;
+// .dtproto.leoquad.ControlState actControlState = 8;
+inline bool LeoQuadState::_internal_has_actcontrolstate() const {
+  return this != internal_default_instance() && _impl_.actcontrolstate_ != nullptr;
 }
-inline bool LeoQuadState::has_controlstatedesired() const {
-  return _internal_has_controlstatedesired();
+inline bool LeoQuadState::has_actcontrolstate() const {
+  return _internal_has_actcontrolstate();
 }
-inline void LeoQuadState::clear_controlstatedesired() {
-  if (GetArenaForAllocation() == nullptr && _impl_.controlstatedesired_ != nullptr) {
-    delete _impl_.controlstatedesired_;
+inline void LeoQuadState::clear_actcontrolstate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.actcontrolstate_ != nullptr) {
+    delete _impl_.actcontrolstate_;
   }
-  _impl_.controlstatedesired_ = nullptr;
+  _impl_.actcontrolstate_ = nullptr;
 }
-inline const ::dtproto::leoquad::ControlState& LeoQuadState::_internal_controlstatedesired() const {
-  const ::dtproto::leoquad::ControlState* p = _impl_.controlstatedesired_;
+inline const ::dtproto::leoquad::ControlState& LeoQuadState::_internal_actcontrolstate() const {
+  const ::dtproto::leoquad::ControlState* p = _impl_.actcontrolstate_;
   return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::ControlState&>(
       ::dtproto::leoquad::_ControlState_default_instance_);
 }
-inline const ::dtproto::leoquad::ControlState& LeoQuadState::controlstatedesired() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.controlStateDesired)
-  return _internal_controlstatedesired();
+inline const ::dtproto::leoquad::ControlState& LeoQuadState::actcontrolstate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.actControlState)
+  return _internal_actcontrolstate();
 }
-inline void LeoQuadState::unsafe_arena_set_allocated_controlstatedesired(
-    ::dtproto::leoquad::ControlState* controlstatedesired) {
+inline void LeoQuadState::unsafe_arena_set_allocated_actcontrolstate(
+    ::dtproto::leoquad::ControlState* actcontrolstate) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.controlstatedesired_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.actcontrolstate_);
   }
-  _impl_.controlstatedesired_ = controlstatedesired;
-  if (controlstatedesired) {
+  _impl_.actcontrolstate_ = actcontrolstate;
+  if (actcontrolstate) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.controlStateDesired)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.actControlState)
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::release_controlstatedesired() {
+inline ::dtproto::leoquad::ControlState* LeoQuadState::release_actcontrolstate() {
   
-  ::dtproto::leoquad::ControlState* temp = _impl_.controlstatedesired_;
-  _impl_.controlstatedesired_ = nullptr;
+  ::dtproto::leoquad::ControlState* temp = _impl_.actcontrolstate_;
+  _impl_.actcontrolstate_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -4380,85 +6099,85 @@ inline ::dtproto::leoquad::ControlState* LeoQuadState::release_controlstatedesir
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::unsafe_arena_release_controlstatedesired() {
-  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.controlStateDesired)
+inline ::dtproto::leoquad::ControlState* LeoQuadState::unsafe_arena_release_actcontrolstate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.actControlState)
   
-  ::dtproto::leoquad::ControlState* temp = _impl_.controlstatedesired_;
-  _impl_.controlstatedesired_ = nullptr;
+  ::dtproto::leoquad::ControlState* temp = _impl_.actcontrolstate_;
+  _impl_.actcontrolstate_ = nullptr;
   return temp;
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::_internal_mutable_controlstatedesired() {
+inline ::dtproto::leoquad::ControlState* LeoQuadState::_internal_mutable_actcontrolstate() {
   
-  if (_impl_.controlstatedesired_ == nullptr) {
+  if (_impl_.actcontrolstate_ == nullptr) {
     auto* p = CreateMaybeMessage<::dtproto::leoquad::ControlState>(GetArenaForAllocation());
-    _impl_.controlstatedesired_ = p;
+    _impl_.actcontrolstate_ = p;
   }
-  return _impl_.controlstatedesired_;
+  return _impl_.actcontrolstate_;
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::mutable_controlstatedesired() {
-  ::dtproto::leoquad::ControlState* _msg = _internal_mutable_controlstatedesired();
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.controlStateDesired)
+inline ::dtproto::leoquad::ControlState* LeoQuadState::mutable_actcontrolstate() {
+  ::dtproto::leoquad::ControlState* _msg = _internal_mutable_actcontrolstate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.actControlState)
   return _msg;
 }
-inline void LeoQuadState::set_allocated_controlstatedesired(::dtproto::leoquad::ControlState* controlstatedesired) {
+inline void LeoQuadState::set_allocated_actcontrolstate(::dtproto::leoquad::ControlState* actcontrolstate) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.controlstatedesired_;
+    delete _impl_.actcontrolstate_;
   }
-  if (controlstatedesired) {
+  if (actcontrolstate) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(controlstatedesired);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(actcontrolstate);
     if (message_arena != submessage_arena) {
-      controlstatedesired = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, controlstatedesired, submessage_arena);
+      actcontrolstate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, actcontrolstate, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.controlstatedesired_ = controlstatedesired;
-  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.controlStateDesired)
+  _impl_.actcontrolstate_ = actcontrolstate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.actControlState)
 }
 
-// .dtproto.leoquad.ControlState controlStateActual = 8;
-inline bool LeoQuadState::_internal_has_controlstateactual() const {
-  return this != internal_default_instance() && _impl_.controlstateactual_ != nullptr;
+// .dtproto.leoquad.ControlState desControlState = 9;
+inline bool LeoQuadState::_internal_has_descontrolstate() const {
+  return this != internal_default_instance() && _impl_.descontrolstate_ != nullptr;
 }
-inline bool LeoQuadState::has_controlstateactual() const {
-  return _internal_has_controlstateactual();
+inline bool LeoQuadState::has_descontrolstate() const {
+  return _internal_has_descontrolstate();
 }
-inline void LeoQuadState::clear_controlstateactual() {
-  if (GetArenaForAllocation() == nullptr && _impl_.controlstateactual_ != nullptr) {
-    delete _impl_.controlstateactual_;
+inline void LeoQuadState::clear_descontrolstate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.descontrolstate_ != nullptr) {
+    delete _impl_.descontrolstate_;
   }
-  _impl_.controlstateactual_ = nullptr;
+  _impl_.descontrolstate_ = nullptr;
 }
-inline const ::dtproto::leoquad::ControlState& LeoQuadState::_internal_controlstateactual() const {
-  const ::dtproto::leoquad::ControlState* p = _impl_.controlstateactual_;
+inline const ::dtproto::leoquad::ControlState& LeoQuadState::_internal_descontrolstate() const {
+  const ::dtproto::leoquad::ControlState* p = _impl_.descontrolstate_;
   return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::ControlState&>(
       ::dtproto::leoquad::_ControlState_default_instance_);
 }
-inline const ::dtproto::leoquad::ControlState& LeoQuadState::controlstateactual() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.controlStateActual)
-  return _internal_controlstateactual();
+inline const ::dtproto::leoquad::ControlState& LeoQuadState::descontrolstate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.desControlState)
+  return _internal_descontrolstate();
 }
-inline void LeoQuadState::unsafe_arena_set_allocated_controlstateactual(
-    ::dtproto::leoquad::ControlState* controlstateactual) {
+inline void LeoQuadState::unsafe_arena_set_allocated_descontrolstate(
+    ::dtproto::leoquad::ControlState* descontrolstate) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.controlstateactual_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.descontrolstate_);
   }
-  _impl_.controlstateactual_ = controlstateactual;
-  if (controlstateactual) {
+  _impl_.descontrolstate_ = descontrolstate;
+  if (descontrolstate) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.controlStateActual)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.desControlState)
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::release_controlstateactual() {
+inline ::dtproto::leoquad::ControlState* LeoQuadState::release_descontrolstate() {
   
-  ::dtproto::leoquad::ControlState* temp = _impl_.controlstateactual_;
-  _impl_.controlstateactual_ = nullptr;
+  ::dtproto::leoquad::ControlState* temp = _impl_.descontrolstate_;
+  _impl_.descontrolstate_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -4470,44 +6189,134 @@ inline ::dtproto::leoquad::ControlState* LeoQuadState::release_controlstateactua
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::unsafe_arena_release_controlstateactual() {
-  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.controlStateActual)
+inline ::dtproto::leoquad::ControlState* LeoQuadState::unsafe_arena_release_descontrolstate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.desControlState)
   
-  ::dtproto::leoquad::ControlState* temp = _impl_.controlstateactual_;
-  _impl_.controlstateactual_ = nullptr;
+  ::dtproto::leoquad::ControlState* temp = _impl_.descontrolstate_;
+  _impl_.descontrolstate_ = nullptr;
   return temp;
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::_internal_mutable_controlstateactual() {
+inline ::dtproto::leoquad::ControlState* LeoQuadState::_internal_mutable_descontrolstate() {
   
-  if (_impl_.controlstateactual_ == nullptr) {
+  if (_impl_.descontrolstate_ == nullptr) {
     auto* p = CreateMaybeMessage<::dtproto::leoquad::ControlState>(GetArenaForAllocation());
-    _impl_.controlstateactual_ = p;
+    _impl_.descontrolstate_ = p;
   }
-  return _impl_.controlstateactual_;
+  return _impl_.descontrolstate_;
 }
-inline ::dtproto::leoquad::ControlState* LeoQuadState::mutable_controlstateactual() {
-  ::dtproto::leoquad::ControlState* _msg = _internal_mutable_controlstateactual();
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.controlStateActual)
+inline ::dtproto::leoquad::ControlState* LeoQuadState::mutable_descontrolstate() {
+  ::dtproto::leoquad::ControlState* _msg = _internal_mutable_descontrolstate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.desControlState)
   return _msg;
 }
-inline void LeoQuadState::set_allocated_controlstateactual(::dtproto::leoquad::ControlState* controlstateactual) {
+inline void LeoQuadState::set_allocated_descontrolstate(::dtproto::leoquad::ControlState* descontrolstate) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.controlstateactual_;
+    delete _impl_.descontrolstate_;
   }
-  if (controlstateactual) {
+  if (descontrolstate) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(controlstateactual);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(descontrolstate);
     if (message_arena != submessage_arena) {
-      controlstateactual = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, controlstateactual, submessage_arena);
+      descontrolstate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, descontrolstate, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.controlstateactual_ = controlstateactual;
-  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.controlStateActual)
+  _impl_.descontrolstate_ = descontrolstate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.desControlState)
+}
+
+// .dtproto.leoquad.CpgState cpgState = 10;
+inline bool LeoQuadState::_internal_has_cpgstate() const {
+  return this != internal_default_instance() && _impl_.cpgstate_ != nullptr;
+}
+inline bool LeoQuadState::has_cpgstate() const {
+  return _internal_has_cpgstate();
+}
+inline void LeoQuadState::clear_cpgstate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.cpgstate_ != nullptr) {
+    delete _impl_.cpgstate_;
+  }
+  _impl_.cpgstate_ = nullptr;
+}
+inline const ::dtproto::leoquad::CpgState& LeoQuadState::_internal_cpgstate() const {
+  const ::dtproto::leoquad::CpgState* p = _impl_.cpgstate_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::CpgState&>(
+      ::dtproto::leoquad::_CpgState_default_instance_);
+}
+inline const ::dtproto::leoquad::CpgState& LeoQuadState::cpgstate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.cpgState)
+  return _internal_cpgstate();
+}
+inline void LeoQuadState::unsafe_arena_set_allocated_cpgstate(
+    ::dtproto::leoquad::CpgState* cpgstate) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.cpgstate_);
+  }
+  _impl_.cpgstate_ = cpgstate;
+  if (cpgstate) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.cpgState)
+}
+inline ::dtproto::leoquad::CpgState* LeoQuadState::release_cpgstate() {
+  
+  ::dtproto::leoquad::CpgState* temp = _impl_.cpgstate_;
+  _impl_.cpgstate_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::leoquad::CpgState* LeoQuadState::unsafe_arena_release_cpgstate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.cpgState)
+  
+  ::dtproto::leoquad::CpgState* temp = _impl_.cpgstate_;
+  _impl_.cpgstate_ = nullptr;
+  return temp;
+}
+inline ::dtproto::leoquad::CpgState* LeoQuadState::_internal_mutable_cpgstate() {
+  
+  if (_impl_.cpgstate_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::leoquad::CpgState>(GetArenaForAllocation());
+    _impl_.cpgstate_ = p;
+  }
+  return _impl_.cpgstate_;
+}
+inline ::dtproto::leoquad::CpgState* LeoQuadState::mutable_cpgstate() {
+  ::dtproto::leoquad::CpgState* _msg = _internal_mutable_cpgstate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.cpgState)
+  return _msg;
+}
+inline void LeoQuadState::set_allocated_cpgstate(::dtproto::leoquad::CpgState* cpgstate) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.cpgstate_;
+  }
+  if (cpgstate) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(cpgstate);
+    if (message_arena != submessage_arena) {
+      cpgstate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cpgstate, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.cpgstate_ = cpgstate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.cpgState)
 }
 
 // -------------------------------------------------------------------
@@ -4692,6 +6501,8 @@ inline void LeoQuadStateTimeStamped::set_allocated_state(::dtproto::leoquad::Leo
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
