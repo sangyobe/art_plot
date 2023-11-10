@@ -4,6 +4,7 @@
 #include "plotwindow.h"
 #include <QApplication>
 #include <QDebug>
+#include <dtCore/src/dtLog/dtLog.h>
 
 //#define PRINT_PUB_SUB_INFO
 
@@ -45,6 +46,10 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow* plotToolbox)
 // , _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
 // , _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
 {
+    dtCore::dtLog::Initialize("artplot", "logs/artplot_leoquad.txt");
+    dtCore::dtLog::LogLevel(dtCore::dtLog::LogLevel::trace);
+    LOG(info) << "Launched.";
+
     BuildPlots();
 }
 
@@ -55,6 +60,9 @@ LeoQuadDataHandler::~LeoQuadDataHandler()
     if (_sub_reconnector.joinable())
         _sub_reconnector.join();
 #endif
+
+    LOG(info) << "Terminated.";
+    dtCore::dtLog::Terminate();
 }
 
 void LeoQuadDataHandler::BuildPlots()
@@ -265,6 +273,7 @@ void LeoQuadDataHandler::BuildPlots()
 
         while (this->_sub_reconnector_running) {
             if (!this->_sub_state->IsRunning()) {
+                LOG(warn) << "Disconnected. Reconnecting...";
                 this->_sub_state->Reconnect();
             }
 

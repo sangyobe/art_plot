@@ -69,6 +69,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dtproto_grpc)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ecal_core)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE spdlog)
 
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

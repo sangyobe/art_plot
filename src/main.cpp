@@ -39,5 +39,8 @@ int main(int argc, char *argv[])
 #endif
 
     // Start main application(event-loop)
-    return app.exec();
+    int rtn = app.exec();
+
+finish:
+    return rtn;
 }
