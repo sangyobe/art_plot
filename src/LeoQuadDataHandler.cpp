@@ -47,7 +47,7 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow* plotToolbox)
 // , _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
 {
     dtCore::dtLog::Initialize("artplot", "logs/artplot_leoquad.txt");
-    dtCore::dtLog::LogLevel(dtCore::dtLog::LogLevel::trace);
+    dtCore::dtLog::SetLogLevel(dtCore::dtLog::LogLevel::trace);
     LOG(info) << "Launched.";
 
     BuildPlots();
