@@ -9,10 +9,11 @@
 //#define PRINT_PUB_SUB_INFO
 
 
-// #define ENABLE_COM_POS_PLOT
+#define ENABLE_COM_POS_PLOT
 // #define ENABLE_COM_VEL_PLOT
 // #define ENABLE_ORIENTATION_PLOT
 // #define ENABLE_ANGULAR_VEL_PLOT
+#define ENABLE_FOOT_TRAJECTORY_PLOT
 // #define ENABLE_FOOT_CONTACT_PLOT
 // #define ENABLE_CPG_PHI_PLOT
 // #define ENABLE_CPG_CPG_PLOT
@@ -22,7 +23,7 @@
 // #define ENABLE_JOINT_TORQUE_PLOT
 // #define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-// #define ENABLE_FOOT_TRAJECTORY_PLOT
+
 
 
 constexpr static int jdof = 12;
@@ -31,20 +32,48 @@ constexpr static int legnum = 4;
 
 LeoQuadDataHandler::LeoQuadDataHandler(MainWindow* plotToolbox) 
 : DataHandler(plotToolbox)
-// , _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
+#ifdef ENABLE_COM_POS_PLOT
+, _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_COM_VEL_PLOT
+, _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_ORIENTATION_PLOT
+, _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_ANGULAR_VEL_PLOT
+, _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FOOT_TRAJECTORY_PLOT
+, _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FOOT_CONTACT_PLOT
+, _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_CPG_CPG_PLOT
+, _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_CPG_PHI_PLOT
+, _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_POSISION_PLOT
 , _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
-// , _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_VELOCITY_PLOT
+, _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_ACCELERATION_PLOT
+, _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_TORQUE_PLOT
+, _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
+, _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
+, _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
 {
     dtCore::dtLog::Initialize("artplot", "logs/artplot_leoquad.txt");
     dtCore::dtLog::SetLogLevel(dtCore::dtLog::LogLevel::trace);
@@ -68,7 +97,7 @@ LeoQuadDataHandler::~LeoQuadDataHandler()
 void LeoQuadDataHandler::BuildPlots()
 {
 #ifdef ENABLE_COM_POS_PLOT
-    _plot_comPos = std::make_unique<PlotWindow>(_plotToolbox);
+    //_plot_comPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_comPos->SetWindowTitle("COM position wrt World");
     _plot_comPos->AddGraph("Com.x.desired", LineColor<0>());
     _plot_comPos->AddGraph("Com.y.desired", LineColor<1>());
@@ -81,7 +110,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_COM_VEL_PLOT
-    _plot_comVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_comVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_comVel->SetWindowTitle("COM velocity wrt World");
     _plot_comVel->AddGraph("Com.Vx.desired", LineColor<0>());
     _plot_comVel->AddGraph("Com.Vy.desired", LineColor<1>());
@@ -94,7 +123,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_ORIENTATION_PLOT
-    _plot_orient = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_orient = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_orient->SetWindowTitle("Body orientation wrt World");
     _plot_orient->AddGraph("Euler.x.desired", LineColor<6>());
     _plot_orient->AddGraph("Euler.y.desired", LineColor<7>());
@@ -108,7 +137,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_ANGULAR_VEL_PLOT
-    _plot_angVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_angVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_angVel->SetWindowTitle("Body angular velocity wrt World");
     _plot_angVel->AddGraph("AngularVel.x.desired", LineColor<6>());
     _plot_angVel->AddGraph("AngularVel.y.desired", LineColor<7>());
@@ -121,7 +150,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_FOOT_TRAJECTORY_PLOT
-    _plot_footPos = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_footPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_footPos->SetWindowTitle("Foot trajectory wrt Body");
     _plot_footPos->AddGraph("FL.x.desired", LineColor<0>());
     _plot_footPos->AddGraph("FL.y.desired", LineColor<1>());
@@ -152,7 +181,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_FOOT_CONTACT_PLOT
-    _plot_contact = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_contact = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_contact->SetWindowTitle("Foot-floor contact state");
     _plot_contact->AddGraph("FL", LineColor<12>());
     _plot_contact->AddGraph("BL", LineColor<13>());
@@ -163,7 +192,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CPG_PHI_PLOT
-    _plot_phi = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_phi = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_phi->SetWindowTitle("Cpg.phi");
     _plot_phi->AddGraph("Phi.a1", LineColor<10>());
     _plot_phi->AddGraph("Phi.a2", LineColor<11>());
@@ -174,7 +203,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CPG_CPG_PLOT
-    _plot_cpg = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_cpg = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_cpg->SetWindowTitle("Cpg.cpg");
     _plot_cpg->AddGraph("Cpg.a1", LineColor<10>());
     _plot_cpg->AddGraph("Cpg.a2", LineColor<11>());
@@ -196,7 +225,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
-    _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointVel->AddGraph(QString("Joint_%02d.vel.desired").arg(ji+1), LineColor(ji));
@@ -207,7 +236,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
-    _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointAcc->AddGraph(QString("Joint_%02d.acc.desired").arg(ji+1), LineColor(ji));
@@ -220,7 +249,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_TORQUE_PLOT
-    _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointTau->AddGraph(QString("Joint_%02d.torque.desired").arg(ji+1), LineColor(ji));
@@ -232,7 +261,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
-    _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_absEnc->SetWindowTitle("Joint absolute encoder");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_absEnc->AddGraph(QString("Joint_%02d.absolute_encoder").arg(ji+1), LineColor(ji));
@@ -242,7 +271,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-    _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_incEnc->SetWindowTitle("Joint incremental encoder");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_incEnc->AddGraph(QString("Joint_%02d.incremental_encoder").arg(ji+1), LineColor(ji));
@@ -325,22 +354,36 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
     if (_plot_footPos) {
         for (int li = 0; li < legnum; li++) {
             _plot_footPos->AddData(6*li + 3, curTime,
-                                actState.posbody2footwrtbody(li).x());
+                                actState.posworld2footwrtworld(li).x());
             _plot_footPos->AddData(6*li + 4, curTime,
-                                actState.posbody2footwrtbody(li).y());
+                                actState.posworld2footwrtworld(li).y());
             _plot_footPos->AddData(6*li + 5, curTime,
-                                actState.posbody2footwrtbody(li).z());
+                                actState.posworld2footwrtworld(li).z());
 
             _plot_footPos->AddData(6*li + 0, curTime,
-                                desState.posbody2footwrtbody(li).x());
+                                desState.posworld2footwrtworld(li).x());
             _plot_footPos->AddData(6*li + 1, curTime,
-                                desState.posbody2footwrtbody(li).y());
+                                desState.posworld2footwrtworld(li).y());
             _plot_footPos->AddData(6*li + 2, curTime,
-                                desState.posbody2footwrtbody(li).z());
+                                desState.posworld2footwrtworld(li).z());
         }
         _plot_footPos->DataUpdated(curTime);
     }
-
+    if (_plot_comPos) {
+        _plot_comPos->AddData(0, curTime,
+                                actState.posworld2comwrtworld().x());
+        _plot_comPos->AddData(1, curTime,
+                                actState.posworld2comwrtworld().y());
+        _plot_comPos->AddData(2, curTime,
+                                actState.posworld2comwrtworld().z());
+        _plot_comPos->AddData(3, curTime,
+                                desState.posworld2comwrtworld().x());
+        _plot_comPos->AddData(4, curTime,
+                                desState.posworld2comwrtworld().y());
+        _plot_comPos->AddData(5, curTime,
+                                desState.posworld2comwrtworld().z());
+        _plot_comPos->DataUpdated(curTime);
+    }
 }
 
 void LeoQuadDataHandler::OnRecvJointState(const double curTime,

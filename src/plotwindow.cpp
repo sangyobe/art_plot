@@ -23,8 +23,8 @@ PlotWindow::ConfigOption::ConfigOption() :
 PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     QMainWindow(parent),
     ui(new Ui::PlotWindow),
-    _configModel(nullptr),
-    _plotType(type)
+    _plotType(type),
+    _configModel(nullptr)
 {
     ui->setupUi(this);
 

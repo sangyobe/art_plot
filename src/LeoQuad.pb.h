@@ -529,13 +529,13 @@ class JointState final :
   void _internal_set_controlword(uint32_t value);
   public:
 
-  // int32 incPos_ofs_cnt = 3;
-  void clear_incpos_ofs_cnt();
-  int32_t incpos_ofs_cnt() const;
-  void set_incpos_ofs_cnt(int32_t value);
+  // int32 incPosOfs_cnt = 3;
+  void clear_incposofs_cnt();
+  int32_t incposofs_cnt() const;
+  void set_incposofs_cnt(int32_t value);
   private:
-  int32_t _internal_incpos_ofs_cnt() const;
-  void _internal_set_incpos_ofs_cnt(int32_t value);
+  int32_t _internal_incposofs_cnt() const;
+  void _internal_set_incposofs_cnt(int32_t value);
   public:
 
   // int32 absPosOfs_cnt = 4;
@@ -611,7 +611,7 @@ class JointState final :
   struct Impl_ {
     uint32_t statusword_;
     uint32_t controlword_;
-    int32_t incpos_ofs_cnt_;
+    int32_t incposofs_cnt_;
     int32_t absposofs_cnt_;
     int32_t incpos_cnt_;
     int32_t abspos_cnt_;
@@ -2916,24 +2916,24 @@ inline void JointState::set_controlword(uint32_t value) {
   // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.controlWord)
 }
 
-// int32 incPos_ofs_cnt = 3;
-inline void JointState::clear_incpos_ofs_cnt() {
-  _impl_.incpos_ofs_cnt_ = 0;
+// int32 incPosOfs_cnt = 3;
+inline void JointState::clear_incposofs_cnt() {
+  _impl_.incposofs_cnt_ = 0;
 }
-inline int32_t JointState::_internal_incpos_ofs_cnt() const {
-  return _impl_.incpos_ofs_cnt_;
+inline int32_t JointState::_internal_incposofs_cnt() const {
+  return _impl_.incposofs_cnt_;
 }
-inline int32_t JointState::incpos_ofs_cnt() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.incPos_ofs_cnt)
-  return _internal_incpos_ofs_cnt();
+inline int32_t JointState::incposofs_cnt() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.JointState.incPosOfs_cnt)
+  return _internal_incposofs_cnt();
 }
-inline void JointState::_internal_set_incpos_ofs_cnt(int32_t value) {
+inline void JointState::_internal_set_incposofs_cnt(int32_t value) {
   
-  _impl_.incpos_ofs_cnt_ = value;
+  _impl_.incposofs_cnt_ = value;
 }
-inline void JointState::set_incpos_ofs_cnt(int32_t value) {
-  _internal_set_incpos_ofs_cnt(value);
-  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.incPos_ofs_cnt)
+inline void JointState::set_incposofs_cnt(int32_t value) {
+  _internal_set_incposofs_cnt(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.JointState.incPosOfs_cnt)
 }
 
 // int32 absPosOfs_cnt = 4;
