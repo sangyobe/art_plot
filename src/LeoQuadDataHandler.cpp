@@ -353,35 +353,35 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
 {
     if (_plot_footPos) {
         for (int li = 0; li < legnum; li++) {
-            _plot_footPos->AddData(6*li + 3, curTime,
-                                actState.posworld2footwrtworld(li).x());
-            _plot_footPos->AddData(6*li + 4, curTime,
-                                actState.posworld2footwrtworld(li).y());
-            _plot_footPos->AddData(6*li + 5, curTime,
-                                actState.posworld2footwrtworld(li).z());
-
             _plot_footPos->AddData(6*li + 0, curTime,
                                 desState.posworld2footwrtworld(li).x());
             _plot_footPos->AddData(6*li + 1, curTime,
                                 desState.posworld2footwrtworld(li).y());
             _plot_footPos->AddData(6*li + 2, curTime,
                                 desState.posworld2footwrtworld(li).z());
+                                
+            _plot_footPos->AddData(6*li + 3, curTime,
+                                actState.posworld2footwrtworld(li).x());
+            _plot_footPos->AddData(6*li + 4, curTime,
+                                actState.posworld2footwrtworld(li).y());
+            _plot_footPos->AddData(6*li + 5, curTime,
+                                actState.posworld2footwrtworld(li).z());
         }
         _plot_footPos->DataUpdated(curTime);
     }
     if (_plot_comPos) {
         _plot_comPos->AddData(0, curTime,
-                                actState.posworld2comwrtworld().x());
-        _plot_comPos->AddData(1, curTime,
-                                actState.posworld2comwrtworld().y());
-        _plot_comPos->AddData(2, curTime,
-                                actState.posworld2comwrtworld().z());
-        _plot_comPos->AddData(3, curTime,
                                 desState.posworld2comwrtworld().x());
-        _plot_comPos->AddData(4, curTime,
+        _plot_comPos->AddData(1, curTime,
                                 desState.posworld2comwrtworld().y());
-        _plot_comPos->AddData(5, curTime,
+        _plot_comPos->AddData(2, curTime,
                                 desState.posworld2comwrtworld().z());
+        _plot_comPos->AddData(3, curTime,
+                                actState.posworld2comwrtworld().x());
+        _plot_comPos->AddData(4, curTime,
+                                actState.posworld2comwrtworld().y());
+        _plot_comPos->AddData(5, curTime,
+                                actState.posworld2comwrtworld().z());
         _plot_comPos->DataUpdated(curTime);
     }
 }
