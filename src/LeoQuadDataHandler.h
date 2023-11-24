@@ -31,6 +31,7 @@ private:
                                       const long long time, const long long clock);
 
     void OnRecvLeoQuadState(const double curTime, const dtproto::leoquad::LeoQuadState &state);
+    void OnRecvCpgState(const double curTime, const dtproto::leoquad::CpgState &state);
     void OnRecvControlState(const double curTime, const dtproto::leoquad::ControlState &actState, const dtproto::leoquad::ControlState &desState);
     void OnRecvJointState(const double curTime,
         const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointState> &state,
@@ -44,6 +45,7 @@ private:
     std::unique_ptr<PlotWindow> _plot_orient;
     std::unique_ptr<PlotWindow> _plot_angVel;
     std::unique_ptr<PlotWindow> _plot_footPos;
+    std::unique_ptr<PlotWindow> _plot_footForce;
     std::unique_ptr<PlotWindow> _plot_contact;
     std::unique_ptr<PlotWindow> _plot_cpgCpg;
     std::unique_ptr<PlotWindow> _plot_cpgPhi;

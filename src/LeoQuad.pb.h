@@ -945,6 +945,7 @@ class ControlState final :
     kVelBody2FootWrtWorldFieldNumber = 12,
     kPosBody2FootWrtBodyFieldNumber = 13,
     kVelBody2FootWrtBodyFieldNumber = 14,
+    kForceWorld2FootWrtWorldFieldNumber = 15,
     kPosWorld2ComWrtWorldFieldNumber = 1,
     kVelWorld2ComWrtWorldFieldNumber = 2,
     kPosWorld2BodyWrtWorldFieldNumber = 3,
@@ -953,8 +954,8 @@ class ControlState final :
     kAngularVelBodyWrtWorldFieldNumber = 6,
     kAngularVelBodyWrtBodyFieldNumber = 7,
     kAngularMomentumBodyWrtWorldFieldNumber = 8,
-    kRotBodyWrtWorldFieldNumber = 15,
-    kContactFieldNumber = 16,
+    kRotBodyWrtWorldFieldNumber = 16,
+    kContactFieldNumber = 17,
   };
   // repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
   int posworld2footwrtworld_size() const;
@@ -1063,6 +1064,24 @@ class ControlState final :
   ::dtproto::geometry_msgs::Point3d* add_velbody2footwrtbody();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
       velbody2footwrtbody() const;
+
+  // repeated .dtproto.geometry_msgs.Point3d forceWorld2FootWrtWorld = 15;
+  int forceworld2footwrtworld_size() const;
+  private:
+  int _internal_forceworld2footwrtworld_size() const;
+  public:
+  void clear_forceworld2footwrtworld();
+  ::dtproto::geometry_msgs::Point3d* mutable_forceworld2footwrtworld(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+      mutable_forceworld2footwrtworld();
+  private:
+  const ::dtproto::geometry_msgs::Point3d& _internal_forceworld2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* _internal_add_forceworld2footwrtworld();
+  public:
+  const ::dtproto::geometry_msgs::Point3d& forceworld2footwrtworld(int index) const;
+  ::dtproto::geometry_msgs::Point3d* add_forceworld2footwrtworld();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+      forceworld2footwrtworld() const;
 
   // .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
   bool has_posworld2comwrtworld() const;
@@ -1208,7 +1227,7 @@ class ControlState final :
       ::dtproto::geometry_msgs::Point3d* angularmomentumbodywrtworld);
   ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_angularmomentumbodywrtworld();
 
-  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 16;
   bool has_rotbodywrtworld() const;
   private:
   bool _internal_has_rotbodywrtworld() const;
@@ -1226,7 +1245,7 @@ class ControlState final :
       ::dtproto::geometry_msgs::Matrix3d* rotbodywrtworld);
   ::dtproto::geometry_msgs::Matrix3d* unsafe_arena_release_rotbodywrtworld();
 
-  // .dtproto.geometry_msgs.Vector4b contact = 16;
+  // .dtproto.geometry_msgs.Vector4b contact = 17;
   bool has_contact() const;
   private:
   bool _internal_has_contact() const;
@@ -1258,6 +1277,7 @@ class ControlState final :
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > velbody2footwrtworld_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > posbody2footwrtbody_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > velbody2footwrtbody_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d > forceworld2footwrtworld_;
     ::dtproto::geometry_msgs::Point3d* posworld2comwrtworld_;
     ::dtproto::geometry_msgs::Point3d* velworld2comwrtworld_;
     ::dtproto::geometry_msgs::Point3d* posworld2bodywrtworld_;
@@ -4086,7 +4106,44 @@ ControlState::velbody2footwrtbody() const {
   return _impl_.velbody2footwrtbody_;
 }
 
-// .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+// repeated .dtproto.geometry_msgs.Point3d forceWorld2FootWrtWorld = 15;
+inline int ControlState::_internal_forceworld2footwrtworld_size() const {
+  return _impl_.forceworld2footwrtworld_.size();
+}
+inline int ControlState::forceworld2footwrtworld_size() const {
+  return _internal_forceworld2footwrtworld_size();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_forceworld2footwrtworld(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.ControlState.forceWorld2FootWrtWorld)
+  return _impl_.forceworld2footwrtworld_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >*
+ControlState::mutable_forceworld2footwrtworld() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.leoquad.ControlState.forceWorld2FootWrtWorld)
+  return &_impl_.forceworld2footwrtworld_;
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_forceworld2footwrtworld(int index) const {
+  return _impl_.forceworld2footwrtworld_.Get(index);
+}
+inline const ::dtproto::geometry_msgs::Point3d& ControlState::forceworld2footwrtworld(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ControlState.forceWorld2FootWrtWorld)
+  return _internal_forceworld2footwrtworld(index);
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_add_forceworld2footwrtworld() {
+  return _impl_.forceworld2footwrtworld_.Add();
+}
+inline ::dtproto::geometry_msgs::Point3d* ControlState::add_forceworld2footwrtworld() {
+  ::dtproto::geometry_msgs::Point3d* _add = _internal_add_forceworld2footwrtworld();
+  // @@protoc_insertion_point(field_add:dtproto.leoquad.ControlState.forceWorld2FootWrtWorld)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::geometry_msgs::Point3d >&
+ControlState::forceworld2footwrtworld() const {
+  // @@protoc_insertion_point(field_list:dtproto.leoquad.ControlState.forceWorld2FootWrtWorld)
+  return _impl_.forceworld2footwrtworld_;
+}
+
+// .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 16;
 inline bool ControlState::_internal_has_rotbodywrtworld() const {
   return this != internal_default_instance() && _impl_.rotbodywrtworld_ != nullptr;
 }
@@ -4171,7 +4228,7 @@ inline void ControlState::set_allocated_rotbodywrtworld(::dtproto::geometry_msgs
   // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.ControlState.rotBodyWrtWorld)
 }
 
-// .dtproto.geometry_msgs.Vector4b contact = 16;
+// .dtproto.geometry_msgs.Vector4b contact = 17;
 inline bool ControlState::_internal_has_contact() const {
   return this != internal_default_instance() && _impl_.contact_ != nullptr;
 }

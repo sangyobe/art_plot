@@ -89,6 +89,7 @@ PROTOBUF_CONSTEXPR ControlState::ControlState(
   , /*decltype(_impl_.velbody2footwrtworld_)*/{}
   , /*decltype(_impl_.posbody2footwrtbody_)*/{}
   , /*decltype(_impl_.velbody2footwrtbody_)*/{}
+  , /*decltype(_impl_.forceworld2footwrtworld_)*/{}
   , /*decltype(_impl_.posworld2comwrtworld_)*/nullptr
   , /*decltype(_impl_.velworld2comwrtworld_)*/nullptr
   , /*decltype(_impl_.posworld2bodywrtworld_)*/nullptr
@@ -242,6 +243,7 @@ const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ControlState, _impl_.velbody2footwrtworld_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ControlState, _impl_.posbody2footwrtbody_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ControlState, _impl_.velbody2footwrtbody_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ControlState, _impl_.forceworld2footwrtworld_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ControlState, _impl_.rotbodywrtworld_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ControlState, _impl_.contact_),
   ~0u,  // no _has_bits_
@@ -297,9 +299,9 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 14, -1, -1, sizeof(::dtproto::leoquad::JointState)},
   { 30, -1, -1, sizeof(::dtproto::leoquad::JointData)},
   { 41, -1, -1, sizeof(::dtproto::leoquad::ControlState)},
-  { 63, -1, -1, sizeof(::dtproto::leoquad::CpgState)},
-  { 86, -1, -1, sizeof(::dtproto::leoquad::LeoQuadState)},
-  { 102, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
+  { 64, -1, -1, sizeof(::dtproto::leoquad::CpgState)},
+  { 87, -1, -1, sizeof(::dtproto::leoquad::LeoQuadState)},
+  { 103, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -337,7 +339,7 @@ const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\010 \001(\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030"
   "\n \001(\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\np"
   "osAux_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_"
-  "rpss\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\346\007\n\014ControlS"
+  "rpss\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\247\010\n\014ControlS"
   "tate\022<\n\024posWorld2ComWrtWorld\030\001 \001(\0132\036.dtp"
   "roto.geometry_msgs.Point3d\022<\n\024velWorld2C"
   "omWrtWorld\030\002 \001(\0132\036.dtproto.geometry_msgs"
@@ -360,45 +362,46 @@ const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\n\023posBody2FootWrtBody\030\r \003(\0132\036.dtproto.ge"
   "ometry_msgs.Point3d\022;\n\023velBody2FootWrtBo"
   "dy\030\016 \003(\0132\036.dtproto.geometry_msgs.Point3d"
-  "\0228\n\017rotBodyWrtWorld\030\017 \001(\0132\037.dtproto.geom"
-  "etry_msgs.Matrix3d\0220\n\007contact\030\020 \001(\0132\037.dt"
-  "proto.geometry_msgs.Vector4b\"\232\006\n\010CpgStat"
-  "e\0220\n\007periods\030\001 \001(\0132\037.dtproto.geometry_ms"
-  "gs.Vector2d\022/\n\006phases\030\002 \001(\0132\037.dtproto.ge"
-  "ometry_msgs.Vector4d\022,\n\003phi\030\003 \001(\0132\037.dtpr"
-  "oto.geometry_msgs.Vector4d\0220\n\007phiToGo\030\004 "
-  "\001(\0132\037.dtproto.geometry_msgs.Vector4d\022.\n\005"
-  "phiSt\030\005 \001(\0132\037.dtproto.geometry_msgs.Vect"
-  "or4d\022.\n\005phiSw\030\006 \001(\0132\037.dtproto.geometry_m"
-  "sgs.Vector4d\022,\n\003cpg\030\007 \001(\0132\037.dtproto.geom"
-  "etry_msgs.Vector4d\0220\n\007contact\030\010 \001(\0132\037.dt"
-  "proto.geometry_msgs.Vector4b\0228\n\017phaseCha"
-  "ngeFlag\030\t \001(\0132\037.dtproto.geometry_msgs.Ve"
-  "ctor4b\0229\n\020periodChangeFlag\030\n \001(\0132\037.dtpro"
-  "to.geometry_msgs.Vector4b\0222\n\tphaseDiff\030\013"
-  " \001(\0132\037.dtproto.geometry_msgs.Vector4d\0220\n"
-  "\007phiTran\030\014 \001(\0132\037.dtproto.geometry_msgs.V"
-  "ector4d\0222\n\tphiTranSt\030\r \001(\0132\037.dtproto.geo"
-  "metry_msgs.Vector4d\0222\n\tphiTranSw\030\016 \001(\0132\037"
-  ".dtproto.geometry_msgs.Vector4d\022/\n\004step\030"
-  "\017 \001(\0132!.dtproto.geometry_msgs.Vector4i32"
-  "\022\n\n\002dt\030\020 \001(\001\022\013\n\003air\030\021 \001(\010\"\367\003\n\014LeoQuadSta"
-  "te\022/\n\njointState\030\001 \003(\0132\033.dtproto.leoquad"
-  ".JointState\0220\n\014actJointData\030\002 \003(\0132\032.dtpr"
-  "oto.leoquad.JointData\0220\n\014desJointData\030\003 "
-  "\003(\0132\032.dtproto.leoquad.JointData\0220\n\014desTa"
-  "skState\030\004 \001(\0132\032.dtproto.leoquad.TaskStat"
-  "e\0220\n\014actTaskState\030\005 \001(\0132\032.dtproto.leoqua"
-  "d.TaskState\022%\n\003imu\030\006 \001(\0132\030.dtproto.senso"
-  "r_msgs.Imu\022*\n\010joystick\030\007 \001(\0132\030.dtproto.s"
-  "ensor_msgs.Joy\0226\n\017actControlState\030\010 \001(\0132"
-  "\035.dtproto.leoquad.ControlState\0226\n\017desCon"
-  "trolState\030\t \001(\0132\035.dtproto.leoquad.Contro"
-  "lState\022+\n\010cpgState\030\n \001(\0132\031.dtproto.leoqu"
-  "ad.CpgState\"q\n\027LeoQuadStateTimeStamped\022("
-  "\n\006header\030\001 \001(\0132\030.dtproto.std_msgs.Header"
-  "\022,\n\005state\030\002 \001(\0132\035.dtproto.leoquad.LeoQua"
-  "dStateb\006proto3"
+  "\022\?\n\027forceWorld2FootWrtWorld\030\017 \003(\0132\036.dtpr"
+  "oto.geometry_msgs.Point3d\0228\n\017rotBodyWrtW"
+  "orld\030\020 \001(\0132\037.dtproto.geometry_msgs.Matri"
+  "x3d\0220\n\007contact\030\021 \001(\0132\037.dtproto.geometry_"
+  "msgs.Vector4b\"\232\006\n\010CpgState\0220\n\007periods\030\001 "
+  "\001(\0132\037.dtproto.geometry_msgs.Vector2d\022/\n\006"
+  "phases\030\002 \001(\0132\037.dtproto.geometry_msgs.Vec"
+  "tor4d\022,\n\003phi\030\003 \001(\0132\037.dtproto.geometry_ms"
+  "gs.Vector4d\0220\n\007phiToGo\030\004 \001(\0132\037.dtproto.g"
+  "eometry_msgs.Vector4d\022.\n\005phiSt\030\005 \001(\0132\037.d"
+  "tproto.geometry_msgs.Vector4d\022.\n\005phiSw\030\006"
+  " \001(\0132\037.dtproto.geometry_msgs.Vector4d\022,\n"
+  "\003cpg\030\007 \001(\0132\037.dtproto.geometry_msgs.Vecto"
+  "r4d\0220\n\007contact\030\010 \001(\0132\037.dtproto.geometry_"
+  "msgs.Vector4b\0228\n\017phaseChangeFlag\030\t \001(\0132\037"
+  ".dtproto.geometry_msgs.Vector4b\0229\n\020perio"
+  "dChangeFlag\030\n \001(\0132\037.dtproto.geometry_msg"
+  "s.Vector4b\0222\n\tphaseDiff\030\013 \001(\0132\037.dtproto."
+  "geometry_msgs.Vector4d\0220\n\007phiTran\030\014 \001(\0132"
+  "\037.dtproto.geometry_msgs.Vector4d\0222\n\tphiT"
+  "ranSt\030\r \001(\0132\037.dtproto.geometry_msgs.Vect"
+  "or4d\0222\n\tphiTranSw\030\016 \001(\0132\037.dtproto.geomet"
+  "ry_msgs.Vector4d\022/\n\004step\030\017 \001(\0132!.dtproto"
+  ".geometry_msgs.Vector4i32\022\n\n\002dt\030\020 \001(\001\022\013\n"
+  "\003air\030\021 \001(\010\"\367\003\n\014LeoQuadState\022/\n\njointStat"
+  "e\030\001 \003(\0132\033.dtproto.leoquad.JointState\0220\n\014"
+  "actJointData\030\002 \003(\0132\032.dtproto.leoquad.Joi"
+  "ntData\0220\n\014desJointData\030\003 \003(\0132\032.dtproto.l"
+  "eoquad.JointData\0220\n\014desTaskState\030\004 \001(\0132\032"
+  ".dtproto.leoquad.TaskState\0220\n\014actTaskSta"
+  "te\030\005 \001(\0132\032.dtproto.leoquad.TaskState\022%\n\003"
+  "imu\030\006 \001(\0132\030.dtproto.sensor_msgs.Imu\022*\n\010j"
+  "oystick\030\007 \001(\0132\030.dtproto.sensor_msgs.Joy\022"
+  "6\n\017actControlState\030\010 \001(\0132\035.dtproto.leoqu"
+  "ad.ControlState\0226\n\017desControlState\030\t \001(\013"
+  "2\035.dtproto.leoquad.ControlState\022+\n\010cpgSt"
+  "ate\030\n \001(\0132\031.dtproto.leoquad.CpgState\"q\n\027"
+  "LeoQuadStateTimeStamped\022(\n\006header\030\001 \001(\0132"
+  "\030.dtproto.std_msgs.Header\022,\n\005state\030\002 \001(\013"
+  "2\035.dtproto.leoquad.LeoQuadStateb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_deps[8] = {
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fMatrix_2eproto,
@@ -412,7 +415,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_LeoQuad_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_LeoQuad_2eproto = {
-    false, false, 3414, descriptor_table_protodef_LeoQuad_2eproto,
+    false, false, 3479, descriptor_table_protodef_LeoQuad_2eproto,
     "LeoQuad.proto",
     &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 8, 7,
     schemas, file_default_instances, TableStruct_LeoQuad_2eproto::offsets,
@@ -1844,6 +1847,9 @@ void ControlState::clear_posbody2footwrtbody() {
 void ControlState::clear_velbody2footwrtbody() {
   _impl_.velbody2footwrtbody_.Clear();
 }
+void ControlState::clear_forceworld2footwrtworld() {
+  _impl_.forceworld2footwrtworld_.Clear();
+}
 void ControlState::clear_rotbodywrtworld() {
   if (GetArenaForAllocation() == nullptr && _impl_.rotbodywrtworld_ != nullptr) {
     delete _impl_.rotbodywrtworld_;
@@ -1872,6 +1878,7 @@ ControlState::ControlState(const ControlState& from)
     , decltype(_impl_.velbody2footwrtworld_){from._impl_.velbody2footwrtworld_}
     , decltype(_impl_.posbody2footwrtbody_){from._impl_.posbody2footwrtbody_}
     , decltype(_impl_.velbody2footwrtbody_){from._impl_.velbody2footwrtbody_}
+    , decltype(_impl_.forceworld2footwrtworld_){from._impl_.forceworld2footwrtworld_}
     , decltype(_impl_.posworld2comwrtworld_){nullptr}
     , decltype(_impl_.velworld2comwrtworld_){nullptr}
     , decltype(_impl_.posworld2bodywrtworld_){nullptr}
@@ -1929,6 +1936,7 @@ inline void ControlState::SharedCtor(
     , decltype(_impl_.velbody2footwrtworld_){arena}
     , decltype(_impl_.posbody2footwrtbody_){arena}
     , decltype(_impl_.velbody2footwrtbody_){arena}
+    , decltype(_impl_.forceworld2footwrtworld_){arena}
     , decltype(_impl_.posworld2comwrtworld_){nullptr}
     , decltype(_impl_.velworld2comwrtworld_){nullptr}
     , decltype(_impl_.posworld2bodywrtworld_){nullptr}
@@ -1960,6 +1968,7 @@ inline void ControlState::SharedDtor() {
   _impl_.velbody2footwrtworld_.~RepeatedPtrField();
   _impl_.posbody2footwrtbody_.~RepeatedPtrField();
   _impl_.velbody2footwrtbody_.~RepeatedPtrField();
+  _impl_.forceworld2footwrtworld_.~RepeatedPtrField();
   if (this != internal_default_instance()) delete _impl_.posworld2comwrtworld_;
   if (this != internal_default_instance()) delete _impl_.velworld2comwrtworld_;
   if (this != internal_default_instance()) delete _impl_.posworld2bodywrtworld_;
@@ -1988,6 +1997,7 @@ void ControlState::Clear() {
   _impl_.velbody2footwrtworld_.Clear();
   _impl_.posbody2footwrtbody_.Clear();
   _impl_.velbody2footwrtbody_.Clear();
+  _impl_.forceworld2footwrtworld_.Clear();
   if (GetArenaForAllocation() == nullptr && _impl_.posworld2comwrtworld_ != nullptr) {
     delete _impl_.posworld2comwrtworld_;
   }
@@ -2179,17 +2189,30 @@ const char* ControlState::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
         } else
           goto handle_unusual;
         continue;
-      // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+      // repeated .dtproto.geometry_msgs.Point3d forceWorld2FootWrtWorld = 15;
       case 15:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_forceworld2footwrtworld(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<122>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 130)) {
           ptr = ctx->ParseMessage(_internal_mutable_rotbodywrtworld(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // .dtproto.geometry_msgs.Vector4b contact = 16;
-      case 16:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 130)) {
+      // .dtproto.geometry_msgs.Vector4b contact = 17;
+      case 17:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 138)) {
           ptr = ctx->ParseMessage(_internal_mutable_contact(), ptr);
           CHK_(ptr);
         } else
@@ -2328,17 +2351,25 @@ uint8_t* ControlState::_InternalSerialize(
         InternalWriteMessage(14, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+  // repeated .dtproto.geometry_msgs.Point3d forceWorld2FootWrtWorld = 15;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_forceworld2footwrtworld_size()); i < n; i++) {
+    const auto& repfield = this->_internal_forceworld2footwrtworld(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(15, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 16;
   if (this->_internal_has_rotbodywrtworld()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(15, _Internal::rotbodywrtworld(this),
+      InternalWriteMessage(16, _Internal::rotbodywrtworld(this),
         _Internal::rotbodywrtworld(this).GetCachedSize(), target, stream);
   }
 
-  // .dtproto.geometry_msgs.Vector4b contact = 16;
+  // .dtproto.geometry_msgs.Vector4b contact = 17;
   if (this->_internal_has_contact()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(16, _Internal::contact(this),
+      InternalWriteMessage(17, _Internal::contact(this),
         _Internal::contact(this).GetCachedSize(), target, stream);
   }
 
@@ -2400,6 +2431,13 @@ size_t ControlState::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
+  // repeated .dtproto.geometry_msgs.Point3d forceWorld2FootWrtWorld = 15;
+  total_size += 1UL * this->_internal_forceworld2footwrtworld_size();
+  for (const auto& msg : this->_impl_.forceworld2footwrtworld_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
   // .dtproto.geometry_msgs.Point3d posWorld2ComWrtWorld = 1;
   if (this->_internal_has_posworld2comwrtworld()) {
     total_size += 1 +
@@ -2456,14 +2494,14 @@ size_t ControlState::ByteSizeLong() const {
         *_impl_.angularmomentumbodywrtworld_);
   }
 
-  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 15;
+  // .dtproto.geometry_msgs.Matrix3d rotBodyWrtWorld = 16;
   if (this->_internal_has_rotbodywrtworld()) {
-    total_size += 1 +
+    total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.rotbodywrtworld_);
   }
 
-  // .dtproto.geometry_msgs.Vector4b contact = 16;
+  // .dtproto.geometry_msgs.Vector4b contact = 17;
   if (this->_internal_has_contact()) {
     total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -2494,6 +2532,7 @@ void ControlState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   _this->_impl_.velbody2footwrtworld_.MergeFrom(from._impl_.velbody2footwrtworld_);
   _this->_impl_.posbody2footwrtbody_.MergeFrom(from._impl_.posbody2footwrtbody_);
   _this->_impl_.velbody2footwrtbody_.MergeFrom(from._impl_.velbody2footwrtbody_);
+  _this->_impl_.forceworld2footwrtworld_.MergeFrom(from._impl_.forceworld2footwrtworld_);
   if (from._internal_has_posworld2comwrtworld()) {
     _this->_internal_mutable_posworld2comwrtworld()->::dtproto::geometry_msgs::Point3d::MergeFrom(
         from._internal_posworld2comwrtworld());
@@ -2557,6 +2596,7 @@ void ControlState::InternalSwap(ControlState* other) {
   _impl_.velbody2footwrtworld_.InternalSwap(&other->_impl_.velbody2footwrtworld_);
   _impl_.posbody2footwrtbody_.InternalSwap(&other->_impl_.posbody2footwrtbody_);
   _impl_.velbody2footwrtbody_.InternalSwap(&other->_impl_.velbody2footwrtbody_);
+  _impl_.forceworld2footwrtworld_.InternalSwap(&other->_impl_.forceworld2footwrtworld_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(ControlState, _impl_.contact_)
       + sizeof(ControlState::_impl_.contact_)

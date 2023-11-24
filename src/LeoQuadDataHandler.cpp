@@ -15,12 +15,13 @@
 // #define ENABLE_ANGULAR_VEL_PLOT
 #define ENABLE_FOOT_TRAJECTORY_PLOT
 // #define ENABLE_FOOT_CONTACT_PLOT
+#define ENABLE_FOOT_FORCE_PLOT
 // #define ENABLE_CPG_PHI_PLOT
-// #define ENABLE_CPG_CPG_PLOT
+#define ENABLE_CPG_CPG_PLOT
 #define ENABLE_JOINT_POSISION_PLOT
 // #define ENABLE_JOINT_VELOCITY_PLOT
 // #define ENABLE_JOINT_ACCELERATION_PLOT
-// #define ENABLE_JOINT_TORQUE_PLOT
+#define ENABLE_JOINT_TORQUE_PLOT
 // #define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 
@@ -49,6 +50,9 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow* plotToolbox)
 #endif
 #ifdef ENABLE_FOOT_CONTACT_PLOT
 , _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FOOT_FORCE_PLOT
+, _plot_footForce(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CPG_CPG_PLOT
 , _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
@@ -180,6 +184,25 @@ void LeoQuadDataHandler::BuildPlots()
     RegisterPlot(_plot_footPos.get());
 #endif
 
+#ifdef ENABLE_FOOT_FORCE_PLOT
+    // _plot_footForce = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_footForce->SetWindowTitle("Foot force wrt World");
+    _plot_footForce->AddGraph("FL.x.desired", LineColor<0>());
+    _plot_footForce->AddGraph("FL.y.desired", LineColor<1>());
+    _plot_footForce->AddGraph("FL.z.desired", LineColor<2>());
+    _plot_footForce->AddGraph("BL.x.desired", LineColor<3>());
+    _plot_footForce->AddGraph("BL.y.desired", LineColor<4>());
+    _plot_footForce->AddGraph("BL.z.desired", LineColor<5>());
+    _plot_footForce->AddGraph("FR.x.desired", LineColor<6>());
+    _plot_footForce->AddGraph("FR.y.desired", LineColor<7>());
+    _plot_footForce->AddGraph("FR.z.desired", LineColor<8>());
+    _plot_footForce->AddGraph("BR.x.desired", LineColor<9>());
+    _plot_footForce->AddGraph("BR.y.desired", LineColor<10>());
+    _plot_footForce->AddGraph("BR.z.desired", LineColor<11>());
+    _plot_footForce->show();
+    RegisterPlot(_plot_footForce.get());
+#endif
+
 #ifdef ENABLE_FOOT_CONTACT_PLOT
     // _plot_contact = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_contact->SetWindowTitle("Foot-floor contact state");
@@ -192,25 +215,25 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CPG_PHI_PLOT
-    // _plot_phi = std::make_unique<PlotWindow>(_plotToolbox);
-    _plot_phi->SetWindowTitle("Cpg.phi");
-    _plot_phi->AddGraph("Phi.a1", LineColor<10>());
-    _plot_phi->AddGraph("Phi.a2", LineColor<11>());
-    _plot_phi->AddGraph("Phi.a3", LineColor<12>());
-    _plot_phi->AddGraph("Phi.a4", LineColor<13>());
-    _plot_phi->show();
+    // _plot_cpgPhi = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_cpgPhi->SetWindowTitle("Cpg.phi");
+    _plot_cpgPhi->AddGraph("Phi.a1", LineColor<10>());
+    _plot_cpgPhi->AddGraph("Phi.a2", LineColor<11>());
+    _plot_cpgPhi->AddGraph("Phi.a3", LineColor<12>());
+    _plot_cpgPhi->AddGraph("Phi.a4", LineColor<13>());
+    _plot_cpgPhi->show();
     RegisterPlot(_plot_phi.get());
 #endif
 
 #ifdef ENABLE_CPG_CPG_PLOT
-    // _plot_cpg = std::make_unique<PlotWindow>(_plotToolbox);
-    _plot_cpg->SetWindowTitle("Cpg.cpg");
-    _plot_cpg->AddGraph("Cpg.a1", LineColor<10>());
-    _plot_cpg->AddGraph("Cpg.a2", LineColor<11>());
-    _plot_cpg->AddGraph("Cpg.a3", LineColor<12>());
-    _plot_cpg->AddGraph("Cpg.a4", LineColor<13>());
-    _plot_cpg->show();
-    RegisterPlot(_plot_cpg.get());
+    // _plot_cpgCpg = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_cpgCpg->SetWindowTitle("Cpg.cpg");
+    _plot_cpgCpg->AddGraph("Cpg.a1", LineColor<10>());
+    _plot_cpgCpg->AddGraph("Cpg.a2", LineColor<11>());
+    _plot_cpgCpg->AddGraph("Cpg.a3", LineColor<12>());
+    _plot_cpgCpg->AddGraph("Cpg.a4", LineColor<13>());
+    _plot_cpgCpg->show();
+    RegisterPlot(_plot_cpgCpg.get());
 #endif
 
 #ifdef ENABLE_JOINT_POSISION_PLOT
@@ -344,13 +367,42 @@ void LeoQuadDataHandler::OnRecvLeoQuadStateTimeStamped(const char *topic_name,
 
 void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto::leoquad::LeoQuadState &state)
 {
-    //OnRecvCpgState(curTime, state.cpgstate());
+    OnRecvCpgState(curTime, state.cpgstate());
     OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
 }
 
+void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leoquad::CpgState &state)
+{
+    if (_plot_cpgPhi) {
+        _plot_cpgPhi->AddData(0, curTime, state.phi().a1());
+        _plot_cpgPhi->AddData(1, curTime, state.phi().a2());
+        _plot_cpgPhi->AddData(2, curTime, state.phi().a3());
+        _plot_cpgPhi->AddData(3, curTime, state.phi().a4());
+        _plot_cpgPhi->DataUpdated(curTime);
+    }
+    if (_plot_cpgCpg) {
+        _plot_cpgCpg->AddData(0, curTime, state.cpg().a1());
+        _plot_cpgCpg->AddData(1, curTime, state.cpg().a2());
+        _plot_cpgCpg->AddData(2, curTime, state.cpg().a3());
+        _plot_cpgCpg->AddData(3, curTime, state.cpg().a4());
+        _plot_cpgCpg->DataUpdated(curTime);
+    }
+}
+
 void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto::leoquad::ControlState &actState, const dtproto::leoquad::ControlState &desState)
 {
+    if (_plot_footForce) {
+        for (int li = 0; li < legnum; li++) {
+            _plot_footForce->AddData(3*li + 0, curTime,
+                                desState.forceworld2footwrtworld(li).x());
+            _plot_footForce->AddData(3*li + 1, curTime,
+                                desState.forceworld2footwrtworld(li).y());
+            _plot_footForce->AddData(3*li + 2, curTime,
+                                desState.forceworld2footwrtworld(li).z());
+        }
+        _plot_footForce->DataUpdated(curTime);
+    }
     if (_plot_footPos) {
         for (int li = 0; li < legnum; li++) {
             _plot_footPos->AddData(6*li + 0, curTime,
