@@ -2,9 +2,15 @@
 #include "mainwindow.h"
 #include "pconstants.h"
 #include "plotwindow.h"
+#include "cmdopts.hpp"
+#include "stringutil.hpp"
 #include <QApplication>
 #include <QDebug>
 #include <dtCore/src/dtLog/dtLog.h>
+
+
+
+
 
 //#define PRINT_PUB_SUB_INFO
 
@@ -313,7 +319,16 @@ void LeoQuadDataHandler::BuildPlots()
         std::placeholders::_3, std::placeholders::_4));
 #endif
 #ifdef USE_TRANSPORT_GRPC
-    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", "127.0.0.1:50051");
+    std::string ip;
+    uint16_t port;
+    GetServerAddress(ip, port);
+    if (ip.empty() || port == 0) {
+        ip = "127.0.0.1";
+        port = 50051;
+    }
+    std::string svr_address = string_format("%s:%d", ip.c_str(), port);
+    
+    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
     std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped&)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped& msg) {
         static long long seq = 0;
         this->OnRecvLeoQuadStateTimeStamped("", msg, 0, seq++);

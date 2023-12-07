@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "pconstants.h"
 #include "plotwindow.h"
+#include "cmdopts.hpp"
 #include <QApplication>
 #include <QDebug>
 
@@ -16,7 +17,19 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    MainWindow plotToolbox;
+
+    struct AppOptions
+    {
+        std::string ip_addr{};
+        int port{};
+    };
+    auto parser = CmdOpts<AppOptions>::Create({
+        { "--ip",   &AppOptions::ip_addr },
+        { "--port", &AppOptions::port }
+    });
+    auto app_opts = parser->parse(argc, argv);
+
+    MainWindow plotToolbox(app_opts.ip_addr, (uint16_t)app_opts.port);
     plotToolbox.setWindowTitle(APP_NAME);
     plotToolbox.setWindowFlag(Qt::WindowStaysOnTopHint);
     plotToolbox.show();

@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <algorithm>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(const std::string& ip, const uint16_t port, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -31,15 +31,29 @@ MainWindow::MainWindow(QWidget *parent) :
     connect_success = connect(ui->plotlistview, SIGNAL(clicked(QModelIndex)), this, SLOT(OnItemClicked(QModelIndex)));
     Q_ASSERT(connect_success);
 
-
     // restore window geometry (size, position)
     QSettings settings("hmc", "artPlot");
     restoreGeometry(settings.value("geometry").toByteArray());
+
+    // initialize data server address
+    _svrIpAddr = ip;
+    _svrPort = port;
+    ui->statusBar->showMessage(
+            QString("server[%1:%2]")
+                .arg(QString(_svrIpAddr.c_str()))
+                .arg(_svrPort),
+            0);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::GetServerAddress(std::string& ip, uint16_t& port)
+{
+    ip = _svrIpAddr;
+    port = _svrPort;
 }
 
 void MainWindow::AddPlot(PlotWindow *plotWnd)
