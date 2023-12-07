@@ -1,5 +1,6 @@
 #include "plotwidget.h"
 #include "plotwindow.h"
+#include "pconstants.h"
 #include <QDebug>
 
 PlotWidget::PlotWidget(QWidget *parent) :
@@ -30,14 +31,13 @@ void PlotWidget::ExportToCSV(QString& export_dir)
 
         QTextStream out(&file);
 
-        out << graph->name() << ","
-            << graph->lineStyle() << ","
-            << graph->pen().color().red() << ","
-            << graph->pen().color().green() << ","
-            << graph->pen().color().blue() << ","
-            << graph->pen().width() << ","
-            << graph->scatterStyle().shape() << ","
-            << graph->scatterStyle().size() << ","
+        out << "_time_" << ","
+            << graph->name() << "|"
+            << graph->lineStyle() << "|"
+            << graph->pen().color().rgb() << "|"
+            << graph->pen().width() << "|"
+            << graph->scatterStyle().shape() << "|"
+            << graph->scatterStyle().size() << "|"
             << graph->scatterSkip() << "\n";
         std::for_each(graph->data()->constBegin(), graph->data()->constEnd(), [&out](QCPGraphData data) {
             out << data.key << "," << data.value << "\n";
@@ -63,6 +63,10 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
         int graph_header_item_count = 9;
         int graph_count = 0;
 
+        int xidx = -1;  // x-axis index (-1: no x-axis data)
+        int xval = 0;
+        int hidx = 0; // header item index
+
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
             QList<QByteArray> elements = line.split(',');
@@ -73,39 +77,62 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
                     element = element.right(element.size()-1);
                 if (element.endsWith('\"'))
                     element = element.left(element.size()-1);
+                if (element.endsWith('\n'))
+                    element = element.left(element.size()-1);
             });
 
             if (parse_header == 0) {
 
-                int hidx = 0; // header item index
-                while (elements.size() >= (hidx + graph_header_item_count))
+                if (elements.size() > 1 && elements[0] == "_time_")
                 {
-                    QString name = elements[hidx + 0].toStdString().c_str();
-                    if (name.isEmpty())
-                        break;
-                    //int line_style = elements[hidx + 1].toInt();
-                    QColor line_color(elements[hidx + 2].toInt(),
-                                      elements[hidx + 3].toInt(),
-                                      elements[hidx + 4].toInt());
-                    int line_width = elements[hidx + 5].toInt();
-                    int scatter_shape = elements[hidx + 6].toInt();
-                    //double scatter_size = elements[hidx + 7].toDouble();
-                    int scatter_skip = elements[hidx + 8].toInt();
+                    xidx = 0;
+                    xval = 0;
+                    hidx = 1; // skip x-axis
+                }
+                else
+                {
+                    xidx = -1;
+                    hidx = 0;
+                }
+                
+                while (elements.size() > hidx)
+                {
+                    QString name = elements[hidx].toStdString().c_str();
+                    if (name.isEmpty()) {   // empty data name
+                        // break;
+                        name = "data_" + QString::number(hidx);
+                    }
+
+                    QStringList mdata = name.split('|');
+                    name = mdata[0];
+                    int line_style = 1;
+                    QColor line_color = LineColor((xidx == 0 ? hidx - 1 : hidx));
+                    int line_width = 1;
+                    int scatter_shape = 0;
+                    double scatter_size = 6;
+                    int scatter_skip = 0;
+
+                    if (mdata.size() > 1) line_style = mdata[1].toInt();
+                    if (mdata.size() > 2) line_color.setRgb(mdata[2].toUInt());
+                    if (mdata.size() > 3) line_width = mdata[3].toInt();
+                    if (mdata.size() > 4) scatter_shape = mdata[4].toInt();
+                    if (mdata.size() > 5) scatter_size = mdata[5].toDouble();
+                    if (mdata.size() > 6) scatter_skip = mdata[6].toInt();
 
                     int idx = static_cast<PlotWindow*>(parent()->parent())->AddGraph(name, line_color, line_width, scatter_shape, scatter_skip);
                     if (graph_count == 0)
                         graph_base_idx = (idx - 1); // AddGraph returns graph count not index
                     graph_count++;
-                    hidx += graph_header_item_count;
+                    hidx++;
                 }
 
                 parse_header = 1;
                 continue;
             }
 
-            double key = elements[0].toDouble();
+            double key = (xidx == 0 ? elements[0].toDouble() : (double)(xval++));
             for (int gidx = 0; gidx < graph_count; gidx++) {
-                mGraphs[graph_base_idx + gidx]->addData(key, elements[gidx+1].toDouble());
+                mGraphs[graph_base_idx + gidx]->addData(key, elements[(xidx == 0 ? gidx+1 : gidx)].toDouble());
             }
         }
 
