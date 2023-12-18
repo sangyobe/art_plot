@@ -3,16 +3,16 @@
 
 //////////////////////////////////////////////////
 // Select a communication middleware
-//
+// (This may be provided as CMake option)
 //#define USE_TRANSPORT_ECAL
-#define USE_TRANSPORT_GRPC
+//#define USE_TRANSPORT_GRPC
 
 //////////////////////////////////////////////////
 // Select a robot type
-//
+// (This may be provided as CMake option)
 //#define ROBOT_QUADIP
 //#define ROBOT_WOLY
-#define ROBOT_LEOQUAD
+//#define ROBOT_LEOQUAD
 
 #ifdef ROBOT_QUADIP
 #define ROBOT_NAME "Quad-IP"

@@ -14,11 +14,38 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 # 3rd-party libs
 find_package(absl REQUIRED CONFIG)
-find_package (glog 0.6.0 REQUIRED)
+# find_package (glog 0.6.0 REQUIRED)
 set(Protobuf_MODULE_COMPATIBLE TRUE)
 find_package(Protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
 
+# Set build options
+set(ROBOT_TYPE "LQ" CACHE STRING "select robot. (QI: QuadIP, LQ: LeoQuad, WL: Woly)")
+set(TRANSPORT_TYPE "GRPC" CACHE STRING "select transport library. (GRPC: gRPC, ECAL: eCAL)")
+
+if(ROBOT_TYPE STREQUAL "LQ") 
+    set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} ROBOT_LEOQUAD)
+elseif(ROBOT_TYPE STREQUAL "QI")
+    set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} ROBOT_QUADIP)
+elseif(ROBOT_TYPE STREQUAL "WL") 
+    set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} ROBOT_WOLY)
+else()
+    message(FATAL_ERROR "ROBOT_TYPE must be set.")
+endif()
+
+if(TRANSPORT_TYPE STREQUAL "GRPC")
+    set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} USE_TRANSPORT_GRPC;)
+elseif(TRANSPORT_TYPE STREQUAL "ECAL") 
+    message(FATAL_ERROR "TRANSPORT_TYPE must be set as GRPC. GRPC is the only trasport layer supported currenty.")
+    set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} USE_TRANSPORT_ECAL;)
+else()
+    message(FATAL_ERROR "TRANSPORT_TYPE must be set as GRPC. GRPC is the only trasport layer supported currenty.")
+endif()
+
+message(STATUS "Compiler preprocessor definitions: " ${PROJECT_COMPILE_DEFINITIONS})
+add_compile_definitions(${PROJECT_COMPILE_DEFINITIONS})
+
+# Prepare source files
 file(GLOB PROJECT_SOURCES
     "src/*.cpp"
     "src/*.hpp"
