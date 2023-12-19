@@ -8,6 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_PREFIX_PATH "$ENV{HOME}/.local")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -86,16 +87,16 @@ endif()
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/include)
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE /home/sean/.local/include)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{HOME}/.local/include)
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /home/sean/.local/lib)
+target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{HOME}/.local/lib)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dtproto_grpc)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ecal_core)
+# target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ecal_core)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE spdlog)
 
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
