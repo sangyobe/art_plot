@@ -133,7 +133,7 @@ private:
     void AdjustPlotXRange();
     void AdjustPlotYRange();
 
-    const QStandardItem* FindFirstConfigOptionItem(const QString& cat, const QString& item);
+    const QStandardItem* FindFirstConfigOptionItem(const QString& cat, const QString& item, int col = 0);
 
 public slots:
     void OnRefreshPlot();

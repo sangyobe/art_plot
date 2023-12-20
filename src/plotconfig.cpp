@@ -34,7 +34,7 @@ void PlotConfig::setConfigModel(QAbstractItemModel *configModel)
 
 void PlotConfig::OnItemClicked(const QModelIndex& index)
 {
-    if ("Data series::__name__" == index.data(Qt::WhatsThisRole).toString()) {
+    if ("Data series::Visible" == index.data(Qt::WhatsThisRole).toString()) {
         emit graphItemClicked(index.data(Qt::DisplayRole).toString(), index.row());
     }
 }

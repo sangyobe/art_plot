@@ -201,14 +201,15 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
 
         item_title->setEditable(false);
         item_title->setSelectable(true);
-        item_title->setWhatsThis(QString("Data series::__name__"));
+        item_title->setWhatsThis(QString("Data series::Visible"));
+        item_title->setData(QVariant::fromValue((void*)graph));
+        item_title->setCheckable(true);
+        item_title->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+
         item_option->setEditable(false);
-        item_option->setCheckable(true);
-        item_option->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
         //item_option->setWhatsThis(QString("Data series::%s").arg(name));
-        item_option->setWhatsThis(QString("Data series::Visible"));
+        item_option->setWhatsThis(QString("Data series::Color"));
         item_option->setSelectable(false);
-        item_option->setData(QVariant::fromValue((void*)graph));
         item_option->setData(color, Qt::BackgroundRole);
         item_option->setData(QVariant::fromValue(name), Qt::UserRole + 2);
         item_graph_visible.append(item_title);
@@ -231,7 +232,7 @@ void PlotWindow::AddData(int gid, double key, double value)
 
 void PlotWindow::SetGraphVisible(const QString &name, bool visible)
 {
-    const QStandardItem* item = FindFirstConfigOptionItem("Data series", name);
+    const QStandardItem* item = FindFirstConfigOptionItem("Data series", name, 0);
     if (item) {
         const_cast<QStandardItem*>(item)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
     }
@@ -397,9 +398,10 @@ QByteArray PlotWindow::saveDataSeriesConfig() const
 
         for (int chiIndex = 0; chiIndex < data_series_root->rowCount(); chiIndex++) {
             QStandardItem* data_name = data_series_root->child(chiIndex, 0);
-            QStandardItem* data_visible = data_series_root->child(chiIndex, 1);
+            QStandardItem* data_color = data_series_root->child(chiIndex, 1);
             str << data_name->data(Qt::DisplayRole).toString() << ",";
-            str << (data_visible->checkState() == Qt::Checked ? 1 : 0) << ",";
+            str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
+            // str << (data_color->checkState() == Qt::Checked ? 1 : 0) << ",";
         }
         break;
     }
@@ -430,7 +432,7 @@ QString PlotWindow::GetWindowTitle() const {
 
 void PlotWindow::AutoScroll(bool on)
 {
-    const QStandardItem* item = FindFirstConfigOptionItem("x-Axis", "Auto scroll");
+    const QStandardItem* item = FindFirstConfigOptionItem("x-Axis", "Auto scroll", 1);
     if (!item)
         return;
 
@@ -439,7 +441,7 @@ void PlotWindow::AutoScroll(bool on)
 
 void PlotWindow::AutoScrollWindow(double dt_sec)
 {
-    const QStandardItem* item = FindFirstConfigOptionItem("x-Axis", "Scroll Window(s)");
+    const QStandardItem* item = FindFirstConfigOptionItem("x-Axis", "Scroll Window(s)", 1);
     if (!item)
         return;
 
@@ -454,7 +456,7 @@ void PlotWindow::SetXRange(double ti, double tf)
 
 void PlotWindow::SetXBegin(double ti)
 {
-    QStandardItem const * item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+    QStandardItem const * item = FindFirstConfigOptionItem("x-Axis", "Begin(s)", 1);
     if (item) {
         const_cast<QStandardItem*>(item)->setData(ti, Qt::EditRole);
     }
@@ -462,7 +464,7 @@ void PlotWindow::SetXBegin(double ti)
 
 void PlotWindow::SetXEnd(double tf)
 {
-    QStandardItem const * item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+    QStandardItem const * item = FindFirstConfigOptionItem("x-Axis", "End(s)", 1);
     if (item) {
         const_cast<QStandardItem*>(item)->setData(tf, Qt::EditRole);
     }
@@ -470,7 +472,7 @@ void PlotWindow::SetXEnd(double tf)
 
 void PlotWindow::AutoScale(bool on)
 {
-    const QStandardItem* item = FindFirstConfigOptionItem("y-Axis", "Auto scale");
+    const QStandardItem* item = FindFirstConfigOptionItem("y-Axis", "Auto scale", 1);
     if (!item)
         return;
 
@@ -485,7 +487,7 @@ void PlotWindow::SetYRange(double lbound, double ubound)
 
 void PlotWindow::SetYLBound(double lbound)
 {
-    QStandardItem const * item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+    QStandardItem const * item = FindFirstConfigOptionItem("y-Axis", "Lower bound", 1);
     if (item) {
         const_cast<QStandardItem*>(item)->setData(lbound, Qt::EditRole);
     }
@@ -493,7 +495,7 @@ void PlotWindow::SetYLBound(double lbound)
 
 void PlotWindow::SetYUBound(double ubound)
 {
-    QStandardItem const * item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+    QStandardItem const * item = FindFirstConfigOptionItem("y-Axis", "Upper bound", 1);
     if (item) {
         const_cast<QStandardItem*>(item)->setData(ubound, Qt::EditRole);
     }
@@ -501,7 +503,7 @@ void PlotWindow::SetYUBound(double ubound)
 
 void PlotWindow::ShowLegend(bool show)
 {
-    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Visible");
+    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Visible", 1);
     if (!item)
         return;
 
@@ -510,7 +512,7 @@ void PlotWindow::ShowLegend(bool show)
 
 void PlotWindow::SetLegendLocation(QFlags<Qt::AlignmentFlag> flag)
 {
-    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Location");
+    const QStandardItem* item = FindFirstConfigOptionItem("Legend", "Location", 1);
     if (!item)
         return;
 
@@ -594,24 +596,18 @@ void PlotWindow::BuildConfig()
 
     _configModel = new QStandardItemModel;
     _configModel->setColumnCount(2);
+    
+    QStringList header_labels;
+    header_labels << "Property" << "Value";
+    _configModel->setHeaderData(0, Qt::Horizontal, header_labels[0]);
+    _configModel->setHeaderData(1, Qt::Horizontal, header_labels[1]);
 
-    QStandardItem* x_axis_root = new QStandardItem("x-Axis");
-    QStandardItem* y_axis_root = new QStandardItem("y-Axis");
-    QStandardItem* legend_root = new QStandardItem("Legend");
-    QStandardItem* style_root = new QStandardItem("Style");
-    QStandardItem* data_series_root = new QStandardItem("Data series");
-    x_axis_root->setEditable(false);
-    y_axis_root->setEditable(false);
-    legend_root->setEditable(false);
-    style_root->setEditable(false);
-    data_series_root->setEditable(false);
-    _configModel->appendRow(x_axis_root);
-    _configModel->appendRow(y_axis_root);
-    _configModel->appendRow(legend_root);
-    _configModel->appendRow(style_root);
-    _configModel->appendRow(data_series_root);
 
     // x-Axis
+    QStandardItem* x_axis_root = new QStandardItem("x-Axis");
+    x_axis_root->setEditable(false);
+    _configModel->appendRow(x_axis_root);
+
     items.clear();
     item_title = new QStandardItem("Auto scroll");
     item_title->setEditable(false);
@@ -660,6 +656,10 @@ void PlotWindow::BuildConfig()
     x_axis_root->appendRow(items);
 
     // y-Axis
+    QStandardItem* y_axis_root = new QStandardItem("y-Axis");
+    y_axis_root->setEditable(false);
+    _configModel->appendRow(y_axis_root);
+
     items.clear();
     item_title = new QStandardItem("Auto scale");
     item_title->setEditable(false);
@@ -697,6 +697,10 @@ void PlotWindow::BuildConfig()
     y_axis_root->appendRow(items);
 
     // legend
+    QStandardItem* legend_root = new QStandardItem("Legend");
+    legend_root->setEditable(false);
+    _configModel->appendRow(legend_root);
+
     items.clear();
     item_title = new QStandardItem("Visible");
     item_title->setEditable(false);
@@ -722,6 +726,10 @@ void PlotWindow::BuildConfig()
     legend_root->appendRow(items);
 
     // style
+    QStandardItem* style_root = new QStandardItem("Style");
+    style_root->setEditable(false);
+    _configModel->appendRow(style_root);
+
     items.clear();
     item_title = new QStandardItem("Line width(1~5)");
     item_title->setEditable(false);
@@ -735,30 +743,42 @@ void PlotWindow::BuildConfig()
 
     _plotConfig->setConfigModel(_configModel);
 
-    // header
-    QStringList header_labels;
-    header_labels << "Property" << "Value";
-    _configModel->setHeaderData(0, Qt::Horizontal, header_labels[0]);
-    _configModel->setHeaderData(1, Qt::Horizontal, header_labels[1]);
+    // data series
+    // QStandardItem* data_series_root = new QStandardItem("Data series");
+    QList<QStandardItem*> data_series_root;
+    
+    // data_series_root->setEditable(false);
+    QStandardItem* data_series_root_title = new QStandardItem("Data series");
+    QStandardItem* data_series_root_option = new QStandardItem();
+    data_series_root_title->setEditable(false);
+    data_series_root_title->setCheckable(true);
+    data_series_root_title->setCheckState(Qt::Unchecked);
+    data_series_root_title->setWhatsThis(QString("Data series::Visible_All"));
+    data_series_root_option->setEditable(false);
+    data_series_root_option->setSelectable(false);
+    data_series_root.append(data_series_root_title);
+    data_series_root.append(data_series_root_option);
+    _configModel->appendRow(data_series_root);
 
 
+    // connect signal
     connect(_configModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(OnConfigChanged(QStandardItem*)));
 }
 
 void PlotWindow::OnConfigChanged(QStandardItem *item)
 {
-    //qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
+    qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
 
     if (item->whatsThis() == "x-Axis::AutoScroll") {
         _configOption.x_axis_auto_scroll = (item->checkState() == Qt::Checked ? true : false);
 
         const QStandardItem* item = nullptr;
         if (_configOption.x_axis_auto_scroll) {
-            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(false);
             }
-            item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+            item = FindFirstConfigOptionItem("x-Axis", "End(s)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(false);
             }
@@ -769,12 +789,12 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
             double ti = ui->plotwidget->xAxis->range().lower;
             double tf = ui->plotwidget->xAxis->range().upper;
 
-            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(true);
                 const_cast<QStandardItem*>(item)->setData(ti, Qt::EditRole);
             }
-            item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+            item = FindFirstConfigOptionItem("x-Axis", "End(s)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(true);
                 const_cast<QStandardItem*>(item)->setData(tf, Qt::EditRole);
@@ -798,11 +818,11 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
 
         const QStandardItem* item = nullptr;
         if (_configOption.y_axis_auto_scale) {
-            item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+            item = FindFirstConfigOptionItem("y-Axis", "Lower bound", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(false);
             }
-            item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+            item = FindFirstConfigOptionItem("y-Axis", "Upper bound", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(false);
             }
@@ -812,12 +832,12 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
             double lb = ui->plotwidget->yAxis->range().lower;
             double ub = ui->plotwidget->yAxis->range().upper;
 
-            item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+            item = FindFirstConfigOptionItem("y-Axis", "Lower bound", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(true);
                 const_cast<QStandardItem*>(item)->setData(lb, Qt::EditRole);
             }
-            item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+            item = FindFirstConfigOptionItem("y-Axis", "Upper bound", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setEnabled(true);
                 const_cast<QStandardItem*>(item)->setData(ub, Qt::EditRole);
@@ -877,7 +897,7 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
                 _configOption.style_line_width = 5;
 
             QStandardItem const * item;
-            item = FindFirstConfigOptionItem("Style", "Line width(1~5)");
+            item = FindFirstConfigOptionItem("Style", "Line width(1~5)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(_configOption.style_line_width, Qt::EditRole);
             }
@@ -888,6 +908,23 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
         if (graph) {
             graph->setVisible(
                 (item->checkState() == Qt::Checked ? true : false));
+        }
+    }
+    else if (item->whatsThis() == "Data series::Visible_All") {
+
+        auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+        foreach (QStandardItem* data_series_root, items) {
+            if (data_series_root->parent())
+                continue;
+
+            qDebug() << "row count" << data_series_root->rowCount();
+            for (int row=0; row<data_series_root->rowCount(); row++) {
+                QStandardItem* graph_visible_item = data_series_root->child(row, 0);
+                if (!graph_visible_item)
+                    continue;
+
+                graph_visible_item->setCheckState(item->checkState());
+            }
         }
     }
 }
@@ -965,11 +1002,11 @@ void PlotWindow::ExtendAll()
     if (found) {
         const QStandardItem* item = nullptr;
         //if (!_configOption.x_axis_auto_scroll) {
-            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)");
+            item = FindFirstConfigOptionItem("x-Axis", "Begin(s)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.lower, Qt::EditRole);
             }
-            item = FindFirstConfigOptionItem("x-Axis", "End(s)");
+            item = FindFirstConfigOptionItem("x-Axis", "End(s)", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.upper, Qt::EditRole);
             }
@@ -986,11 +1023,11 @@ void PlotWindow::ExtendAll()
 
         const QStandardItem* item = nullptr;
         //if (!_configOption.y_axis_auto_scale) {
-            item = FindFirstConfigOptionItem("y-Axis", "Lower bound");
+            item = FindFirstConfigOptionItem("y-Axis", "Lower bound", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.lower, Qt::EditRole);
             }
-            item = FindFirstConfigOptionItem("y-Axis", "Upper bound");
+            item = FindFirstConfigOptionItem("y-Axis", "Upper bound", 1);
             if (item) {
                 const_cast<QStandardItem*>(item)->setData(range.upper, Qt::EditRole);
             }
@@ -1025,12 +1062,12 @@ void PlotWindow::AdjustPlotYRange()
     }
 }
 
-const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item)
+const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item, int col)
 {
     auto items = _configModel->findItems(item, Qt::MatchExactly | Qt::MatchRecursive, 0);
     foreach (const QStandardItem* citem, items) {
         if (citem->parent() && citem->parent()->text() == cat) {
-            return citem->parent()->child(citem->row(), 1);
+            return citem->parent()->child(citem->row(), col);
         }
     }
     return nullptr;
