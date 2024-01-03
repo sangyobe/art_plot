@@ -767,7 +767,7 @@ void PlotWindow::BuildConfig()
 
 void PlotWindow::OnConfigChanged(QStandardItem *item)
 {
-    qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
+    // qDebug() << "PlotWindow::OnConfigChanged(" << item->whatsThis() << ")";
 
     if (item->whatsThis() == "x-Axis::AutoScroll") {
         _configOption.x_axis_auto_scroll = (item->checkState() == Qt::Checked ? true : false);
@@ -917,7 +917,7 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
             if (data_series_root->parent())
                 continue;
 
-            qDebug() << "row count" << data_series_root->rowCount();
+            // qDebug() << "row count" << data_series_root->rowCount();
             for (int row=0; row<data_series_root->rowCount(); row++) {
                 QStandardItem* graph_visible_item = data_series_root->child(row, 0);
                 if (!graph_visible_item)
@@ -970,7 +970,7 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 
 void PlotWindow::OnSelectionChangedByUser()
 {
-    qDebug() << "OnSelectionChangedByUser";
+    //qDebug() << "OnSelectionChangedByUser";
     const QList<QCPGraph*> graphs = ui->plotwidget->selectedGraphs();
     for (auto graph : qAsConst(graphs)) {
         Q_UNUSED(graph); // (void)graph;

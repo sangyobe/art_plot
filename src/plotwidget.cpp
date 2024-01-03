@@ -21,10 +21,11 @@ void PlotWidget::ExportToCSV(QString& export_dir)
 
     for (auto graph : qAsConst(mGraphs)) {
         QString filename = export_dir + "/" + formattedTime + "_" + windowTitle() + "_" + graph->name() + ".csv";
-        qDebug() << "export file: " << filename;
+        //qDebug() << "export file: " << filename;
 
         QFile file(filename);
         if (!file.open(QIODevice::WriteOnly | QFile::Truncate)) {
+            qDebug() << "Cannot open file, " << filename << " , for exporting.";
             qDebug() << file.errorString();
             continue;
         }
@@ -53,6 +54,7 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
     for (QString& filename : import_files) {
         QFile file(filename);
         if (!file.open(QIODevice::ReadOnly)) {
+            qDebug() << "Cannot open file, " << filename << " , for importing.";
             qDebug() << file.errorString();
             continue;
         }
