@@ -936,12 +936,10 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
 
 void PlotWindow::OnConfigItemGraphClicked(QString name, int index)
 {
-    qDebug() << "item clicked," << index << "," << name;
     QStandardItem const * item = FindFirstConfigOptionItem("Data series", name, 0);
     if (item) {
         if (const_cast<QStandardItem*>(item)->checkState() == Qt::Checked) {
             // unselect all
-            qDebug() << "unselect all";
             UnselectAllGraphs();
             
             // select new
