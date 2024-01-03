@@ -1,0 +1,8 @@
+TODO
+- Fix crash bug, segmentation fault, while creating QuadIPDataHandler.
+- Selecting DataHandler by parsing program argument.
+- Display x-axis data with full resolution.
+
+2024.01.03
+- Fix crash bug while importing CSV file which has empty lines.
+- Select only one graph at a time. Select a graph by clicking a legend item.
