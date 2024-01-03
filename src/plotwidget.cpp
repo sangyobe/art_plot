@@ -83,6 +83,9 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
                     element = element.left(element.size()-1);
             });
 
+            if (elements.size() <= 0 || elements[0].size() == 0)
+                continue;
+
             if (parse_header == 0) {
 
                 if (elements.size() > 1 && elements[0] == "_time_")
@@ -134,7 +137,10 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
 
             double key = (xidx == 0 ? elements[0].toDouble() : (double)(xval++));
             for (int gidx = 0; gidx < graph_count; gidx++) {
-                mGraphs[graph_base_idx + gidx]->addData(key, elements[(xidx == 0 ? gidx+1 : gidx)].toDouble());
+                int eidx = (xidx == 0 ? gidx+1 : gidx);
+                if (eidx >= elements.size())
+                    break; // skip processing this line
+                mGraphs[graph_base_idx + gidx]->addData(key, elements[eidx].toDouble());
             }
         }
 
