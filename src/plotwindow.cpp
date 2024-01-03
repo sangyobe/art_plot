@@ -264,6 +264,11 @@ void PlotWindow::SelectGraph(const QString &name, int index)
     }
 }
 
+void PlotWindow::UnselectAllGraphs()
+{
+    ui->plotwidget->deselectAll();
+}
+
 void PlotWindow::ResetPlot()
 {
     ResetData();
@@ -931,7 +936,22 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
 
 void PlotWindow::OnConfigItemGraphClicked(QString name, int index)
 {
-    this->SelectGraph(name, index);
+    qDebug() << "item clicked," << index << "," << name;
+    QStandardItem const * item = FindFirstConfigOptionItem("Data series", name, 0);
+    if (item) {
+        if (const_cast<QStandardItem*>(item)->checkState() == Qt::Checked) {
+            // unselect all
+            qDebug() << "unselect all";
+            UnselectAllGraphs();
+            
+            // select new
+            SelectGraph(name, index);
+        }
+        else {
+            // do nothing
+            return;
+        }
+    }
 }
 
 void PlotWindow::OnHorzScrollBarChanged(int value)
@@ -970,7 +990,6 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 
 void PlotWindow::OnSelectionChangedByUser()
 {
-    //qDebug() << "OnSelectionChangedByUser";
     const QList<QCPGraph*> graphs = ui->plotwidget->selectedGraphs();
     for (auto graph : qAsConst(graphs)) {
         Q_UNUSED(graph); // (void)graph;
@@ -979,7 +998,7 @@ void PlotWindow::OnSelectionChangedByUser()
     for (auto legend : qAsConst(legends)) {
         for (int i=0; i<legend->itemCount(); i++) {
             QCPPlottableLegendItem* item = dynamic_cast<QCPPlottableLegendItem*>(legend->item(i));
-            if (item) {
+            if (item && item->selected()) {
                 SelectGraph(item->plottable()->name());
                 break;
             }

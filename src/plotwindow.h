@@ -39,6 +39,7 @@ public:
     void AddData(int gid, double key, double value);
     void SetGraphVisible(const QString &name, bool visible);
     void SelectGraph(const QString &name, int index = -1);
+    void UnselectAllGraphs();
     void ResetPlot();   // clear data and remove all graphs
     void ResetData();   // clear data only
     void Replot();
