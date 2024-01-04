@@ -30,20 +30,51 @@ constexpr static int legnum = 4;
 
 QuadIPDataHandler::QuadIPDataHandler(MainWindow* plotToolbox) 
 : DataHandler(plotToolbox)
-// , _plot_comPos(std::make_unique<PlotWindow>())
-// , _plot_comVel(std::make_unique<PlotWindow>())
-// , _plot_orient(std::make_unique<PlotWindow>())
-// , _plot_angVel(std::make_unique<PlotWindow>())
-// , _plot_footPos(std::make_unique<PlotWindow>())
-// , _plot_contact(std::make_unique<PlotWindow>())
-// , _plot_cpgCpg(std::make_unique<PlotWindow>())
-// , _plot_cpgPhi(std::make_unique<PlotWindow>())
-// , _plot_jointPos(std::make_unique<PlotWindow>())
-// , _plot_jointVel(std::make_unique<PlotWindow>())
-// , _plot_jointAcc(std::make_unique<PlotWindow>())
-// , _plot_jointTau(std::make_unique<PlotWindow>())
-// , _plot_incEnc(std::make_unique<PlotWindow>())
-// , _plot_absEnc(std::make_unique<PlotWindow>())
+#ifdef ENABLE_COM_POS_PLOT
+, _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_COM_VEL_PLOT
+, _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_ORIENTATION_PLOT
+, _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_ANGULAR_VEL_PLOT
+, _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FOOT_TRAJECTORY_PLOT
+, _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FOOT_CONTACT_PLOT
+, _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FOOT_FORCE_PLOT
+, _plot_footForce(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_CPG_CPG_PLOT
+, _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_CPG_PHI_PLOT
+, _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_POSISION_PLOT
+, _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_VELOCITY_PLOT
+, _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_ACCELERATION_PLOT
+, _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_TORQUE_PLOT
+, _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
+, _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
+, _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
+#endif
 {
     BuildPlots();
 }
@@ -60,7 +91,7 @@ QuadIPDataHandler::~QuadIPDataHandler()
 void QuadIPDataHandler::BuildPlots()
 {
 #ifdef ENABLE_COM_POS_PLOT
-    _plot_comPos = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_comPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_comPos->SetWindowTitle("COM position wrt World");
     _plot_comPos->AddGraph("Com.x.desired", LineColor<0>());
     _plot_comPos->AddGraph("Com.y.desired", LineColor<1>());
@@ -73,7 +104,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_COM_VEL_PLOT
-    _plot_comVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_comVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_comVel->SetWindowTitle("COM velocity wrt World");
     _plot_comVel->AddGraph("Com.Vx.desired", LineColor<0>());
     _plot_comVel->AddGraph("Com.Vy.desired", LineColor<1>());
@@ -86,7 +117,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_ORIENTATION_PLOT
-    _plot_orient = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_orient = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_orient->SetWindowTitle("Body orientation wrt World");
     _plot_orient->AddGraph("Euler.x.desired", LineColor<6>());
     _plot_orient->AddGraph("Euler.y.desired", LineColor<7>());
@@ -100,7 +131,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_ANGULAR_VEL_PLOT
-    _plot_angVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_angVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_angVel->SetWindowTitle("Body angular velocity wrt World");
     _plot_angVel->AddGraph("AngularVel.x.desired", LineColor<6>());
     _plot_angVel->AddGraph("AngularVel.y.desired", LineColor<7>());
@@ -113,7 +144,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_FOOT_TRAJECTORY_PLOT
-    _plot_footPos = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_footPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_footPos->SetWindowTitle("Foot trajectory wrt Body");
     _plot_footPos->AddGraph("FL.x.desired", LineColor<0>());
     _plot_footPos->AddGraph("FL.y.desired", LineColor<1>());
@@ -144,7 +175,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_FOOT_CONTACT_PLOT
-    _plot_contact = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_contact = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_contact->SetWindowTitle("Foot-floor contact state");
     _plot_contact->AddGraph("FL", LineColor<12>());
     _plot_contact->AddGraph("BL", LineColor<13>());
@@ -155,7 +186,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CPG_PHI_PLOT
-    _plot_phi = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_phi = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_phi->SetWindowTitle("Cpg.phi");
     _plot_phi->AddGraph("Phi.a1", LineColor<10>());
     _plot_phi->AddGraph("Phi.a2", LineColor<11>());
@@ -166,7 +197,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CPG_CPG_PLOT
-    _plot_cpg = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_cpg = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_cpg->SetWindowTitle("Cpg.cpg");
     _plot_cpg->AddGraph("Cpg.a1", LineColor<10>());
     _plot_cpg->AddGraph("Cpg.a2", LineColor<11>());
@@ -177,7 +208,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_POSISION_PLOT
-    _plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointPos->AddGraph(QString("Joint_%02d.pos.desired").arg(ji+1), LineColor(ji));
@@ -188,7 +219,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
-    _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointVel->AddGraph(QString("Joint_%02d.vel.desired").arg(ji+1), LineColor(ji));
@@ -199,7 +230,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
-    _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointAcc->AddGraph(QString("Joint_%02d.acc.desired").arg(ji+1), LineColor(ji));
@@ -212,7 +243,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_TORQUE_PLOT
-    _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_jointTau->AddGraph(QString("Joint_%02d.torque.desired").arg(ji+1), LineColor(ji));
@@ -224,7 +255,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
-    _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_absEnc->SetWindowTitle("Joint absolute encoder");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_absEnc->AddGraph(QString("Joint_%02d.absolute_encoder").arg(ji+1), LineColor(ji));
@@ -234,7 +265,7 @@ void QuadIPDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-    _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_incEnc->SetWindowTitle("Joint incremental encoder");
     for (int ji = 0; ji < jdof; ji++) {
         _plot_incEnc->AddGraph(QString("Joint_%02d.incremental_encoder").arg(ji+1), LineColor(ji));
