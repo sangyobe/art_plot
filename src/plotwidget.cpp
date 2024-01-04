@@ -157,7 +157,8 @@ void PlotWidget::ShowPointToolTip(QMouseEvent *event)
     double x = this->xAxis->pixelToCoord(event->position().x());
     double y = this->yAxis->pixelToCoord(event->position().y());
 #endif
-    setToolTip(QString("%1, %2").arg(x).arg(y));
+    setToolTip(QString("%1, %2").arg(QString::number(x, 'f')).arg(QString::number(y, 'f')));
+    
 }
 
 QCPRange PlotWidget::getKeyRange(bool &foundRange)

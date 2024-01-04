@@ -81,6 +81,8 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) :
     // axis
     ui->plotwidget->xAxis->setLabel("x");
     ui->plotwidget->yAxis->setLabel("y");
+    ui->plotwidget->xAxis->setNumberFormat("gbc");
+    // ui->plotwidget->xAxis->setNumberPrecision(16);
     // configure right and top axis to show ticks but no labels:
     // (see QCPAxisRect::setupFullAxesBox for a quicker method to do this)
     ui->plotwidget->xAxis2->setVisible(true);
