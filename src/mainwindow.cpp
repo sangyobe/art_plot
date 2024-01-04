@@ -38,6 +38,8 @@ MainWindow::MainWindow(const std::string& ip, const uint16_t port, QWidget *pare
     // initialize data server address
     _svrIpAddr = ip;
     _svrPort = port;
+    if (_svrIpAddr == "") _svrIpAddr = "127.0.0.1";
+    if (_svrPort == 0) _svrPort = 50051; // default grpc listening port
     ui->statusBar->showMessage(
             QString("server[%1:%2]")
                 .arg(QString(_svrIpAddr.c_str()))
