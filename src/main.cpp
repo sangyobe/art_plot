@@ -6,10 +6,6 @@
 #include <QApplication>
 #include <QDebug>
 
-#ifdef USE_TRANSPORT_ECAL
-#include <ecal/ecal.h>
-#endif
-
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
 #include "LeoQuadDataHandler.h"
