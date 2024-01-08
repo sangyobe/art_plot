@@ -22,6 +22,26 @@ namespace _pbi = _pb::internal;
 
 namespace dtproto {
 namespace leoquad {
+PROTOBUF_CONSTEXPR ThreadState::ThreadState(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.ctrlperiod_ms_)*/0
+  , /*decltype(_impl_.ctrlload_ms_)*/0
+  , /*decltype(_impl_.mpcperiod_ms_)*/0
+  , /*decltype(_impl_.mpcload_ms_)*/0
+  , /*decltype(_impl_.imuperiod_ms_)*/0
+  , /*decltype(_impl_.imuload_ms_)*/0
+  , /*decltype(_impl_.joystickperiod_ms_)*/0
+  , /*decltype(_impl_.joystickload_ms_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct ThreadStateDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ThreadStateDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ThreadStateDefaultTypeInternal() {}
+  union {
+    ThreadState _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ThreadStateDefaultTypeInternal _ThreadState_default_instance_;
 PROTOBUF_CONSTEXPR TaskState::TaskState(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.pos_)*/nullptr
@@ -151,6 +171,7 @@ PROTOBUF_CONSTEXPR LeoQuadState::LeoQuadState(
   , /*decltype(_impl_.actcontrolstate_)*/nullptr
   , /*decltype(_impl_.descontrolstate_)*/nullptr
   , /*decltype(_impl_.cpgstate_)*/nullptr
+  , /*decltype(_impl_.threadstate_)*/nullptr
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct LeoQuadStateDefaultTypeInternal {
   PROTOBUF_CONSTEXPR LeoQuadStateDefaultTypeInternal()
@@ -177,11 +198,25 @@ struct LeoQuadStateTimeStampedDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LeoQuadStateTimeStampedDefaultTypeInternal _LeoQuadStateTimeStamped_default_instance_;
 }  // namespace leoquad
 }  // namespace dtproto
-static ::_pb::Metadata file_level_metadata_LeoQuad_2eproto[7];
+static ::_pb::Metadata file_level_metadata_LeoQuad_2eproto[8];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_LeoQuad_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_LeoQuad_2eproto = nullptr;
 
 const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.ctrlperiod_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.ctrlload_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.mpcperiod_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.mpcload_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.imuperiod_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.imuload_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.joystickperiod_ms_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ThreadState, _impl_.joystickload_ms_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::TaskState, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -285,6 +320,7 @@ const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.actcontrolstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.descontrolstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.cpgstate_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.threadstate_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadStateTimeStamped, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -295,16 +331,18 @@ const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadStateTimeStamped, _impl_.state_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::dtproto::leoquad::TaskState)},
-  { 14, -1, -1, sizeof(::dtproto::leoquad::JointState)},
-  { 30, -1, -1, sizeof(::dtproto::leoquad::JointData)},
-  { 41, -1, -1, sizeof(::dtproto::leoquad::ControlState)},
-  { 64, -1, -1, sizeof(::dtproto::leoquad::CpgState)},
-  { 87, -1, -1, sizeof(::dtproto::leoquad::LeoQuadState)},
-  { 103, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
+  { 0, -1, -1, sizeof(::dtproto::leoquad::ThreadState)},
+  { 14, -1, -1, sizeof(::dtproto::leoquad::TaskState)},
+  { 28, -1, -1, sizeof(::dtproto::leoquad::JointState)},
+  { 44, -1, -1, sizeof(::dtproto::leoquad::JointData)},
+  { 55, -1, -1, sizeof(::dtproto::leoquad::ControlState)},
+  { 78, -1, -1, sizeof(::dtproto::leoquad::CpgState)},
+  { 101, -1, -1, sizeof(::dtproto::leoquad::LeoQuadState)},
+  { 118, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::dtproto::leoquad::_ThreadState_default_instance_._instance,
   &::dtproto::leoquad::_TaskState_default_instance_._instance,
   &::dtproto::leoquad::_JointState_default_instance_._instance,
   &::dtproto::leoquad::_JointData_default_instance_._instance,
@@ -322,86 +360,93 @@ const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE
   "ientation.proto\032\"dtProto/geometry_msgs/M"
   "atrix.proto\032\"dtProto/geometry_msgs/Vecto"
   "r.proto\032\035dtProto/sensor_msgs/Imu.proto\032\035"
-  "dtProto/sensor_msgs/Joy.proto\"\340\002\n\tTaskSt"
-  "ate\022+\n\003pos\030\001 \001(\0132\036.dtproto.geometry_msgs"
-  ".Point3d\022,\n\003rot\030\002 \001(\0132\037.dtproto.geometry"
-  "_msgs.Rotation\022.\n\006linVel\030\003 \001(\0132\036.dtproto"
-  ".geometry_msgs.Point3d\022.\n\006angVel\030\004 \001(\0132\036"
-  ".dtproto.geometry_msgs.Point3d\022-\n\005force\030"
-  "\005 \001(\0132\036.dtproto.geometry_msgs.Point3d\022.\n"
-  "\006moment\030\006 \001(\0132\036.dtproto.geometry_msgs.Po"
-  "int3d\022-\n\006wrench\030\007 \001(\0132\035.dtproto.geometry"
-  "_msgs.Wrench\022\n\n\002id\030\010 \001(\r\"\332\001\n\nJointState\022"
-  "\022\n\nstatusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r"
-  "\022\025\n\rincPosOfs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt"
-  "\030\004 \001(\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt"
-  "\030\006 \001(\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030"
-  "\010 \001(\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030"
-  "\n \001(\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\np"
-  "osAux_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_"
-  "rpss\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\247\010\n\014ControlS"
-  "tate\022<\n\024posWorld2ComWrtWorld\030\001 \001(\0132\036.dtp"
-  "roto.geometry_msgs.Point3d\022<\n\024velWorld2C"
-  "omWrtWorld\030\002 \001(\0132\036.dtproto.geometry_msgs"
-  ".Point3d\022=\n\025posWorld2BodyWrtWorld\030\003 \001(\0132"
-  "\036.dtproto.geometry_msgs.Point3d\022=\n\025velWo"
-  "rld2BodyWrtWorld\030\004 \001(\0132\036.dtproto.geometr"
-  "y_msgs.Point3d\022<\n\026eulerAngleBodyWrtWorld"
-  "\030\005 \001(\0132\034.dtproto.geometry_msgs.Euler\022<\n\026"
-  "angularVelBodyWrtWorld\030\006 \001(\0132\034.dtproto.g"
-  "eometry_msgs.Euler\022;\n\025angularVelBodyWrtB"
-  "ody\030\007 \001(\0132\034.dtproto.geometry_msgs.Euler\022"
-  "C\n\033angularMomentumBodyWrtWorld\030\010 \001(\0132\036.d"
-  "tproto.geometry_msgs.Point3d\022=\n\025posWorld"
-  "2FootWrtWorld\030\t \003(\0132\036.dtproto.geometry_m"
-  "sgs.Point3d\022=\n\025velWorld2FootWrtWorld\030\n \003"
-  "(\0132\036.dtproto.geometry_msgs.Point3d\022<\n\024po"
-  "sBody2FootWrtWorld\030\013 \003(\0132\036.dtproto.geome"
-  "try_msgs.Point3d\022<\n\024velBody2FootWrtWorld"
-  "\030\014 \003(\0132\036.dtproto.geometry_msgs.Point3d\022;"
-  "\n\023posBody2FootWrtBody\030\r \003(\0132\036.dtproto.ge"
-  "ometry_msgs.Point3d\022;\n\023velBody2FootWrtBo"
-  "dy\030\016 \003(\0132\036.dtproto.geometry_msgs.Point3d"
-  "\022\?\n\027forceWorld2FootWrtWorld\030\017 \003(\0132\036.dtpr"
-  "oto.geometry_msgs.Point3d\0228\n\017rotBodyWrtW"
-  "orld\030\020 \001(\0132\037.dtproto.geometry_msgs.Matri"
-  "x3d\0220\n\007contact\030\021 \001(\0132\037.dtproto.geometry_"
-  "msgs.Vector4b\"\232\006\n\010CpgState\0220\n\007periods\030\001 "
-  "\001(\0132\037.dtproto.geometry_msgs.Vector2d\022/\n\006"
-  "phases\030\002 \001(\0132\037.dtproto.geometry_msgs.Vec"
-  "tor4d\022,\n\003phi\030\003 \001(\0132\037.dtproto.geometry_ms"
-  "gs.Vector4d\0220\n\007phiToGo\030\004 \001(\0132\037.dtproto.g"
-  "eometry_msgs.Vector4d\022.\n\005phiSt\030\005 \001(\0132\037.d"
-  "tproto.geometry_msgs.Vector4d\022.\n\005phiSw\030\006"
-  " \001(\0132\037.dtproto.geometry_msgs.Vector4d\022,\n"
-  "\003cpg\030\007 \001(\0132\037.dtproto.geometry_msgs.Vecto"
-  "r4d\0220\n\007contact\030\010 \001(\0132\037.dtproto.geometry_"
-  "msgs.Vector4b\0228\n\017phaseChangeFlag\030\t \001(\0132\037"
-  ".dtproto.geometry_msgs.Vector4b\0229\n\020perio"
-  "dChangeFlag\030\n \001(\0132\037.dtproto.geometry_msg"
-  "s.Vector4b\0222\n\tphaseDiff\030\013 \001(\0132\037.dtproto."
-  "geometry_msgs.Vector4d\0220\n\007phiTran\030\014 \001(\0132"
-  "\037.dtproto.geometry_msgs.Vector4d\0222\n\tphiT"
-  "ranSt\030\r \001(\0132\037.dtproto.geometry_msgs.Vect"
-  "or4d\0222\n\tphiTranSw\030\016 \001(\0132\037.dtproto.geomet"
-  "ry_msgs.Vector4d\022/\n\004step\030\017 \001(\0132!.dtproto"
-  ".geometry_msgs.Vector4i32\022\n\n\002dt\030\020 \001(\001\022\013\n"
-  "\003air\030\021 \001(\010\"\367\003\n\014LeoQuadState\022/\n\njointStat"
-  "e\030\001 \003(\0132\033.dtproto.leoquad.JointState\0220\n\014"
-  "actJointData\030\002 \003(\0132\032.dtproto.leoquad.Joi"
-  "ntData\0220\n\014desJointData\030\003 \003(\0132\032.dtproto.l"
-  "eoquad.JointData\0220\n\014desTaskState\030\004 \001(\0132\032"
-  ".dtproto.leoquad.TaskState\0220\n\014actTaskSta"
-  "te\030\005 \001(\0132\032.dtproto.leoquad.TaskState\022%\n\003"
-  "imu\030\006 \001(\0132\030.dtproto.sensor_msgs.Imu\022*\n\010j"
-  "oystick\030\007 \001(\0132\030.dtproto.sensor_msgs.Joy\022"
-  "6\n\017actControlState\030\010 \001(\0132\035.dtproto.leoqu"
-  "ad.ControlState\0226\n\017desControlState\030\t \001(\013"
-  "2\035.dtproto.leoquad.ControlState\022+\n\010cpgSt"
-  "ate\030\n \001(\0132\031.dtproto.leoquad.CpgState\"q\n\027"
-  "LeoQuadStateTimeStamped\022(\n\006header\030\001 \001(\0132"
-  "\030.dtproto.std_msgs.Header\022,\n\005state\030\002 \001(\013"
-  "2\035.dtproto.leoquad.LeoQuadStateb\006proto3"
+  "dtProto/sensor_msgs/Joy.proto\"\301\001\n\013Thread"
+  "State\022\025\n\rctrlPeriod_ms\030\001 \001(\001\022\023\n\013ctrlLoad"
+  "_ms\030\002 \001(\001\022\024\n\014mpcPeriod_ms\030\003 \001(\001\022\022\n\nmpcLo"
+  "ad_ms\030\004 \001(\001\022\024\n\014imuPeriod_ms\030\005 \001(\001\022\022\n\nimu"
+  "Load_ms\030\006 \001(\001\022\031\n\021joystickPeriod_ms\030\007 \001(\001"
+  "\022\027\n\017joystickLoad_ms\030\010 \001(\001\"\340\002\n\tTaskState\022"
+  "+\n\003pos\030\001 \001(\0132\036.dtproto.geometry_msgs.Poi"
+  "nt3d\022,\n\003rot\030\002 \001(\0132\037.dtproto.geometry_msg"
+  "s.Rotation\022.\n\006linVel\030\003 \001(\0132\036.dtproto.geo"
+  "metry_msgs.Point3d\022.\n\006angVel\030\004 \001(\0132\036.dtp"
+  "roto.geometry_msgs.Point3d\022-\n\005force\030\005 \001("
+  "\0132\036.dtproto.geometry_msgs.Point3d\022.\n\006mom"
+  "ent\030\006 \001(\0132\036.dtproto.geometry_msgs.Point3"
+  "d\022-\n\006wrench\030\007 \001(\0132\035.dtproto.geometry_msg"
+  "s.Wrench\022\n\n\002id\030\010 \001(\r\"\332\001\n\nJointState\022\022\n\ns"
+  "tatusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r\022\025\n\r"
+  "incPosOfs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt\030\004 \001"
+  "(\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt\030\006 \001"
+  "(\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030\010 \001("
+  "\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030\n \001("
+  "\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\nposAu"
+  "x_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_rpss"
+  "\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\247\010\n\014ControlState"
+  "\022<\n\024posWorld2ComWrtWorld\030\001 \001(\0132\036.dtproto"
+  ".geometry_msgs.Point3d\022<\n\024velWorld2ComWr"
+  "tWorld\030\002 \001(\0132\036.dtproto.geometry_msgs.Poi"
+  "nt3d\022=\n\025posWorld2BodyWrtWorld\030\003 \001(\0132\036.dt"
+  "proto.geometry_msgs.Point3d\022=\n\025velWorld2"
+  "BodyWrtWorld\030\004 \001(\0132\036.dtproto.geometry_ms"
+  "gs.Point3d\022<\n\026eulerAngleBodyWrtWorld\030\005 \001"
+  "(\0132\034.dtproto.geometry_msgs.Euler\022<\n\026angu"
+  "larVelBodyWrtWorld\030\006 \001(\0132\034.dtproto.geome"
+  "try_msgs.Euler\022;\n\025angularVelBodyWrtBody\030"
+  "\007 \001(\0132\034.dtproto.geometry_msgs.Euler\022C\n\033a"
+  "ngularMomentumBodyWrtWorld\030\010 \001(\0132\036.dtpro"
+  "to.geometry_msgs.Point3d\022=\n\025posWorld2Foo"
+  "tWrtWorld\030\t \003(\0132\036.dtproto.geometry_msgs."
+  "Point3d\022=\n\025velWorld2FootWrtWorld\030\n \003(\0132\036"
+  ".dtproto.geometry_msgs.Point3d\022<\n\024posBod"
+  "y2FootWrtWorld\030\013 \003(\0132\036.dtproto.geometry_"
+  "msgs.Point3d\022<\n\024velBody2FootWrtWorld\030\014 \003"
+  "(\0132\036.dtproto.geometry_msgs.Point3d\022;\n\023po"
+  "sBody2FootWrtBody\030\r \003(\0132\036.dtproto.geomet"
+  "ry_msgs.Point3d\022;\n\023velBody2FootWrtBody\030\016"
+  " \003(\0132\036.dtproto.geometry_msgs.Point3d\022\?\n\027"
+  "forceWorld2FootWrtWorld\030\017 \003(\0132\036.dtproto."
+  "geometry_msgs.Point3d\0228\n\017rotBodyWrtWorld"
+  "\030\020 \001(\0132\037.dtproto.geometry_msgs.Matrix3d\022"
+  "0\n\007contact\030\021 \001(\0132\037.dtproto.geometry_msgs"
+  ".Vector4b\"\232\006\n\010CpgState\0220\n\007periods\030\001 \001(\0132"
+  "\037.dtproto.geometry_msgs.Vector2d\022/\n\006phas"
+  "es\030\002 \001(\0132\037.dtproto.geometry_msgs.Vector4"
+  "d\022,\n\003phi\030\003 \001(\0132\037.dtproto.geometry_msgs.V"
+  "ector4d\0220\n\007phiToGo\030\004 \001(\0132\037.dtproto.geome"
+  "try_msgs.Vector4d\022.\n\005phiSt\030\005 \001(\0132\037.dtpro"
+  "to.geometry_msgs.Vector4d\022.\n\005phiSw\030\006 \001(\013"
+  "2\037.dtproto.geometry_msgs.Vector4d\022,\n\003cpg"
+  "\030\007 \001(\0132\037.dtproto.geometry_msgs.Vector4d\022"
+  "0\n\007contact\030\010 \001(\0132\037.dtproto.geometry_msgs"
+  ".Vector4b\0228\n\017phaseChangeFlag\030\t \001(\0132\037.dtp"
+  "roto.geometry_msgs.Vector4b\0229\n\020periodCha"
+  "ngeFlag\030\n \001(\0132\037.dtproto.geometry_msgs.Ve"
+  "ctor4b\0222\n\tphaseDiff\030\013 \001(\0132\037.dtproto.geom"
+  "etry_msgs.Vector4d\0220\n\007phiTran\030\014 \001(\0132\037.dt"
+  "proto.geometry_msgs.Vector4d\0222\n\tphiTranS"
+  "t\030\r \001(\0132\037.dtproto.geometry_msgs.Vector4d"
+  "\0222\n\tphiTranSw\030\016 \001(\0132\037.dtproto.geometry_m"
+  "sgs.Vector4d\022/\n\004step\030\017 \001(\0132!.dtproto.geo"
+  "metry_msgs.Vector4i32\022\n\n\002dt\030\020 \001(\001\022\013\n\003air"
+  "\030\021 \001(\010\"\252\004\n\014LeoQuadState\022/\n\njointState\030\001 "
+  "\003(\0132\033.dtproto.leoquad.JointState\0220\n\014actJ"
+  "ointData\030\002 \003(\0132\032.dtproto.leoquad.JointDa"
+  "ta\0220\n\014desJointData\030\003 \003(\0132\032.dtproto.leoqu"
+  "ad.JointData\0220\n\014desTaskState\030\004 \001(\0132\032.dtp"
+  "roto.leoquad.TaskState\0220\n\014actTaskState\030\005"
+  " \001(\0132\032.dtproto.leoquad.TaskState\022%\n\003imu\030"
+  "\006 \001(\0132\030.dtproto.sensor_msgs.Imu\022*\n\010joyst"
+  "ick\030\007 \001(\0132\030.dtproto.sensor_msgs.Joy\0226\n\017a"
+  "ctControlState\030\010 \001(\0132\035.dtproto.leoquad.C"
+  "ontrolState\0226\n\017desControlState\030\t \001(\0132\035.d"
+  "tproto.leoquad.ControlState\022+\n\010cpgState\030"
+  "\n \001(\0132\031.dtproto.leoquad.CpgState\0221\n\013thre"
+  "adState\030\013 \001(\0132\034.dtproto.leoquad.ThreadSt"
+  "ate\"q\n\027LeoQuadStateTimeStamped\022(\n\006header"
+  "\030\001 \001(\0132\030.dtproto.std_msgs.Header\022,\n\005stat"
+  "e\030\002 \001(\0132\035.dtproto.leoquad.LeoQuadStateb\006"
+  "proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_deps[8] = {
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fMatrix_2eproto,
@@ -415,9 +460,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_LeoQuad_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_LeoQuad_2eproto = {
-    false, false, 3479, descriptor_table_protodef_LeoQuad_2eproto,
+    false, false, 3726, descriptor_table_protodef_LeoQuad_2eproto,
     "LeoQuad.proto",
-    &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 8, 7,
+    &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 8, 8,
     schemas, file_default_instances, TableStruct_LeoQuad_2eproto::offsets,
     file_level_metadata_LeoQuad_2eproto, file_level_enum_descriptors_LeoQuad_2eproto,
     file_level_service_descriptors_LeoQuad_2eproto,
@@ -430,6 +475,457 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_LeoQuad_
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_LeoQuad_2eproto(&descriptor_table_LeoQuad_2eproto);
 namespace dtproto {
 namespace leoquad {
+
+// ===================================================================
+
+class ThreadState::_Internal {
+ public:
+};
+
+ThreadState::ThreadState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.leoquad.ThreadState)
+}
+ThreadState::ThreadState(const ThreadState& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ThreadState* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.ctrlperiod_ms_){}
+    , decltype(_impl_.ctrlload_ms_){}
+    , decltype(_impl_.mpcperiod_ms_){}
+    , decltype(_impl_.mpcload_ms_){}
+    , decltype(_impl_.imuperiod_ms_){}
+    , decltype(_impl_.imuload_ms_){}
+    , decltype(_impl_.joystickperiod_ms_){}
+    , decltype(_impl_.joystickload_ms_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&_impl_.ctrlperiod_ms_, &from._impl_.ctrlperiod_ms_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.joystickload_ms_) -
+    reinterpret_cast<char*>(&_impl_.ctrlperiod_ms_)) + sizeof(_impl_.joystickload_ms_));
+  // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.ThreadState)
+}
+
+inline void ThreadState::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.ctrlperiod_ms_){0}
+    , decltype(_impl_.ctrlload_ms_){0}
+    , decltype(_impl_.mpcperiod_ms_){0}
+    , decltype(_impl_.mpcload_ms_){0}
+    , decltype(_impl_.imuperiod_ms_){0}
+    , decltype(_impl_.imuload_ms_){0}
+    , decltype(_impl_.joystickperiod_ms_){0}
+    , decltype(_impl_.joystickload_ms_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+ThreadState::~ThreadState() {
+  // @@protoc_insertion_point(destructor:dtproto.leoquad.ThreadState)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ThreadState::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void ThreadState::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void ThreadState::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.leoquad.ThreadState)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.ctrlperiod_ms_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.joystickload_ms_) -
+      reinterpret_cast<char*>(&_impl_.ctrlperiod_ms_)) + sizeof(_impl_.joystickload_ms_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ThreadState::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // double ctrlPeriod_ms = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 9)) {
+          _impl_.ctrlperiod_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double ctrlLoad_ms = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 17)) {
+          _impl_.ctrlload_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double mpcPeriod_ms = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 25)) {
+          _impl_.mpcperiod_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double mpcLoad_ms = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 33)) {
+          _impl_.mpcload_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double imuPeriod_ms = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 41)) {
+          _impl_.imuperiod_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double imuLoad_ms = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 49)) {
+          _impl_.imuload_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double joystickPeriod_ms = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 57)) {
+          _impl_.joystickperiod_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double joystickLoad_ms = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 65)) {
+          _impl_.joystickload_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ThreadState::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.leoquad.ThreadState)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // double ctrlPeriod_ms = 1;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_ctrlperiod_ms = this->_internal_ctrlperiod_ms();
+  uint64_t raw_ctrlperiod_ms;
+  memcpy(&raw_ctrlperiod_ms, &tmp_ctrlperiod_ms, sizeof(tmp_ctrlperiod_ms));
+  if (raw_ctrlperiod_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(1, this->_internal_ctrlperiod_ms(), target);
+  }
+
+  // double ctrlLoad_ms = 2;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_ctrlload_ms = this->_internal_ctrlload_ms();
+  uint64_t raw_ctrlload_ms;
+  memcpy(&raw_ctrlload_ms, &tmp_ctrlload_ms, sizeof(tmp_ctrlload_ms));
+  if (raw_ctrlload_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(2, this->_internal_ctrlload_ms(), target);
+  }
+
+  // double mpcPeriod_ms = 3;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_mpcperiod_ms = this->_internal_mpcperiod_ms();
+  uint64_t raw_mpcperiod_ms;
+  memcpy(&raw_mpcperiod_ms, &tmp_mpcperiod_ms, sizeof(tmp_mpcperiod_ms));
+  if (raw_mpcperiod_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_mpcperiod_ms(), target);
+  }
+
+  // double mpcLoad_ms = 4;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_mpcload_ms = this->_internal_mpcload_ms();
+  uint64_t raw_mpcload_ms;
+  memcpy(&raw_mpcload_ms, &tmp_mpcload_ms, sizeof(tmp_mpcload_ms));
+  if (raw_mpcload_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_mpcload_ms(), target);
+  }
+
+  // double imuPeriod_ms = 5;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_imuperiod_ms = this->_internal_imuperiod_ms();
+  uint64_t raw_imuperiod_ms;
+  memcpy(&raw_imuperiod_ms, &tmp_imuperiod_ms, sizeof(tmp_imuperiod_ms));
+  if (raw_imuperiod_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(5, this->_internal_imuperiod_ms(), target);
+  }
+
+  // double imuLoad_ms = 6;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_imuload_ms = this->_internal_imuload_ms();
+  uint64_t raw_imuload_ms;
+  memcpy(&raw_imuload_ms, &tmp_imuload_ms, sizeof(tmp_imuload_ms));
+  if (raw_imuload_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(6, this->_internal_imuload_ms(), target);
+  }
+
+  // double joystickPeriod_ms = 7;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_joystickperiod_ms = this->_internal_joystickperiod_ms();
+  uint64_t raw_joystickperiod_ms;
+  memcpy(&raw_joystickperiod_ms, &tmp_joystickperiod_ms, sizeof(tmp_joystickperiod_ms));
+  if (raw_joystickperiod_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(7, this->_internal_joystickperiod_ms(), target);
+  }
+
+  // double joystickLoad_ms = 8;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_joystickload_ms = this->_internal_joystickload_ms();
+  uint64_t raw_joystickload_ms;
+  memcpy(&raw_joystickload_ms, &tmp_joystickload_ms, sizeof(tmp_joystickload_ms));
+  if (raw_joystickload_ms != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(8, this->_internal_joystickload_ms(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.leoquad.ThreadState)
+  return target;
+}
+
+size_t ThreadState::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.leoquad.ThreadState)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // double ctrlPeriod_ms = 1;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_ctrlperiod_ms = this->_internal_ctrlperiod_ms();
+  uint64_t raw_ctrlperiod_ms;
+  memcpy(&raw_ctrlperiod_ms, &tmp_ctrlperiod_ms, sizeof(tmp_ctrlperiod_ms));
+  if (raw_ctrlperiod_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double ctrlLoad_ms = 2;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_ctrlload_ms = this->_internal_ctrlload_ms();
+  uint64_t raw_ctrlload_ms;
+  memcpy(&raw_ctrlload_ms, &tmp_ctrlload_ms, sizeof(tmp_ctrlload_ms));
+  if (raw_ctrlload_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double mpcPeriod_ms = 3;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_mpcperiod_ms = this->_internal_mpcperiod_ms();
+  uint64_t raw_mpcperiod_ms;
+  memcpy(&raw_mpcperiod_ms, &tmp_mpcperiod_ms, sizeof(tmp_mpcperiod_ms));
+  if (raw_mpcperiod_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double mpcLoad_ms = 4;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_mpcload_ms = this->_internal_mpcload_ms();
+  uint64_t raw_mpcload_ms;
+  memcpy(&raw_mpcload_ms, &tmp_mpcload_ms, sizeof(tmp_mpcload_ms));
+  if (raw_mpcload_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double imuPeriod_ms = 5;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_imuperiod_ms = this->_internal_imuperiod_ms();
+  uint64_t raw_imuperiod_ms;
+  memcpy(&raw_imuperiod_ms, &tmp_imuperiod_ms, sizeof(tmp_imuperiod_ms));
+  if (raw_imuperiod_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double imuLoad_ms = 6;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_imuload_ms = this->_internal_imuload_ms();
+  uint64_t raw_imuload_ms;
+  memcpy(&raw_imuload_ms, &tmp_imuload_ms, sizeof(tmp_imuload_ms));
+  if (raw_imuload_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double joystickPeriod_ms = 7;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_joystickperiod_ms = this->_internal_joystickperiod_ms();
+  uint64_t raw_joystickperiod_ms;
+  memcpy(&raw_joystickperiod_ms, &tmp_joystickperiod_ms, sizeof(tmp_joystickperiod_ms));
+  if (raw_joystickperiod_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double joystickLoad_ms = 8;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_joystickload_ms = this->_internal_joystickload_ms();
+  uint64_t raw_joystickload_ms;
+  memcpy(&raw_joystickload_ms, &tmp_joystickload_ms, sizeof(tmp_joystickload_ms));
+  if (raw_joystickload_ms != 0) {
+    total_size += 1 + 8;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ThreadState::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    ThreadState::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ThreadState::GetClassData() const { return &_class_data_; }
+
+
+void ThreadState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ThreadState*>(&to_msg);
+  auto& from = static_cast<const ThreadState&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.leoquad.ThreadState)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_ctrlperiod_ms = from._internal_ctrlperiod_ms();
+  uint64_t raw_ctrlperiod_ms;
+  memcpy(&raw_ctrlperiod_ms, &tmp_ctrlperiod_ms, sizeof(tmp_ctrlperiod_ms));
+  if (raw_ctrlperiod_ms != 0) {
+    _this->_internal_set_ctrlperiod_ms(from._internal_ctrlperiod_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_ctrlload_ms = from._internal_ctrlload_ms();
+  uint64_t raw_ctrlload_ms;
+  memcpy(&raw_ctrlload_ms, &tmp_ctrlload_ms, sizeof(tmp_ctrlload_ms));
+  if (raw_ctrlload_ms != 0) {
+    _this->_internal_set_ctrlload_ms(from._internal_ctrlload_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_mpcperiod_ms = from._internal_mpcperiod_ms();
+  uint64_t raw_mpcperiod_ms;
+  memcpy(&raw_mpcperiod_ms, &tmp_mpcperiod_ms, sizeof(tmp_mpcperiod_ms));
+  if (raw_mpcperiod_ms != 0) {
+    _this->_internal_set_mpcperiod_ms(from._internal_mpcperiod_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_mpcload_ms = from._internal_mpcload_ms();
+  uint64_t raw_mpcload_ms;
+  memcpy(&raw_mpcload_ms, &tmp_mpcload_ms, sizeof(tmp_mpcload_ms));
+  if (raw_mpcload_ms != 0) {
+    _this->_internal_set_mpcload_ms(from._internal_mpcload_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_imuperiod_ms = from._internal_imuperiod_ms();
+  uint64_t raw_imuperiod_ms;
+  memcpy(&raw_imuperiod_ms, &tmp_imuperiod_ms, sizeof(tmp_imuperiod_ms));
+  if (raw_imuperiod_ms != 0) {
+    _this->_internal_set_imuperiod_ms(from._internal_imuperiod_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_imuload_ms = from._internal_imuload_ms();
+  uint64_t raw_imuload_ms;
+  memcpy(&raw_imuload_ms, &tmp_imuload_ms, sizeof(tmp_imuload_ms));
+  if (raw_imuload_ms != 0) {
+    _this->_internal_set_imuload_ms(from._internal_imuload_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_joystickperiod_ms = from._internal_joystickperiod_ms();
+  uint64_t raw_joystickperiod_ms;
+  memcpy(&raw_joystickperiod_ms, &tmp_joystickperiod_ms, sizeof(tmp_joystickperiod_ms));
+  if (raw_joystickperiod_ms != 0) {
+    _this->_internal_set_joystickperiod_ms(from._internal_joystickperiod_ms());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_joystickload_ms = from._internal_joystickload_ms();
+  uint64_t raw_joystickload_ms;
+  memcpy(&raw_joystickload_ms, &tmp_joystickload_ms, sizeof(tmp_joystickload_ms));
+  if (raw_joystickload_ms != 0) {
+    _this->_internal_set_joystickload_ms(from._internal_joystickload_ms());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ThreadState::CopyFrom(const ThreadState& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.leoquad.ThreadState)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ThreadState::IsInitialized() const {
+  return true;
+}
+
+void ThreadState::InternalSwap(ThreadState* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ThreadState, _impl_.joystickload_ms_)
+      + sizeof(ThreadState::_impl_.joystickload_ms_)
+      - PROTOBUF_FIELD_OFFSET(ThreadState, _impl_.ctrlperiod_ms_)>(
+          reinterpret_cast<char*>(&_impl_.ctrlperiod_ms_),
+          reinterpret_cast<char*>(&other->_impl_.ctrlperiod_ms_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ThreadState::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
+      file_level_metadata_LeoQuad_2eproto[0]);
+}
 
 // ===================================================================
 
@@ -940,7 +1436,7 @@ void TaskState::InternalSwap(TaskState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TaskState::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[0]);
+      file_level_metadata_LeoQuad_2eproto[1]);
 }
 
 // ===================================================================
@@ -1379,7 +1875,7 @@ void JointState::InternalSwap(JointState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata JointState::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[1]);
+      file_level_metadata_LeoQuad_2eproto[2]);
 }
 
 // ===================================================================
@@ -1722,7 +2218,7 @@ void JointData::InternalSwap(JointData* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata JointData::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[2]);
+      file_level_metadata_LeoQuad_2eproto[3]);
 }
 
 // ===================================================================
@@ -2608,7 +3104,7 @@ void ControlState::InternalSwap(ControlState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ControlState::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[3]);
+      file_level_metadata_LeoQuad_2eproto[4]);
 }
 
 // ===================================================================
@@ -3536,7 +4032,7 @@ void CpgState::InternalSwap(CpgState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CpgState::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[4]);
+      file_level_metadata_LeoQuad_2eproto[5]);
 }
 
 // ===================================================================
@@ -3550,6 +4046,7 @@ class LeoQuadState::_Internal {
   static const ::dtproto::leoquad::ControlState& actcontrolstate(const LeoQuadState* msg);
   static const ::dtproto::leoquad::ControlState& descontrolstate(const LeoQuadState* msg);
   static const ::dtproto::leoquad::CpgState& cpgstate(const LeoQuadState* msg);
+  static const ::dtproto::leoquad::ThreadState& threadstate(const LeoQuadState* msg);
 };
 
 const ::dtproto::leoquad::TaskState&
@@ -3579,6 +4076,10 @@ LeoQuadState::_Internal::descontrolstate(const LeoQuadState* msg) {
 const ::dtproto::leoquad::CpgState&
 LeoQuadState::_Internal::cpgstate(const LeoQuadState* msg) {
   return *msg->_impl_.cpgstate_;
+}
+const ::dtproto::leoquad::ThreadState&
+LeoQuadState::_Internal::threadstate(const LeoQuadState* msg) {
+  return *msg->_impl_.threadstate_;
 }
 void LeoQuadState::clear_imu() {
   if (GetArenaForAllocation() == nullptr && _impl_.imu_ != nullptr) {
@@ -3612,6 +4113,7 @@ LeoQuadState::LeoQuadState(const LeoQuadState& from)
     , decltype(_impl_.actcontrolstate_){nullptr}
     , decltype(_impl_.descontrolstate_){nullptr}
     , decltype(_impl_.cpgstate_){nullptr}
+    , decltype(_impl_.threadstate_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -3636,6 +4138,9 @@ LeoQuadState::LeoQuadState(const LeoQuadState& from)
   if (from._internal_has_cpgstate()) {
     _this->_impl_.cpgstate_ = new ::dtproto::leoquad::CpgState(*from._impl_.cpgstate_);
   }
+  if (from._internal_has_threadstate()) {
+    _this->_impl_.threadstate_ = new ::dtproto::leoquad::ThreadState(*from._impl_.threadstate_);
+  }
   // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.LeoQuadState)
 }
 
@@ -3654,6 +4159,7 @@ inline void LeoQuadState::SharedCtor(
     , decltype(_impl_.actcontrolstate_){nullptr}
     , decltype(_impl_.descontrolstate_){nullptr}
     , decltype(_impl_.cpgstate_){nullptr}
+    , decltype(_impl_.threadstate_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -3679,6 +4185,7 @@ inline void LeoQuadState::SharedDtor() {
   if (this != internal_default_instance()) delete _impl_.actcontrolstate_;
   if (this != internal_default_instance()) delete _impl_.descontrolstate_;
   if (this != internal_default_instance()) delete _impl_.cpgstate_;
+  if (this != internal_default_instance()) delete _impl_.threadstate_;
 }
 
 void LeoQuadState::SetCachedSize(int size) const {
@@ -3722,6 +4229,10 @@ void LeoQuadState::Clear() {
     delete _impl_.cpgstate_;
   }
   _impl_.cpgstate_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.threadstate_ != nullptr) {
+    delete _impl_.threadstate_;
+  }
+  _impl_.threadstate_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3822,6 +4333,14 @@ const char* LeoQuadState::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
       case 10:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
           ptr = ctx->ParseMessage(_internal_mutable_cpgstate(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.leoquad.ThreadState threadState = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
+          ptr = ctx->ParseMessage(_internal_mutable_threadstate(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3928,6 +4447,13 @@ uint8_t* LeoQuadState::_InternalSerialize(
         _Internal::cpgstate(this).GetCachedSize(), target, stream);
   }
 
+  // .dtproto.leoquad.ThreadState threadState = 11;
+  if (this->_internal_has_threadstate()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(11, _Internal::threadstate(this),
+        _Internal::threadstate(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4014,6 +4540,13 @@ size_t LeoQuadState::ByteSizeLong() const {
         *_impl_.cpgstate_);
   }
 
+  // .dtproto.leoquad.ThreadState threadState = 11;
+  if (this->_internal_has_threadstate()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.threadstate_);
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -4063,6 +4596,10 @@ void LeoQuadState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
     _this->_internal_mutable_cpgstate()->::dtproto::leoquad::CpgState::MergeFrom(
         from._internal_cpgstate());
   }
+  if (from._internal_has_threadstate()) {
+    _this->_internal_mutable_threadstate()->::dtproto::leoquad::ThreadState::MergeFrom(
+        from._internal_threadstate());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4084,8 +4621,8 @@ void LeoQuadState::InternalSwap(LeoQuadState* other) {
   _impl_.actjointdata_.InternalSwap(&other->_impl_.actjointdata_);
   _impl_.desjointdata_.InternalSwap(&other->_impl_.desjointdata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.cpgstate_)
-      + sizeof(LeoQuadState::_impl_.cpgstate_)
+      PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.threadstate_)
+      + sizeof(LeoQuadState::_impl_.threadstate_)
       - PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.destaskstate_)>(
           reinterpret_cast<char*>(&_impl_.destaskstate_),
           reinterpret_cast<char*>(&other->_impl_.destaskstate_));
@@ -4094,7 +4631,7 @@ void LeoQuadState::InternalSwap(LeoQuadState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata LeoQuadState::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[5]);
+      file_level_metadata_LeoQuad_2eproto[6]);
 }
 
 // ===================================================================
@@ -4339,13 +4876,17 @@ void LeoQuadStateTimeStamped::InternalSwap(LeoQuadStateTimeStamped* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata LeoQuadStateTimeStamped::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
-      file_level_metadata_LeoQuad_2eproto[6]);
+      file_level_metadata_LeoQuad_2eproto[7]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace leoquad
 }  // namespace dtproto
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::dtproto::leoquad::ThreadState*
+Arena::CreateMaybeMessage< ::dtproto::leoquad::ThreadState >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::leoquad::ThreadState >(arena);
+}
 template<> PROTOBUF_NOINLINE ::dtproto::leoquad::TaskState*
 Arena::CreateMaybeMessage< ::dtproto::leoquad::TaskState >(Arena* arena) {
   return Arena::CreateMessageInternal< ::dtproto::leoquad::TaskState >(arena);

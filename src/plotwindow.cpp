@@ -221,8 +221,13 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
     }
 
     QSettings settings("hmc", "artPlot");
-    restoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig").toByteArray(), name);
+    RestoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig").toByteArray(), name);
 
+    return ui->plotwidget->graphCount();
+}
+
+int PlotWindow::GetGraphCount()
+{
     return ui->plotwidget->graphCount();
 }
 
@@ -325,112 +330,7 @@ void PlotWindow::SetWindowTitle(const QString &title)
     QSettings settings("hmc", "artPlot");
     restoreGeometry(settings.value(title + "/geometry").toByteArray());
     restoreState(settings.value(title + "/windowState").toByteArray());
-    restorePlotConfig(settings.value(title + "/plotConfig").toByteArray());
-}
-
-QByteArray PlotWindow::savePlotConfig() const
-{
-    //qDebug() << "savePlotConfig";
-    QString configstr;
-    QTextStream str(&configstr);
-    str << "x-Axis::AutoScroll" << "," << _configOption.x_axis_auto_scroll << ","
-        << "x-Axis::AutoScrollWindow" << "," << _configOption.x_axis_auto_scroll_window << ","
-        << "x-Axis::Begin" << "," << _configOption.x_axis_begin_sec << ","
-        << "x-Axis::End" << "," << _configOption.x_axis_end_sec << ","
-        << "y-Axis::AutoScale" << "," << _configOption.y_axis_auto_scale << ","
-        << "y-Axis::LBound" << "," << _configOption.y_axis_lbound << ","
-        << "y-Axis::UBound" << "," << _configOption.y_axis_ubound << ","
-        << "Legend::Visible" << "," << _configOption.legend_visible << ","
-        << "Legend::Location" << "," << _configOption.legend_location << ","
-        << "Style::LineWidth" << "," << _configOption.style_line_width;
-    //qDebug() << configstr;
-    return configstr.toUtf8();
-}
-
-bool PlotWindow::restorePlotConfig(const QByteArray &config)
-{
-    QString configstr = QString::fromUtf8(config);
-    //qDebug() << "restorePlotConfig: " << configstr;
-    QList<QByteArray> items = config.split(',');
-    int idx = 0;
-    while (idx < (items.size() - 1)) {
-        if ("x-Axis::AutoScroll" == items[idx]) {
-            AutoScroll(items[idx+1].toInt() == 0 ? false : true);
-        }
-        else if ("x-Axis::AutoScrollWindow" == items[idx]) {
-            AutoScrollWindow(items[idx+1].toDouble());
-        }
-//        else if ("x-Axis::Begin" == items[idx]) {
-//            SetXBegin(items[idx+1].toDouble());
-//        }
-//        else if ("x-Axis::End" == items[idx]) {
-//            SetXEnd(items[idx+1].toDouble());
-//        }
-        else if ("y-Axis::AutoScale" == items[idx]) {
-            AutoScale(items[idx+1].toInt() == 0 ? false : true);
-        }
-        else if ("y-Axis::LBound" == items[idx]) {
-            SetYLBound(items[idx+1].toDouble());
-        }
-        else if ("y-Axis::UBound" == items[idx]) {
-            SetYUBound(items[idx+1].toDouble());
-        }
-        else if ("Legend::Visible" == items[idx]) {
-            ShowLegend(items[idx+1].toInt() == 0 ? false : true);
-        }
-        else if ("Legend::Location" == items[idx]) {
-            SetLegendLocation(QFlags<Qt::AlignmentFlag>(items[idx+1].toInt()));
-        }
-        else if ("Style::LineWidth" == items[idx]) {
-            SetLineWidth(items[idx+1].toInt());
-        }
-
-        idx += 2;
-    }
-
-    return false;
-}
-
-QByteArray PlotWindow::saveDataSeriesConfig() const
-{
-    QString configstr;
-    QTextStream str(&configstr);
-
-    //qDebug() << "saveDataSeriesConfig";
-    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
-    QList<QStandardItem*> item_graph_visible;
-    foreach (QStandardItem* data_series_root, items) {
-        if (data_series_root->parent())
-            continue;
-
-        for (int chiIndex = 0; chiIndex < data_series_root->rowCount(); chiIndex++) {
-            QStandardItem* data_name = data_series_root->child(chiIndex, 0);
-            QStandardItem* data_color = data_series_root->child(chiIndex, 1);
-            str << data_name->data(Qt::DisplayRole).toString() << ",";
-            str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
-            // str << (data_color->checkState() == Qt::Checked ? 1 : 0) << ",";
-        }
-        break;
-    }
-    //qDebug() << configstr;
-    return configstr.toUtf8();
-}
-
-bool PlotWindow::restoreDataSeriesConfig(const QByteArray & config, const QString & name)
-{
-    QString configstr = QString::fromUtf8(config);
-    //qDebug() << "restoreDataSeriesConfig: " << configstr;
-    QList<QByteArray> items = config.split(',');
-    int idx = 0;
-    while (idx < (items.size() - 1)) {
-        if (name == items[idx]) {
-            SetGraphVisible(name, items[idx+1].toInt() == 0 ? false : true);
-            return true;
-        }
-
-        idx += 2;
-    }
-    return false;
+    RestorePlotConfig(settings.value(title + "/plotConfig").toByteArray());
 }
 
 QString PlotWindow::GetWindowTitle() const {
@@ -570,8 +470,8 @@ void PlotWindow::closeEvent(QCloseEvent* event) {
     QSettings settings("hmc", "artPlot");
     settings.setValue(windowTitle() + "/geometry", saveGeometry());
     settings.setValue(windowTitle() + "/windowState", saveState());
-    settings.setValue(windowTitle() + "/plotConfig", savePlotConfig());
-    settings.setValue(windowTitle() + "/dataSeriesConfig", saveDataSeriesConfig());
+    settings.setValue(windowTitle() + "/plotConfig", SavePlotConfig());
+    settings.setValue(windowTitle() + "/dataSeriesConfig", SaveDataSeriesConfig());
     QMainWindow::closeEvent(event);
     emit widgetClosed(this);
 }
@@ -952,6 +852,111 @@ void PlotWindow::OnConfigItemGraphClicked(QString name, int index)
             return;
         }
     }
+}
+
+QByteArray PlotWindow::SavePlotConfig() const
+{
+    //qDebug() << "SavePlotConfig";
+    QString configstr;
+    QTextStream str(&configstr);
+    str << "x-Axis::AutoScroll" << "," << _configOption.x_axis_auto_scroll << ","
+        << "x-Axis::AutoScrollWindow" << "," << _configOption.x_axis_auto_scroll_window << ","
+        << "x-Axis::Begin" << "," << _configOption.x_axis_begin_sec << ","
+        << "x-Axis::End" << "," << _configOption.x_axis_end_sec << ","
+        << "y-Axis::AutoScale" << "," << _configOption.y_axis_auto_scale << ","
+        << "y-Axis::LBound" << "," << _configOption.y_axis_lbound << ","
+        << "y-Axis::UBound" << "," << _configOption.y_axis_ubound << ","
+        << "Legend::Visible" << "," << _configOption.legend_visible << ","
+        << "Legend::Location" << "," << _configOption.legend_location << ","
+        << "Style::LineWidth" << "," << _configOption.style_line_width;
+    //qDebug() << configstr;
+    return configstr.toUtf8();
+}
+
+bool PlotWindow::RestorePlotConfig(const QByteArray &config)
+{
+    QString configstr = QString::fromUtf8(config);
+    //qDebug() << "RestorePlotConfig: " << configstr;
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1)) {
+        if ("x-Axis::AutoScroll" == items[idx]) {
+            AutoScroll(items[idx+1].toInt() == 0 ? false : true);
+        }
+        else if ("x-Axis::AutoScrollWindow" == items[idx]) {
+            AutoScrollWindow(items[idx+1].toDouble());
+        }
+//        else if ("x-Axis::Begin" == items[idx]) {
+//            SetXBegin(items[idx+1].toDouble());
+//        }
+//        else if ("x-Axis::End" == items[idx]) {
+//            SetXEnd(items[idx+1].toDouble());
+//        }
+        else if ("y-Axis::AutoScale" == items[idx]) {
+            AutoScale(items[idx+1].toInt() == 0 ? false : true);
+        }
+        else if ("y-Axis::LBound" == items[idx]) {
+            SetYLBound(items[idx+1].toDouble());
+        }
+        else if ("y-Axis::UBound" == items[idx]) {
+            SetYUBound(items[idx+1].toDouble());
+        }
+        else if ("Legend::Visible" == items[idx]) {
+            ShowLegend(items[idx+1].toInt() == 0 ? false : true);
+        }
+        else if ("Legend::Location" == items[idx]) {
+            SetLegendLocation(QFlags<Qt::AlignmentFlag>(items[idx+1].toInt()));
+        }
+        else if ("Style::LineWidth" == items[idx]) {
+            SetLineWidth(items[idx+1].toInt());
+        }
+
+        idx += 2;
+    }
+
+    return false;
+}
+
+QByteArray PlotWindow::SaveDataSeriesConfig() const
+{
+    QString configstr;
+    QTextStream str(&configstr);
+
+    //qDebug() << "SaveDataSeriesConfig";
+    auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+    QList<QStandardItem*> item_graph_visible;
+    foreach (QStandardItem* data_series_root, items) {
+        if (data_series_root->parent())
+            continue;
+
+        for (int chiIndex = 0; chiIndex < data_series_root->rowCount(); chiIndex++) {
+            QStandardItem* data_name = data_series_root->child(chiIndex, 0);
+            QStandardItem* data_color = data_series_root->child(chiIndex, 1);
+            str << data_name->data(Qt::DisplayRole).toString() << ",";
+            str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
+            // str << (data_color->checkState() == Qt::Checked ? 1 : 0) << ",";
+        }
+        break;
+    }
+    //qDebug() << configstr;
+    return configstr.toUtf8();
+}
+
+bool PlotWindow::RestoreDataSeriesConfig(const QByteArray & config, const QString & name)
+{
+    QString configstr = QString::fromUtf8(config);
+    //qDebug() << "RestoreDataSeriesConfig: " << configstr;
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1)) {
+        if (name == items[idx]) {
+            SetGraphVisible(name, items[idx+1].toInt() == 0 ? false : true);
+            return true;
+        }
+
+        idx += 2;
+    }
+    return false;
 }
 
 void PlotWindow::OnHorzScrollBarChanged(int value)

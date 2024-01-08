@@ -2,11 +2,13 @@
 #include "mainwindow.h"
 #include "pconstants.h"
 #include "plotwindow.h"
+#include "cmdopts.hpp"
+#include "stringutil.hpp"
 #include <QApplication>
 #include <QDebug>
+#include <dtCore/src/dtLog/dtLog.h>
 
 //#define PRINT_PUB_SUB_INFO
-
 
 // #define ENABLE_COM_POS_PLOT
 // #define ENABLE_COM_VEL_PLOT
@@ -23,10 +25,8 @@
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 // #define ENABLE_FOOT_TRAJECTORY_PLOT
 
-
 constexpr static int jdof = 12;
 constexpr static int legnum = 4;
-
 
 QuadIPDataHandler::QuadIPDataHandler(MainWindow* plotToolbox) 
 : DataHandler(plotToolbox)
@@ -211,8 +211,8 @@ void QuadIPDataHandler::BuildPlots()
     // _plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++) {
-        _plot_jointPos->AddGraph(QString("Joint_%02d.pos.desired").arg(ji+1), LineColor(ji));
-        _plot_jointPos->AddGraph(QString("Joint_%02d.pos.actual").arg(ji+1), LineColor(ji + jdof));
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointPos->show();
     RegisterPlot(_plot_jointPos.get());
@@ -222,8 +222,8 @@ void QuadIPDataHandler::BuildPlots()
     // _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++) {
-        _plot_jointVel->AddGraph(QString("Joint_%02d.vel.desired").arg(ji+1), LineColor(ji));
-        _plot_jointVel->AddGraph(QString("Joint_%02d.vel.actual").arg(ji+1), LineColor(ji + jdof));
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -233,9 +233,8 @@ void QuadIPDataHandler::BuildPlots()
     // _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++) {
-        _plot_jointAcc->AddGraph(QString("Joint_%02d.acc.desired").arg(ji+1), LineColor(ji));
-        _plot_jointAcc->AddGraph(QString("Joint_%02d.acc.actual").arg(ji+1),
-                                    LineColor(ji + jdof));
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -246,9 +245,8 @@ void QuadIPDataHandler::BuildPlots()
     // _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++) {
-        _plot_jointTau->AddGraph(QString("Joint_%02d.torque.desired").arg(ji+1), LineColor(ji));
-        _plot_jointTau->AddGraph(QString("Joint_%02d.torque.actual").arg(ji+1),
-                                    LineColor(ji + jdof));
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
@@ -258,7 +256,7 @@ void QuadIPDataHandler::BuildPlots()
     // _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_absEnc->SetWindowTitle("Joint absolute encoder");
     for (int ji = 0; ji < jdof; ji++) {
-        _plot_absEnc->AddGraph(QString("Joint_%02d.absolute_encoder").arg(ji+1), LineColor(ji));
+        _plot_absEnc->AddGraph(QString("Joint_%1.absolute_encoder").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
     _plot_absEnc->show();
     RegisterPlot(_plot_absEnc.get());
@@ -268,7 +266,7 @@ void QuadIPDataHandler::BuildPlots()
     // _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_incEnc->SetWindowTitle("Joint incremental encoder");
     for (int ji = 0; ji < jdof; ji++) {
-        _plot_incEnc->AddGraph(QString("Joint_%02d.incremental_encoder").arg(ji+1), LineColor(ji));
+        _plot_incEnc->AddGraph(QString("Joint_%1.incremental_encoder").arg(ji+1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
     _plot_incEnc->show();
     RegisterPlot(_plot_incEnc.get());
@@ -284,7 +282,16 @@ void QuadIPDataHandler::BuildPlots()
         std::placeholders::_3, std::placeholders::_4));
 #endif
 #ifdef USE_TRANSPORT_GRPC
-    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::quadip::QuadIpStateTimeStamped>>("RobotState", "10.0.0.10:50051");
+    std::string ip;
+    uint16_t port;
+    GetServerAddress(ip, port);
+    if (ip.empty() || port == 0) {
+        ip = "127.0.0.1";
+        port = 50051;
+    }
+    std::string svr_address = string_format("%s:%d", ip.c_str(), port);
+    
+    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::quadip::QuadIpStateTimeStamped>>("RobotState", "svr_address");
     std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [this](dtproto::quadip::QuadIpStateTimeStamped& msg) {
         static long long seq = 0;
         this->OnRecvQuadIpStateTimeStamped("", msg, 0, seq++);

@@ -20,6 +20,11 @@ public:
     void AddPlot(PlotWindow* plotWnd);
     void GetServerAddress(std::string& ip, uint16_t& port);
 
+private:
+    QByteArray SavePlotConfig() const;
+    bool RestorePlotConfig(const QByteArray & config, const QString& name);
+    void SetPlotVisible(const QString &name, bool visible);
+
 public slots:
     void OnPlotWndHidden(QWidget* widget);
     void OnPlotWndClosed(QWidget* widget);

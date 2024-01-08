@@ -75,6 +75,9 @@ extern LeoQuadStateTimeStampedDefaultTypeInternal _LeoQuadStateTimeStamped_defau
 class TaskState;
 struct TaskStateDefaultTypeInternal;
 extern TaskStateDefaultTypeInternal _TaskState_default_instance_;
+class ThreadState;
+struct ThreadStateDefaultTypeInternal;
+extern ThreadStateDefaultTypeInternal _ThreadState_default_instance_;
 }  // namespace leoquad
 }  // namespace dtproto
 PROTOBUF_NAMESPACE_OPEN
@@ -85,11 +88,237 @@ template<> ::dtproto::leoquad::JointState* Arena::CreateMaybeMessage<::dtproto::
 template<> ::dtproto::leoquad::LeoQuadState* Arena::CreateMaybeMessage<::dtproto::leoquad::LeoQuadState>(Arena*);
 template<> ::dtproto::leoquad::LeoQuadStateTimeStamped* Arena::CreateMaybeMessage<::dtproto::leoquad::LeoQuadStateTimeStamped>(Arena*);
 template<> ::dtproto::leoquad::TaskState* Arena::CreateMaybeMessage<::dtproto::leoquad::TaskState>(Arena*);
+template<> ::dtproto::leoquad::ThreadState* Arena::CreateMaybeMessage<::dtproto::leoquad::ThreadState>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace dtproto {
 namespace leoquad {
 
 // ===================================================================
+
+class ThreadState final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dtproto.leoquad.ThreadState) */ {
+ public:
+  inline ThreadState() : ThreadState(nullptr) {}
+  ~ThreadState() override;
+  explicit PROTOBUF_CONSTEXPR ThreadState(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ThreadState(const ThreadState& from);
+  ThreadState(ThreadState&& from) noexcept
+    : ThreadState() {
+    *this = ::std::move(from);
+  }
+
+  inline ThreadState& operator=(const ThreadState& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ThreadState& operator=(ThreadState&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ThreadState& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ThreadState* internal_default_instance() {
+    return reinterpret_cast<const ThreadState*>(
+               &_ThreadState_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(ThreadState& a, ThreadState& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ThreadState* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ThreadState* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ThreadState* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ThreadState>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ThreadState& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const ThreadState& from) {
+    ThreadState::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ThreadState* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dtproto.leoquad.ThreadState";
+  }
+  protected:
+  explicit ThreadState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCtrlPeriodMsFieldNumber = 1,
+    kCtrlLoadMsFieldNumber = 2,
+    kMpcPeriodMsFieldNumber = 3,
+    kMpcLoadMsFieldNumber = 4,
+    kImuPeriodMsFieldNumber = 5,
+    kImuLoadMsFieldNumber = 6,
+    kJoystickPeriodMsFieldNumber = 7,
+    kJoystickLoadMsFieldNumber = 8,
+  };
+  // double ctrlPeriod_ms = 1;
+  void clear_ctrlperiod_ms();
+  double ctrlperiod_ms() const;
+  void set_ctrlperiod_ms(double value);
+  private:
+  double _internal_ctrlperiod_ms() const;
+  void _internal_set_ctrlperiod_ms(double value);
+  public:
+
+  // double ctrlLoad_ms = 2;
+  void clear_ctrlload_ms();
+  double ctrlload_ms() const;
+  void set_ctrlload_ms(double value);
+  private:
+  double _internal_ctrlload_ms() const;
+  void _internal_set_ctrlload_ms(double value);
+  public:
+
+  // double mpcPeriod_ms = 3;
+  void clear_mpcperiod_ms();
+  double mpcperiod_ms() const;
+  void set_mpcperiod_ms(double value);
+  private:
+  double _internal_mpcperiod_ms() const;
+  void _internal_set_mpcperiod_ms(double value);
+  public:
+
+  // double mpcLoad_ms = 4;
+  void clear_mpcload_ms();
+  double mpcload_ms() const;
+  void set_mpcload_ms(double value);
+  private:
+  double _internal_mpcload_ms() const;
+  void _internal_set_mpcload_ms(double value);
+  public:
+
+  // double imuPeriod_ms = 5;
+  void clear_imuperiod_ms();
+  double imuperiod_ms() const;
+  void set_imuperiod_ms(double value);
+  private:
+  double _internal_imuperiod_ms() const;
+  void _internal_set_imuperiod_ms(double value);
+  public:
+
+  // double imuLoad_ms = 6;
+  void clear_imuload_ms();
+  double imuload_ms() const;
+  void set_imuload_ms(double value);
+  private:
+  double _internal_imuload_ms() const;
+  void _internal_set_imuload_ms(double value);
+  public:
+
+  // double joystickPeriod_ms = 7;
+  void clear_joystickperiod_ms();
+  double joystickperiod_ms() const;
+  void set_joystickperiod_ms(double value);
+  private:
+  double _internal_joystickperiod_ms() const;
+  void _internal_set_joystickperiod_ms(double value);
+  public:
+
+  // double joystickLoad_ms = 8;
+  void clear_joystickload_ms();
+  double joystickload_ms() const;
+  void set_joystickload_ms(double value);
+  private:
+  double _internal_joystickload_ms() const;
+  void _internal_set_joystickload_ms(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:dtproto.leoquad.ThreadState)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    double ctrlperiod_ms_;
+    double ctrlload_ms_;
+    double mpcperiod_ms_;
+    double mpcload_ms_;
+    double imuperiod_ms_;
+    double imuload_ms_;
+    double joystickperiod_ms_;
+    double joystickload_ms_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_LeoQuad_2eproto;
+};
+// -------------------------------------------------------------------
 
 class TaskState final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dtproto.leoquad.TaskState) */ {
@@ -139,7 +368,7 @@ class TaskState final :
                &_TaskState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(TaskState& a, TaskState& b) {
     a.Swap(&b);
@@ -427,7 +656,7 @@ class JointState final :
                &_JointState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(JointState& a, JointState& b) {
     a.Swap(&b);
@@ -674,7 +903,7 @@ class JointData final :
                &_JointData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(JointData& a, JointData& b) {
     a.Swap(&b);
@@ -866,7 +1095,7 @@ class ControlState final :
                &_ControlState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(ControlState& a, ControlState& b) {
     a.Swap(&b);
@@ -1343,7 +1572,7 @@ class CpgState final :
                &_CpgState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(CpgState& a, CpgState& b) {
     a.Swap(&b);
@@ -1802,7 +2031,7 @@ class LeoQuadState final :
                &_LeoQuadState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(LeoQuadState& a, LeoQuadState& b) {
     a.Swap(&b);
@@ -1885,6 +2114,7 @@ class LeoQuadState final :
     kActControlStateFieldNumber = 8,
     kDesControlStateFieldNumber = 9,
     kCpgStateFieldNumber = 10,
+    kThreadStateFieldNumber = 11,
   };
   // repeated .dtproto.leoquad.JointState jointState = 1;
   int jointstate_size() const;
@@ -2066,6 +2296,24 @@ class LeoQuadState final :
       ::dtproto::leoquad::CpgState* cpgstate);
   ::dtproto::leoquad::CpgState* unsafe_arena_release_cpgstate();
 
+  // .dtproto.leoquad.ThreadState threadState = 11;
+  bool has_threadstate() const;
+  private:
+  bool _internal_has_threadstate() const;
+  public:
+  void clear_threadstate();
+  const ::dtproto::leoquad::ThreadState& threadstate() const;
+  PROTOBUF_NODISCARD ::dtproto::leoquad::ThreadState* release_threadstate();
+  ::dtproto::leoquad::ThreadState* mutable_threadstate();
+  void set_allocated_threadstate(::dtproto::leoquad::ThreadState* threadstate);
+  private:
+  const ::dtproto::leoquad::ThreadState& _internal_threadstate() const;
+  ::dtproto::leoquad::ThreadState* _internal_mutable_threadstate();
+  public:
+  void unsafe_arena_set_allocated_threadstate(
+      ::dtproto::leoquad::ThreadState* threadstate);
+  ::dtproto::leoquad::ThreadState* unsafe_arena_release_threadstate();
+
   // @@protoc_insertion_point(class_scope:dtproto.leoquad.LeoQuadState)
  private:
   class _Internal;
@@ -2084,6 +2332,7 @@ class LeoQuadState final :
     ::dtproto::leoquad::ControlState* actcontrolstate_;
     ::dtproto::leoquad::ControlState* descontrolstate_;
     ::dtproto::leoquad::CpgState* cpgstate_;
+    ::dtproto::leoquad::ThreadState* threadstate_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2139,7 +2388,7 @@ class LeoQuadStateTimeStamped final :
                &_LeoQuadStateTimeStamped_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(LeoQuadStateTimeStamped& a, LeoQuadStateTimeStamped& b) {
     a.Swap(&b);
@@ -2275,6 +2524,170 @@ class LeoQuadStateTimeStamped final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// ThreadState
+
+// double ctrlPeriod_ms = 1;
+inline void ThreadState::clear_ctrlperiod_ms() {
+  _impl_.ctrlperiod_ms_ = 0;
+}
+inline double ThreadState::_internal_ctrlperiod_ms() const {
+  return _impl_.ctrlperiod_ms_;
+}
+inline double ThreadState::ctrlperiod_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.ctrlPeriod_ms)
+  return _internal_ctrlperiod_ms();
+}
+inline void ThreadState::_internal_set_ctrlperiod_ms(double value) {
+  
+  _impl_.ctrlperiod_ms_ = value;
+}
+inline void ThreadState::set_ctrlperiod_ms(double value) {
+  _internal_set_ctrlperiod_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.ctrlPeriod_ms)
+}
+
+// double ctrlLoad_ms = 2;
+inline void ThreadState::clear_ctrlload_ms() {
+  _impl_.ctrlload_ms_ = 0;
+}
+inline double ThreadState::_internal_ctrlload_ms() const {
+  return _impl_.ctrlload_ms_;
+}
+inline double ThreadState::ctrlload_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.ctrlLoad_ms)
+  return _internal_ctrlload_ms();
+}
+inline void ThreadState::_internal_set_ctrlload_ms(double value) {
+  
+  _impl_.ctrlload_ms_ = value;
+}
+inline void ThreadState::set_ctrlload_ms(double value) {
+  _internal_set_ctrlload_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.ctrlLoad_ms)
+}
+
+// double mpcPeriod_ms = 3;
+inline void ThreadState::clear_mpcperiod_ms() {
+  _impl_.mpcperiod_ms_ = 0;
+}
+inline double ThreadState::_internal_mpcperiod_ms() const {
+  return _impl_.mpcperiod_ms_;
+}
+inline double ThreadState::mpcperiod_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.mpcPeriod_ms)
+  return _internal_mpcperiod_ms();
+}
+inline void ThreadState::_internal_set_mpcperiod_ms(double value) {
+  
+  _impl_.mpcperiod_ms_ = value;
+}
+inline void ThreadState::set_mpcperiod_ms(double value) {
+  _internal_set_mpcperiod_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.mpcPeriod_ms)
+}
+
+// double mpcLoad_ms = 4;
+inline void ThreadState::clear_mpcload_ms() {
+  _impl_.mpcload_ms_ = 0;
+}
+inline double ThreadState::_internal_mpcload_ms() const {
+  return _impl_.mpcload_ms_;
+}
+inline double ThreadState::mpcload_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.mpcLoad_ms)
+  return _internal_mpcload_ms();
+}
+inline void ThreadState::_internal_set_mpcload_ms(double value) {
+  
+  _impl_.mpcload_ms_ = value;
+}
+inline void ThreadState::set_mpcload_ms(double value) {
+  _internal_set_mpcload_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.mpcLoad_ms)
+}
+
+// double imuPeriod_ms = 5;
+inline void ThreadState::clear_imuperiod_ms() {
+  _impl_.imuperiod_ms_ = 0;
+}
+inline double ThreadState::_internal_imuperiod_ms() const {
+  return _impl_.imuperiod_ms_;
+}
+inline double ThreadState::imuperiod_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.imuPeriod_ms)
+  return _internal_imuperiod_ms();
+}
+inline void ThreadState::_internal_set_imuperiod_ms(double value) {
+  
+  _impl_.imuperiod_ms_ = value;
+}
+inline void ThreadState::set_imuperiod_ms(double value) {
+  _internal_set_imuperiod_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.imuPeriod_ms)
+}
+
+// double imuLoad_ms = 6;
+inline void ThreadState::clear_imuload_ms() {
+  _impl_.imuload_ms_ = 0;
+}
+inline double ThreadState::_internal_imuload_ms() const {
+  return _impl_.imuload_ms_;
+}
+inline double ThreadState::imuload_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.imuLoad_ms)
+  return _internal_imuload_ms();
+}
+inline void ThreadState::_internal_set_imuload_ms(double value) {
+  
+  _impl_.imuload_ms_ = value;
+}
+inline void ThreadState::set_imuload_ms(double value) {
+  _internal_set_imuload_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.imuLoad_ms)
+}
+
+// double joystickPeriod_ms = 7;
+inline void ThreadState::clear_joystickperiod_ms() {
+  _impl_.joystickperiod_ms_ = 0;
+}
+inline double ThreadState::_internal_joystickperiod_ms() const {
+  return _impl_.joystickperiod_ms_;
+}
+inline double ThreadState::joystickperiod_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.joystickPeriod_ms)
+  return _internal_joystickperiod_ms();
+}
+inline void ThreadState::_internal_set_joystickperiod_ms(double value) {
+  
+  _impl_.joystickperiod_ms_ = value;
+}
+inline void ThreadState::set_joystickperiod_ms(double value) {
+  _internal_set_joystickperiod_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.joystickPeriod_ms)
+}
+
+// double joystickLoad_ms = 8;
+inline void ThreadState::clear_joystickload_ms() {
+  _impl_.joystickload_ms_ = 0;
+}
+inline double ThreadState::_internal_joystickload_ms() const {
+  return _impl_.joystickload_ms_;
+}
+inline double ThreadState::joystickload_ms() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.ThreadState.joystickLoad_ms)
+  return _internal_joystickload_ms();
+}
+inline void ThreadState::_internal_set_joystickload_ms(double value) {
+  
+  _impl_.joystickload_ms_ = value;
+}
+inline void ThreadState::set_joystickload_ms(double value) {
+  _internal_set_joystickload_ms(value);
+  // @@protoc_insertion_point(field_set:dtproto.leoquad.ThreadState.joystickLoad_ms)
+}
+
+// -------------------------------------------------------------------
+
 // TaskState
 
 // .dtproto.geometry_msgs.Point3d pos = 1;
@@ -6376,6 +6789,96 @@ inline void LeoQuadState::set_allocated_cpgstate(::dtproto::leoquad::CpgState* c
   // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.cpgState)
 }
 
+// .dtproto.leoquad.ThreadState threadState = 11;
+inline bool LeoQuadState::_internal_has_threadstate() const {
+  return this != internal_default_instance() && _impl_.threadstate_ != nullptr;
+}
+inline bool LeoQuadState::has_threadstate() const {
+  return _internal_has_threadstate();
+}
+inline void LeoQuadState::clear_threadstate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.threadstate_ != nullptr) {
+    delete _impl_.threadstate_;
+  }
+  _impl_.threadstate_ = nullptr;
+}
+inline const ::dtproto::leoquad::ThreadState& LeoQuadState::_internal_threadstate() const {
+  const ::dtproto::leoquad::ThreadState* p = _impl_.threadstate_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::leoquad::ThreadState&>(
+      ::dtproto::leoquad::_ThreadState_default_instance_);
+}
+inline const ::dtproto::leoquad::ThreadState& LeoQuadState::threadstate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.threadState)
+  return _internal_threadstate();
+}
+inline void LeoQuadState::unsafe_arena_set_allocated_threadstate(
+    ::dtproto::leoquad::ThreadState* threadstate) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.threadstate_);
+  }
+  _impl_.threadstate_ = threadstate;
+  if (threadstate) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.threadState)
+}
+inline ::dtproto::leoquad::ThreadState* LeoQuadState::release_threadstate() {
+  
+  ::dtproto::leoquad::ThreadState* temp = _impl_.threadstate_;
+  _impl_.threadstate_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::leoquad::ThreadState* LeoQuadState::unsafe_arena_release_threadstate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.threadState)
+  
+  ::dtproto::leoquad::ThreadState* temp = _impl_.threadstate_;
+  _impl_.threadstate_ = nullptr;
+  return temp;
+}
+inline ::dtproto::leoquad::ThreadState* LeoQuadState::_internal_mutable_threadstate() {
+  
+  if (_impl_.threadstate_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::leoquad::ThreadState>(GetArenaForAllocation());
+    _impl_.threadstate_ = p;
+  }
+  return _impl_.threadstate_;
+}
+inline ::dtproto::leoquad::ThreadState* LeoQuadState::mutable_threadstate() {
+  ::dtproto::leoquad::ThreadState* _msg = _internal_mutable_threadstate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.threadState)
+  return _msg;
+}
+inline void LeoQuadState::set_allocated_threadstate(::dtproto::leoquad::ThreadState* threadstate) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.threadstate_;
+  }
+  if (threadstate) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(threadstate);
+    if (message_arena != submessage_arena) {
+      threadstate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, threadstate, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.threadstate_ = threadstate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.threadState)
+}
+
 // -------------------------------------------------------------------
 
 // LeoQuadStateTimeStamped
@@ -6558,6 +7061,8 @@ inline void LeoQuadStateTimeStamped::set_allocated_state(::dtproto::leoquad::Leo
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
