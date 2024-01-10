@@ -1161,7 +1161,7 @@ void PlotWindow::OnResetTriggered()
 
 void PlotWindow::OnImportTriggered()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files(.csv) (*.csv)"));
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files (*.csv);;All Files (*.*)"));
     if (filenames.empty())
         return;
 
@@ -1176,7 +1176,7 @@ void PlotWindow::OnImportTriggered()
 
 void PlotWindow::OnAppendTriggered()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files(.csv) (*.csv)"));
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files (*.csv);;All Files (*.*)"));
     if (filenames.empty())
         return;
 
