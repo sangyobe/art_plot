@@ -5,15 +5,20 @@
 #include "cmdopts.hpp"
 #include <QApplication>
 #include <QDebug>
+#include <dtCore/src/dtLog/dtLog.h>
 
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
 #include "LeoQuadDataHandler.h"
+#include "AnonDataArrayHandler.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    dtCore::dtLog::Initialize("artplot", "logs/artplot.txt");
+    dtCore::dtLog::SetLogLevel(dtCore::dtLog::LogLevel::trace);
 
+    QApplication app(argc, argv);
+    
     struct AppOptions
     {
         std::string ip_addr{};
@@ -47,9 +52,13 @@ int main(int argc, char *argv[])
     std::unique_ptr<LeoQuadDataHandler> dataHandler = std::make_unique<LeoQuadDataHandler>(&plotToolbox);
 #endif
 
+    // special data source
+    std::unique_ptr<AnonDataArrayHandler> dataHandler_darray = std::make_unique<AnonDataArrayHandler>(&plotToolbox);
+
     // Start main application(event-loop)
     int rtn = app.exec();
 
 finish:
+    dtCore::dtLog::Terminate();
     return rtn;
 }

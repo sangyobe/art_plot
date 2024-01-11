@@ -90,6 +90,62 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
 
         break;
     }
+
+    if (PlotType::RT_PLOT == plotWnd->GetType()) {
+        QSettings settings("hmc", "artPlot");
+        RestorePlotConfig(settings.value("plotConfig").toByteArray(), plotWnd->GetWindowTitle());
+    }
+}
+
+QByteArray MainWindow::SavePlotConfig() const
+{
+    QString configstr;
+    QTextStream str(&configstr);
+
+    //qDebug() << "SavePlotConfig";
+    auto items = _plotListModel->findItems("Realtime plots", Qt::MatchExactly | Qt::MatchRecursive, 0);
+    for (QStandardItem* plot_root : items) {
+        if (plot_root->parent())
+            continue;
+
+        for (int chiIndex = 0; chiIndex < plot_root->rowCount(); chiIndex++) {
+            QStandardItem* plot = plot_root->child(chiIndex);
+            str << plot->data(Qt::DisplayRole).toString() << ",";
+            str << (plot->checkState() == Qt::Checked ? 1 : 0) << ",";
+        }
+        break;
+    }
+    //qDebug() << configstr;
+    return configstr.toUtf8();
+
+}
+
+bool MainWindow::RestorePlotConfig(const QByteArray & config, const QString& name)
+{
+    QString configstr = QString::fromUtf8(config);
+    //qDebug() << "RestorePlotConfig: " << configstr;
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1)) {
+        if (name == items[idx]) {
+            SetPlotVisible(name, items[idx+1].toInt() == 0 ? false : true);
+            return true;
+        }
+
+        idx += 2;
+    }
+    return false;
+}
+
+void MainWindow::SetPlotVisible(const QString &name, bool visible)
+{
+    auto items = _plotListModel->findItems(name, Qt::MatchExactly | Qt::MatchRecursive, 0);
+    foreach (const QStandardItem* citem, items) {
+        if (citem->parent() && citem->parent()->text() == "Realtime plots") {
+            const_cast<QStandardItem*>(citem)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+            return;
+        }
+    }
 }
 
 void MainWindow::OnPlotWndHidden(QWidget* widget)
@@ -120,7 +176,6 @@ void MainWindow::OnPlotWndClosed(QWidget* widget)
 void MainWindow::OnConfigChanged(QStandardItem *item)
 {
     //qDebug() << "MainWindow::OnConfigChanged(" << item->whatsThis() << ")";
-
     if (item->whatsThis() == "Plot::Enabled") {
         PlotWindow *plotWnd = (PlotWindow*)item->data().value<void*>();
         if (plotWnd) {
@@ -149,6 +204,12 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+    // save app config
+    QSettings settings("hmc", "artPlot");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("state", saveState());
+    settings.setValue("plotConfig", SavePlotConfig());
+
     // close all plotWindows
     for (auto plotwnd : qAsConst(_plotWnds)) {
         const_cast<PlotWindow*>(plotwnd)->close();
@@ -156,9 +217,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
     //QApplication::closeAllWindows();
 
     // close itself
-    QSettings settings("hmc", "artPlot");
-    settings.setValue("geometry", saveGeometry());
-    settings.setValue("state", saveState());
     QMainWindow::closeEvent(event);
 }
 

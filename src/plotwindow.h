@@ -36,6 +36,7 @@ public:
 
 public:
     int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0, bool visible = true);
+    int GetGraphCount();
     void AddData(int gid, double key, double value);
     void SetGraphVisible(const QString &name, bool visible);
     void SelectGraph(const QString &name, int index = -1);
@@ -67,11 +68,6 @@ public:
     void RecalculatePlotLayout();
     PlotType GetType() { return _plotType; }
 
-    QByteArray savePlotConfig() const;
-    bool restorePlotConfig(const QByteArray &config);
-    QByteArray saveDataSeriesConfig() const;
-    bool restoreDataSeriesConfig(const QByteArray & config, const QString& name);
-
 protected:
     void ExtendAll();
 
@@ -87,6 +83,10 @@ signals:
 
 private:
     void BuildConfig();
+    QByteArray SavePlotConfig() const;
+    bool RestorePlotConfig(const QByteArray &config);
+    QByteArray SaveDataSeriesConfig() const;
+    bool RestoreDataSeriesConfig(const QByteArray & config, const QString& name);
 
 private slots:
     void OnConfigChanged(QStandardItem* item);

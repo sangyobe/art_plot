@@ -1,8 +1,15 @@
 TODO
-- Fix crash bug, segmentation fault, while creating QuadIPDataHandler.
 - Selecting DataHandler by parsing program argument.
-- Display x-axis data with full resolution.
+
+
+2024.01.08
+- The plot visible settings are saved when the program ends and are applied the next time it runs.
+- A new plot window for displaying annonymous double array data is now open when the program starts. It is required dtCore has been updated to its latest version before building artPlot.
+- Receive and show thread state for LeoQuad. LeoQuadStateTimeStamped has been changed.
 
 2024.01.03
 - Fix crash bug while importing CSV file which has empty lines.
 - Select only one graph at a time. Select a graph by clicking a legend item.
+- Show numbers on tooltip window in full precision.
+- Fix crash bug(segmentation fault) while creating plot windows for QuadIP and Woly.
+- Set default server address and port as "127.0.0.1:50051".

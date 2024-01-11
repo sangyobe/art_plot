@@ -28,6 +28,7 @@
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 #define ENABLE_CTRL2COM_POS_PLOT
 #define ENABLE_CTRL2COM_VEL_PLOT
+#define ENABLE_THREAD_STATE_PLOT
 
 constexpr static int jdof = 12;
 constexpr static int legnum = 4;
@@ -106,10 +107,13 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
       ,
       _plot_velctrl2com(std::make_unique<PlotWindow>(plotToolbox))
 #endif
+#ifdef ENABLE_THREAD_STATE_PLOT
+      ,
+      _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+
 {
-    dtCore::dtLog::Initialize("artplot", "logs/artplot_leoquad.txt");
-    dtCore::dtLog::SetLogLevel(dtCore::dtLog::LogLevel::trace);
-    LOG(info) << "Launched.";
+    LOG(info) << "LeoQuadDataHandler created.";
 
     BuildPlots();
 }
@@ -121,9 +125,6 @@ LeoQuadDataHandler::~LeoQuadDataHandler()
     if (_sub_reconnector.joinable())
         _sub_reconnector.join();
 #endif
-
-    LOG(info) << "Terminated.";
-    dtCore::dtLog::Terminate();
 }
 
 void LeoQuadDataHandler::BuildPlots()
@@ -300,8 +301,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointPos->AddGraph(QString("Joint_%02d.pos.desired").arg(ji + 1), LineColor(ji));
-        _plot_jointPos->AddGraph(QString("Joint_%02d.pos.actual").arg(ji + 1), LineColor(ji + jdof));
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointPos->show();
     RegisterPlot(_plot_jointPos.get());
@@ -312,8 +313,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointVel->AddGraph(QString("Joint_%02d.vel.desired").arg(ji + 1), LineColor(ji));
-        _plot_jointVel->AddGraph(QString("Joint_%02d.vel.actual").arg(ji + 1), LineColor(ji + jdof));
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -324,9 +325,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointAcc->AddGraph(QString("Joint_%02d.acc.desired").arg(ji + 1), LineColor(ji));
-        _plot_jointAcc->AddGraph(QString("Joint_%02d.acc.actual").arg(ji + 1),
-                                 LineColor(ji + jdof));
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -338,9 +338,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointTau->AddGraph(QString("Joint_%02d.torque.desired").arg(ji + 1), LineColor(ji));
-        _plot_jointTau->AddGraph(QString("Joint_%02d.torque.actual").arg(ji + 1),
-                                 LineColor(ji + jdof));
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
@@ -351,7 +350,7 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_absEnc->SetWindowTitle("Joint absolute encoder");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_absEnc->AddGraph(QString("Joint_%02d.absolute_encoder").arg(ji + 1), LineColor(ji));
+        _plot_absEnc->AddGraph(QString("Joint_%1.absolute_encoder").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
     _plot_absEnc->show();
     RegisterPlot(_plot_absEnc.get());
@@ -362,7 +361,7 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_incEnc->SetWindowTitle("Joint incremental encoder");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_incEnc->AddGraph(QString("Joint_%02d.incremental_encoder").arg(ji + 1), LineColor(ji));
+        _plot_incEnc->AddGraph(QString("Joint_%1.incremental_encoder").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
     _plot_incEnc->show();
     RegisterPlot(_plot_incEnc.get());
@@ -392,6 +391,21 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_velctrl2com->AddGraph("Com.Vz.actual", LineColor<5>());
     _plot_velctrl2com->show();
     RegisterPlot(_plot_velctrl2com.get());
+#endif
+
+#ifdef ENABLE_THREAD_STATE_PLOT
+    // _plot_threadState = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_threadState->SetWindowTitle("Thread state");
+    _plot_threadState->AddGraph("Control thread period(ms)", LineColor<0>());
+    _plot_threadState->AddGraph("Control thread load(ms)", LineColor<1>());
+    _plot_threadState->AddGraph("MPC thread period(ms)", LineColor<2>());
+    _plot_threadState->AddGraph("MPC thread load(ms)", LineColor<3>());
+    _plot_threadState->AddGraph("IMU thread period(ms)", LineColor<4>());
+    _plot_threadState->AddGraph("IMU thread load(ms)", LineColor<5>());
+    _plot_threadState->AddGraph("Joystick thread period(ms)", LineColor<6>());
+    _plot_threadState->AddGraph("Joystick thread load(ms)", LineColor<7>());
+    _plot_threadState->show();
+    RegisterPlot(_plot_threadState.get());
 #endif
 
     // 데이터 연결
@@ -427,7 +441,7 @@ void LeoQuadDataHandler::BuildPlots()
 
         while (this->_sub_reconnector_running) {
             if (!this->_sub_state->IsRunning()) {
-                LOG(warn) << "Disconnected. Reconnecting...";
+                LOG(warn) << "Disconnected. Reconnecting to LeoQuadState data server...";
                 this->_sub_state->Reconnect();
             }
 
@@ -470,6 +484,7 @@ void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto:
     OnRecvCpgState(curTime, state.cpgstate());
     OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
+    OnRecvThreadState(curTime, state.threadstate());
 }
 
 void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leoquad::CpgState &state)
@@ -661,5 +676,21 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
             _plot_incEnc->AddData(ji, curTime, state.Get(ji).incpos_cnt());
         }
         _plot_incEnc->DataUpdated(curTime);
+    }
+}
+
+void LeoQuadDataHandler::OnRecvThreadState(const double curTime, const dtproto::leoquad::ThreadState &state)
+{
+    if (_plot_threadState)
+    {
+        _plot_threadState->AddData(0, curTime, state.ctrlperiod_ms());
+        _plot_threadState->AddData(1, curTime, state.ctrlload_ms());
+        _plot_threadState->AddData(2, curTime, state.mpcperiod_ms());
+        _plot_threadState->AddData(3, curTime, state.mpcload_ms());
+        _plot_threadState->AddData(4, curTime, state.imuperiod_ms());
+        _plot_threadState->AddData(5, curTime, state.imuload_ms());
+        _plot_threadState->AddData(6, curTime, state.joystickperiod_ms());
+        _plot_threadState->AddData(7, curTime, state.joystickload_ms());
+        _plot_threadState->DataUpdated(curTime);
     }
 }

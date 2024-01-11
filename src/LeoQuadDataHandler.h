@@ -39,8 +39,10 @@ private:
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointState> &state,
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &actData,
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData);
+    void OnRecvThreadState(const double curTime, const dtproto::leoquad::ThreadState &state);
 
 private:
+    std::unique_ptr<PlotWindow> _plot_threadState;
     std::unique_ptr<PlotWindow> _plot_comPos;
     std::unique_ptr<PlotWindow> _plot_comVel;
     std::unique_ptr<PlotWindow> _plot_orient;
