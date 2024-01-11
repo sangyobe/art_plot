@@ -151,6 +151,9 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_comVel->AddGraph("Com.Vx.actual", LineColor<3>());
     _plot_comVel->AddGraph("Com.Vy.actual", LineColor<4>());
     _plot_comVel->AddGraph("Com.Vz.actual", LineColor<5>());
+    _plot_comVel->AddGraph("Body.Vx.real", LineColor<6>());
+    _plot_comVel->AddGraph("Body.Vy.real", LineColor<7>());
+    _plot_comVel->AddGraph("Body.Vz.real", LineColor<8>());
     _plot_comVel->show();
     RegisterPlot(_plot_comVel.get());
 #endif
@@ -368,7 +371,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CTRL2COM_POS_PLOT
-    // _plot_comVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_posctrl2com = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_posctrl2com->SetWindowTitle("posCtrl2Com wrt World");
     _plot_posctrl2com->AddGraph("Com.Px.desired", LineColor<0>());
     _plot_posctrl2com->AddGraph("Com.Py.desired", LineColor<1>());
@@ -381,7 +384,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_CTRL2COM_VEL_PLOT
-    // _plot_comVel = std::make_unique<PlotWindow>(_plotToolbox);
+    // _plot_velctrl2com = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_velctrl2com->SetWindowTitle("velCtrl2Com wrt World");
     _plot_velctrl2com->AddGraph("Com.Vx.desired", LineColor<0>());
     _plot_velctrl2com->AddGraph("Com.Vy.desired", LineColor<1>());
@@ -577,6 +580,28 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         _plot_comPos->AddData(5, curTime,
                               actState.posworld2comwrtworld().z());
         _plot_comPos->DataUpdated(curTime);
+    }
+    if (_plot_comVel)
+    {
+        _plot_comVel->AddData(0, curTime,
+                              desState.velworld2comwrtworld().x());
+        _plot_comVel->AddData(1, curTime,
+                              desState.velworld2comwrtworld().y());
+        _plot_comVel->AddData(2, curTime,
+                              desState.velworld2comwrtworld().z());
+        _plot_comVel->AddData(3, curTime,
+                              actState.velworld2comwrtworld().x());
+        _plot_comVel->AddData(4, curTime,
+                              actState.velworld2comwrtworld().y());
+        _plot_comVel->AddData(5, curTime,
+                              actState.velworld2comwrtworld().z());
+        _plot_comVel->AddData(6, curTime,
+                              actState.realvelworld2bodywrtworld().x());
+        _plot_comVel->AddData(7, curTime,
+                              actState.realvelworld2bodywrtworld().y());
+        _plot_comVel->AddData(8, curTime,
+                              actState.realvelworld2bodywrtworld().z());
+        _plot_comVel->DataUpdated(curTime);
     }
     if (_plot_posctrl2com)
     {
