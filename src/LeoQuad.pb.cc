@@ -175,6 +175,7 @@ PROTOBUF_CONSTEXPR LeoQuadState::LeoQuadState(
   , /*decltype(_impl_.descontrolstate_)*/nullptr
   , /*decltype(_impl_.cpgstate_)*/nullptr
   , /*decltype(_impl_.threadstate_)*/nullptr
+  , /*decltype(_impl_.arbitrarystate_)*/nullptr
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct LeoQuadStateDefaultTypeInternal {
   PROTOBUF_CONSTEXPR LeoQuadStateDefaultTypeInternal()
@@ -327,6 +328,7 @@ const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.descontrolstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.cpgstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.threadstate_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.arbitrarystate_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadStateTimeStamped, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -344,7 +346,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 55, -1, -1, sizeof(::dtproto::leoquad::ControlState)},
   { 81, -1, -1, sizeof(::dtproto::leoquad::CpgState)},
   { 104, -1, -1, sizeof(::dtproto::leoquad::LeoQuadState)},
-  { 121, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
+  { 122, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -360,105 +362,108 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rLeoQuad.proto\022\017dtproto.leoquad\032\035dtProt"
-  "o/std_msgs/Header.proto\032!dtProto/geometr"
-  "y_msgs/Point.proto\032\"dtProto/geometry_msg"
-  "s/Wrench.proto\032\'dtProto/geometry_msgs/Or"
-  "ientation.proto\032\"dtProto/geometry_msgs/M"
-  "atrix.proto\032\"dtProto/geometry_msgs/Vecto"
-  "r.proto\032\035dtProto/sensor_msgs/Imu.proto\032\035"
-  "dtProto/sensor_msgs/Joy.proto\"\301\001\n\013Thread"
-  "State\022\025\n\rctrlPeriod_ms\030\001 \001(\001\022\023\n\013ctrlLoad"
-  "_ms\030\002 \001(\001\022\024\n\014mpcPeriod_ms\030\003 \001(\001\022\022\n\nmpcLo"
-  "ad_ms\030\004 \001(\001\022\024\n\014imuPeriod_ms\030\005 \001(\001\022\022\n\nimu"
-  "Load_ms\030\006 \001(\001\022\031\n\021joystickPeriod_ms\030\007 \001(\001"
-  "\022\027\n\017joystickLoad_ms\030\010 \001(\001\"\340\002\n\tTaskState\022"
-  "+\n\003pos\030\001 \001(\0132\036.dtproto.geometry_msgs.Poi"
-  "nt3d\022,\n\003rot\030\002 \001(\0132\037.dtproto.geometry_msg"
-  "s.Rotation\022.\n\006linVel\030\003 \001(\0132\036.dtproto.geo"
-  "metry_msgs.Point3d\022.\n\006angVel\030\004 \001(\0132\036.dtp"
-  "roto.geometry_msgs.Point3d\022-\n\005force\030\005 \001("
-  "\0132\036.dtproto.geometry_msgs.Point3d\022.\n\006mom"
-  "ent\030\006 \001(\0132\036.dtproto.geometry_msgs.Point3"
-  "d\022-\n\006wrench\030\007 \001(\0132\035.dtproto.geometry_msg"
-  "s.Wrench\022\n\n\002id\030\010 \001(\r\"\332\001\n\nJointState\022\022\n\ns"
-  "tatusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r\022\025\n\r"
-  "incPosOfs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt\030\004 \001"
-  "(\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt\030\006 \001"
-  "(\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030\010 \001("
-  "\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030\n \001("
-  "\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\nposAu"
-  "x_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_rpss"
-  "\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\344\t\n\014ControlState"
-  "\022<\n\024posWorld2ComWrtWorld\030\001 \001(\0132\036.dtproto"
-  ".geometry_msgs.Point3d\022<\n\024velWorld2ComWr"
-  "tWorld\030\002 \001(\0132\036.dtproto.geometry_msgs.Poi"
-  "nt3d\022=\n\025posWorld2BodyWrtWorld\030\003 \001(\0132\036.dt"
-  "proto.geometry_msgs.Point3d\022=\n\025velWorld2"
-  "BodyWrtWorld\030\004 \001(\0132\036.dtproto.geometry_ms"
-  "gs.Point3d\022<\n\026eulerAngleBodyWrtWorld\030\005 \001"
-  "(\0132\034.dtproto.geometry_msgs.Euler\022<\n\026angu"
-  "larVelBodyWrtWorld\030\006 \001(\0132\034.dtproto.geome"
-  "try_msgs.Euler\022;\n\025angularVelBodyWrtBody\030"
-  "\007 \001(\0132\034.dtproto.geometry_msgs.Euler\022C\n\033a"
-  "ngularMomentumBodyWrtWorld\030\010 \001(\0132\036.dtpro"
-  "to.geometry_msgs.Point3d\022=\n\025posWorld2Foo"
-  "tWrtWorld\030\t \003(\0132\036.dtproto.geometry_msgs."
-  "Point3d\022=\n\025velWorld2FootWrtWorld\030\n \003(\0132\036"
-  ".dtproto.geometry_msgs.Point3d\022<\n\024posBod"
-  "y2FootWrtWorld\030\013 \003(\0132\036.dtproto.geometry_"
-  "msgs.Point3d\022<\n\024velBody2FootWrtWorld\030\014 \003"
-  "(\0132\036.dtproto.geometry_msgs.Point3d\022;\n\023po"
-  "sBody2FootWrtBody\030\r \003(\0132\036.dtproto.geomet"
-  "ry_msgs.Point3d\022;\n\023velBody2FootWrtBody\030\016"
-  " \003(\0132\036.dtproto.geometry_msgs.Point3d\022\?\n\027"
-  "forceWorld2FootWrtWorld\030\017 \003(\0132\036.dtproto."
-  "geometry_msgs.Point3d\0228\n\017rotBodyWrtWorld"
-  "\030\020 \001(\0132\037.dtproto.geometry_msgs.Matrix3d\022"
-  "0\n\007contact\030\021 \001(\0132\037.dtproto.geometry_msgs"
-  ".Vector4b\022;\n\023posCtrl2ComWrtWorld\030\022 \001(\0132\036"
-  ".dtproto.geometry_msgs.Point3d\022;\n\023velCtr"
-  "l2ComWrtWorld\030\023 \001(\0132\036.dtproto.geometry_m"
-  "sgs.Point3d\022A\n\031realVelWorld2BodyWrtWorld"
-  "\030\024 \001(\0132\036.dtproto.geometry_msgs.Point3d\"\232"
-  "\006\n\010CpgState\0220\n\007periods\030\001 \001(\0132\037.dtproto.g"
-  "eometry_msgs.Vector2d\022/\n\006phases\030\002 \001(\0132\037."
-  "dtproto.geometry_msgs.Vector4d\022,\n\003phi\030\003 "
-  "\001(\0132\037.dtproto.geometry_msgs.Vector4d\0220\n\007"
-  "phiToGo\030\004 \001(\0132\037.dtproto.geometry_msgs.Ve"
-  "ctor4d\022.\n\005phiSt\030\005 \001(\0132\037.dtproto.geometry"
-  "_msgs.Vector4d\022.\n\005phiSw\030\006 \001(\0132\037.dtproto."
-  "geometry_msgs.Vector4d\022,\n\003cpg\030\007 \001(\0132\037.dt"
-  "proto.geometry_msgs.Vector4d\0220\n\007contact\030"
-  "\010 \001(\0132\037.dtproto.geometry_msgs.Vector4b\0228"
-  "\n\017phaseChangeFlag\030\t \001(\0132\037.dtproto.geomet"
-  "ry_msgs.Vector4b\0229\n\020periodChangeFlag\030\n \001"
-  "(\0132\037.dtproto.geometry_msgs.Vector4b\0222\n\tp"
-  "haseDiff\030\013 \001(\0132\037.dtproto.geometry_msgs.V"
-  "ector4d\0220\n\007phiTran\030\014 \001(\0132\037.dtproto.geome"
-  "try_msgs.Vector4d\0222\n\tphiTranSt\030\r \001(\0132\037.d"
-  "tproto.geometry_msgs.Vector4d\0222\n\tphiTran"
-  "Sw\030\016 \001(\0132\037.dtproto.geometry_msgs.Vector4"
-  "d\022/\n\004step\030\017 \001(\0132!.dtproto.geometry_msgs."
-  "Vector4i32\022\n\n\002dt\030\020 \001(\001\022\013\n\003air\030\021 \001(\010\"\252\004\n\014"
-  "LeoQuadState\022/\n\njointState\030\001 \003(\0132\033.dtpro"
-  "to.leoquad.JointState\0220\n\014actJointData\030\002 "
-  "\003(\0132\032.dtproto.leoquad.JointData\0220\n\014desJo"
-  "intData\030\003 \003(\0132\032.dtproto.leoquad.JointDat"
-  "a\0220\n\014desTaskState\030\004 \001(\0132\032.dtproto.leoqua"
-  "d.TaskState\0220\n\014actTaskState\030\005 \001(\0132\032.dtpr"
-  "oto.leoquad.TaskState\022%\n\003imu\030\006 \001(\0132\030.dtp"
-  "roto.sensor_msgs.Imu\022*\n\010joystick\030\007 \001(\0132\030"
-  ".dtproto.sensor_msgs.Joy\0226\n\017actControlSt"
-  "ate\030\010 \001(\0132\035.dtproto.leoquad.ControlState"
-  "\0226\n\017desControlState\030\t \001(\0132\035.dtproto.leoq"
-  "uad.ControlState\022+\n\010cpgState\030\n \001(\0132\031.dtp"
-  "roto.leoquad.CpgState\0221\n\013threadState\030\013 \001"
-  "(\0132\034.dtproto.leoquad.ThreadState\"q\n\027LeoQ"
-  "uadStateTimeStamped\022(\n\006header\030\001 \001(\0132\030.dt"
-  "proto.std_msgs.Header\022,\n\005state\030\002 \001(\0132\035.d"
-  "tproto.leoquad.LeoQuadStateb\006proto3"
+  "o/std_msgs/Header.proto\032\"dtProto/std_msg"
+  "s/PackedArray.proto\032!dtProto/geometry_ms"
+  "gs/Point.proto\032\"dtProto/geometry_msgs/Wr"
+  "ench.proto\032\'dtProto/geometry_msgs/Orient"
+  "ation.proto\032\"dtProto/geometry_msgs/Matri"
+  "x.proto\032\"dtProto/geometry_msgs/Vector.pr"
+  "oto\032\035dtProto/sensor_msgs/Imu.proto\032\035dtPr"
+  "oto/sensor_msgs/Joy.proto\"\301\001\n\013ThreadStat"
+  "e\022\025\n\rctrlPeriod_ms\030\001 \001(\001\022\023\n\013ctrlLoad_ms\030"
+  "\002 \001(\001\022\024\n\014mpcPeriod_ms\030\003 \001(\001\022\022\n\nmpcLoad_m"
+  "s\030\004 \001(\001\022\024\n\014imuPeriod_ms\030\005 \001(\001\022\022\n\nimuLoad"
+  "_ms\030\006 \001(\001\022\031\n\021joystickPeriod_ms\030\007 \001(\001\022\027\n\017"
+  "joystickLoad_ms\030\010 \001(\001\"\340\002\n\tTaskState\022+\n\003p"
+  "os\030\001 \001(\0132\036.dtproto.geometry_msgs.Point3d"
+  "\022,\n\003rot\030\002 \001(\0132\037.dtproto.geometry_msgs.Ro"
+  "tation\022.\n\006linVel\030\003 \001(\0132\036.dtproto.geometr"
+  "y_msgs.Point3d\022.\n\006angVel\030\004 \001(\0132\036.dtproto"
+  ".geometry_msgs.Point3d\022-\n\005force\030\005 \001(\0132\036."
+  "dtproto.geometry_msgs.Point3d\022.\n\006moment\030"
+  "\006 \001(\0132\036.dtproto.geometry_msgs.Point3d\022-\n"
+  "\006wrench\030\007 \001(\0132\035.dtproto.geometry_msgs.Wr"
+  "ench\022\n\n\002id\030\010 \001(\r\"\332\001\n\nJointState\022\022\n\nstatu"
+  "sWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r\022\025\n\rincP"
+  "osOfs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt\030\004 \001(\005\022\022"
+  "\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt\030\006 \001(\005\022\022"
+  "\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030\010 \001(\002\022\021\n"
+  "\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030\n \001(\002\"d\n"
+  "\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\nposAux_ra"
+  "d\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_rpss\030\004 \001"
+  "(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\344\t\n\014ControlState\022<\n\024"
+  "posWorld2ComWrtWorld\030\001 \001(\0132\036.dtproto.geo"
+  "metry_msgs.Point3d\022<\n\024velWorld2ComWrtWor"
+  "ld\030\002 \001(\0132\036.dtproto.geometry_msgs.Point3d"
+  "\022=\n\025posWorld2BodyWrtWorld\030\003 \001(\0132\036.dtprot"
+  "o.geometry_msgs.Point3d\022=\n\025velWorld2Body"
+  "WrtWorld\030\004 \001(\0132\036.dtproto.geometry_msgs.P"
+  "oint3d\022<\n\026eulerAngleBodyWrtWorld\030\005 \001(\0132\034"
+  ".dtproto.geometry_msgs.Euler\022<\n\026angularV"
+  "elBodyWrtWorld\030\006 \001(\0132\034.dtproto.geometry_"
+  "msgs.Euler\022;\n\025angularVelBodyWrtBody\030\007 \001("
+  "\0132\034.dtproto.geometry_msgs.Euler\022C\n\033angul"
+  "arMomentumBodyWrtWorld\030\010 \001(\0132\036.dtproto.g"
+  "eometry_msgs.Point3d\022=\n\025posWorld2FootWrt"
+  "World\030\t \003(\0132\036.dtproto.geometry_msgs.Poin"
+  "t3d\022=\n\025velWorld2FootWrtWorld\030\n \003(\0132\036.dtp"
+  "roto.geometry_msgs.Point3d\022<\n\024posBody2Fo"
+  "otWrtWorld\030\013 \003(\0132\036.dtproto.geometry_msgs"
+  ".Point3d\022<\n\024velBody2FootWrtWorld\030\014 \003(\0132\036"
+  ".dtproto.geometry_msgs.Point3d\022;\n\023posBod"
+  "y2FootWrtBody\030\r \003(\0132\036.dtproto.geometry_m"
+  "sgs.Point3d\022;\n\023velBody2FootWrtBody\030\016 \003(\013"
+  "2\036.dtproto.geometry_msgs.Point3d\022\?\n\027forc"
+  "eWorld2FootWrtWorld\030\017 \003(\0132\036.dtproto.geom"
+  "etry_msgs.Point3d\0228\n\017rotBodyWrtWorld\030\020 \001"
+  "(\0132\037.dtproto.geometry_msgs.Matrix3d\0220\n\007c"
+  "ontact\030\021 \001(\0132\037.dtproto.geometry_msgs.Vec"
+  "tor4b\022;\n\023posCtrl2ComWrtWorld\030\022 \001(\0132\036.dtp"
+  "roto.geometry_msgs.Point3d\022;\n\023velCtrl2Co"
+  "mWrtWorld\030\023 \001(\0132\036.dtproto.geometry_msgs."
+  "Point3d\022A\n\031realVelWorld2BodyWrtWorld\030\024 \001"
+  "(\0132\036.dtproto.geometry_msgs.Point3d\"\232\006\n\010C"
+  "pgState\0220\n\007periods\030\001 \001(\0132\037.dtproto.geome"
+  "try_msgs.Vector2d\022/\n\006phases\030\002 \001(\0132\037.dtpr"
+  "oto.geometry_msgs.Vector4d\022,\n\003phi\030\003 \001(\0132"
+  "\037.dtproto.geometry_msgs.Vector4d\0220\n\007phiT"
+  "oGo\030\004 \001(\0132\037.dtproto.geometry_msgs.Vector"
+  "4d\022.\n\005phiSt\030\005 \001(\0132\037.dtproto.geometry_msg"
+  "s.Vector4d\022.\n\005phiSw\030\006 \001(\0132\037.dtproto.geom"
+  "etry_msgs.Vector4d\022,\n\003cpg\030\007 \001(\0132\037.dtprot"
+  "o.geometry_msgs.Vector4d\0220\n\007contact\030\010 \001("
+  "\0132\037.dtproto.geometry_msgs.Vector4b\0228\n\017ph"
+  "aseChangeFlag\030\t \001(\0132\037.dtproto.geometry_m"
+  "sgs.Vector4b\0229\n\020periodChangeFlag\030\n \001(\0132\037"
+  ".dtproto.geometry_msgs.Vector4b\0222\n\tphase"
+  "Diff\030\013 \001(\0132\037.dtproto.geometry_msgs.Vecto"
+  "r4d\0220\n\007phiTran\030\014 \001(\0132\037.dtproto.geometry_"
+  "msgs.Vector4d\0222\n\tphiTranSt\030\r \001(\0132\037.dtpro"
+  "to.geometry_msgs.Vector4d\0222\n\tphiTranSw\030\016"
+  " \001(\0132\037.dtproto.geometry_msgs.Vector4d\022/\n"
+  "\004step\030\017 \001(\0132!.dtproto.geometry_msgs.Vect"
+  "or4i32\022\n\n\002dt\030\020 \001(\001\022\013\n\003air\030\021 \001(\010\"\342\004\n\014LeoQ"
+  "uadState\022/\n\njointState\030\001 \003(\0132\033.dtproto.l"
+  "eoquad.JointState\0220\n\014actJointData\030\002 \003(\0132"
+  "\032.dtproto.leoquad.JointData\0220\n\014desJointD"
+  "ata\030\003 \003(\0132\032.dtproto.leoquad.JointData\0220\n"
+  "\014desTaskState\030\004 \001(\0132\032.dtproto.leoquad.Ta"
+  "skState\0220\n\014actTaskState\030\005 \001(\0132\032.dtproto."
+  "leoquad.TaskState\022%\n\003imu\030\006 \001(\0132\030.dtproto"
+  ".sensor_msgs.Imu\022*\n\010joystick\030\007 \001(\0132\030.dtp"
+  "roto.sensor_msgs.Joy\0226\n\017actControlState\030"
+  "\010 \001(\0132\035.dtproto.leoquad.ControlState\0226\n\017"
+  "desControlState\030\t \001(\0132\035.dtproto.leoquad."
+  "ControlState\022+\n\010cpgState\030\n \001(\0132\031.dtproto"
+  ".leoquad.CpgState\0221\n\013threadState\030\013 \001(\0132\034"
+  ".dtproto.leoquad.ThreadState\0226\n\016arbitrar"
+  "yState\030\024 \001(\0132\036.dtproto.std_msgs.PackedDo"
+  "uble\"q\n\027LeoQuadStateTimeStamped\022(\n\006heade"
+  "r\030\001 \001(\0132\030.dtproto.std_msgs.Header\022,\n\005sta"
+  "te\030\002 \001(\0132\035.dtproto.leoquad.LeoQuadStateb"
+  "\006proto3"
   ;
-static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_deps[8] = {
+static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_deps[9] = {
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fMatrix_2eproto,
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fOrientation_2eproto,
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fPoint_2eproto,
@@ -467,12 +472,13 @@ static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_dep
   &::descriptor_table_dtProto_2fsensor_5fmsgs_2fImu_2eproto,
   &::descriptor_table_dtProto_2fsensor_5fmsgs_2fJoy_2eproto,
   &::descriptor_table_dtProto_2fstd_5fmsgs_2fHeader_2eproto,
+  &::descriptor_table_dtProto_2fstd_5fmsgs_2fPackedArray_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_LeoQuad_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_LeoQuad_2eproto = {
-    false, false, 3915, descriptor_table_protodef_LeoQuad_2eproto,
+    false, false, 4007, descriptor_table_protodef_LeoQuad_2eproto,
     "LeoQuad.proto",
-    &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 8, 8,
+    &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 9, 8,
     schemas, file_default_instances, TableStruct_LeoQuad_2eproto::offsets,
     file_level_metadata_LeoQuad_2eproto, file_level_enum_descriptors_LeoQuad_2eproto,
     file_level_service_descriptors_LeoQuad_2eproto,
@@ -4198,6 +4204,7 @@ class LeoQuadState::_Internal {
   static const ::dtproto::leoquad::ControlState& descontrolstate(const LeoQuadState* msg);
   static const ::dtproto::leoquad::CpgState& cpgstate(const LeoQuadState* msg);
   static const ::dtproto::leoquad::ThreadState& threadstate(const LeoQuadState* msg);
+  static const ::dtproto::std_msgs::PackedDouble& arbitrarystate(const LeoQuadState* msg);
 };
 
 const ::dtproto::leoquad::TaskState&
@@ -4232,6 +4239,10 @@ const ::dtproto::leoquad::ThreadState&
 LeoQuadState::_Internal::threadstate(const LeoQuadState* msg) {
   return *msg->_impl_.threadstate_;
 }
+const ::dtproto::std_msgs::PackedDouble&
+LeoQuadState::_Internal::arbitrarystate(const LeoQuadState* msg) {
+  return *msg->_impl_.arbitrarystate_;
+}
 void LeoQuadState::clear_imu() {
   if (GetArenaForAllocation() == nullptr && _impl_.imu_ != nullptr) {
     delete _impl_.imu_;
@@ -4243,6 +4254,12 @@ void LeoQuadState::clear_joystick() {
     delete _impl_.joystick_;
   }
   _impl_.joystick_ = nullptr;
+}
+void LeoQuadState::clear_arbitrarystate() {
+  if (GetArenaForAllocation() == nullptr && _impl_.arbitrarystate_ != nullptr) {
+    delete _impl_.arbitrarystate_;
+  }
+  _impl_.arbitrarystate_ = nullptr;
 }
 LeoQuadState::LeoQuadState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -4265,6 +4282,7 @@ LeoQuadState::LeoQuadState(const LeoQuadState& from)
     , decltype(_impl_.descontrolstate_){nullptr}
     , decltype(_impl_.cpgstate_){nullptr}
     , decltype(_impl_.threadstate_){nullptr}
+    , decltype(_impl_.arbitrarystate_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -4292,6 +4310,9 @@ LeoQuadState::LeoQuadState(const LeoQuadState& from)
   if (from._internal_has_threadstate()) {
     _this->_impl_.threadstate_ = new ::dtproto::leoquad::ThreadState(*from._impl_.threadstate_);
   }
+  if (from._internal_has_arbitrarystate()) {
+    _this->_impl_.arbitrarystate_ = new ::dtproto::std_msgs::PackedDouble(*from._impl_.arbitrarystate_);
+  }
   // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.LeoQuadState)
 }
 
@@ -4311,6 +4332,7 @@ inline void LeoQuadState::SharedCtor(
     , decltype(_impl_.descontrolstate_){nullptr}
     , decltype(_impl_.cpgstate_){nullptr}
     , decltype(_impl_.threadstate_){nullptr}
+    , decltype(_impl_.arbitrarystate_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -4337,6 +4359,7 @@ inline void LeoQuadState::SharedDtor() {
   if (this != internal_default_instance()) delete _impl_.descontrolstate_;
   if (this != internal_default_instance()) delete _impl_.cpgstate_;
   if (this != internal_default_instance()) delete _impl_.threadstate_;
+  if (this != internal_default_instance()) delete _impl_.arbitrarystate_;
 }
 
 void LeoQuadState::SetCachedSize(int size) const {
@@ -4384,6 +4407,10 @@ void LeoQuadState::Clear() {
     delete _impl_.threadstate_;
   }
   _impl_.threadstate_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.arbitrarystate_ != nullptr) {
+    delete _impl_.arbitrarystate_;
+  }
+  _impl_.arbitrarystate_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4492,6 +4519,14 @@ const char* LeoQuadState::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
       case 11:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
           ptr = ctx->ParseMessage(_internal_mutable_threadstate(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.std_msgs.PackedDouble arbitraryState = 20;
+      case 20:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 162)) {
+          ptr = ctx->ParseMessage(_internal_mutable_arbitrarystate(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4605,6 +4640,13 @@ uint8_t* LeoQuadState::_InternalSerialize(
         _Internal::threadstate(this).GetCachedSize(), target, stream);
   }
 
+  // .dtproto.std_msgs.PackedDouble arbitraryState = 20;
+  if (this->_internal_has_arbitrarystate()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(20, _Internal::arbitrarystate(this),
+        _Internal::arbitrarystate(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4698,6 +4740,13 @@ size_t LeoQuadState::ByteSizeLong() const {
         *_impl_.threadstate_);
   }
 
+  // .dtproto.std_msgs.PackedDouble arbitraryState = 20;
+  if (this->_internal_has_arbitrarystate()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.arbitrarystate_);
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -4751,6 +4800,10 @@ void LeoQuadState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
     _this->_internal_mutable_threadstate()->::dtproto::leoquad::ThreadState::MergeFrom(
         from._internal_threadstate());
   }
+  if (from._internal_has_arbitrarystate()) {
+    _this->_internal_mutable_arbitrarystate()->::dtproto::std_msgs::PackedDouble::MergeFrom(
+        from._internal_arbitrarystate());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4772,8 +4825,8 @@ void LeoQuadState::InternalSwap(LeoQuadState* other) {
   _impl_.actjointdata_.InternalSwap(&other->_impl_.actjointdata_);
   _impl_.desjointdata_.InternalSwap(&other->_impl_.desjointdata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.threadstate_)
-      + sizeof(LeoQuadState::_impl_.threadstate_)
+      PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.arbitrarystate_)
+      + sizeof(LeoQuadState::_impl_.arbitrarystate_)
       - PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.destaskstate_)>(
           reinterpret_cast<char*>(&_impl_.destaskstate_),
           reinterpret_cast<char*>(&other->_impl_.destaskstate_));

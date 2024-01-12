@@ -40,27 +40,33 @@ private:
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &actData,
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData);
     void OnRecvThreadState(const double curTime, const dtproto::leoquad::ThreadState &state);
+    void OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state);
 
 private:
-    std::unique_ptr<PlotWindow> _plot_threadState;
-    std::unique_ptr<PlotWindow> _plot_comPos;
-    std::unique_ptr<PlotWindow> _plot_comVel;
-    std::unique_ptr<PlotWindow> _plot_orient;
-    std::unique_ptr<PlotWindow> _plot_angVel;
-    std::unique_ptr<PlotWindow> _plot_footPos;
-    std::unique_ptr<PlotWindow> _plot_footVel;
-    std::unique_ptr<PlotWindow> _plot_footForce;
-    std::unique_ptr<PlotWindow> _plot_contact;
-    std::unique_ptr<PlotWindow> _plot_cpgCpg;
-    std::unique_ptr<PlotWindow> _plot_cpgPhi;
-    std::unique_ptr<PlotWindow> _plot_jointPos;
-    std::unique_ptr<PlotWindow> _plot_jointVel;
-    std::unique_ptr<PlotWindow> _plot_jointAcc;
-    std::unique_ptr<PlotWindow> _plot_jointTau;
-    std::unique_ptr<PlotWindow> _plot_incEnc;
-    std::unique_ptr<PlotWindow> _plot_absEnc;
-    std::unique_ptr<PlotWindow> _plot_posctrl2com;
-    std::unique_ptr<PlotWindow> _plot_velctrl2com;
+    std::unique_ptr<PlotWindow> _plot_threadState{nullptr};
+    std::unique_ptr<PlotWindow> _plot_comPos{nullptr};
+    std::unique_ptr<PlotWindow> _plot_comVel{nullptr};
+    std::unique_ptr<PlotWindow> _plot_orient{nullptr};
+    std::unique_ptr<PlotWindow> _plot_angVel{nullptr};
+    std::unique_ptr<PlotWindow> _plot_footPos{nullptr};
+    std::unique_ptr<PlotWindow> _plot_footVel{nullptr};
+    std::unique_ptr<PlotWindow> _plot_footForce{nullptr};
+    std::unique_ptr<PlotWindow> _plot_contact{nullptr};
+    std::unique_ptr<PlotWindow> _plot_cpgCpg{nullptr};
+    std::unique_ptr<PlotWindow> _plot_cpgPhi{nullptr};
+    std::unique_ptr<PlotWindow> _plot_jointPos{nullptr};
+    std::unique_ptr<PlotWindow> _plot_jointVel{nullptr};
+    std::unique_ptr<PlotWindow> _plot_jointAcc{nullptr};
+    std::unique_ptr<PlotWindow> _plot_jointTau{nullptr};
+    std::unique_ptr<PlotWindow> _plot_incEnc{nullptr};
+    std::unique_ptr<PlotWindow> _plot_absEnc{nullptr};
+    std::unique_ptr<PlotWindow> _plot_posctrl2com{nullptr};
+    std::unique_ptr<PlotWindow> _plot_velctrl2com{nullptr};
+
+    // for plotting user-defined arbitrary data array    
+    std::unique_ptr<PlotWindow> _plot_debugData{nullptr};
+    int _debug_data_array_size{-1};
+    const int _debug_data_array_size_max = 32;
 
 #ifdef USE_TRANSPORT_ECAL
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::leoquad::LeoQuadStateTimeStamped>> _sub_state;

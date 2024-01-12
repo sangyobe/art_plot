@@ -1,4 +1,4 @@
-#include "AnonDataArrayHandler.h"
+#include "ArbitraryStateDataHandler.h"
 #include "mainwindow.h"
 #include "pconstants.h"
 #include "plotwindow.h"
@@ -12,16 +12,16 @@
 // #define PRINT_PUB_SUB_INFO
 
 
-AnonDataArrayHandler::AnonDataArrayHandler(MainWindow* plotToolbox) 
+ArbitraryStateDataHandler::ArbitraryStateDataHandler(MainWindow* plotToolbox) 
 : DataHandler(plotToolbox)
 , _plot(std::make_unique<PlotWindow>(plotToolbox))
 {
-    LOG(info) << "AnonDataArrayHandler created.";
+    LOG(info) << "ArbitraryStateDataHandler created.";
 
     BuildPlots();
 }
 
-AnonDataArrayHandler::~AnonDataArrayHandler()
+ArbitraryStateDataHandler::~ArbitraryStateDataHandler()
 {
 #ifdef USE_TRANSPORT_GRPC
     _sub_reconnector_running = false;
@@ -30,10 +30,10 @@ AnonDataArrayHandler::~AnonDataArrayHandler()
 #endif
 }
 
-void AnonDataArrayHandler::BuildPlots()
+void ArbitraryStateDataHandler::BuildPlots()
 {
     //_plot = std::make_unique<PlotWindow>(_plotToolbox);
-    _plot->SetWindowTitle("Anonymous Double Array");
+    _plot->SetWindowTitle("Arbitrary Double Array");
     for (int gi = 0; gi < _data_size_max; gi++) {
         _plot->AddGraph(QString("Data_%1").arg(gi, 2, 10, QLatin1Char('0')), LineColor(gi));
     }
@@ -43,9 +43,9 @@ void AnonDataArrayHandler::BuildPlots()
 
     // 데이터 연결
 #ifdef USE_TRANSPORT_ECAL
-    _sub_state = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::robot_msgs::AnonStateTimeStamped>>("RobotState");
+    _sub_state = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::robot_msgs::ArbitraryStateTimeStamped>>("RobotState");
     _sub_state->AddReceiveCallback(std::bind(
-        &AnonDataArrayHandler::OnRecvAnonStateTimeStamped, this,
+        &ArbitraryStateDataHandler::OnRecvArbitraryStateTimeStamped, this,
         std::placeholders::_1, std::placeholders::_2,
         std::placeholders::_3, std::placeholders::_4));
 #endif
@@ -59,10 +59,10 @@ void AnonDataArrayHandler::BuildPlots()
     }
     std::string svr_address = string_format("%s:%d", ip.c_str(), port+1);
     
-    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::robot_msgs::AnonStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::robot_msgs::AnonStateTimeStamped&)> handler = [this](dtproto::robot_msgs::AnonStateTimeStamped& msg) {
+    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::robot_msgs::ArbitraryStateTimeStamped>>("RobotState", svr_address);
+    std::function<void(dtproto::robot_msgs::ArbitraryStateTimeStamped&)> handler = [this](dtproto::robot_msgs::ArbitraryStateTimeStamped& msg) {
         static long long seq = 0;
-        this->OnRecvAnonStateTimeStamped("", msg, 0, seq++);
+        this->OnRecvArbitraryStateTimeStamped("", msg, 0, seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
@@ -71,7 +71,7 @@ void AnonDataArrayHandler::BuildPlots()
 
         while (this->_sub_reconnector_running) {
             if (!this->_sub_state->IsRunning()) {
-                LOG(warn) << "Disconnected. Reconnecting to AnonState data server...";
+                LOG(warn) << "Disconnected. Reconnecting to ArbitraryState data server...";
                 this->_sub_state->Reconnect();
             }
 
@@ -83,16 +83,16 @@ void AnonDataArrayHandler::BuildPlots()
 }
 
 
-void AnonDataArrayHandler::OnRecvAnonStateTimeStamped(const char *topic_name,
-                                      const dtproto::robot_msgs::AnonStateTimeStamped &state,
+void ArbitraryStateDataHandler::OnRecvArbitraryStateTimeStamped(const char *topic_name,
+                                      const dtproto::robot_msgs::ArbitraryStateTimeStamped &state,
                                       const long long time, const long long clock)
 {
     double curTime = clock * 1e-3;
-    OnRecvAnonState(curTime, state.state());
+    OnRecvArbitraryState(curTime, state.state());
 
 #ifdef PRINT_PUB_SUB_INFO
     qDebug() << "------------------------------------------";
-    qDebug() << " Anonymous State ";
+    qDebug() << " Arbitrary State ";
     qDebug() << "------------------------------------------";
     qDebug() << "topic name   : " << topic_name;
     qDebug() << "topic time   : " << time;
@@ -113,7 +113,7 @@ void AnonDataArrayHandler::OnRecvAnonStateTimeStamped(const char *topic_name,
 
 }                            
 
-void AnonDataArrayHandler::OnRecvAnonState(const double curTime, const dtproto::std_msgs::PackedDouble &state)
+void ArbitraryStateDataHandler::OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state)
 {
     if (state.GetTypeName() != "dtproto.std_msgs.PackedDouble") {
         return;

@@ -29,6 +29,7 @@
 #define ENABLE_CTRL2COM_POS_PLOT
 #define ENABLE_CTRL2COM_VEL_PLOT
 #define ENABLE_THREAD_STATE_PLOT
+#define ENABLE_DEBUG_DATA_PLOT
 
 constexpr static int jdof = 12;
 constexpr static int legnum = 4;
@@ -36,82 +37,65 @@ constexpr static int legnum = 4;
 LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox)
 #ifdef ENABLE_COM_POS_PLOT
-      ,
-      _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_COM_VEL_PLOT
-      ,
-      _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_ORIENTATION_PLOT
-      ,
-      _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_ANGULAR_VEL_PLOT
-      ,
-      _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_POS_PLOT
-      ,
-      _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_VEL_PLOT
-      ,
-      _plot_footVel(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_footVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_CONTACT_PLOT
-      ,
-      _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_FORCE_PLOT
-      ,
-      _plot_footForce(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_footForce(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CPG_CPG_PLOT
-      ,
-      _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CPG_PHI_PLOT
-      ,
-      _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_POSISION_PLOT
-      ,
-      _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
-      ,
-      _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
-      ,
-      _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_TORQUE_PLOT
-      ,
-      _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-      ,
-      _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
-      ,
-      _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CTRL2COM_POS_PLOT
-      ,
-      _plot_posctrl2com(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_posctrl2com(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CTRL2COM_VEL_PLOT
-      ,
-      _plot_velctrl2com(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_velctrl2com(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_THREAD_STATE_PLOT
-      ,
-      _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
 #endif
-
+#ifdef ENABLE_DEBUG_DATA_PLOT
+    , _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+#endif
 {
     LOG(info) << "LeoQuadDataHandler created.";
 
@@ -411,6 +395,16 @@ void LeoQuadDataHandler::BuildPlots()
     RegisterPlot(_plot_threadState.get());
 #endif
 
+#ifdef ENABLE_DEBUG_DATA_PLOT
+    //_plot_debugData = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_debugData->SetWindowTitle("Debug Data Array");
+    for (int gi = 0; gi < _debug_data_array_size_max; gi++) {
+        _plot_debugData->AddGraph(QString("Data_%1").arg(gi, 2, 10, QLatin1Char('0')), LineColor(gi));
+    }
+    _plot_debugData->show();
+    RegisterPlot(_plot_debugData.get());
+#endif
+
     // 데이터 연결
 #ifdef USE_TRANSPORT_ECAL
     _sub_state = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState");
@@ -488,6 +482,7 @@ void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto:
     OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
     OnRecvThreadState(curTime, state.threadstate());
+    OnRecvArbitraryState(curTime, state.arbitrarystate());
 }
 
 void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leoquad::CpgState &state)
@@ -717,5 +712,32 @@ void LeoQuadDataHandler::OnRecvThreadState(const double curTime, const dtproto::
         _plot_threadState->AddData(6, curTime, state.joystickperiod_ms());
         _plot_threadState->AddData(7, curTime, state.joystickload_ms());
         _plot_threadState->DataUpdated(curTime);
+    }
+}
+
+void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state)
+{
+    if (!_plot_debugData || state.GetTypeName() != "dtproto.std_msgs.PackedDouble") {
+        return;
+    }
+
+    if (_debug_data_array_size < 0) {
+        _debug_data_array_size = state.data_size();
+        if (_debug_data_array_size > _debug_data_array_size_max)
+            _debug_data_array_size = _debug_data_array_size_max;
+
+        // data handler는 GUI thread와 다른 thread --> runtime warning 발생한다.
+        // for (int gi = 0; gi < _debug_data_array_size; gi++) {
+        //     _plot_debugData->AddGraph(QString("Data_%1.abs").arg(gi, 2, 10, QLatin1Char('0')), LineColor(gi));
+        // }
+    }
+
+    for (int gi = 0; gi < _debug_data_array_size; gi++) {
+        if (gi >= _debug_data_array_size_max || gi >= _plot_debugData->GetGraphCount())
+            return;
+
+        // LOG(trace) << "  data[" << gi << "] = " << state.data(gi);
+        _plot_debugData->AddData(gi, curTime, state.data().Get(gi));
+        _plot_debugData->DataUpdated(curTime);
     }
 }

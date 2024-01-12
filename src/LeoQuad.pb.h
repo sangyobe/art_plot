@@ -31,6 +31,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include "dtProto/std_msgs/Header.pb.h"
+#include "dtProto/std_msgs/PackedArray.pb.h"
 #include "dtProto/geometry_msgs/Point.pb.h"
 #include "dtProto/geometry_msgs/Wrench.pb.h"
 #include "dtProto/geometry_msgs/Orientation.pb.h"
@@ -2175,6 +2176,7 @@ class LeoQuadState final :
     kDesControlStateFieldNumber = 9,
     kCpgStateFieldNumber = 10,
     kThreadStateFieldNumber = 11,
+    kArbitraryStateFieldNumber = 20,
   };
   // repeated .dtproto.leoquad.JointState jointState = 1;
   int jointstate_size() const;
@@ -2374,6 +2376,24 @@ class LeoQuadState final :
       ::dtproto::leoquad::ThreadState* threadstate);
   ::dtproto::leoquad::ThreadState* unsafe_arena_release_threadstate();
 
+  // .dtproto.std_msgs.PackedDouble arbitraryState = 20;
+  bool has_arbitrarystate() const;
+  private:
+  bool _internal_has_arbitrarystate() const;
+  public:
+  void clear_arbitrarystate();
+  const ::dtproto::std_msgs::PackedDouble& arbitrarystate() const;
+  PROTOBUF_NODISCARD ::dtproto::std_msgs::PackedDouble* release_arbitrarystate();
+  ::dtproto::std_msgs::PackedDouble* mutable_arbitrarystate();
+  void set_allocated_arbitrarystate(::dtproto::std_msgs::PackedDouble* arbitrarystate);
+  private:
+  const ::dtproto::std_msgs::PackedDouble& _internal_arbitrarystate() const;
+  ::dtproto::std_msgs::PackedDouble* _internal_mutable_arbitrarystate();
+  public:
+  void unsafe_arena_set_allocated_arbitrarystate(
+      ::dtproto::std_msgs::PackedDouble* arbitrarystate);
+  ::dtproto::std_msgs::PackedDouble* unsafe_arena_release_arbitrarystate();
+
   // @@protoc_insertion_point(class_scope:dtproto.leoquad.LeoQuadState)
  private:
   class _Internal;
@@ -2393,6 +2413,7 @@ class LeoQuadState final :
     ::dtproto::leoquad::ControlState* descontrolstate_;
     ::dtproto::leoquad::CpgState* cpgstate_;
     ::dtproto::leoquad::ThreadState* threadstate_;
+    ::dtproto::std_msgs::PackedDouble* arbitrarystate_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -7192,6 +7213,91 @@ inline void LeoQuadState::set_allocated_threadstate(::dtproto::leoquad::ThreadSt
   }
   _impl_.threadstate_ = threadstate;
   // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.threadState)
+}
+
+// .dtproto.std_msgs.PackedDouble arbitraryState = 20;
+inline bool LeoQuadState::_internal_has_arbitrarystate() const {
+  return this != internal_default_instance() && _impl_.arbitrarystate_ != nullptr;
+}
+inline bool LeoQuadState::has_arbitrarystate() const {
+  return _internal_has_arbitrarystate();
+}
+inline const ::dtproto::std_msgs::PackedDouble& LeoQuadState::_internal_arbitrarystate() const {
+  const ::dtproto::std_msgs::PackedDouble* p = _impl_.arbitrarystate_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::std_msgs::PackedDouble&>(
+      ::dtproto::std_msgs::_PackedDouble_default_instance_);
+}
+inline const ::dtproto::std_msgs::PackedDouble& LeoQuadState::arbitrarystate() const {
+  // @@protoc_insertion_point(field_get:dtproto.leoquad.LeoQuadState.arbitraryState)
+  return _internal_arbitrarystate();
+}
+inline void LeoQuadState::unsafe_arena_set_allocated_arbitrarystate(
+    ::dtproto::std_msgs::PackedDouble* arbitrarystate) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.arbitrarystate_);
+  }
+  _impl_.arbitrarystate_ = arbitrarystate;
+  if (arbitrarystate) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.LeoQuadState.arbitraryState)
+}
+inline ::dtproto::std_msgs::PackedDouble* LeoQuadState::release_arbitrarystate() {
+  
+  ::dtproto::std_msgs::PackedDouble* temp = _impl_.arbitrarystate_;
+  _impl_.arbitrarystate_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::dtproto::std_msgs::PackedDouble* LeoQuadState::unsafe_arena_release_arbitrarystate() {
+  // @@protoc_insertion_point(field_release:dtproto.leoquad.LeoQuadState.arbitraryState)
+  
+  ::dtproto::std_msgs::PackedDouble* temp = _impl_.arbitrarystate_;
+  _impl_.arbitrarystate_ = nullptr;
+  return temp;
+}
+inline ::dtproto::std_msgs::PackedDouble* LeoQuadState::_internal_mutable_arbitrarystate() {
+  
+  if (_impl_.arbitrarystate_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dtproto::std_msgs::PackedDouble>(GetArenaForAllocation());
+    _impl_.arbitrarystate_ = p;
+  }
+  return _impl_.arbitrarystate_;
+}
+inline ::dtproto::std_msgs::PackedDouble* LeoQuadState::mutable_arbitrarystate() {
+  ::dtproto::std_msgs::PackedDouble* _msg = _internal_mutable_arbitrarystate();
+  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.LeoQuadState.arbitraryState)
+  return _msg;
+}
+inline void LeoQuadState::set_allocated_arbitrarystate(::dtproto::std_msgs::PackedDouble* arbitrarystate) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.arbitrarystate_);
+  }
+  if (arbitrarystate) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(arbitrarystate));
+    if (message_arena != submessage_arena) {
+      arbitrarystate = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, arbitrarystate, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.arbitrarystate_ = arbitrarystate;
+  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.LeoQuadState.arbitraryState)
 }
 
 // -------------------------------------------------------------------
