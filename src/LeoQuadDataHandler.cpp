@@ -12,8 +12,8 @@
 
 #define ENABLE_COM_POS_PLOT
 #define ENABLE_COM_VEL_PLOT
-// #define ENABLE_ORIENTATION_PLOT
-// #define ENABLE_ANGULAR_VEL_PLOT
+#define ENABLE_ORIENTATION_PLOT
+#define ENABLE_ANGULAR_VEL_PLOT
 #define ENABLE_FOOT_POS_PLOT
 #define ENABLE_FOOT_VEL_PLOT
 // #define ENABLE_FOOT_CONTACT_PLOT
@@ -32,6 +32,9 @@
 
 constexpr static int jdof = 12;
 constexpr static int legnum = 4;
+
+static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
+static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
 LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox)
@@ -169,7 +172,7 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_orient->AddGraph("Euler.z.actual", LineColor<11>());
     _plot_orient->show();
     RegisterPlot(_plot_orient.get());
-    plotDataHandler.SetPlotOrient(_plot_orient.get());
+    // plotDataHandler.SetPlotOrient(_plot_orient.get());
 #endif
 
 #ifdef ENABLE_ANGULAR_VEL_PLOT
@@ -634,6 +637,38 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         _plot_velctrl2com->AddData(5, curTime,
                                    actState.velctrl2comwrtworld().z());
         _plot_velctrl2com->DataUpdated(curTime);
+    }
+    if (_plot_orient)
+    {
+        _plot_orient->AddData(0, curTime,
+                              desState.euleranglebodywrtworld().r() * RAD2DEG);
+        _plot_orient->AddData(1, curTime,
+                              desState.euleranglebodywrtworld().p() * RAD2DEG);
+        _plot_orient->AddData(2, curTime,
+                              desState.euleranglebodywrtworld().y() * RAD2DEG);
+        _plot_orient->AddData(3, curTime,
+                              actState.euleranglebodywrtworld().r() * RAD2DEG);
+        _plot_orient->AddData(4, curTime,
+                              actState.euleranglebodywrtworld().p() * RAD2DEG);
+        _plot_orient->AddData(5, curTime,
+                              actState.euleranglebodywrtworld().y() * RAD2DEG);
+        _plot_orient->DataUpdated(curTime);
+    }
+    if (_plot_angVel)
+    {
+        _plot_angVel->AddData(0, curTime,
+                              desState.angularvelbodywrtbody().r() * RAD2DEG);
+        _plot_angVel->AddData(1, curTime,
+                              desState.angularvelbodywrtbody().p() * RAD2DEG);
+        _plot_angVel->AddData(2, curTime,
+                              desState.angularvelbodywrtbody().y() * RAD2DEG);
+        _plot_angVel->AddData(3, curTime,
+                              actState.angularvelbodywrtbody().r() * RAD2DEG);
+        _plot_angVel->AddData(4, curTime,
+                              actState.angularvelbodywrtbody().p() * RAD2DEG);
+        _plot_angVel->AddData(5, curTime,
+                              actState.angularvelbodywrtbody().y() * RAD2DEG);
+        _plot_angVel->DataUpdated(curTime);
     }
 }
 
