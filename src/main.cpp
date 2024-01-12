@@ -10,7 +10,7 @@
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
 #include "LeoQuadDataHandler.h"
-#include "AnonDataArrayHandler.h"
+#include "ArbitraryStateDataHandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
     std::unique_ptr<LeoQuadDataHandler> dataHandler = std::make_unique<LeoQuadDataHandler>(&plotToolbox);
 #endif
 
-    // special data source
-    std::unique_ptr<AnonDataArrayHandler> dataHandler_darray = std::make_unique<AnonDataArrayHandler>(&plotToolbox);
+    // // special data source
+    // std::unique_ptr<ArbitraryStateDataHandler> dataHandler_darray = std::make_unique<ArbitraryStateDataHandler>(&plotToolbox);
 
     // Start main application(event-loop)
     int rtn = app.exec();
