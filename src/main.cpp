@@ -1,4 +1,4 @@
-#include "define.h"
+#include "config.h"
 #include "mainwindow.h"
 #include "pconstants.h"
 #include "plotwindow.h"

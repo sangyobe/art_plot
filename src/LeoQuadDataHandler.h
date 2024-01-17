@@ -1,8 +1,8 @@
 #ifndef LEOQUADDATAHANDLER_H
 #define LEOQUADDATAHANDLER_H
 
+#include "config.h"
 #include "datahandler.h"
-#include "define.h"
 
 #ifdef USE_TRANSPORT_ECAL
 #include <ecal/ecal.h>

@@ -128,7 +128,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     //
     _refreshPlotTimer = std::unique_ptr<QTimer>(new QTimer(this));
     connect(_refreshPlotTimer.get(), SIGNAL(timeout()), this, SLOT(OnRefreshPlot()));
-    _refreshPlotTimer->setInterval(500); // msec
+    _refreshPlotTimer->setInterval(500); // plot refresh time interval in milli-seconds
     _refreshPlotTimer->start();
 
     //------------------------------------------------------------------

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(artplot VERSION 1.0 LANGUAGES CXX)
+cmake_policy(SET CMP0048 NEW)
+
+project(artplot VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -26,25 +28,36 @@ set(TRANSPORT_TYPE "GRPC" CACHE STRING "select transport library. (GRPC: gRPC, E
 
 if(ROBOT_TYPE STREQUAL "LQ") 
     set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} ROBOT_LEOQUAD)
+    set(conf_artplot_robot_type "LEOQUAD")
+    set(conf_artplot_robot_name "LeoQuad")
 elseif(ROBOT_TYPE STREQUAL "QI")
     set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} ROBOT_QUADIP)
+    set(conf_artplot_robot_type "QUADIP")
+    set(conf_artplot_robot_name "Quad-IP")
 elseif(ROBOT_TYPE STREQUAL "WL") 
     set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} ROBOT_WOLY)
+    set(conf_artplot_robot_type "WOLY")
+    set(conf_artplot_robot_name "Woly")
 else()
     message(FATAL_ERROR "ROBOT_TYPE must be set.")
 endif()
 
 if(TRANSPORT_TYPE STREQUAL "GRPC")
     set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} USE_TRANSPORT_GRPC;)
+    set(conf_artplot_transport_type "GRPC")
 elseif(TRANSPORT_TYPE STREQUAL "ECAL") 
     message(FATAL_ERROR "TRANSPORT_TYPE must be set as GRPC. GRPC is the only trasport layer supported currenty.")
     set(PROJECT_COMPILE_DEFINITIONS ${PROJECT_COMPILE_DEFINITIONS} USE_TRANSPORT_ECAL;)
+    set(conf_artplot_transport_type "ECAL")
 else()
     message(FATAL_ERROR "TRANSPORT_TYPE must be set as GRPC. GRPC is the only trasport layer supported currenty.")
 endif()
 
-message(STATUS "Compiler preprocessor definitions: " ${PROJECT_COMPILE_DEFINITIONS})
-add_compile_definitions(${PROJECT_COMPILE_DEFINITIONS})
+# message(STATUS "Compiler preprocessor definitions: " ${PROJECT_COMPILE_DEFINITIONS})
+# add_compile_definitions(${PROJECT_COMPILE_DEFINITIONS})
+
+# Generate config.h
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/src/config.h" @ONLY)
 
 # Prepare source files
 file(GLOB PROJECT_SOURCES

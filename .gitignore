@@ -3,6 +3,7 @@
 *.pro.user
 .vscode
 build
+src/config.h
 
 # Prerequisites
 ###################
