@@ -40,64 +40,84 @@ static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox)
 #ifdef ENABLE_COM_POS_PLOT
-    , _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_COM_VEL_PLOT
-    , _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_comVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_ORIENTATION_PLOT
-    , _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_orient(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_ANGULAR_VEL_PLOT
-    , _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_angVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_POS_PLOT
-    , _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_footPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_VEL_PLOT
-    , _plot_footVel(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_footVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_CONTACT_PLOT
-    , _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_contact(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_FOOT_FORCE_PLOT
-    , _plot_footForce(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_footForce(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CPG_CPG_PLOT
-    , _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_cpgCpg(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CPG_PHI_PLOT
-    , _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_cpgPhi(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_POSISION_PLOT
-    , _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
-    , _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
-    , _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_TORQUE_PLOT
-    , _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-    , _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
-    , _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CTRL2COM_POS_PLOT
-    , _plot_posctrl2com(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_posctrl2com(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_CTRL2COM_VEL_PLOT
-    , _plot_velctrl2com(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_velctrl2com(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_THREAD_STATE_PLOT
-    , _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_DEBUG_DATA_PLOT
-    , _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+      ,
+      _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 {
     LOG(info) << "LeoQuadDataHandler created.";
@@ -401,7 +421,8 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_DEBUG_DATA_PLOT
     //_plot_debugData = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_debugData->SetWindowTitle("Debug Data Array");
-    for (int gi = 0; gi < _debug_data_array_size_max; gi++) {
+    for (int gi = 0; gi < _debug_data_array_size_max; gi++)
+    {
         _plot_debugData->AddGraph(QString("Data_%1").arg(gi, 2, 10, QLatin1Char('0')), LineColor(gi));
     }
     _plot_debugData->show();
@@ -752,11 +773,13 @@ void LeoQuadDataHandler::OnRecvThreadState(const double curTime, const dtproto::
 
 void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state)
 {
-    if (!_plot_debugData || state.GetTypeName() != "dtproto.std_msgs.PackedDouble") {
+    if (!_plot_debugData || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
+    {
         return;
     }
 
-    if (_debug_data_array_size < 0) {
+    if (_debug_data_array_size < 0)
+    {
         _debug_data_array_size = state.data_size();
         if (_debug_data_array_size > _debug_data_array_size_max)
             _debug_data_array_size = _debug_data_array_size_max;
@@ -767,7 +790,8 @@ void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtprot
         // }
     }
 
-    for (int gi = 0; gi < _debug_data_array_size; gi++) {
+    for (int gi = 0; gi < _debug_data_array_size; gi++)
+    {
         if (gi >= _debug_data_array_size_max || gi >= _plot_debugData->GetGraphCount())
             return;
 
