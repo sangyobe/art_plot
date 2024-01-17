@@ -1,7 +1,7 @@
 #ifndef WOLYDATAHANDLER_H
 #define WOLYDATAHANDLER_H
 
-#include "define.h"
+#include "config.h"
 #include "datahandler.h"
 
 #ifdef USE_TRANSPORT_ECAL

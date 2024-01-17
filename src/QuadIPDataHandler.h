@@ -1,7 +1,7 @@
 #ifndef QUADIPDATAHANDLER_H
 #define QUADIPDATAHANDLER_H
 
-#include "define.h"
+#include "config.h"
 #include "datahandler.h"
 
 #ifdef USE_TRANSPORT_ECAL
