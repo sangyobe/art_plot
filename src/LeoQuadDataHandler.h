@@ -60,10 +60,10 @@ private:
     std::unique_ptr<PlotWindow> _plot_jointTau{nullptr};
     std::unique_ptr<PlotWindow> _plot_incEnc{nullptr};
     std::unique_ptr<PlotWindow> _plot_absEnc{nullptr};
-    std::unique_ptr<PlotWindow> _plot_posctrl2com{nullptr};
-    std::unique_ptr<PlotWindow> _plot_velctrl2com{nullptr};
+    std::unique_ptr<PlotWindow> _plot_eePosG_G{nullptr};
+    std::unique_ptr<PlotWindow> _plot_eeVelE_G{nullptr};
 
-    // for plotting user-defined arbitrary data array    
+    // for plotting user-defined arbitrary data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};
     int _debug_data_array_size{-1};
     const int _debug_data_array_size_max = 32;

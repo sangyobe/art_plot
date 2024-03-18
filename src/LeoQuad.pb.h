@@ -1188,7 +1188,6 @@ class ControlState final :
     kContactFieldNumber = 17,
     kPosCtrl2ComWrtWorldFieldNumber = 18,
     kVelCtrl2ComWrtWorldFieldNumber = 19,
-    kRealVelWorld2BodyWrtWorldFieldNumber = 20,
   };
   // repeated .dtproto.geometry_msgs.Point3d posWorld2FootWrtWorld = 9;
   int posworld2footwrtworld_size() const;
@@ -1532,24 +1531,6 @@ class ControlState final :
       ::dtproto::geometry_msgs::Point3d* velctrl2comwrtworld);
   ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_velctrl2comwrtworld();
 
-  // .dtproto.geometry_msgs.Point3d realVelWorld2BodyWrtWorld = 20;
-  bool has_realvelworld2bodywrtworld() const;
-  private:
-  bool _internal_has_realvelworld2bodywrtworld() const;
-  public:
-  void clear_realvelworld2bodywrtworld();
-  const ::dtproto::geometry_msgs::Point3d& realvelworld2bodywrtworld() const;
-  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_realvelworld2bodywrtworld();
-  ::dtproto::geometry_msgs::Point3d* mutable_realvelworld2bodywrtworld();
-  void set_allocated_realvelworld2bodywrtworld(::dtproto::geometry_msgs::Point3d* realvelworld2bodywrtworld);
-  private:
-  const ::dtproto::geometry_msgs::Point3d& _internal_realvelworld2bodywrtworld() const;
-  ::dtproto::geometry_msgs::Point3d* _internal_mutable_realvelworld2bodywrtworld();
-  public:
-  void unsafe_arena_set_allocated_realvelworld2bodywrtworld(
-      ::dtproto::geometry_msgs::Point3d* realvelworld2bodywrtworld);
-  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_realvelworld2bodywrtworld();
-
   // @@protoc_insertion_point(class_scope:dtproto.leoquad.ControlState)
  private:
   class _Internal;
@@ -1577,7 +1558,6 @@ class ControlState final :
     ::dtproto::geometry_msgs::Vector4b* contact_;
     ::dtproto::geometry_msgs::Point3d* posctrl2comwrtworld_;
     ::dtproto::geometry_msgs::Point3d* velctrl2comwrtworld_;
-    ::dtproto::geometry_msgs::Point3d* realvelworld2bodywrtworld_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -4975,91 +4955,6 @@ inline void ControlState::set_allocated_velctrl2comwrtworld(::dtproto::geometry_
   }
   _impl_.velctrl2comwrtworld_ = velctrl2comwrtworld;
   // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.ControlState.velCtrl2ComWrtWorld)
-}
-
-// .dtproto.geometry_msgs.Point3d realVelWorld2BodyWrtWorld = 20;
-inline bool ControlState::_internal_has_realvelworld2bodywrtworld() const {
-  return this != internal_default_instance() && _impl_.realvelworld2bodywrtworld_ != nullptr;
-}
-inline bool ControlState::has_realvelworld2bodywrtworld() const {
-  return _internal_has_realvelworld2bodywrtworld();
-}
-inline const ::dtproto::geometry_msgs::Point3d& ControlState::_internal_realvelworld2bodywrtworld() const {
-  const ::dtproto::geometry_msgs::Point3d* p = _impl_.realvelworld2bodywrtworld_;
-  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
-      ::dtproto::geometry_msgs::_Point3d_default_instance_);
-}
-inline const ::dtproto::geometry_msgs::Point3d& ControlState::realvelworld2bodywrtworld() const {
-  // @@protoc_insertion_point(field_get:dtproto.leoquad.ControlState.realVelWorld2BodyWrtWorld)
-  return _internal_realvelworld2bodywrtworld();
-}
-inline void ControlState::unsafe_arena_set_allocated_realvelworld2bodywrtworld(
-    ::dtproto::geometry_msgs::Point3d* realvelworld2bodywrtworld) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.realvelworld2bodywrtworld_);
-  }
-  _impl_.realvelworld2bodywrtworld_ = realvelworld2bodywrtworld;
-  if (realvelworld2bodywrtworld) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.leoquad.ControlState.realVelWorld2BodyWrtWorld)
-}
-inline ::dtproto::geometry_msgs::Point3d* ControlState::release_realvelworld2bodywrtworld() {
-  
-  ::dtproto::geometry_msgs::Point3d* temp = _impl_.realvelworld2bodywrtworld_;
-  _impl_.realvelworld2bodywrtworld_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::dtproto::geometry_msgs::Point3d* ControlState::unsafe_arena_release_realvelworld2bodywrtworld() {
-  // @@protoc_insertion_point(field_release:dtproto.leoquad.ControlState.realVelWorld2BodyWrtWorld)
-  
-  ::dtproto::geometry_msgs::Point3d* temp = _impl_.realvelworld2bodywrtworld_;
-  _impl_.realvelworld2bodywrtworld_ = nullptr;
-  return temp;
-}
-inline ::dtproto::geometry_msgs::Point3d* ControlState::_internal_mutable_realvelworld2bodywrtworld() {
-  
-  if (_impl_.realvelworld2bodywrtworld_ == nullptr) {
-    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
-    _impl_.realvelworld2bodywrtworld_ = p;
-  }
-  return _impl_.realvelworld2bodywrtworld_;
-}
-inline ::dtproto::geometry_msgs::Point3d* ControlState::mutable_realvelworld2bodywrtworld() {
-  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_realvelworld2bodywrtworld();
-  // @@protoc_insertion_point(field_mutable:dtproto.leoquad.ControlState.realVelWorld2BodyWrtWorld)
-  return _msg;
-}
-inline void ControlState::set_allocated_realvelworld2bodywrtworld(::dtproto::geometry_msgs::Point3d* realvelworld2bodywrtworld) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.realvelworld2bodywrtworld_);
-  }
-  if (realvelworld2bodywrtworld) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(realvelworld2bodywrtworld));
-    if (message_arena != submessage_arena) {
-      realvelworld2bodywrtworld = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, realvelworld2bodywrtworld, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  _impl_.realvelworld2bodywrtworld_ = realvelworld2bodywrtworld;
-  // @@protoc_insertion_point(field_set_allocated:dtproto.leoquad.ControlState.realVelWorld2BodyWrtWorld)
 }
 
 // -------------------------------------------------------------------

@@ -26,8 +26,11 @@
 #define ENABLE_JOINT_TORQUE_PLOT
 // #define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-#define ENABLE_CTRL2COM_POS_PLOT
-#define ENABLE_CTRL2COM_VEL_PLOT
+// #define ENABLE_CTRL2COM_POS_PLOT
+#define ENABLE_EEPOSG_G_PLOT
+// #define ENABLE_CTRL2COM_VEL_PLOT
+#define ENABLE_EEVELE_G_PLOT
+
 #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
 
@@ -103,13 +106,13 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
       ,
       _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
-#ifdef ENABLE_CTRL2COM_POS_PLOT
+#ifdef ENABLE_EEPOSG_G_PLOT
       ,
-      _plot_posctrl2com(std::make_unique<PlotWindow>(plotToolbox))
+      _plot_eePosG_G(std::make_unique<PlotWindow>(plotToolbox))
 #endif
-#ifdef ENABLE_CTRL2COM_VEL_PLOT
+#ifdef ENABLE_EEVELE_G_PLOT
       ,
-      _plot_velctrl2com(std::make_unique<PlotWindow>(plotToolbox))
+      _plot_eeVelE_G(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_THREAD_STATE_PLOT
       ,
@@ -158,9 +161,6 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_comVel->AddGraph("Com.Vx.actual", LineColor<3>());
     _plot_comVel->AddGraph("Com.Vy.actual", LineColor<4>());
     _plot_comVel->AddGraph("Com.Vz.actual", LineColor<5>());
-    _plot_comVel->AddGraph("Body.Vx.real", LineColor<6>());
-    _plot_comVel->AddGraph("Body.Vy.real", LineColor<7>());
-    _plot_comVel->AddGraph("Body.Vz.real", LineColor<8>());
     _plot_comVel->show();
     RegisterPlot(_plot_comVel.get());
 #endif
@@ -377,30 +377,66 @@ void LeoQuadDataHandler::BuildPlots()
     RegisterPlot(_plot_incEnc.get());
 #endif
 
-#ifdef ENABLE_CTRL2COM_POS_PLOT
+#ifdef ENABLE_EEPOSG_G_PLOT
     // _plot_posctrl2com = std::make_unique<PlotWindow>(_plotToolbox);
-    _plot_posctrl2com->SetWindowTitle("posCtrl2Com wrt World");
-    _plot_posctrl2com->AddGraph("Com.Px.desired", LineColor<0>());
-    _plot_posctrl2com->AddGraph("Com.Py.desired", LineColor<1>());
-    _plot_posctrl2com->AddGraph("Com.Pz.desired", LineColor<2>());
-    _plot_posctrl2com->AddGraph("Com.Px.actual", LineColor<3>());
-    _plot_posctrl2com->AddGraph("Com.Py.actual", LineColor<4>());
-    _plot_posctrl2com->AddGraph("Com.Pz.actual", LineColor<5>());
-    _plot_posctrl2com->show();
-    RegisterPlot(_plot_posctrl2com.get());
+    _plot_eePosG_G->SetWindowTitle("eePosG_G");
+    _plot_eePosG_G->AddGraph("FL.x.desired", LineColor<0>());
+    _plot_eePosG_G->AddGraph("FL.y.desired", LineColor<1>());
+    _plot_eePosG_G->AddGraph("FL.z.desired", LineColor<2>());
+    _plot_eePosG_G->AddGraph("FL.x.actual", LineColor<3>());
+    _plot_eePosG_G->AddGraph("FL.y.actual", LineColor<4>());
+    _plot_eePosG_G->AddGraph("FL.z.actual", LineColor<5>());
+    _plot_eePosG_G->AddGraph("BL.x.desired", LineColor<6>());
+    _plot_eePosG_G->AddGraph("BL.y.desired", LineColor<7>());
+    _plot_eePosG_G->AddGraph("BL.z.desired", LineColor<8>());
+    _plot_eePosG_G->AddGraph("BL.x.actual", LineColor<9>());
+    _plot_eePosG_G->AddGraph("BL.y.actual", LineColor<10>());
+    _plot_eePosG_G->AddGraph("BL.z.actual", LineColor<11>());
+    _plot_eePosG_G->AddGraph("FR.x.desired", LineColor<12>());
+    _plot_eePosG_G->AddGraph("FR.y.desired", LineColor<13>());
+    _plot_eePosG_G->AddGraph("FR.z.desired", LineColor<14>());
+    _plot_eePosG_G->AddGraph("FR.x.actual", LineColor<15>());
+    _plot_eePosG_G->AddGraph("FR.y.actual", LineColor<16>());
+    _plot_eePosG_G->AddGraph("FR.z.actual", LineColor<17>());
+    _plot_eePosG_G->AddGraph("BR.x.desired", LineColor<18>());
+    _plot_eePosG_G->AddGraph("BR.y.desired", LineColor<19>());
+    _plot_eePosG_G->AddGraph("BR.z.desired", LineColor<20>());
+    _plot_eePosG_G->AddGraph("BR.x.actual", LineColor<21>());
+    _plot_eePosG_G->AddGraph("BR.y.actual", LineColor<22>());
+    _plot_eePosG_G->AddGraph("BR.z.actual", LineColor<23>());
+    _plot_eePosG_G->show();
+    RegisterPlot(_plot_eePosG_G.get());
 #endif
 
-#ifdef ENABLE_CTRL2COM_VEL_PLOT
+#ifdef ENABLE_EEVELE_G_PLOT
     // _plot_velctrl2com = std::make_unique<PlotWindow>(_plotToolbox);
-    _plot_velctrl2com->SetWindowTitle("velCtrl2Com wrt World");
-    _plot_velctrl2com->AddGraph("Com.Vx.desired", LineColor<0>());
-    _plot_velctrl2com->AddGraph("Com.Vy.desired", LineColor<1>());
-    _plot_velctrl2com->AddGraph("Com.Vz.desired", LineColor<2>());
-    _plot_velctrl2com->AddGraph("Com.Vx.actual", LineColor<3>());
-    _plot_velctrl2com->AddGraph("Com.Vy.actual", LineColor<4>());
-    _plot_velctrl2com->AddGraph("Com.Vz.actual", LineColor<5>());
-    _plot_velctrl2com->show();
-    RegisterPlot(_plot_velctrl2com.get());
+    _plot_eeVelE_G->SetWindowTitle("eeVelE_G");
+    _plot_eeVelE_G->AddGraph("FL.x.desired", LineColor<0>());
+    _plot_eeVelE_G->AddGraph("FL.y.desired", LineColor<1>());
+    _plot_eeVelE_G->AddGraph("FL.z.desired", LineColor<2>());
+    _plot_eeVelE_G->AddGraph("FL.x.actual", LineColor<3>());
+    _plot_eeVelE_G->AddGraph("FL.y.actual", LineColor<4>());
+    _plot_eeVelE_G->AddGraph("FL.z.actual", LineColor<5>());
+    _plot_eeVelE_G->AddGraph("BL.x.desired", LineColor<6>());
+    _plot_eeVelE_G->AddGraph("BL.y.desired", LineColor<7>());
+    _plot_eeVelE_G->AddGraph("BL.z.desired", LineColor<8>());
+    _plot_eeVelE_G->AddGraph("BL.x.actual", LineColor<9>());
+    _plot_eeVelE_G->AddGraph("BL.y.actual", LineColor<10>());
+    _plot_eeVelE_G->AddGraph("BL.z.actual", LineColor<11>());
+    _plot_eeVelE_G->AddGraph("FR.x.desired", LineColor<12>());
+    _plot_eeVelE_G->AddGraph("FR.y.desired", LineColor<13>());
+    _plot_eeVelE_G->AddGraph("FR.z.desired", LineColor<14>());
+    _plot_eeVelE_G->AddGraph("FR.x.actual", LineColor<15>());
+    _plot_eeVelE_G->AddGraph("FR.y.actual", LineColor<16>());
+    _plot_eeVelE_G->AddGraph("FR.z.actual", LineColor<17>());
+    _plot_eeVelE_G->AddGraph("BR.x.desired", LineColor<18>());
+    _plot_eeVelE_G->AddGraph("BR.y.desired", LineColor<19>());
+    _plot_eeVelE_G->AddGraph("BR.z.desired", LineColor<20>());
+    _plot_eeVelE_G->AddGraph("BR.x.actual", LineColor<21>());
+    _plot_eeVelE_G->AddGraph("BR.y.actual", LineColor<22>());
+    _plot_eeVelE_G->AddGraph("BR.z.actual", LineColor<23>());
+    _plot_eeVelE_G->show();
+    RegisterPlot(_plot_eeVelE_G.get());
 #endif
 
 #ifdef ENABLE_THREAD_STATE_PLOT
@@ -614,45 +650,47 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
                               actState.velworld2comwrtworld().y());
         _plot_comVel->AddData(5, curTime,
                               actState.velworld2comwrtworld().z());
-        _plot_comVel->AddData(6, curTime,
-                              actState.realvelworld2bodywrtworld().x());
-        _plot_comVel->AddData(7, curTime,
-                              actState.realvelworld2bodywrtworld().y());
-        _plot_comVel->AddData(8, curTime,
-                              actState.realvelworld2bodywrtworld().z());
         _plot_comVel->DataUpdated(curTime);
     }
-    if (_plot_posctrl2com)
+    if (_plot_eePosG_G)
     {
-        _plot_posctrl2com->AddData(0, curTime,
-                                   desState.posctrl2comwrtworld().x());
-        _plot_posctrl2com->AddData(1, curTime,
-                                   desState.posctrl2comwrtworld().y());
-        _plot_posctrl2com->AddData(2, curTime,
-                                   desState.posctrl2comwrtworld().z());
-        _plot_posctrl2com->AddData(3, curTime,
-                                   actState.posctrl2comwrtworld().x());
-        _plot_posctrl2com->AddData(4, curTime,
-                                   actState.posctrl2comwrtworld().y());
-        _plot_posctrl2com->AddData(5, curTime,
-                                   actState.posctrl2comwrtworld().z());
-        _plot_posctrl2com->DataUpdated(curTime);
+        for (int li = 0; li < legnum; li++)
+        {
+            _plot_eePosG_G->AddData(6 * li + 0, curTime,
+                                    desState.posworld2footwrtworld(li).x());
+            _plot_eePosG_G->AddData(6 * li + 1, curTime,
+                                    desState.posworld2footwrtworld(li).y());
+            _plot_eePosG_G->AddData(6 * li + 2, curTime,
+                                    desState.posworld2footwrtworld(li).z());
+
+            _plot_eePosG_G->AddData(6 * li + 3, curTime,
+                                    actState.posworld2footwrtworld(li).x());
+            _plot_eePosG_G->AddData(6 * li + 4, curTime,
+                                    actState.posworld2footwrtworld(li).y());
+            _plot_eePosG_G->AddData(6 * li + 5, curTime,
+                                    actState.posworld2footwrtworld(li).z());
+        }
+        _plot_eePosG_G->DataUpdated(curTime);
     }
-    if (_plot_velctrl2com)
+    if (_plot_eeVelE_G)
     {
-        _plot_velctrl2com->AddData(0, curTime,
-                                   desState.velctrl2comwrtworld().x());
-        _plot_velctrl2com->AddData(1, curTime,
-                                   desState.velctrl2comwrtworld().y());
-        _plot_velctrl2com->AddData(2, curTime,
-                                   desState.velctrl2comwrtworld().z());
-        _plot_velctrl2com->AddData(3, curTime,
-                                   actState.velctrl2comwrtworld().x());
-        _plot_velctrl2com->AddData(4, curTime,
-                                   actState.velctrl2comwrtworld().y());
-        _plot_velctrl2com->AddData(5, curTime,
-                                   actState.velctrl2comwrtworld().z());
-        _plot_velctrl2com->DataUpdated(curTime);
+        for (int li = 0; li < legnum; li++)
+        {
+            _plot_eeVelE_G->AddData(6 * li + 0, curTime,
+                                    desState.velworld2footwrtworld(li).x());
+            _plot_eeVelE_G->AddData(6 * li + 1, curTime,
+                                    desState.velworld2footwrtworld(li).y());
+            _plot_eeVelE_G->AddData(6 * li + 2, curTime,
+                                    desState.velworld2footwrtworld(li).z());
+
+            _plot_eeVelE_G->AddData(6 * li + 3, curTime,
+                                    actState.velworld2footwrtworld(li).x());
+            _plot_eeVelE_G->AddData(6 * li + 4, curTime,
+                                    actState.velworld2footwrtworld(li).y());
+            _plot_eeVelE_G->AddData(6 * li + 5, curTime,
+                                    actState.velworld2footwrtworld(li).z());
+        }
+        _plot_eeVelE_G->DataUpdated(curTime);
     }
     if (_plot_orient)
     {
