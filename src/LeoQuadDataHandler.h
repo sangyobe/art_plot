@@ -66,7 +66,7 @@ private:
     // for plotting user-defined arbitrary data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};
     int _debug_data_array_size{-1};
-    const int _debug_data_array_size_max = 32;
+    int _debug_data_array_size_max{0};
 
 #ifdef USE_TRANSPORT_ECAL
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::leoquad::LeoQuadStateTimeStamped>> _sub_state;

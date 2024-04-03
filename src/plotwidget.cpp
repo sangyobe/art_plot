@@ -124,7 +124,7 @@ void PlotWidget::ImportFromCSV(QStringList& import_files)
                     if (mdata.size() > 5) scatter_size = mdata[5].toDouble();
                     if (mdata.size() > 6) scatter_skip = mdata[6].toInt();
 
-                    int idx = static_cast<PlotWindow*>(parent()->parent())->AddGraph(name, line_color, line_width, scatter_shape, scatter_skip);
+                    int idx = static_cast<PlotWindow*>(parent()->parent())->AddGraph(name, line_color, "", line_width, scatter_shape, scatter_skip);
                     if (graph_count == 0)
                         graph_base_idx = (idx - 1); // AddGraph returns graph count not index
                     graph_count++;

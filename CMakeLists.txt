@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 cmake_policy(SET CMP0048 NEW)
 
-project(artplot VERSION 1.0.0 LANGUAGES CXX)
+project(artplot VERSION 1.1.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -111,6 +111,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dtproto_grpc)
 # target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ecal_core)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE spdlog)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE yaml-cpp)
 
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

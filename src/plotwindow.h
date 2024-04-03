@@ -35,12 +35,12 @@ public:
     QCPGraph *graph(int index) const;
 
 public:
-    int AddGraph(const QString &name, const QColor &color, int line_width = 1, int scatter_shape = 0, int scatter_skip = 0, bool visible = true);
+    int AddGraph(const QString &name, const QColor &color, const QString group_name = QString(""), int line_width = 1, int scatter_shape = 0, int scatter_skip = 0, bool visible = true);
     int GetGraphCount();
     void AddData(int gid, double key, double value);
     void SetGraphVisible(const QString &name, bool visible);
     void SelectGraph(const QString &name, int index = -1);
-    void UnselectAllGraphs();
+    void DeselectAllGraphs();
     void ResetPlot();   // clear data and remove all graphs
     void ResetData();   // clear data only
     void Replot();
@@ -86,11 +86,12 @@ private:
     QByteArray SavePlotConfig() const;
     bool RestorePlotConfig(const QByteArray &config);
     QByteArray SaveDataSeriesConfig() const;
-    bool RestoreDataSeriesConfig(const QByteArray & config, const QString& name);
+    bool RestoreDataSeriesConfig(const QByteArray & config, const QString& name, QString& alias, QColor& color);
 
 private slots:
     void OnConfigChanged(QStandardItem* item);
     void OnConfigItemGraphClicked(QString name, int index);
+    void OnConfigItemGraphColorSelected(QString name, int index, QColor color);
     void OnHorzScrollBarChanged(int value);
     void OnVertScrollBarChanged(int value);
     void OnXAxisRangeChanged(QCPRange range);
@@ -134,7 +135,8 @@ private:
     void AdjustPlotXRange();
     void AdjustPlotYRange();
 
-    const QStandardItem* FindFirstConfigOptionItem(const QString& cat, const QString& item, int col = 0);
+    const QStandardItem* FindFirstConfigOptionItem(const QString& cat, const QString& item, int col = 0, bool recursive = false);
+    const QStandardItem* FindFirstConfigOptionGroup(const QString& cat, const QString& group, int col = 0, bool recursive = false);
 
 public slots:
     void OnRefreshPlot();

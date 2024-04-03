@@ -13,12 +13,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(const std::string& ip = "127.0.0.1", const uint16_t port = 0, QWidget *parent = nullptr);
+    explicit MainWindow(const std::string& ip = "127.0.0.1", const uint16_t port = 0, const int dnum = 0, QWidget *parent = nullptr);
     ~MainWindow();
 
 public:
     void AddPlot(PlotWindow* plotWnd);
     void GetServerAddress(std::string& ip, uint16_t& port);
+    int GetDebugDataNum();
 
 private:
     QByteArray SavePlotConfig() const;
@@ -49,6 +50,7 @@ private:
     QStandardItemModel* _plotListModel;
     std::string _svrIpAddr;
     uint16_t _svrPort;
+    int _debug_data_num;
 };
 
 #endif // MAINWINDOW_H

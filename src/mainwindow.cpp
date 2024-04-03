@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <algorithm>
 
-MainWindow::MainWindow(const std::string& ip, const uint16_t port, QWidget *parent) :
+MainWindow::MainWindow(const std::string& ip, const uint16_t port, const int dnum, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -14,6 +14,8 @@ MainWindow::MainWindow(const std::string& ip, const uint16_t port, QWidget *pare
 
     QStandardItem* rt_plot_root = new QStandardItem("Realtime plots");
     QStandardItem* im_plot_root = new QStandardItem("Imported plots");
+    rt_plot_root->setEditable(false);
+    im_plot_root->setEditable(false);
     _plotListModel->appendRow(rt_plot_root);
     _plotListModel->appendRow(im_plot_root);
 
@@ -45,6 +47,9 @@ MainWindow::MainWindow(const std::string& ip, const uint16_t port, QWidget *pare
                 .arg(QString(_svrIpAddr.c_str()))
                 .arg(_svrPort),
             0);
+
+    // store params
+    _debug_data_num = (dnum > 0 && dnum < 100 ? dnum : 32);
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +61,11 @@ void MainWindow::GetServerAddress(std::string& ip, uint16_t& port)
 {
     ip = _svrIpAddr;
     port = _svrPort;
+}
+
+int MainWindow::GetDebugDataNum()
+{
+    return _debug_data_num;
 }
 
 void MainWindow::AddPlot(PlotWindow *plotWnd)

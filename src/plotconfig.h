@@ -18,11 +18,20 @@ public:
     ~PlotConfig();
 
     void setConfigModel(QAbstractItemModel* configModel);
+    void expandAll();
+    void expand(const QModelIndex& index, int depth = -1);
+    void collapseAll();
+    void collapse(const QModelIndex& index);
+    void selectItem(const QModelIndex& index);
+    void clearSelection();
 
 private slots:
     void OnItemClicked(const QModelIndex& index);
+    void OnItemDoubleClicked(const QModelIndex& index);
+
 signals:
     void graphItemClicked(QString name, int index);
+    void graphColorSelected(QString name, int index, QColor color);
 
 private:
     Ui::PlotConfig *ui;

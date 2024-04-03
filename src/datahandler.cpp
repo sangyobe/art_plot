@@ -16,3 +16,10 @@ void DataHandler::GetServerAddress(std::string& ip, uint16_t& port)
 
     _plotToolbox->GetServerAddress(ip, port);
 }
+
+int DataHandler::GetDebugDataNum()
+{
+    if (!_plotToolbox) return 32;
+
+    return _plotToolbox->GetDebugDataNum();
+}

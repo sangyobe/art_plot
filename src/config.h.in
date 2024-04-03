@@ -10,6 +10,7 @@
 #define ARTPLOT_VERSION_MAJOR (@PROJECT_VERSION_MAJOR@)
 #define ARTPLOT_VERSION_MINOR (@PROJECT_VERSION_MINOR@)
 #define ARTPLOT_VERSION_PATCH (@PROJECT_VERSION_PATCH@)
+#define ARTPLOT_VERSION_STR   "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@"
 
 /////////////////////////////////////////////////////////
 // Communication middleware (eCAL or gRPC)
@@ -21,6 +22,6 @@
 //
 #define ROBOT_@conf_artplot_robot_type@
 #define ROBOT_NAME "@conf_artplot_robot_name@"
-#define APP_NAME "ArtPlot (@conf_artplot_robot_name@)"
+#define APP_NAME "ArtPlot v@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@ - @conf_artplot_robot_name@"
 
 #endif // CONFIG_H

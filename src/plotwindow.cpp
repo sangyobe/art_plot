@@ -59,6 +59,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     _plotConfig->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea, _plotConfig);
     connect(_plotConfig, SIGNAL(graphItemClicked(QString, int)), this, SLOT(OnConfigItemGraphClicked(QString, int)));
+    connect(_plotConfig, SIGNAL(graphColorSelected(QString, int, QColor)), this, SLOT(OnConfigItemGraphColorSelected(QString, int, QColor)));
 
     BuildConfig();
 
@@ -144,10 +145,10 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     // connect(ui->plotwidget->yAxis, SIGNAL(rangeChanged(const QCPRange&, const QCPRange&)), this, SLOT(OnRangeChanged(const QCPRange&, const QCPRange&)));
 
 #ifdef USE_EMUL_DATA
-    this->AddGraph("Sin", LineColor<0>(), 1, LineScatterShape::ssCircle, 1000, false);
-    this->AddGraph("Sin^2", LineColor<1>(), 1);
-    this->AddGraph("Cos", LineColor<2>(), 2);
-    this->AddGraph("Cos^2", LineColor<3>(), 2, LineScatterShape::ssTriangle, 500);
+    this->AddGraph("Sin", LineColor<0>(), "", 1, LineScatterShape::ssCircle, 1000, false);
+    this->AddGraph("Sin^2", LineColor<1>(), "", 1);
+    this->AddGraph("Cos", LineColor<2>(), "", 2);
+    this->AddGraph("Cos^2", LineColor<3>(), "", 2, LineScatterShape::ssTriangle, 500);
     this->SetGraphVisible("Cos^2", false);
 
     _dataSource = std::unique_ptr<DataSourceEmul>(new DataSourceEmul("Sample Data Series"));
@@ -172,7 +173,7 @@ QCPGraph *PlotWindow::graph(int index) const
     return ui->plotwidget->graph(index);
 }
 
-int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_width, int scatter_shape, int scatter_skip, bool visible)
+int PlotWindow::AddGraph(const QString &name, const QColor &color, const QString group_name, int line_width, int scatter_shape, int scatter_skip, bool visible)
 {
     QCPGraph *graph = ui->plotwidget->addGraph();
     graph->setName(name);
@@ -190,18 +191,23 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
 
     auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
     QList<QStandardItem *> item_graph_visible;
+    QStandardItem *item_title = nullptr;
+    QStandardItem *item_option = nullptr;
+    QStandardItem *group_title = nullptr;
     foreach (QStandardItem *data_series_root, items)
     {
-        if (data_series_root->parent())
+        if (data_series_root->parent()) // Data series 가 최상위 노드가 아니면(데이터 이름일 수 있다) skip!
             continue;
 
-        QStandardItem *item_title = new QStandardItem(name);
-        QStandardItem *item_option = new QStandardItem();
+        item_title = new QStandardItem(name);
+        item_option = new QStandardItem();
 
-        item_title->setEditable(false);
+        item_title->setEditable(true);
         item_title->setSelectable(true);
         item_title->setWhatsThis(QString("Data series::Visible"));
         item_title->setData(QVariant::fromValue((void *)graph));
+        item_title->setData(QVariant::fromValue(name), Qt::UserRole + 2);
+        item_title->setData(QVariant::fromValue((void *)item_option), Qt::UserRole + 3);
         item_title->setCheckable(true);
         item_title->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
 
@@ -211,14 +217,53 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, int line_widt
         item_option->setSelectable(false);
         item_option->setData(color, Qt::BackgroundRole);
         item_option->setData(QVariant::fromValue(name), Qt::UserRole + 2);
+        item_option->setData(QVariant::fromValue((void *)item_title), Qt::UserRole + 3);
+
         item_graph_visible.append(item_title);
         item_graph_visible.append(item_option);
-        data_series_root->appendRow(item_graph_visible);
+
+        // process grouping items
+        if (!group_name.isEmpty())
+        {
+            group_title = const_cast<QStandardItem*>(FindFirstConfigOptionGroup("Data series", group_name, 0));
+            if (!group_title)
+            {
+                group_title = new QStandardItem(group_name);
+                group_title->setEditable(false);
+                group_title->setSelectable(false);
+                group_title->setWhatsThis(QString("Data series::Visible_Group"));
+                group_title->setCheckable(true);
+                group_title->setCheckState(Qt::Checked);
+
+                data_series_root->appendRow(group_title);
+            }
+            group_title->appendRow(item_graph_visible);
+            _plotConfig->expand(_configModel->indexFromItem(group_title));
+        }
+        else
+        {
+            data_series_root->appendRow(item_graph_visible);
+        }
+        
+        _plotConfig->expand(_configModel->indexFromItem(data_series_root));
         break;
     }
 
     QSettings settings("hmc", "artPlot");
-    RestoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig").toByteArray(), name);
+    QString alias;
+    QColor bgcolor;
+    RestoreDataSeriesConfig(settings.value(windowTitle() + "/dataSeriesConfig_v2").toByteArray(), name, alias, bgcolor);
+    if (name != alias && !alias.isEmpty())
+    {
+        item_title->setText(alias);
+        graph->setName(alias);
+    }
+    if (bgcolor.isValid())
+    {
+        item_option->setData(bgcolor, Qt::BackgroundRole);
+        QPen bgpen(bgcolor);
+        graph->setPen(bgpen);
+    }
 
     return ui->plotwidget->graphCount();
 }
@@ -236,7 +281,7 @@ void PlotWindow::AddData(int gid, double key, double value)
 
 void PlotWindow::SetGraphVisible(const QString &name, bool visible)
 {
-    const QStandardItem *item = FindFirstConfigOptionItem("Data series", name, 0);
+    const QStandardItem *item = FindFirstConfigOptionItem("Data series", name, 0, true);
     if (item)
     {
         const_cast<QStandardItem *>(item)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
@@ -271,10 +316,13 @@ void PlotWindow::SelectGraph(const QString &name, int index)
         QCPDataRange range(0, 1);
         selection.addDataRange(range);
         ui->plotwidget->graph(foundItemIndex)->setSelection(selection);
+
+        // select legend item
+        ui->plotwidget->legend->item(foundItemIndex)->setSelected(true);
     }
 }
 
-void PlotWindow::UnselectAllGraphs()
+void PlotWindow::DeselectAllGraphs()
 {
     ui->plotwidget->deselectAll();
 }
@@ -483,7 +531,7 @@ void PlotWindow::closeEvent(QCloseEvent *event)
     settings.setValue(windowTitle() + "/geometry", saveGeometry());
     settings.setValue(windowTitle() + "/windowState", saveState());
     settings.setValue(windowTitle() + "/plotConfig", SavePlotConfig());
-    settings.setValue(windowTitle() + "/dataSeriesConfig", SaveDataSeriesConfig());
+    settings.setValue(windowTitle() + "/dataSeriesConfig_v2", SaveDataSeriesConfig());
     QMainWindow::closeEvent(event);
     emit widgetClosed(this);
 }
@@ -859,39 +907,35 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
         {
             graph->setVisible(
                 (item->checkState() == Qt::Checked ? true : false));
+
+            if (item->data(Qt::DisplayRole).toString() != item->data(Qt::UserRole + 2).toString())
+            {
+                graph->setName(item->data(Qt::DisplayRole).toString());
+            }
         }
     }
-    else if (item->whatsThis() == "Data series::Visible_All")
+    else if (item->whatsThis() == "Data series::Visible_All" || item->whatsThis() == "Data series::Visible_Group")
     {
-
-        auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
-        foreach (QStandardItem *data_series_root, items)
+        for (int row = 0; row < item->rowCount(); row++)
         {
-            if (data_series_root->parent())
+            QStandardItem *graph_visible_item = item->child(row, 0);
+            if (!graph_visible_item)
                 continue;
 
-            // qDebug() << "row count" << data_series_root->rowCount();
-            for (int row = 0; row < data_series_root->rowCount(); row++)
-            {
-                QStandardItem *graph_visible_item = data_series_root->child(row, 0);
-                if (!graph_visible_item)
-                    continue;
-
-                graph_visible_item->setCheckState(item->checkState());
-            }
+            graph_visible_item->setCheckState(item->checkState());
         }
     }
 }
 
 void PlotWindow::OnConfigItemGraphClicked(QString name, int index)
 {
-    QStandardItem const *item = FindFirstConfigOptionItem("Data series", name, 0);
+    QStandardItem const *item = FindFirstConfigOptionItem("Data series", name, 0, true);
     if (item)
     {
         if (const_cast<QStandardItem *>(item)->checkState() == Qt::Checked)
         {
-            // unselect all
-            UnselectAllGraphs();
+            // deselect all
+            DeselectAllGraphs();
 
             // select new
             SelectGraph(name, index);
@@ -900,6 +944,26 @@ void PlotWindow::OnConfigItemGraphClicked(QString name, int index)
         {
             // do nothing
             return;
+        }
+    }
+}
+
+void PlotWindow::OnConfigItemGraphColorSelected(QString name, int index, QColor color)
+{
+    // qDebug() << "selected color = " << color.red() << "," << color.green() << "," << color.blue();
+
+    QStandardItem const *item_title = FindFirstConfigOptionItem("Data series", name, 0, true);
+    if (item_title)
+    {
+        QStandardItem* item_option = (QStandardItem*)(item_title->data(Qt::UserRole + 3).value<void*>());
+        QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
+
+        if (item_option && graph)
+        {
+            item_option->setData(color, Qt::BackgroundRole);
+
+            QPen pen(color); // TODO: 현재 설정된 line width 등 세팅을 가져와야 함.
+            graph->setPen(pen);
         }
     }
 }
@@ -990,6 +1054,9 @@ QByteArray PlotWindow::SaveDataSeriesConfig() const
 {
     QString configstr;
     QTextStream str(&configstr);
+    QStandardItem *child_name = nullptr;
+    QStandardItem *data_name = nullptr;
+    QStandardItem *data_color = nullptr;
 
     // qDebug() << "SaveDataSeriesConfig";
     auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
@@ -1001,11 +1068,31 @@ QByteArray PlotWindow::SaveDataSeriesConfig() const
 
         for (int chiIndex = 0; chiIndex < data_series_root->rowCount(); chiIndex++)
         {
-            QStandardItem *data_name = data_series_root->child(chiIndex, 0);
-            QStandardItem *data_color = data_series_root->child(chiIndex, 1);
-            str << data_name->data(Qt::DisplayRole).toString() << ",";
-            str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
-            // str << (data_color->checkState() == Qt::Checked ? 1 : 0) << ",";
+            child_name = data_series_root->child(chiIndex, 0);
+
+            if (child_name->whatsThis() == "Data series::Visible_Group")
+            {
+                for (int subIndex = 0; subIndex < child_name->rowCount(); subIndex++)
+                {
+                    data_name = child_name->child(subIndex, 0);
+                    data_color = child_name->child(subIndex, 1);
+                    QBrush bg_brush = data_color->background();
+                    str << data_name->data(Qt::UserRole + 2).toString() << ",";
+                    str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
+                    str << data_name->data(Qt::DisplayRole).toString() << ",";              // alias(display) name
+                    str << bg_brush.color().red() << "," << bg_brush.color().green() << "," << bg_brush.color().blue() << ",";
+                }
+            }
+            else
+            {
+                data_name = child_name;
+                data_color = data_series_root->child(chiIndex, 1);
+                QBrush bg_brush = data_color->background();
+                str << data_name->data(Qt::UserRole + 2).toString() << ",";
+                str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
+                str << data_name->data(Qt::DisplayRole).toString() << ",";              // alias(display) name
+                str << bg_brush.color().red() << "," << bg_brush.color().green() << "," << bg_brush.color().blue() << ",";
+            }
         }
         break;
     }
@@ -1013,21 +1100,23 @@ QByteArray PlotWindow::SaveDataSeriesConfig() const
     return configstr.toUtf8();
 }
 
-bool PlotWindow::RestoreDataSeriesConfig(const QByteArray &config, const QString &name)
+bool PlotWindow::RestoreDataSeriesConfig(const QByteArray &config, const QString &name, QString& alias, QColor& color)
 {
     QString configstr = QString::fromUtf8(config);
     // qDebug() << "RestoreDataSeriesConfig: " << configstr;
     QList<QByteArray> items = config.split(',');
     int idx = 0;
-    while (idx < (items.size() - 1))
+    while (idx < (items.size() - 5))
     {
         if (name == items[idx])
         {
             SetGraphVisible(name, items[idx + 1].toInt() == 0 ? false : true);
+            alias = QString(items[idx + 2].toStdString().c_str());
+            color = QColor(items[idx + 3].toInt(), items[idx + 4].toInt(), items[idx + 5].toInt());
             return true;
         }
 
-        idx += 2;
+        idx += 6;
     }
     return false;
 }
@@ -1068,10 +1157,24 @@ void PlotWindow::OnYAxisRangeChanged(QCPRange range)
 
 void PlotWindow::OnSelectionChangedByUser()
 {
+    // qDebug() << "OnSelectionChangedByUser()";
+    _plotConfig->clearSelection();
+
     const QList<QCPGraph *> graphs = ui->plotwidget->selectedGraphs();
     for (auto graph : qAsConst(graphs))
     {
-        Q_UNUSED(graph); // (void)graph;
+        // Q_UNUSED(graph); // (void)graph;
+        // qDebug() << "graph selected : " << graph->name();
+
+        for (int i = 0; i < ui->plotwidget->legend->itemCount(); i++)
+        {
+            QCPPlottableLegendItem *item = dynamic_cast<QCPPlottableLegendItem *>(ui->plotwidget->legend->item(i));
+            if (item && item->plottable()->name() == graph->name())
+            {
+                item->setSelected(true);
+                break;
+            }
+        }
     }
     const QList<QCPLegend *> legends = ui->plotwidget->selectedLegends();
     for (auto legend : qAsConst(legends))
@@ -1082,6 +1185,14 @@ void PlotWindow::OnSelectionChangedByUser()
             if (item && item->selected())
             {
                 SelectGraph(item->plottable()->name());
+
+                const QStandardItem* config_item = FindFirstConfigOptionItem("Data series", item->plottable()->name(), 0, true);
+                if (config_item)
+                {
+                    QModelIndex index = _configModel->indexFromItem(config_item);
+                    _plotConfig->selectItem(index);
+                }
+
                 break;
             }
         }
@@ -1168,12 +1279,33 @@ void PlotWindow::AdjustPlotYRange()
     }
 }
 
-const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item, int col)
+const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, const QString &item, int col, bool recursive)
 {
     auto items = _configModel->findItems(item, Qt::MatchExactly | Qt::MatchRecursive, 0);
+    const QStandardItem *parent;
     foreach (const QStandardItem *citem, items)
     {
-        if (citem->parent() && citem->parent()->text() == cat)
+        parent = citem->parent();
+        while (parent)
+        {
+            if (parent->text() == cat)
+                return citem->parent()->child(citem->row(), col);
+
+            if (recursive)
+                parent = parent->parent();
+            else
+                break;
+        }
+   }
+    return nullptr;
+}
+
+const QStandardItem* PlotWindow::FindFirstConfigOptionGroup(const QString& cat, const QString& group, int col, bool recursive)
+{
+    auto items = _configModel->findItems(group, Qt::MatchExactly | Qt::MatchRecursive, 0);
+    foreach (const QStandardItem *citem, items)
+    {
+        if (citem->parent() && citem->parent()->text() == cat && citem->whatsThis() == QString("Data series::Visible_Group"))
         {
             return citem->parent()->child(citem->row(), col);
         }

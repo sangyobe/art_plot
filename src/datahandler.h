@@ -14,6 +14,7 @@ public:
 protected:
     void RegisterPlot(PlotWindow* plotWnd);
     void GetServerAddress(std::string& ip, uint16_t& port);
+    int GetDebugDataNum();
 
 protected:
     MainWindow* _plotToolbox{nullptr};

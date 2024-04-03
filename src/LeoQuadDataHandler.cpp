@@ -195,30 +195,30 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_FOOT_POS_PLOT
     // _plot_footPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_footPos->SetWindowTitle("posBody2Foot wrt Body");
-    _plot_footPos->AddGraph("FL.x.desired", LineColor<0>());
-    _plot_footPos->AddGraph("FL.y.desired", LineColor<1>());
-    _plot_footPos->AddGraph("FL.z.desired", LineColor<2>());
-    _plot_footPos->AddGraph("FL.x.actual", LineColor<3>());
-    _plot_footPos->AddGraph("FL.y.actual", LineColor<4>());
-    _plot_footPos->AddGraph("FL.z.actual", LineColor<5>());
-    _plot_footPos->AddGraph("BL.x.desired", LineColor<6>());
-    _plot_footPos->AddGraph("BL.y.desired", LineColor<7>());
-    _plot_footPos->AddGraph("BL.z.desired", LineColor<8>());
-    _plot_footPos->AddGraph("BL.x.actual", LineColor<9>());
-    _plot_footPos->AddGraph("BL.y.actual", LineColor<10>());
-    _plot_footPos->AddGraph("BL.z.actual", LineColor<11>());
-    _plot_footPos->AddGraph("FR.x.desired", LineColor<12>());
-    _plot_footPos->AddGraph("FR.y.desired", LineColor<13>());
-    _plot_footPos->AddGraph("FR.z.desired", LineColor<14>());
-    _plot_footPos->AddGraph("FR.x.actual", LineColor<15>());
-    _plot_footPos->AddGraph("FR.y.actual", LineColor<16>());
-    _plot_footPos->AddGraph("FR.z.actual", LineColor<17>());
-    _plot_footPos->AddGraph("BR.x.desired", LineColor<18>());
-    _plot_footPos->AddGraph("BR.y.desired", LineColor<19>());
-    _plot_footPos->AddGraph("BR.z.desired", LineColor<20>());
-    _plot_footPos->AddGraph("BR.x.actual", LineColor<21>());
-    _plot_footPos->AddGraph("BR.y.actual", LineColor<22>());
-    _plot_footPos->AddGraph("BR.z.actual", LineColor<23>());
+    _plot_footPos->AddGraph("FL.x.desired", LineColor<0>(), "FL");
+    _plot_footPos->AddGraph("FL.y.desired", LineColor<1>(), "FL");
+    _plot_footPos->AddGraph("FL.z.desired", LineColor<2>(), "FL");
+    _plot_footPos->AddGraph("FL.x.actual", LineColor<3>(), "FL");
+    _plot_footPos->AddGraph("FL.y.actual", LineColor<4>(), "FL");
+    _plot_footPos->AddGraph("FL.z.actual", LineColor<5>(), "FL");
+    _plot_footPos->AddGraph("BL.x.desired", LineColor<6>(), "BL");
+    _plot_footPos->AddGraph("BL.y.desired", LineColor<7>(), "BL");
+    _plot_footPos->AddGraph("BL.z.desired", LineColor<8>(), "BL");
+    _plot_footPos->AddGraph("BL.x.actual", LineColor<9>(), "BL");
+    _plot_footPos->AddGraph("BL.y.actual", LineColor<10>(), "BL");
+    _plot_footPos->AddGraph("BL.z.actual", LineColor<11>(), "BL");
+    _plot_footPos->AddGraph("FR.x.desired", LineColor<12>(), "FR");
+    _plot_footPos->AddGraph("FR.y.desired", LineColor<13>(), "FR");
+    _plot_footPos->AddGraph("FR.z.desired", LineColor<14>(), "FR");
+    _plot_footPos->AddGraph("FR.x.actual", LineColor<15>(), "FR");
+    _plot_footPos->AddGraph("FR.y.actual", LineColor<16>(), "FR");
+    _plot_footPos->AddGraph("FR.z.actual", LineColor<17>(), "FR");
+    _plot_footPos->AddGraph("BR.x.desired", LineColor<18>(), "BR");
+    _plot_footPos->AddGraph("BR.y.desired", LineColor<19>(), "BR");
+    _plot_footPos->AddGraph("BR.z.desired", LineColor<20>(), "BR");
+    _plot_footPos->AddGraph("BR.x.actual", LineColor<21>(), "BR");
+    _plot_footPos->AddGraph("BR.y.actual", LineColor<22>(), "BR");
+    _plot_footPos->AddGraph("BR.z.actual", LineColor<23>(), "BR");
     _plot_footPos->show();
     RegisterPlot(_plot_footPos.get());
 #endif
@@ -380,30 +380,30 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_EEPOSG_G_PLOT
     // _plot_posctrl2com = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_eePosG_G->SetWindowTitle("eePosG_G");
-    _plot_eePosG_G->AddGraph("FL.x.desired", LineColor<0>());
-    _plot_eePosG_G->AddGraph("FL.y.desired", LineColor<1>());
-    _plot_eePosG_G->AddGraph("FL.z.desired", LineColor<2>());
-    _plot_eePosG_G->AddGraph("FL.x.actual", LineColor<3>());
-    _plot_eePosG_G->AddGraph("FL.y.actual", LineColor<4>());
-    _plot_eePosG_G->AddGraph("FL.z.actual", LineColor<5>());
-    _plot_eePosG_G->AddGraph("BL.x.desired", LineColor<6>());
-    _plot_eePosG_G->AddGraph("BL.y.desired", LineColor<7>());
-    _plot_eePosG_G->AddGraph("BL.z.desired", LineColor<8>());
-    _plot_eePosG_G->AddGraph("BL.x.actual", LineColor<9>());
-    _plot_eePosG_G->AddGraph("BL.y.actual", LineColor<10>());
-    _plot_eePosG_G->AddGraph("BL.z.actual", LineColor<11>());
-    _plot_eePosG_G->AddGraph("FR.x.desired", LineColor<12>());
-    _plot_eePosG_G->AddGraph("FR.y.desired", LineColor<13>());
-    _plot_eePosG_G->AddGraph("FR.z.desired", LineColor<14>());
-    _plot_eePosG_G->AddGraph("FR.x.actual", LineColor<15>());
-    _plot_eePosG_G->AddGraph("FR.y.actual", LineColor<16>());
-    _plot_eePosG_G->AddGraph("FR.z.actual", LineColor<17>());
-    _plot_eePosG_G->AddGraph("BR.x.desired", LineColor<18>());
-    _plot_eePosG_G->AddGraph("BR.y.desired", LineColor<19>());
-    _plot_eePosG_G->AddGraph("BR.z.desired", LineColor<20>());
-    _plot_eePosG_G->AddGraph("BR.x.actual", LineColor<21>());
-    _plot_eePosG_G->AddGraph("BR.y.actual", LineColor<22>());
-    _plot_eePosG_G->AddGraph("BR.z.actual", LineColor<23>());
+    _plot_eePosG_G->AddGraph("FL.x.desired", LineColor<0>(), "FL");
+    _plot_eePosG_G->AddGraph("FL.y.desired", LineColor<1>(), "FL");
+    _plot_eePosG_G->AddGraph("FL.z.desired", LineColor<2>(), "FL");
+    _plot_eePosG_G->AddGraph("FL.x.actual", LineColor<3>(), "FL");
+    _plot_eePosG_G->AddGraph("FL.y.actual", LineColor<4>(), "FL");
+    _plot_eePosG_G->AddGraph("FL.z.actual", LineColor<5>(), "FL");
+    _plot_eePosG_G->AddGraph("BL.x.desired", LineColor<6>(), "BL");
+    _plot_eePosG_G->AddGraph("BL.y.desired", LineColor<7>(), "BL");
+    _plot_eePosG_G->AddGraph("BL.z.desired", LineColor<8>(), "BL");
+    _plot_eePosG_G->AddGraph("BL.x.actual", LineColor<9>(), "BL");
+    _plot_eePosG_G->AddGraph("BL.y.actual", LineColor<10>(), "BL");
+    _plot_eePosG_G->AddGraph("BL.z.actual", LineColor<11>(), "BL");
+    _plot_eePosG_G->AddGraph("FR.x.desired", LineColor<12>(), "FR");
+    _plot_eePosG_G->AddGraph("FR.y.desired", LineColor<13>(), "FR");
+    _plot_eePosG_G->AddGraph("FR.z.desired", LineColor<14>(), "FR");
+    _plot_eePosG_G->AddGraph("FR.x.actual", LineColor<15>(), "FR");
+    _plot_eePosG_G->AddGraph("FR.y.actual", LineColor<16>(), "FR");
+    _plot_eePosG_G->AddGraph("FR.z.actual", LineColor<17>(), "FR");
+    _plot_eePosG_G->AddGraph("BR.x.desired", LineColor<18>(), "BR");
+    _plot_eePosG_G->AddGraph("BR.y.desired", LineColor<19>(), "BR");
+    _plot_eePosG_G->AddGraph("BR.z.desired", LineColor<20>(), "BR");
+    _plot_eePosG_G->AddGraph("BR.x.actual", LineColor<21>(), "BR");
+    _plot_eePosG_G->AddGraph("BR.y.actual", LineColor<22>(), "BR");
+    _plot_eePosG_G->AddGraph("BR.z.actual", LineColor<23>(), "BR");
     _plot_eePosG_G->show();
     RegisterPlot(_plot_eePosG_G.get());
 #endif
@@ -455,6 +455,7 @@ void LeoQuadDataHandler::BuildPlots()
 #endif
 
 #ifdef ENABLE_DEBUG_DATA_PLOT
+    _debug_data_array_size_max = GetDebugDataNum();
     //_plot_debugData = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_debugData->SetWindowTitle("Debug Data Array");
     for (int gi = 0; gi < _debug_data_array_size_max; gi++)

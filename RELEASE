@@ -2,7 +2,16 @@ TODO
 - Selecting DataHandler by parsing program argument.
 
 
-2024.01.08
+2024.01.08 [v1.1.0]
+- Data name can be changed in the plot config window. Changed data names are stored while closing and restored in the next session.
+- Graph line color can be changed and saved.
+- The maximum number of "Debug data array" displayed can be set using program argument. For example, append "--dnum 32" at the end of application run command.
+- Select each graph by clicking legend item, graph item in the plot config windown, and graph itself in the plot window.
+- Highlight selected graph in the plot config window and graph legend.
+- Graph list is expaned in the plot config window by default.
+- Show application version at the title bar.
+
+2024.01.08 [v1.0.0]
 - The plot visible settings are saved when the program ends and are applied the next time it runs.
 - A new plot window for displaying annonymous double array data is now open when the program starts. It is required dtCore has been updated to its latest version before building artPlot.
 - Receive and show thread state for LeoQuad. LeoQuadStateTimeStamped has been changed.

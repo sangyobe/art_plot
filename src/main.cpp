@@ -23,14 +23,16 @@ int main(int argc, char *argv[])
     {
         std::string ip_addr{};
         int port{};
+        int debug_data_num{};
     };
     auto parser = CmdOpts<AppOptions>::Create({
         { "--ip",   &AppOptions::ip_addr },
-        { "--port", &AppOptions::port }
+        { "--port", &AppOptions::port },
+        { "--dnum", &AppOptions::debug_data_num }
     });
     auto app_opts = parser->parse(argc, argv);
 
-    MainWindow plotToolbox(app_opts.ip_addr, (uint16_t)app_opts.port);
+    MainWindow plotToolbox(app_opts.ip_addr, (uint16_t)app_opts.port, (int)app_opts.debug_data_num);
     plotToolbox.setWindowTitle(APP_NAME);
     plotToolbox.setWindowFlag(Qt::WindowStaysOnTopHint);
     plotToolbox.show();
