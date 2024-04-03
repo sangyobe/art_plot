@@ -35,8 +35,9 @@
 #define ENABLE_DEBUG_DATA_PLOT
 
 constexpr static int jdof = 12;
+constexpr static int legdof = 3;
 constexpr static int legnum = 4;
-
+static std::string legname[4] = {"FL", "BL", "FR", "BR"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
@@ -226,30 +227,30 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_FOOT_VEL_PLOT
     // _plot_footVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_footVel->SetWindowTitle("velBody2Foot wrt Body");
-    _plot_footVel->AddGraph("FL.x.desired", LineColor<0>());
-    _plot_footVel->AddGraph("FL.y.desired", LineColor<1>());
-    _plot_footVel->AddGraph("FL.z.desired", LineColor<2>());
-    _plot_footVel->AddGraph("FL.x.actual", LineColor<3>());
-    _plot_footVel->AddGraph("FL.y.actual", LineColor<4>());
-    _plot_footVel->AddGraph("FL.z.actual", LineColor<5>());
-    _plot_footVel->AddGraph("BL.x.desired", LineColor<6>());
-    _plot_footVel->AddGraph("BL.y.desired", LineColor<7>());
-    _plot_footVel->AddGraph("BL.z.desired", LineColor<8>());
-    _plot_footVel->AddGraph("BL.x.actual", LineColor<9>());
-    _plot_footVel->AddGraph("BL.y.actual", LineColor<10>());
-    _plot_footVel->AddGraph("BL.z.actual", LineColor<11>());
-    _plot_footVel->AddGraph("FR.x.desired", LineColor<12>());
-    _plot_footVel->AddGraph("FR.y.desired", LineColor<13>());
-    _plot_footVel->AddGraph("FR.z.desired", LineColor<14>());
-    _plot_footVel->AddGraph("FR.x.actual", LineColor<15>());
-    _plot_footVel->AddGraph("FR.y.actual", LineColor<16>());
-    _plot_footVel->AddGraph("FR.z.actual", LineColor<17>());
-    _plot_footVel->AddGraph("BR.x.desired", LineColor<18>());
-    _plot_footVel->AddGraph("BR.y.desired", LineColor<19>());
-    _plot_footVel->AddGraph("BR.z.desired", LineColor<20>());
-    _plot_footVel->AddGraph("BR.x.actual", LineColor<21>());
-    _plot_footVel->AddGraph("BR.y.actual", LineColor<22>());
-    _plot_footVel->AddGraph("BR.z.actual", LineColor<23>());
+    _plot_footVel->AddGraph("FL.x.desired", LineColor<0>(), "FL");
+    _plot_footVel->AddGraph("FL.y.desired", LineColor<1>(), "FL");
+    _plot_footVel->AddGraph("FL.z.desired", LineColor<2>(), "FL");
+    _plot_footVel->AddGraph("FL.x.actual", LineColor<3>(), "FL");
+    _plot_footVel->AddGraph("FL.y.actual", LineColor<4>(), "FL");
+    _plot_footVel->AddGraph("FL.z.actual", LineColor<5>(), "FL");
+    _plot_footVel->AddGraph("BL.x.desired", LineColor<6>(), "BL");
+    _plot_footVel->AddGraph("BL.y.desired", LineColor<7>(), "BL");
+    _plot_footVel->AddGraph("BL.z.desired", LineColor<8>(), "BL");
+    _plot_footVel->AddGraph("BL.x.actual", LineColor<9>(), "BL");
+    _plot_footVel->AddGraph("BL.y.actual", LineColor<10>(), "BL");
+    _plot_footVel->AddGraph("BL.z.actual", LineColor<11>(), "BL");
+    _plot_footVel->AddGraph("FR.x.desired", LineColor<12>(), "FR");
+    _plot_footVel->AddGraph("FR.y.desired", LineColor<13>(), "FR");
+    _plot_footVel->AddGraph("FR.z.desired", LineColor<14>(), "FR");
+    _plot_footVel->AddGraph("FR.x.actual", LineColor<15>(), "FR");
+    _plot_footVel->AddGraph("FR.y.actual", LineColor<16>(), "FR");
+    _plot_footVel->AddGraph("FR.z.actual", LineColor<17>(), "FR");
+    _plot_footVel->AddGraph("BR.x.desired", LineColor<18>(), "BR");
+    _plot_footVel->AddGraph("BR.y.desired", LineColor<19>(), "BR");
+    _plot_footVel->AddGraph("BR.z.desired", LineColor<20>(), "BR");
+    _plot_footVel->AddGraph("BR.x.actual", LineColor<21>(), "BR");
+    _plot_footVel->AddGraph("BR.y.actual", LineColor<22>(), "BR");
+    _plot_footVel->AddGraph("BR.z.actual", LineColor<23>(), "BR");
     _plot_footVel->show();
     RegisterPlot(_plot_footVel.get());
 #endif
@@ -257,18 +258,18 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_FOOT_FORCE_PLOT
     // _plot_footForce = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_footForce->SetWindowTitle("Foot force wrt World");
-    _plot_footForce->AddGraph("FL.x.desired", LineColor<0>());
-    _plot_footForce->AddGraph("FL.y.desired", LineColor<1>());
-    _plot_footForce->AddGraph("FL.z.desired", LineColor<2>());
-    _plot_footForce->AddGraph("BL.x.desired", LineColor<3>());
-    _plot_footForce->AddGraph("BL.y.desired", LineColor<4>());
-    _plot_footForce->AddGraph("BL.z.desired", LineColor<5>());
-    _plot_footForce->AddGraph("FR.x.desired", LineColor<6>());
-    _plot_footForce->AddGraph("FR.y.desired", LineColor<7>());
-    _plot_footForce->AddGraph("FR.z.desired", LineColor<8>());
-    _plot_footForce->AddGraph("BR.x.desired", LineColor<9>());
-    _plot_footForce->AddGraph("BR.y.desired", LineColor<10>());
-    _plot_footForce->AddGraph("BR.z.desired", LineColor<11>());
+    _plot_footForce->AddGraph("FL.x.desired", LineColor<0>(), "FL");
+    _plot_footForce->AddGraph("FL.y.desired", LineColor<1>(), "FL");
+    _plot_footForce->AddGraph("FL.z.desired", LineColor<2>(), "FL");
+    _plot_footForce->AddGraph("BL.x.desired", LineColor<3>(), "BL");
+    _plot_footForce->AddGraph("BL.y.desired", LineColor<4>(), "BL");
+    _plot_footForce->AddGraph("BL.z.desired", LineColor<5>(), "BL");
+    _plot_footForce->AddGraph("FR.x.desired", LineColor<6>(), "FR");
+    _plot_footForce->AddGraph("FR.y.desired", LineColor<7>(), "FR");
+    _plot_footForce->AddGraph("FR.z.desired", LineColor<8>(), "FR");
+    _plot_footForce->AddGraph("BR.x.desired", LineColor<9>(), "BR");
+    _plot_footForce->AddGraph("BR.y.desired", LineColor<10>(), "BR");
+    _plot_footForce->AddGraph("BR.z.desired", LineColor<11>(), "BR");
     _plot_footForce->show();
     RegisterPlot(_plot_footForce.get());
 #endif
@@ -311,8 +312,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointPos->show();
     RegisterPlot(_plot_jointPos.get());
@@ -323,8 +324,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -335,8 +336,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -348,8 +349,8 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof));
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
@@ -411,30 +412,30 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_EEVELE_G_PLOT
     // _plot_velctrl2com = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_eeVelE_G->SetWindowTitle("eeVelE_G");
-    _plot_eeVelE_G->AddGraph("FL.x.desired", LineColor<0>());
-    _plot_eeVelE_G->AddGraph("FL.y.desired", LineColor<1>());
-    _plot_eeVelE_G->AddGraph("FL.z.desired", LineColor<2>());
-    _plot_eeVelE_G->AddGraph("FL.x.actual", LineColor<3>());
-    _plot_eeVelE_G->AddGraph("FL.y.actual", LineColor<4>());
-    _plot_eeVelE_G->AddGraph("FL.z.actual", LineColor<5>());
-    _plot_eeVelE_G->AddGraph("BL.x.desired", LineColor<6>());
-    _plot_eeVelE_G->AddGraph("BL.y.desired", LineColor<7>());
-    _plot_eeVelE_G->AddGraph("BL.z.desired", LineColor<8>());
-    _plot_eeVelE_G->AddGraph("BL.x.actual", LineColor<9>());
-    _plot_eeVelE_G->AddGraph("BL.y.actual", LineColor<10>());
-    _plot_eeVelE_G->AddGraph("BL.z.actual", LineColor<11>());
-    _plot_eeVelE_G->AddGraph("FR.x.desired", LineColor<12>());
-    _plot_eeVelE_G->AddGraph("FR.y.desired", LineColor<13>());
-    _plot_eeVelE_G->AddGraph("FR.z.desired", LineColor<14>());
-    _plot_eeVelE_G->AddGraph("FR.x.actual", LineColor<15>());
-    _plot_eeVelE_G->AddGraph("FR.y.actual", LineColor<16>());
-    _plot_eeVelE_G->AddGraph("FR.z.actual", LineColor<17>());
-    _plot_eeVelE_G->AddGraph("BR.x.desired", LineColor<18>());
-    _plot_eeVelE_G->AddGraph("BR.y.desired", LineColor<19>());
-    _plot_eeVelE_G->AddGraph("BR.z.desired", LineColor<20>());
-    _plot_eeVelE_G->AddGraph("BR.x.actual", LineColor<21>());
-    _plot_eeVelE_G->AddGraph("BR.y.actual", LineColor<22>());
-    _plot_eeVelE_G->AddGraph("BR.z.actual", LineColor<23>());
+    _plot_eeVelE_G->AddGraph("FL.x.desired", LineColor<0>(), "FL");
+    _plot_eeVelE_G->AddGraph("FL.y.desired", LineColor<1>(), "FL");
+    _plot_eeVelE_G->AddGraph("FL.z.desired", LineColor<2>(), "FL");
+    _plot_eeVelE_G->AddGraph("FL.x.actual", LineColor<3>(), "FL");
+    _plot_eeVelE_G->AddGraph("FL.y.actual", LineColor<4>(), "FL");
+    _plot_eeVelE_G->AddGraph("FL.z.actual", LineColor<5>(), "FL");
+    _plot_eeVelE_G->AddGraph("BL.x.desired", LineColor<6>(), "BL");
+    _plot_eeVelE_G->AddGraph("BL.y.desired", LineColor<7>(), "BL");
+    _plot_eeVelE_G->AddGraph("BL.z.desired", LineColor<8>(), "BL");
+    _plot_eeVelE_G->AddGraph("BL.x.actual", LineColor<9>(), "BL");
+    _plot_eeVelE_G->AddGraph("BL.y.actual", LineColor<10>(), "BL");
+    _plot_eeVelE_G->AddGraph("BL.z.actual", LineColor<11>(), "BL");
+    _plot_eeVelE_G->AddGraph("FR.x.desired", LineColor<12>(), "FR");
+    _plot_eeVelE_G->AddGraph("FR.y.desired", LineColor<13>(), "FR");
+    _plot_eeVelE_G->AddGraph("FR.z.desired", LineColor<14>(), "FR");
+    _plot_eeVelE_G->AddGraph("FR.x.actual", LineColor<15>(), "FR");
+    _plot_eeVelE_G->AddGraph("FR.y.actual", LineColor<16>(), "FR");
+    _plot_eeVelE_G->AddGraph("FR.z.actual", LineColor<17>(), "FR");
+    _plot_eeVelE_G->AddGraph("BR.x.desired", LineColor<18>(), "BR");
+    _plot_eeVelE_G->AddGraph("BR.y.desired", LineColor<19>(), "BR");
+    _plot_eeVelE_G->AddGraph("BR.z.desired", LineColor<20>(), "BR");
+    _plot_eeVelE_G->AddGraph("BR.x.actual", LineColor<21>(), "BR");
+    _plot_eeVelE_G->AddGraph("BR.y.actual", LineColor<22>(), "BR");
+    _plot_eeVelE_G->AddGraph("BR.z.actual", LineColor<23>(), "BR");
     _plot_eeVelE_G->show();
     RegisterPlot(_plot_eeVelE_G.get());
 #endif

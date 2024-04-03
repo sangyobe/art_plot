@@ -68,12 +68,12 @@ void PlotConfig::OnItemClicked(const QModelIndex& index)
 {
     if ("Data series::Visible" == index.data(Qt::WhatsThisRole).toString()) 
     {
-        emit graphItemClicked(index.data(Qt::DisplayRole).toString(), index.row());
+        emit graphItemClicked(index.data(Qt::DisplayRole).toString(), -1/*index.row()*/);
     }
     else if ("Data series::Color" == index.data(Qt::WhatsThisRole).toString()) 
     {
         QStandardItem* item_title = (QStandardItem*)(index.data(Qt::UserRole + 3).value<void*>());
-        emit graphItemClicked(item_title->data(Qt::DisplayRole).toString(), index.row());
+        emit graphItemClicked(item_title->data(Qt::DisplayRole).toString(), -1/*index.row()*/);
     }
 }
 
