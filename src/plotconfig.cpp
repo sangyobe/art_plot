@@ -4,6 +4,7 @@
 #include <QStandardItem>
 #include <QSpinBox>
 #include <QColorDialog>
+#include <QMenu>
 #include <QDebug>
 
 PlotConfig::PlotConfig(QWidget *parent) :
@@ -19,6 +20,10 @@ PlotConfig::PlotConfig(QWidget *parent) :
 //    connect(ui->configview, SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT((mySlot_Changed())));
     connect(ui->configview, SIGNAL(clicked(const QModelIndex&)), this, SLOT(OnItemClicked(const QModelIndex&)));
     connect(ui->configview, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(OnItemDoubleClicked(const QModelIndex&)));
+
+    // modify context menu
+    ui->configview->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->configview, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(OnContextMenu(const QPoint&)));
 }
 
 PlotConfig::~PlotConfig()
@@ -66,6 +71,8 @@ void PlotConfig::clearSelection()
 
 void PlotConfig::OnItemClicked(const QModelIndex& index)
 {
+    qDebug() << "PlotConfig::OnItemClicked";
+
     if ("Data series::Visible" == index.data(Qt::WhatsThisRole).toString()) 
     {
         emit graphItemClicked(index.data(Qt::DisplayRole).toString(), -1/*index.row()*/);
@@ -79,6 +86,8 @@ void PlotConfig::OnItemClicked(const QModelIndex& index)
 
 void PlotConfig::OnItemDoubleClicked(const QModelIndex& index)
 {
+    qDebug() << "PlotConfig::OnItemDoubleClicked";
+
     if ("Data series::Color" == index.data(Qt::WhatsThisRole).toString()) 
     {
         QColorDialog colorPicker;
@@ -92,4 +101,55 @@ void PlotConfig::OnItemDoubleClicked(const QModelIndex& index)
             emit graphColorSelected(item_title->data(Qt::DisplayRole).toString(), index.row(), selectedColor);
         }
     }
+}
+
+void PlotConfig::OnContextMenu(const QPoint& pos)
+{
+    // qDebug() << "PlotConfig::OnContextMenu";
+
+    QModelIndexList selected = ui->configview->selectionModel()->selectedIndexes();
+    if (selected.size() > 0)
+    {
+        QModelIndex index = selected.at(0);
+        // qDebug() << "selected index : " << index.row() << " , " << index.column();
+
+        if ("Data series::Visible" == index.data(Qt::WhatsThisRole).toString()) 
+        {
+            QMenu* menu = new QMenu(this);
+
+            if (index.data(Qt::DisplayRole).toString() != index.data(Qt::UserRole + 2).toString())
+            {
+                QAction* action_restore_name = menu->addAction("Restore data name");
+                connect(action_restore_name, SIGNAL(triggered()), this, SLOT(RestoreName()));
+            }
+            QAction* action_restore_name_all = menu->addAction("Restore data name (All)");
+            connect(action_restore_name_all, SIGNAL(triggered()), this, SLOT(RestoreNameAll()));
+
+
+            menu->popup(ui->configview->viewport()->mapToGlobal(pos));
+
+            
+        }
+    }
+}
+
+void PlotConfig::RestoreName()
+{
+    // qDebug() << "PlotConfig::RestoreName";
+
+    QModelIndexList selected = ui->configview->selectionModel()->selectedIndexes();
+    if (selected.size() > 0)
+    {
+        QModelIndex index = selected.at(0);
+        // qDebug() << "selected index : " << index.row() << " , " << index.column();
+
+        emit graphRestoreNameActionSelected(index.data(Qt::DisplayRole).toString(), index.row());
+    }
+}
+
+void PlotConfig::RestoreNameAll()
+{
+    // qDebug() << "PlotConfig::RestoreNameAll";
+
+    emit graphRestoreNameActionSelected("__all__", -1);
 }

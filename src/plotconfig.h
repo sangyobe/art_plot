@@ -28,10 +28,14 @@ public:
 private slots:
     void OnItemClicked(const QModelIndex& index);
     void OnItemDoubleClicked(const QModelIndex& index);
+    void OnContextMenu(const QPoint&);
+    void RestoreName();
+    void RestoreNameAll();
 
 signals:
     void graphItemClicked(QString name, int index);
     void graphColorSelected(QString name, int index, QColor color);
+    void graphRestoreNameActionSelected(QString name, int index);
 
 private:
     Ui::PlotConfig *ui;

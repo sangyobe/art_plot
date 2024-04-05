@@ -1,8 +1,10 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.04.05 [v1.1.1]
+- 변경된 데이터 이름을 원래 이름으로 되돌릴 수 있도록 Plot Config 창에 context menu(popup menu) 추가
 
-2024.01.08 [v1.1.0]
+2024.04.03 [v1.1.0]
 - Data name can be changed in the plot config window. Changed data names are stored while closing and restored in the next session.
 - Graph line color can be changed and saved.
 - The maximum number of "Debug data array" displayed can be set using program argument. For example, append "--dnum 32" at the end of application run command.

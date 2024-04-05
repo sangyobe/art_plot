@@ -60,6 +60,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     addDockWidget(Qt::LeftDockWidgetArea, _plotConfig);
     connect(_plotConfig, SIGNAL(graphItemClicked(QString, int)), this, SLOT(OnConfigItemGraphClicked(QString, int)));
     connect(_plotConfig, SIGNAL(graphColorSelected(QString, int, QColor)), this, SLOT(OnConfigItemGraphColorSelected(QString, int, QColor)));
+    connect(_plotConfig, SIGNAL(graphRestoreNameActionSelected(QString, int)), this, SLOT(OnConfigItemGraphRestoreNameActionSelected(QString, int)));
 
     BuildConfig();
 
@@ -964,6 +965,72 @@ void PlotWindow::OnConfigItemGraphColorSelected(QString name, int index, QColor 
 
             QPen pen(color); // TODO: 현재 설정된 line width 등 세팅을 가져와야 함.
             graph->setPen(pen);
+        }
+    }
+}
+
+void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int index)
+{
+    if (index == -1)
+    {
+        auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
+        const QStandardItem *parent;
+        const QStandardItem *child;
+        foreach (const QStandardItem *citem, items)
+        {
+            if (citem->parent())
+                continue;
+
+            for (int row = 0; row < citem->rowCount(); row++)
+            {
+                child = citem->child(row, 0);
+                // qDebug() << child->data(Qt::DisplayRole).toString();
+
+                if (child->whatsThis() == "Data series::Visible")
+                {
+                    QStandardItem*item_title = const_cast<QStandardItem*>(child);
+                    QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
+                    if (graph) 
+                    {
+                        QString original_name = item_title->data(Qt::UserRole + 2).toString();
+                        item_title->setText(original_name);
+                        graph->setName(original_name);
+                    }
+                }
+                else if (child->whatsThis() == "Data series::Visible_Group")
+                {
+                    for (int row = 0; row < child->rowCount(); row++)
+                    {
+                        QStandardItem*item_title = const_cast<QStandardItem*>(child->child(row, 0));
+                        // qDebug() << item_title->data(Qt::DisplayRole).toString();
+
+                        if (item_title->whatsThis() == "Data series::Visible")
+                        {
+                            QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
+                            if (graph) 
+                            {
+                                QString original_name = item_title->data(Qt::UserRole + 2).toString();
+                                item_title->setText(original_name);
+                                graph->setName(original_name);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        QStandardItem* item_title = const_cast<QStandardItem*>(FindFirstConfigOptionItem("Data series", name, 0, true));
+        if (item_title)
+        {
+            QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
+            if (graph) 
+            {
+                QString original_name = item_title->data(Qt::UserRole + 2).toString();
+                item_title->setText(original_name);
+                graph->setName(original_name);
+            }
         }
     }
 }
