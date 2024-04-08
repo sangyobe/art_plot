@@ -71,7 +71,7 @@ void PlotConfig::clearSelection()
 
 void PlotConfig::OnItemClicked(const QModelIndex& index)
 {
-    qDebug() << "PlotConfig::OnItemClicked";
+    // qDebug() << "PlotConfig::OnItemClicked";
 
     if ("Data series::Visible" == index.data(Qt::WhatsThisRole).toString()) 
     {
