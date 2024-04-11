@@ -93,6 +93,7 @@ private slots:
     void OnConfigItemGraphClicked(QString name, int index);
     void OnConfigItemGraphColorSelected(QString name, int index, QColor color);
     void OnConfigItemGraphRestoreNameActionSelected(QString name, int index);
+    void OnConfigItemGraphShowDataInfoActionSelected(QString name, int index);
     void OnHorzScrollBarChanged(int value);
     void OnVertScrollBarChanged(int value);
     void OnXAxisRangeChanged(QCPRange range);

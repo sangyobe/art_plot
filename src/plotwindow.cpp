@@ -2,6 +2,7 @@
 #include "itemviewdelegate.h"
 #include "pconstants.h"
 #include "plotconfig.h"
+#include "datainfodlg.h"
 #include "ui_plotwindow.h"
 #include <cassert>
 #include <iostream>
@@ -61,6 +62,7 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     connect(_plotConfig, SIGNAL(graphItemClicked(QString, int)), this, SLOT(OnConfigItemGraphClicked(QString, int)));
     connect(_plotConfig, SIGNAL(graphColorSelected(QString, int, QColor)), this, SLOT(OnConfigItemGraphColorSelected(QString, int, QColor)));
     connect(_plotConfig, SIGNAL(graphRestoreNameActionSelected(QString, int)), this, SLOT(OnConfigItemGraphRestoreNameActionSelected(QString, int)));
+    connect(_plotConfig, SIGNAL(graphShowDataInfoActionSelected(QString, int)), this, SLOT(OnConfigItemGraphShowDataInfoActionSelected(QString, int)));
 
     BuildConfig();
 
@@ -971,7 +973,7 @@ void PlotWindow::OnConfigItemGraphColorSelected(QString name, int index, QColor 
 
 void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int index)
 {
-    if (index == -1)
+    if (index == -1) // special case! : restore data names for all
     {
         auto items = _configModel->findItems("Data series", Qt::MatchExactly | Qt::MatchRecursive, 0);
         const QStandardItem *parent;
@@ -1031,6 +1033,24 @@ void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int in
                 item_title->setText(original_name);
                 graph->setName(original_name);
             }
+        }
+    }
+}
+
+void PlotWindow::OnConfigItemGraphShowDataInfoActionSelected(QString name, int index)
+{
+    QStandardItem* item_title = const_cast<QStandardItem*>(FindFirstConfigOptionItem("Data series", name, 0, true));
+    if (item_title)
+    {
+        const QCPGraph* graph = (const QCPGraph*)(item_title->data().value<void*>());
+        if (graph) 
+        {
+            // qDebug() << "PlotWindow::OnConfigItemGraphShowDataInfoActionSelected";
+            // qDebug() << graph->dataCount();
+
+            DataInfoDlg* dlg = new DataInfoDlg(graph, this);
+            dlg->setModal(false);
+            dlg->show();
         }
     }
 }

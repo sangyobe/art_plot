@@ -31,11 +31,13 @@ private slots:
     void OnContextMenu(const QPoint&);
     void RestoreName();
     void RestoreNameAll();
+    void ShowDataInfo();
 
 signals:
     void graphItemClicked(QString name, int index);
     void graphColorSelected(QString name, int index, QColor color);
     void graphRestoreNameActionSelected(QString name, int index);
+    void graphShowDataInfoActionSelected(QString name, int index);
 
 private:
     Ui::PlotConfig *ui;
