@@ -86,13 +86,14 @@ void PlotConfig::OnItemClicked(const QModelIndex& index)
 
 void PlotConfig::OnItemDoubleClicked(const QModelIndex& index)
 {
-    qDebug() << "PlotConfig::OnItemDoubleClicked";
+    // qDebug() << "PlotConfig::OnItemDoubleClicked";
 
     if ("Data series::Color" == index.data(Qt::WhatsThisRole).toString()) 
     {
         QColorDialog colorPicker;
         colorPicker.setWindowTitle("Select graph line color");
         colorPicker.setOption(QColorDialog::ShowAlphaChannel, false);
+        colorPicker.setModal(true);
         QColor selectedColor = colorPicker.getColor();
         if (selectedColor.isValid())
         {
@@ -124,11 +125,13 @@ void PlotConfig::OnContextMenu(const QPoint& pos)
             }
             QAction* action_restore_name_all = menu->addAction("Restore data name (All)");
             connect(action_restore_name_all, SIGNAL(triggered()), this, SLOT(RestoreNameAll()));
-
+            // -------------------------------
+            menu->addSeparator();
+            // -------------------------------
+            QAction* action_data_info = menu->addAction("Info...");
+            connect(action_data_info, SIGNAL(triggered()), this, SLOT(ShowDataInfo()));
 
             menu->popup(ui->configview->viewport()->mapToGlobal(pos));
-
-            
         }
     }
 }
@@ -152,4 +155,14 @@ void PlotConfig::RestoreNameAll()
     // qDebug() << "PlotConfig::RestoreNameAll";
 
     emit graphRestoreNameActionSelected("__all__", -1);
+}
+
+void PlotConfig::ShowDataInfo()
+{
+    QModelIndexList selected = ui->configview->selectionModel()->selectedIndexes();
+    if (selected.size() > 0)
+    {
+        QModelIndex index = selected.at(0);
+        emit graphShowDataInfoActionSelected(index.data(Qt::DisplayRole).toString(), index.row());
+    }
 }
