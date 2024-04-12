@@ -69,6 +69,13 @@ public:
     PlotType GetType() { return _plotType; }
 
 protected:
+    // drag & drop CSV file
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dragLeaveEvent(QDragLeaveEvent* event);
+    void dropEvent(QDropEvent* event);
+    void dragMoveEvent(QDragEnterEvent* event);
+
+protected:
     void ExtendAll();
 
 protected:

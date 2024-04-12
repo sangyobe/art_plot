@@ -142,6 +142,12 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     ui->menuView->addAction(_plotConfig->toggleViewAction());
 
     //------------------------------------------------------------------
+    // drag & drop CSV file
+    //
+    if (_plotType == PlotType::IM_PLOT)
+        setAcceptDrops(true);
+
+    //------------------------------------------------------------------
     // other initializations
     //
     connect(this->parent(), SIGNAL(clearActionTriggered()), this, SLOT(OnClearTriggered()));
@@ -1291,6 +1297,48 @@ void PlotWindow::RecalculatePlotLayout()
     ui->plotwidget->setFixedSize(QSize(ui->centralwidget->width() - 18, ui->centralwidget->height() - 18));
     ui->horizontalScrollBar->setGeometry(0, ui->centralwidget->height() - 18, ui->centralwidget->width() - 18, 18);
     ui->verticalScrollBar->setGeometry(ui->centralwidget->width() - 18, 0, 18, ui->centralwidget->height() - 18);
+}
+
+void PlotWindow::dragEnterEvent(QDragEnterEvent* event)
+{
+    event->acceptProposedAction();
+}
+
+void PlotWindow::dragLeaveEvent(QDragLeaveEvent* event)
+{
+    event->accept();
+}
+
+void PlotWindow::dragMoveEvent(QDragEnterEvent* event)
+{
+    event->acceptProposedAction();
+}
+
+void PlotWindow::dropEvent(QDropEvent* event)
+{
+    if (_plotType == PlotType::RT_PLOT)
+        return;
+
+    const QMimeData* mimeData = event->mimeData();
+
+    if (mimeData->hasUrls())
+    {
+        QStringList paths;
+        QList<QUrl> urls = mimeData->urls();
+        foreach(QUrl url, urls)
+        {
+            // qDebug() << "drag & drop : " << url.toLocalFile();
+            paths.push_back(url.toLocalFile());
+        }
+
+        // reset(clear) all graph and data before importing new graph and data
+        ResetPlot();
+
+        // qDebug() << "import files: " << paths;
+        ui->plotwidget->ImportFromCSV(paths);
+
+        ExtendAll();
+    }
 }
 
 void PlotWindow::ExtendAll()

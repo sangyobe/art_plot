@@ -1,6 +1,10 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.04.12 [v1.1.2]
+- 데이터 정보(합, 평균, 표준편차 등) 표시 기능(Plot Config 창의 각 데이터 항목의 Popup menu > Info) 추가
+- CSV 파일 drag&drop 기능 지원
+  
 2024.04.05 [v1.1.1]
 - 변경된 데이터 이름을 원래 이름으로 되돌릴 수 있도록 Plot Config 창에 context menu(popup menu) 추가
 
