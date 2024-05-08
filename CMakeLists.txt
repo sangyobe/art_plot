@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 cmake_policy(SET CMP0048 NEW)
 
-project(artplot VERSION 1.1.2 LANGUAGES CXX)
+project(artplot VERSION 1.2.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -10,7 +10,12 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_PREFIX_PATH "$ENV{HOME}/.local")
+if ("$ENV{ARTF_INSTALL_DIR}" STREQUAL "")
+    message(FATAL_ERROR "ARTF_INSTALL_DIR is not set.")
+else()
+    message(STATUS "ARTF_INSTALL_DIR: $ENV{ARTF_INSTALL_DIR}")
+endif()
+set(CMAKE_PREFIX_PATH "$ENV{ARTF_INSTALL_DIR}")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -99,10 +104,8 @@ else()
 endif()
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/include)
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{HOME}/.local/include)
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{HOME}/.local/lib)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/include)
+target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/lib)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
