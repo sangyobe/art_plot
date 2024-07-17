@@ -10,8 +10,8 @@
 #endif
 
 #ifdef USE_TRANSPORT_GRPC
-#include <dtProto/Service.grpc.pb.h>
 #include <dtCore/src/dtDAQ/grpc/dtStateSubscriberGrpc.hpp>
+#include <dtProto/Service.grpc.pb.h>
 #endif
 
 #include <dtProto/robot_msgs/ArbitraryState.pb.h>
@@ -41,7 +41,7 @@ private:
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::robot_msgs::ArbitraryStateTimeStamped>> _sub_state;
 #endif
 #ifdef USE_TRANSPORT_GRPC
-    std::unique_ptr<dtCore::dtStateSubscriberGrpc<dtproto::robot_msgs::ArbitraryStateTimeStamped>> _sub_state;
+    std::unique_ptr<dt::DAQ::StateSubscriberGrpc<dtproto::robot_msgs::ArbitraryStateTimeStamped>> _sub_state;
     std::thread _sub_reconnector;
     std::atomic<bool> _sub_reconnector_running;
 #endif

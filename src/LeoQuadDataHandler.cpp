@@ -486,7 +486,7 @@ void LeoQuadDataHandler::BuildPlots()
     }
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
-    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
+    _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
     std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg)
     {
         static long long seq = 0;

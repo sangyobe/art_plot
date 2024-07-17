@@ -14,8 +14,8 @@
 
 int main(int argc, char *argv[])
 {
-    dtCore::dtLog::Initialize("artplot", "logs/artplot.txt");
-    dtCore::dtLog::SetLogLevel(dtCore::dtLog::LogLevel::trace);
+    dt::Log::Initialize("artplot", "logs/artplot.txt");
+    dt::Log::SetLogLevel(dt::Log::LogLevel::trace);
 
     QApplication app(argc, argv);
     
@@ -61,6 +61,6 @@ int main(int argc, char *argv[])
     int rtn = app.exec();
 
 finish:
-    dtCore::dtLog::Terminate();
+    dt::Log::Terminate();
     return rtn;
 }

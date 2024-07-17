@@ -292,8 +292,8 @@ void WolyDataHandler::BuildPlots()
         port = 50051;
     }
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
-    
-    _sub_state = std::make_unique<dtCore::dtStateSubscriberGrpc<dtproto::woly::WolyStateTimeStamped>>("RobotState", "svr_address");
+
+    _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::woly::WolyStateTimeStamped>>("RobotState", "svr_address");
     std::function<void(dtproto::woly::WolyStateTimeStamped&)> handler = [this](dtproto::woly::WolyStateTimeStamped& msg) {
         static long long seq = 0;
         this->OnRecvWolyStateTimeStamped("", msg, 0, seq++);

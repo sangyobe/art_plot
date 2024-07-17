@@ -1,6 +1,12 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.07.17 [v1.4.0]
+- ART Framework v1.4 업데이트
+
+2024.05.08 [v1.2.0]
+- ART Framework v1.2 업데이트
+
 2024.04.12 [v1.1.2]
 - 데이터 정보(합, 평균, 표준편차 등) 표시 기능(Plot Config 창의 각 데이터 항목의 Popup menu > Info) 추가
 - CSV 파일 drag&drop 기능 지원

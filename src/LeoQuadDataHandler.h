@@ -72,7 +72,7 @@ private:
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::leoquad::LeoQuadStateTimeStamped>> _sub_state;
 #endif
 #ifdef USE_TRANSPORT_GRPC
-    std::unique_ptr<dtCore::dtStateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>> _sub_state;
+    std::unique_ptr<dt::DAQ::StateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>> _sub_state;
     std::thread _sub_reconnector;
     std::atomic<bool> _sub_reconnector_running;
 #endif
