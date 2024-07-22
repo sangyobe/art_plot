@@ -1,19 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QVector>
 #include <QDebug>
+#include <QVector>
 #include <algorithm>
 
-MainWindow::MainWindow(const std::string& ip, const uint16_t port, const int dnum, QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnum, QWidget *parent) : QMainWindow(parent),
+                                                                                                      ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     _plotListModel = new QStandardItemModel;
     _plotListModel->setColumnCount(1);
 
-    QStandardItem* rt_plot_root = new QStandardItem("Realtime plots");
-    QStandardItem* im_plot_root = new QStandardItem("Imported plots");
+    QStandardItem *rt_plot_root = new QStandardItem("Realtime plots");
+    QStandardItem *im_plot_root = new QStandardItem("Imported plots");
     rt_plot_root->setEditable(false);
     im_plot_root->setEditable(false);
     _plotListModel->appendRow(rt_plot_root);
@@ -27,7 +26,7 @@ MainWindow::MainWindow(const std::string& ip, const uint16_t port, const int dnu
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::OnExitTriggered);
 
     bool connect_success;
-    connect_success = connect(_plotListModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(OnConfigChanged(QStandardItem*)));
+    connect_success = connect(_plotListModel, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(OnConfigChanged(QStandardItem *)));
     Q_ASSERT(connect_success);
 
     connect_success = connect(ui->plotlistview, SIGNAL(clicked(QModelIndex)), this, SLOT(OnItemClicked(QModelIndex)));
@@ -43,13 +42,13 @@ MainWindow::MainWindow(const std::string& ip, const uint16_t port, const int dnu
     if (_svrIpAddr == "") _svrIpAddr = "127.0.0.1";
     if (_svrPort == 0) _svrPort = 50051; // default grpc listening port
     ui->statusBar->showMessage(
-            QString("server[%1:%2]")
-                .arg(QString(_svrIpAddr.c_str()))
-                .arg(_svrPort),
-            0);
+        QString("server[%1:%2]")
+            .arg(QString(_svrIpAddr.c_str()))
+            .arg(_svrPort),
+        0);
 
     // store params
-    _debug_data_num = (dnum > 0 && dnum < 100 ? dnum : 32);
+    _debug_data_num = (dnum > 0 && dnum < 100 ? dnum : 64);
 }
 
 MainWindow::~MainWindow()
@@ -57,7 +56,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::GetServerAddress(std::string& ip, uint16_t& port)
+void MainWindow::GetServerAddress(std::string &ip, uint16_t &port)
 {
     ip = _svrIpAddr;
     port = _svrPort;
@@ -71,18 +70,18 @@ int MainWindow::GetDebugDataNum()
 void MainWindow::AddPlot(PlotWindow *plotWnd)
 {
     _plotWnds.push_back(plotWnd);
-    connect(plotWnd, SIGNAL(widgetHidden(QWidget*)), this, SLOT(OnPlotWndHidden(QWidget*)));
-    connect(plotWnd, SIGNAL(widgetClosed(QWidget*)), this, SLOT(OnPlotWndClosed(QWidget*)));
+    connect(plotWnd, SIGNAL(widgetHidden(QWidget *)), this, SLOT(OnPlotWndHidden(QWidget *)));
+    connect(plotWnd, SIGNAL(widgetClosed(QWidget *)), this, SLOT(OnPlotWndClosed(QWidget *)));
 
-    QStandardItem* item = new QStandardItem(plotWnd->GetWindowTitle());
-    if (plotWnd->GetType() == PlotType::RT_PLOT) {
+    QStandardItem *item = new QStandardItem(plotWnd->GetWindowTitle());
+    if (plotWnd->GetType() == PlotType::RT_PLOT)
+    {
         item->setEditable(false);
         item->setCheckable(true);
         item->setCheckState(Qt::Checked);
     }
     item->setWhatsThis("Plot::Enabled");
-    item->setData(QVariant::fromValue((void*)plotWnd));
-
+    item->setData(QVariant::fromValue((void *)plotWnd));
 
     QString plot_group_name;
     if (PlotType::RT_PLOT == plotWnd->GetType())
@@ -91,7 +90,8 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
         plot_group_name = "Imported plots";
 
     auto items = _plotListModel->findItems(plot_group_name, Qt::MatchExactly | Qt::MatchRecursive, 0);
-    for (QStandardItem* plot_root : items) {
+    for (QStandardItem *plot_root : items)
+    {
         if (plot_root->parent())
             continue;
 
@@ -101,7 +101,8 @@ void MainWindow::AddPlot(PlotWindow *plotWnd)
         break;
     }
 
-    if (PlotType::RT_PLOT == plotWnd->GetType()) {
+    if (PlotType::RT_PLOT == plotWnd->GetType())
+    {
         QSettings settings("hmc", "artPlot");
         RestorePlotConfig(settings.value("plotConfig").toByteArray(), plotWnd->GetWindowTitle());
     }
@@ -112,33 +113,36 @@ QByteArray MainWindow::SavePlotConfig() const
     QString configstr;
     QTextStream str(&configstr);
 
-    //qDebug() << "SavePlotConfig";
+    // qDebug() << "SavePlotConfig";
     auto items = _plotListModel->findItems("Realtime plots", Qt::MatchExactly | Qt::MatchRecursive, 0);
-    for (QStandardItem* plot_root : items) {
+    for (QStandardItem *plot_root : items)
+    {
         if (plot_root->parent())
             continue;
 
-        for (int chiIndex = 0; chiIndex < plot_root->rowCount(); chiIndex++) {
-            QStandardItem* plot = plot_root->child(chiIndex);
+        for (int chiIndex = 0; chiIndex < plot_root->rowCount(); chiIndex++)
+        {
+            QStandardItem *plot = plot_root->child(chiIndex);
             str << plot->data(Qt::DisplayRole).toString() << ",";
             str << (plot->checkState() == Qt::Checked ? 1 : 0) << ",";
         }
         break;
     }
-    //qDebug() << configstr;
+    // qDebug() << configstr;
     return configstr.toUtf8();
-
 }
 
-bool MainWindow::RestorePlotConfig(const QByteArray & config, const QString& name)
+bool MainWindow::RestorePlotConfig(const QByteArray &config, const QString &name)
 {
     QString configstr = QString::fromUtf8(config);
-    //qDebug() << "RestorePlotConfig: " << configstr;
+    // qDebug() << "RestorePlotConfig: " << configstr;
     QList<QByteArray> items = config.split(',');
     int idx = 0;
-    while (idx < (items.size() - 1)) {
-        if (name == items[idx]) {
-            SetPlotVisible(name, items[idx+1].toInt() == 0 ? false : true);
+    while (idx < (items.size() - 1))
+    {
+        if (name == items[idx])
+        {
+            SetPlotVisible(name, items[idx + 1].toInt() == 0 ? false : true);
             return true;
         }
 
@@ -150,32 +154,39 @@ bool MainWindow::RestorePlotConfig(const QByteArray & config, const QString& nam
 void MainWindow::SetPlotVisible(const QString &name, bool visible)
 {
     auto items = _plotListModel->findItems(name, Qt::MatchExactly | Qt::MatchRecursive, 0);
-    foreach (const QStandardItem* citem, items) {
-        if (citem->parent() && citem->parent()->text() == "Realtime plots") {
-            const_cast<QStandardItem*>(citem)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+    foreach (const QStandardItem *citem, items)
+    {
+        if (citem->parent() && citem->parent()->text() == "Realtime plots")
+        {
+            const_cast<QStandardItem *>(citem)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
             return;
         }
     }
 }
 
-void MainWindow::OnPlotWndHidden(QWidget* widget)
+void MainWindow::OnPlotWndHidden(QWidget *widget)
 {
     Q_UNUSED(widget);
 }
 
-void MainWindow::OnPlotWndClosed(QWidget* widget)
+void MainWindow::OnPlotWndClosed(QWidget *widget)
 {
-    for (int curIndex = 0; curIndex < _plotListModel->rowCount(); curIndex++) {
-        QStandardItem* plot_group = _plotListModel->item(curIndex);
-        for (int chiIndex = 0; chiIndex < plot_group->rowCount(); chiIndex++) {
-            QStandardItem* plot = plot_group->child(chiIndex);
-            if (plot && plot->data() == QVariant::fromValue((void*)widget)) {
-                PlotWindow *plotWnd = (PlotWindow*)plot->data().value<void*>();
-                if (plotWnd->GetType() == PlotType::IM_PLOT) {
+    for (int curIndex = 0; curIndex < _plotListModel->rowCount(); curIndex++)
+    {
+        QStandardItem *plot_group = _plotListModel->item(curIndex);
+        for (int chiIndex = 0; chiIndex < plot_group->rowCount(); chiIndex++)
+        {
+            QStandardItem *plot = plot_group->child(chiIndex);
+            if (plot && plot->data() == QVariant::fromValue((void *)widget))
+            {
+                PlotWindow *plotWnd = (PlotWindow *)plot->data().value<void *>();
+                if (plotWnd->GetType() == PlotType::IM_PLOT)
+                {
                     plot_group->removeRow(plot->row());
                     _plotWnds.removeOne(plotWnd);
                 }
-                else {
+                else
+                {
                     plot->setCheckState(Qt::Unchecked);
                 }
             }
@@ -185,12 +196,15 @@ void MainWindow::OnPlotWndClosed(QWidget* widget)
 
 void MainWindow::OnConfigChanged(QStandardItem *item)
 {
-    //qDebug() << "MainWindow::OnConfigChanged(" << item->whatsThis() << ")";
-    if (item->whatsThis() == "Plot::Enabled") {
-        PlotWindow *plotWnd = (PlotWindow*)item->data().value<void*>();
-        if (plotWnd) {
+    // qDebug() << "MainWindow::OnConfigChanged(" << item->whatsThis() << ")";
+    if (item->whatsThis() == "Plot::Enabled")
+    {
+        PlotWindow *plotWnd = (PlotWindow *)item->data().value<void *>();
+        if (plotWnd)
+        {
             plotWnd->SetWindowTitle(item->data(Qt::DisplayRole).toString());
-            if (item->isCheckable()) {
+            if (item->isCheckable())
+            {
                 plotWnd->setVisible((item->checkState() == Qt::Checked ? true : false));
                 if (item->checkState() == Qt::Checked)
                     plotWnd->activateWindow();
@@ -201,18 +215,18 @@ void MainWindow::OnConfigChanged(QStandardItem *item)
 
 void MainWindow::OnItemClicked(QModelIndex index)
 {
-    //qDebug() << "MainWindow::OnItemClicked(" << index << ")";
-    PlotWindow *plotWnd = (PlotWindow*)index.data(Qt::UserRole + 1).value<void*>();
+    // qDebug() << "MainWindow::OnItemClicked(" << index << ")";
+    PlotWindow *plotWnd = (PlotWindow *)index.data(Qt::UserRole + 1).value<void *>();
     if (plotWnd)
         plotWnd->activateWindow();
 }
 
-void MainWindow::resizeEvent(QResizeEvent* event)
+void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
 }
 
-void MainWindow::closeEvent(QCloseEvent* event)
+void MainWindow::closeEvent(QCloseEvent *event)
 {
     // save app config
     QSettings settings("hmc", "artPlot");
@@ -221,10 +235,11 @@ void MainWindow::closeEvent(QCloseEvent* event)
     settings.setValue("plotConfig", SavePlotConfig());
 
     // close all plotWindows
-    for (auto plotwnd : qAsConst(_plotWnds)) {
-        const_cast<PlotWindow*>(plotwnd)->close();
+    for (auto plotwnd : qAsConst(_plotWnds))
+    {
+        const_cast<PlotWindow *>(plotwnd)->close();
     }
-    //QApplication::closeAllWindows();
+    // QApplication::closeAllWindows();
 
     // close itself
     QMainWindow::closeEvent(event);
@@ -232,7 +247,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::OnNewTriggered()
 {
-    PlotWindow* plotWnd;
+    PlotWindow *plotWnd;
     plotWnd = new PlotWindow(this, PlotType::IM_PLOT);
     plotWnd->setAttribute(Qt::WA_DeleteOnClose, true);
     plotWnd->SetWindowTitle("New Plot");
@@ -252,4 +267,3 @@ void MainWindow::OnClearTriggered()
 {
     emit clearActionTriggered();
 }
-

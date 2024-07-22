@@ -5,12 +5,12 @@ DataHandler::DataHandler(MainWindow *plotToolbox)
 {
 }
 
-void DataHandler::RegisterPlot(PlotWindow* plotWnd)
+void DataHandler::RegisterPlot(PlotWindow *plotWnd)
 {
     _plotToolbox->AddPlot(plotWnd);
 }
 
-void DataHandler::GetServerAddress(std::string& ip, uint16_t& port)
+void DataHandler::GetServerAddress(std::string &ip, uint16_t &port)
 {
     if (!_plotToolbox) return;
 
@@ -19,7 +19,7 @@ void DataHandler::GetServerAddress(std::string& ip, uint16_t& port)
 
 int DataHandler::GetDebugDataNum()
 {
-    if (!_plotToolbox) return 32;
+    if (!_plotToolbox) return 64;
 
     return _plotToolbox->GetDebugDataNum();
 }
