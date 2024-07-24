@@ -19,7 +19,7 @@ void DataHandler::GetServerAddress(std::string &ip, uint16_t &port)
 
 int DataHandler::GetDebugDataNum()
 {
-    if (!_plotToolbox) return 64;
+    if (!_plotToolbox) return DBGDATA_NUM_DFT;
 
     return _plotToolbox->GetDebugDataNum();
 }

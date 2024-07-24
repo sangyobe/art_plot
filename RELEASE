@@ -1,6 +1,10 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.07.31 [v1.4.1]
+- Debug data 최대 개수(100->256) 및 디폴트 개수(32->64) 변경
+- Add program icon.
+
 2024.07.17 [v1.4.0]
 - ART Framework v1.4 업데이트
 

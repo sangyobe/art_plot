@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
     dt::Log::SetLogLevel(dt::Log::LogLevel::trace);
 
     QApplication app(argc, argv);
-    
+    app.setWindowIcon(QIcon(":/images/artplot.png"));
+
     struct AppOptions
     {
         std::string ip_addr{};

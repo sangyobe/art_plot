@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "plotwindow.h"
 
+#define DBGDATA_NUM_MAX (256) //<! maximum number of debug_data
+#define DBGDATA_NUM_DFT (64)  //<! default number of debug_data
 namespace Ui {
 class MainWindow;
 }

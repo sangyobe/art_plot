@@ -48,7 +48,7 @@ MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnu
         0);
 
     // store params
-    _debug_data_num = (dnum > 0 && dnum < 100 ? dnum : 64);
+    _debug_data_num = (dnum > 0 && dnum < DBGDATA_NUM_MAX ? dnum : DBGDATA_NUM_DFT);
 }
 
 MainWindow::~MainWindow()
