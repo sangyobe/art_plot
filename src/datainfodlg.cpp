@@ -69,9 +69,9 @@ DataInfoDlg::~DataInfoDlg()
 void DataInfoDlg::Recalc(const QCPGraph *graph)
 {
     int dnum = 0; //graph->dataCount();
-    double x_range_min = std::numeric_limits<double>::min();
+    double x_range_min = -std::numeric_limits<double>::max();
     double x_range_max = std::numeric_limits<double>::max();
-    double y_range_min = std::numeric_limits<double>::min();
+    double y_range_min = -std::numeric_limits<double>::max();
     double y_range_max = std::numeric_limits<double>::max();
     double sum = 0.0;
     double avg = 0.0;
@@ -80,7 +80,7 @@ void DataInfoDlg::Recalc(const QCPGraph *graph)
     double min_key = 0;
     double max_key = 0;
     double min_val = std::numeric_limits<double>::max();
-    double max_val = std::numeric_limits<double>::min();
+    double max_val = -std::numeric_limits<double>::max();
 
     if (ui->chkLimitX->checkState() == Qt::CheckState::Checked)
     {
