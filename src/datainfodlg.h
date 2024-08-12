@@ -17,8 +17,17 @@ public:
     explicit DataInfoDlg(const QCPGraph* graph, QWidget *parent = nullptr);
     ~DataInfoDlg();
 
+public:
+    void Recalc(const QCPGraph *graph);
+
+protected slots:
+    void OnBtnRecalcClicked();
+    void OnXRangeLimitEnabled(int state);
+    void OnYRangeLimitEnabled(int state);
+
 private:
     Ui::DataInfoDlg *ui;
+    const QCPGraph *_graph;
 };
 
 #endif // DATAINFODLG_H
