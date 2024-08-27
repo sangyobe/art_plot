@@ -37,10 +37,12 @@ public slots:
 private slots:
     void OnNewTriggered();
     void OnClearTriggered();
+    void OnLoadTriggered();
     void OnExitTriggered();
 
 signals:
     void clearActionTriggered();
+    void loadActionTriggered(QString filename);
 
 private:
     void resizeEvent(QResizeEvent*);

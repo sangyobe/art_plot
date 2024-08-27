@@ -18,6 +18,8 @@
 
 class LeoQuadDataHandler : public DataHandler
 {
+    Q_OBJECT
+
 private:
     MainWindow *_plotToolbox;
 
@@ -76,6 +78,12 @@ private:
     std::thread _sub_reconnector;
     std::atomic<bool> _sub_reconnector_running;
 #endif
+
+    long long _msg_seq{0};
+
+    // Qt specific
+private slots:
+    void OnLoadTriggered(QString filename);
 };
 
 #endif // LEOQUADDATAHANDLER_H

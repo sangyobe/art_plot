@@ -23,6 +23,7 @@ MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnu
     // connect menu action
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::OnNewTriggered);
     connect(ui->actionClear, &QAction::triggered, this, &MainWindow::OnClearTriggered);
+    connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::OnLoadTriggered);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::OnExitTriggered);
 
     bool connect_success;
@@ -258,12 +259,22 @@ void MainWindow::OnNewTriggered()
     AddPlot(plotWnd);
 }
 
-void MainWindow::OnExitTriggered()
-{
-    qApp->exit();
-}
-
 void MainWindow::OnClearTriggered()
 {
     emit clearActionTriggered();
+}
+
+void MainWindow::OnLoadTriggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Select MCAP file to load LeoQuad control state from...", QDir::currentPath(), tr("MCAP Files (*.mcap);;All Files (*.*)"));
+    if (filename.isEmpty())
+        return;
+
+    qDebug() << "load file: " << filename;
+    emit loadActionTriggered(filename);
+}
+
+void MainWindow::OnExitTriggered()
+{
+    qApp->exit();
 }

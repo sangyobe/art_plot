@@ -8,6 +8,13 @@
 #include <QDebug>
 #include <dtCore/src/dtLog/dtLog.h>
 
+#define MCAP_COMPRESSION_NO_LZ4
+#define MCAP_COMPRESSION_NO_ZSTD
+#define MCAP_IMPLEMENTATION
+#include <mcap/mcap.hpp>
+
+#define USE_LOGGINGTIME_AS_TIMESTAMP
+
 // #define PRINT_PUB_SUB_INFO
 
 #define ENABLE_COM_POS_PLOT
@@ -127,6 +134,83 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
     LOG(info) << "LeoQuadDataHandler created.";
 
     BuildPlots();
+
+    // connect Qt signals
+    connect(plotToolbox, SIGNAL(loadActionTriggered(QString)), this, SLOT(OnLoadTriggered(QString)));
+}
+
+#include <QDebug>
+void LeoQuadDataHandler::OnLoadTriggered(QString filename)
+{
+    // qDebug() << "LeoQuadDataHandler::OnLoadTriggered()";
+
+#ifndef ROBOT_LEOQUAD
+    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
+    return;
+#endif
+#ifndef USE_TRANSPORT_GRPC
+    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
+    return;
+#endif
+
+    mcap::McapReader reader;
+    mcap::Status status;
+    std::string fileName = filename.toStdString();
+    std::string topicName;
+    std::string schemaName;
+
+    if (!reader.open(fileName).ok())
+    {
+        qDebug() << "load file failed.";
+        return;
+    }
+    if (!reader.readSummary(mcap::ReadSummaryMethod::NoFallbackScan).ok())
+    {
+        qDebug() << "load file failed.";
+        return;
+    }
+    std::for_each(reader.channels().begin(), reader.channels().end(), [&reader, &topicName, &schemaName](const std::pair<mcap::ChannelId, mcap::ChannelPtr> &p) {
+        topicName = p.second->topic;
+        schemaName = reader.schema(p.second->schemaId)->name;
+        qDebug() << "\t\ttopic name: " << topicName.c_str();
+        qDebug() << "\t\tschema name: " << schemaName.c_str();
+    });
+
+    auto messageView = reader.readMessages();
+    mcap::Timestamp logTime_min{mcap::MaxTime}, logTime_max{0};
+
+    for (auto itr = messageView.begin(); itr != messageView.end(); itr++)
+    {
+        if (itr->schema->encoding != "protobuf" || itr->schema->name != schemaName)
+        {
+            continue;
+        }
+
+        dtproto::leoquad::LeoQuadStateTimeStamped message;
+        if (!message.ParseFromArray(static_cast<const void *>(itr->message.data), itr->message.dataSize))
+        {
+            qDebug() << "could not parse " << schemaName.c_str();
+            break;
+        }
+
+#ifdef USE_LOGGINGTIME_AS_TIMESTAMP
+        // use message's logTime
+        mcap::Timestamp logTime = itr->message.logTime;
+        message.mutable_header()->mutable_time_stamp()->set_seconds((long)(logTime / 1000000000));
+        message.mutable_header()->mutable_time_stamp()->set_nanos((long)(logTime % 1000000000));
+#else
+        // use message's timestamp
+        mcap::Timestamp logTime = (uint64_t)(message.header().time_stamp().seconds() * 1000000000) + (uint64_t)message.header().time_stamp().nanos();
+#endif
+
+        if (logTime_min > logTime) logTime_min = logTime;
+        if (logTime_max < logTime) logTime_max = logTime;
+
+        // _msgs.push_back(message);
+        OnRecvLeoQuadStateTimeStamped("", message, 0, _msg_seq++);
+    }
+
+    reader.close();
 }
 
 LeoQuadDataHandler::~LeoQuadDataHandler()
@@ -487,25 +571,23 @@ void LeoQuadDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg)
-    {
-        static long long seq = 0;
-        this->OnRecvLeoQuadStateTimeStamped("", msg, 0, seq++);
+    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg) {
+        this->OnRecvLeoQuadStateTimeStamped("", msg, 0, _msg_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
     _sub_reconnector_running = true;
-    _sub_reconnector = std::thread([this]
-                                   {
-
-        while (this->_sub_reconnector_running) {
-            if (!this->_sub_state->IsRunning()) {
+    _sub_reconnector = std::thread([this] {
+        while (this->_sub_reconnector_running)
+        {
+            if (!this->_sub_state->IsRunning())
+            {
                 LOG(warn) << "Disconnected. Reconnecting to LeoQuadState data server...";
                 this->_sub_state->Reconnect();
             }
-
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        } });
+        }
+    });
 #endif
 }
 
