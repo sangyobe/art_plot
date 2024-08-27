@@ -64,6 +64,7 @@ private:
     std::unique_ptr<PlotWindow> _plot_absEnc{nullptr};
     std::unique_ptr<PlotWindow> _plot_eePosG_G{nullptr};
     std::unique_ptr<PlotWindow> _plot_eeVelE_G{nullptr};
+    std::unique_ptr<PlotWindow> _plot_comPosXY{nullptr};
 
     // for plotting user-defined arbitrary data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};

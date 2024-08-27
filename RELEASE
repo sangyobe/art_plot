@@ -1,6 +1,9 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.08.27 [v1.4.3]
+- LeoQuadState mcap loading 기능 추가
+
 2024.08.12 [v1.4.2]
 - Data Info 다이얼로그에 데이터 min/max 추가 및 데이터 x/y-range 설정 기능 추가
 

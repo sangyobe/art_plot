@@ -187,7 +187,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, const QString
     QCPGraph *graph = ui->plotwidget->addGraph();
     graph->setName(name);
     // line style
-    graph->setLineStyle(QCPGraph::lsLine /*lsStepRight*/);
+    graph->setLineStyle((line_width == 0 ? QCPGraph::lsNone : QCPGraph::lsLine /*lsStepRight*/));
     QPen pen(color);
     pen.setWidth(line_width);
     graph->setPen(pen);

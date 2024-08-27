@@ -270,7 +270,7 @@ void MainWindow::OnLoadTriggered()
     if (filename.isEmpty())
         return;
 
-    qDebug() << "load file: " << filename;
+    // qDebug() << "load file: " << filename;
     emit loadActionTriggered(filename);
 }
 

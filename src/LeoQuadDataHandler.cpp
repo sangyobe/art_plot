@@ -40,6 +40,7 @@
 
 #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
+// #define ENABLE_COM_POS_XY_PLOT
 
 constexpr static int jdof = 12;
 constexpr static int legdof = 3;
@@ -53,6 +54,10 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
 #ifdef ENABLE_COM_POS_PLOT
       ,
       _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_COM_POS_XY_PLOT
+      ,
+      _plot_comPosXY(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_COM_VEL_PLOT
       ,
@@ -139,80 +144,6 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
     connect(plotToolbox, SIGNAL(loadActionTriggered(QString)), this, SLOT(OnLoadTriggered(QString)));
 }
 
-#include <QDebug>
-void LeoQuadDataHandler::OnLoadTriggered(QString filename)
-{
-    // qDebug() << "LeoQuadDataHandler::OnLoadTriggered()";
-
-#ifndef ROBOT_LEOQUAD
-    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
-    return;
-#endif
-#ifndef USE_TRANSPORT_GRPC
-    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
-    return;
-#endif
-
-    mcap::McapReader reader;
-    mcap::Status status;
-    std::string fileName = filename.toStdString();
-    std::string topicName;
-    std::string schemaName;
-
-    if (!reader.open(fileName).ok())
-    {
-        qDebug() << "load file failed.";
-        return;
-    }
-    if (!reader.readSummary(mcap::ReadSummaryMethod::NoFallbackScan).ok())
-    {
-        qDebug() << "load file failed.";
-        return;
-    }
-    std::for_each(reader.channels().begin(), reader.channels().end(), [&reader, &topicName, &schemaName](const std::pair<mcap::ChannelId, mcap::ChannelPtr> &p) {
-        topicName = p.second->topic;
-        schemaName = reader.schema(p.second->schemaId)->name;
-        qDebug() << "\t\ttopic name: " << topicName.c_str();
-        qDebug() << "\t\tschema name: " << schemaName.c_str();
-    });
-
-    auto messageView = reader.readMessages();
-    mcap::Timestamp logTime_min{mcap::MaxTime}, logTime_max{0};
-
-    for (auto itr = messageView.begin(); itr != messageView.end(); itr++)
-    {
-        if (itr->schema->encoding != "protobuf" || itr->schema->name != schemaName)
-        {
-            continue;
-        }
-
-        dtproto::leoquad::LeoQuadStateTimeStamped message;
-        if (!message.ParseFromArray(static_cast<const void *>(itr->message.data), itr->message.dataSize))
-        {
-            qDebug() << "could not parse " << schemaName.c_str();
-            break;
-        }
-
-#ifdef USE_LOGGINGTIME_AS_TIMESTAMP
-        // use message's logTime
-        mcap::Timestamp logTime = itr->message.logTime;
-        message.mutable_header()->mutable_time_stamp()->set_seconds((long)(logTime / 1000000000));
-        message.mutable_header()->mutable_time_stamp()->set_nanos((long)(logTime % 1000000000));
-#else
-        // use message's timestamp
-        mcap::Timestamp logTime = (uint64_t)(message.header().time_stamp().seconds() * 1000000000) + (uint64_t)message.header().time_stamp().nanos();
-#endif
-
-        if (logTime_min > logTime) logTime_min = logTime;
-        if (logTime_max < logTime) logTime_max = logTime;
-
-        // _msgs.push_back(message);
-        OnRecvLeoQuadStateTimeStamped("", message, 0, _msg_seq++);
-    }
-
-    reader.close();
-}
-
 LeoQuadDataHandler::~LeoQuadDataHandler()
 {
 #ifdef USE_TRANSPORT_GRPC
@@ -235,6 +166,15 @@ void LeoQuadDataHandler::BuildPlots()
     _plot_comPos->AddGraph("Com.z.actual", LineColor<5>());
     _plot_comPos->show();
     RegisterPlot(_plot_comPos.get());
+#endif
+
+#ifdef ENABLE_COM_POS_XY_PLOT
+    //_plot_comPosXY = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_comPosXY->SetWindowTitle("COM position (XY) wrt World");
+    _plot_comPosXY->AddGraph("Com.xy.desired", LineColor<0>(), QString(""), 0, LineScatterShape::ssCircle, 0);
+    _plot_comPosXY->AddGraph("Com.xy.actual", LineColor<1>(), QString(""), 0, LineScatterShape::ssTriangle, 0);
+    _plot_comPosXY->show();
+    RegisterPlot(_plot_comPosXY.get());
 #endif
 
 #ifdef ENABLE_COM_VEL_PLOT
@@ -720,6 +660,11 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
                               actState.posworld2comwrtworld().z());
         _plot_comPos->DataUpdated(curTime);
     }
+    if (_plot_comPosXY)
+    {
+        _plot_comPosXY->AddData(0, desState.posworld2comwrtworld().x(), desState.posworld2comwrtworld().y());
+        _plot_comPosXY->AddData(1, actState.posworld2comwrtworld().x(), actState.posworld2comwrtworld().y());
+    }
     if (_plot_comVel)
     {
         _plot_comVel->AddData(0, curTime,
@@ -921,4 +866,64 @@ void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtprot
         _plot_debugData->AddData(gi, curTime, state.data().Get(gi));
         _plot_debugData->DataUpdated(curTime);
     }
+}
+
+void LeoQuadDataHandler::OnLoadTriggered(QString filename)
+{
+#ifndef ROBOT_LEOQUAD
+    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
+    return;
+#endif
+#ifndef USE_TRANSPORT_GRPC
+    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
+    return;
+#endif
+
+    mcap::McapReader reader;
+    mcap::Status status;
+    std::string fileName = filename.toStdString();
+    // std::string topicName = "LeoQuadState";
+    std::string schemaName = "dtproto.leoquad.LeoQuadStateTimeStamped";
+
+    if (!reader.open(fileName).ok())
+    {
+        qDebug() << "load file failed.";
+        return;
+    }
+
+    auto messageView = reader.readMessages();
+    mcap::Timestamp logTime_min{mcap::MaxTime}, logTime_max{0};
+
+    for (auto itr = messageView.begin(); itr != messageView.end(); itr++)
+    {
+        if (itr->schema->encoding != "protobuf" || itr->schema->name != schemaName)
+        {
+            continue;
+        }
+
+        dtproto::leoquad::LeoQuadStateTimeStamped message;
+        if (!message.ParseFromArray(static_cast<const void *>(itr->message.data), itr->message.dataSize))
+        {
+            qDebug() << "could not parse " << schemaName.c_str();
+            break;
+        }
+
+#ifdef USE_LOGGINGTIME_AS_TIMESTAMP
+        // use message's logTime
+        mcap::Timestamp logTime = itr->message.logTime;
+        message.mutable_header()->mutable_time_stamp()->set_seconds((long)(logTime / 1000000000));
+        message.mutable_header()->mutable_time_stamp()->set_nanos((long)(logTime % 1000000000));
+#else
+        // use message's timestamp
+        mcap::Timestamp logTime = (uint64_t)(message.header().time_stamp().seconds() * 1000000000) + (uint64_t)message.header().time_stamp().nanos();
+#endif
+
+        if (logTime_min > logTime) logTime_min = logTime;
+        if (logTime_max < logTime) logTime_max = logTime;
+
+        // _msgs.push_back(message);
+        OnRecvLeoQuadStateTimeStamped("", message, 0, _msg_seq++);
+    }
+
+    reader.close();
 }
