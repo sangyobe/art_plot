@@ -538,13 +538,15 @@ void LeoQuadDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg) {
+    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg)
+    {
         this->OnRecvLeoQuadStateTimeStamped("", msg, 0, _msg_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
     _sub_reconnector_running = true;
-    _sub_reconnector = std::thread([this] {
+    _sub_reconnector = std::thread([this]
+                                   {
         while (this->_sub_reconnector_running)
         {
             if (!this->_sub_state->IsRunning())
@@ -553,8 +555,7 @@ void LeoQuadDataHandler::BuildPlots()
                 this->_sub_state->Reconnect();
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
-    });
+        } });
 #endif
 }
 
@@ -594,6 +595,7 @@ void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto:
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
     OnRecvThreadState(curTime, state.threadstate());
     OnRecvArbitraryState(curTime, state.arbitrarystate());
+    OnRecvImu(curTime, state.imu());
 }
 
 void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leoquad::CpgState &state)
@@ -969,8 +971,10 @@ void LeoQuadDataHandler::OnLoadTriggered(QString filename)
         mcap::Timestamp logTime = (uint64_t)(message.header().time_stamp().seconds() * 1000000000) + (uint64_t)message.header().time_stamp().nanos();
 #endif
 
-        if (logTime_min > logTime) logTime_min = logTime;
-        if (logTime_max < logTime) logTime_max = logTime;
+        if (logTime_min > logTime)
+            logTime_min = logTime;
+        if (logTime_max < logTime)
+            logTime_max = logTime;
 
         // _msgs.push_back(message);
         OnRecvLeoQuadStateTimeStamped("", message, 0, _msg_seq++);
