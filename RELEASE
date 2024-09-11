@@ -1,6 +1,9 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.08.27 [v1.4.4]
+- LeoQuadState::Imu plot 추가
+
 2024.08.27 [v1.4.3]
 - LeoQuadState mcap loading 기능 추가
 

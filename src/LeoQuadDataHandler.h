@@ -43,6 +43,7 @@ private:
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData);
     void OnRecvThreadState(const double curTime, const dtproto::leoquad::ThreadState &state);
     void OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state);
+    void OnRecvImu(const double curTime, const dtproto::sensor_msgs::Imu &imu);
 
 private:
     std::unique_ptr<PlotWindow> _plot_threadState{nullptr};
@@ -65,6 +66,7 @@ private:
     std::unique_ptr<PlotWindow> _plot_eePosG_G{nullptr};
     std::unique_ptr<PlotWindow> _plot_eeVelE_G{nullptr};
     std::unique_ptr<PlotWindow> _plot_comPosXY{nullptr};
+    std::unique_ptr<PlotWindow> _plot_imu{nullptr};
 
     // for plotting user-defined arbitrary data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};

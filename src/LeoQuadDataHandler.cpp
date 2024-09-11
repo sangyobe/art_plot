@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <dtCore/src/dtLog/dtLog.h>
+#include <dtMath/dtMath.h>
 
 #define MCAP_COMPRESSION_NO_LZ4
 #define MCAP_COMPRESSION_NO_ZSTD
@@ -40,7 +41,9 @@
 
 #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
-// #define ENABLE_COM_POS_XY_PLOT
+#define ENABLE_COM_POS_XY_PLOT
+
+#define ENABLE_IMU_PLOT
 
 constexpr static int jdof = 12;
 constexpr static int legdof = 3;
@@ -134,6 +137,10 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
 #ifdef ENABLE_DEBUG_DATA_PLOT
       ,
       _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_IMU_PLOT
+      ,
+      _plot_imu(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 {
     LOG(info) << "LeoQuadDataHandler created.";
@@ -489,6 +496,26 @@ void LeoQuadDataHandler::BuildPlots()
     }
     _plot_debugData->show();
     RegisterPlot(_plot_debugData.get());
+#endif
+
+#ifdef ENABLE_IMU_PLOT
+    // _plot_imu = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_imu->SetWindowTitle("IMU");
+    _plot_imu->AddGraph("Orientation.x", LineColor<0>());
+    _plot_imu->AddGraph("Orientation.y", LineColor<1>());
+    _plot_imu->AddGraph("Orientation.z", LineColor<2>());
+    _plot_imu->AddGraph("Orientation.w", LineColor<3>());
+    _plot_imu->AddGraph("Angular Velocity.x (r/s)", LineColor<4>());
+    _plot_imu->AddGraph("Angular Velocity.y (r/s)", LineColor<5>());
+    _plot_imu->AddGraph("Angular Velocity.z (r/s)", LineColor<6>());
+    _plot_imu->AddGraph("Linear Acceleration.x (r/s^2)", LineColor<7>());
+    _plot_imu->AddGraph("Linear Acceleration.y (r/s^2)", LineColor<8>());
+    _plot_imu->AddGraph("Linear Acceleration.z (r/s^2)", LineColor<9>());
+    _plot_imu->AddGraph("Orientation.Euler.r", LineColor<10>());
+    _plot_imu->AddGraph("Orientation.Euler.p", LineColor<11>());
+    _plot_imu->AddGraph("Orientation.Euler.y", LineColor<12>());
+    _plot_imu->show();
+    RegisterPlot(_plot_imu.get());
 #endif
 
     // 데이터 연결
@@ -865,6 +892,30 @@ void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtprot
         // LOG(trace) << "  data[" << gi << "] = " << state.data(gi);
         _plot_debugData->AddData(gi, curTime, state.data().Get(gi));
         _plot_debugData->DataUpdated(curTime);
+    }
+}
+
+void LeoQuadDataHandler::OnRecvImu(const double curTime, const dtproto::sensor_msgs::Imu &imu)
+{
+    if (_plot_imu)
+    {
+        _plot_imu->AddData(0, curTime, imu.orientation().x());
+        _plot_imu->AddData(1, curTime, imu.orientation().y());
+        _plot_imu->AddData(2, curTime, imu.orientation().z());
+        _plot_imu->AddData(3, curTime, imu.orientation().w());
+        _plot_imu->AddData(4, curTime, imu.angular_velocity().a1());
+        _plot_imu->AddData(5, curTime, imu.angular_velocity().a2());
+        _plot_imu->AddData(6, curTime, imu.angular_velocity().a3());
+        _plot_imu->AddData(7, curTime, imu.linear_acceleration().a1());
+        _plot_imu->AddData(8, curTime, imu.linear_acceleration().a2());
+        _plot_imu->AddData(9, curTime, imu.linear_acceleration().a3());
+
+        dt::Math::Quaternion<double> ori(imu.orientation().w(), imu.orientation().x(), imu.orientation().y(), imu.orientation().z());
+        dt::Math::Vector3<double> rpy = ori.GetEulerAngles(AXIS3(Z_AXIS, Y_AXIS, X_AXIS));
+        _plot_imu->AddData(10, curTime, rpy(2));
+        _plot_imu->AddData(11, curTime, rpy(1));
+        _plot_imu->AddData(12, curTime, rpy(0));
+        _plot_imu->DataUpdated(curTime);
     }
 }
 
