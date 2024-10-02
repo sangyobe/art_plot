@@ -60,9 +60,8 @@ void ArbitraryStateDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port+1);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::robot_msgs::ArbitraryStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::robot_msgs::ArbitraryStateTimeStamped&)> handler = [this](dtproto::robot_msgs::ArbitraryStateTimeStamped& msg) {
-        static long long seq = 0;
-        this->OnRecvArbitraryStateTimeStamped("", msg, 0, seq++);
+    std::function<void(dtproto::robot_msgs::ArbitraryStateTimeStamped &)> handler = [this](dtproto::robot_msgs::ArbitraryStateTimeStamped &msg) {
+        this->OnRecvArbitraryStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 

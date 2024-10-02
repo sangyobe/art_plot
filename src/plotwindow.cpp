@@ -8,6 +8,10 @@
 #include <iostream>
 #include <memory>
 
+#define REFRESH_INTERVAL_FAST (100)  // (ms)
+#define REFRESH_INTERVAL_NORM (500)  // (ms)
+#define REFRESH_INTERVAL_SLOW (1000) // (ms)
+
 PlotWindow::ConfigOption::ConfigOption() : x_axis_auto_scroll(true),
                                            x_axis_auto_scroll_window(10.0),
                                            x_axis_begin_sec(0.0),
@@ -52,6 +56,9 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     connect(ui->actionExport, &QAction::triggered, this, &PlotWindow::OnExportTriggered);
     connect(ui->actionClose, &QAction::triggered, this, &PlotWindow::OnCloseTriggered);
     connect(ui->actionExtend_All, &QAction::triggered, this, &PlotWindow::OnExtendAllTriggered);
+    connect(ui->actionRefreshRateFast, &QAction::triggered, this, &PlotWindow::OnRefreshRateFastTriggered);
+    connect(ui->actionRefreshRateNormal, &QAction::triggered, this, &PlotWindow::OnRefreshRateNormalTriggered);
+    connect(ui->actionRefreshRateSlow, &QAction::triggered, this, &PlotWindow::OnRefreshRateSlowTriggered);
 
     //------------------------------------------------------------------
     // Creat and set-up plot configuration(properties) panel
@@ -136,7 +143,18 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     _refreshPlotTimer->start();
 
     //------------------------------------------------------------------
-    // plot config window
+    // add refresh rate menu
+    //
+    QActionGroup *refreshRateActionGroup = new QActionGroup(this);
+    refreshRateActionGroup->addAction(ui->actionRefreshRateFast);
+    refreshRateActionGroup->addAction(ui->actionRefreshRateNormal);
+    refreshRateActionGroup->addAction(ui->actionRefreshRateSlow);
+    refreshRateActionGroup->setExclusive(true);
+    ui->actionRefreshRateNormal->setChecked(true);
+    ui->actionRefreshRateNormal->setData(QVariant::fromValue(REFRESH_INTERVAL_FAST));
+
+    //------------------------------------------------------------------
+    // add checkable menu option for showing or hiding plot config window
     //
     ui->menuView->addSeparator();
     ui->menuView->addAction(_plotConfig->toggleViewAction());
@@ -1335,7 +1353,7 @@ void PlotWindow::dropEvent(QDropEvent* event)
         ResetPlot();
 
         // qDebug() << "import files: " << paths;
-        ui->plotwidget->ImportFromCSV(paths);
+        ui->plotwidget->ImportData(paths);
 
         ExtendAll();
     }
@@ -1513,7 +1531,8 @@ void PlotWindow::OnResetTriggered()
 
 void PlotWindow::OnImportTriggered()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files (*.csv);;All Files (*.*)"));
+    QString selectedFilters;
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV/MCAP data files to import graphs and data from...", QDir::currentPath(), tr("Data Files (*.csv, *.mcap);;All Files (*.*)"), &selectedFilters, QFileDialog::ReadOnly);
     if (filenames.empty())
         return;
 
@@ -1521,19 +1540,20 @@ void PlotWindow::OnImportTriggered()
     ResetPlot();
 
     qDebug() << "import files: " << filenames;
-    ui->plotwidget->ImportFromCSV(filenames);
+    ui->plotwidget->ImportData(filenames);
 
     ExtendAll();
 }
 
 void PlotWindow::OnAppendTriggered()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV files to import graphs and data from...", QDir::currentPath(), tr("CSV Files (*.csv);;All Files (*.*)"));
+    QString selectedFilters;
+    QStringList filenames = QFileDialog::getOpenFileNames(this, "Select CSV/MCAP data files to import graphs and data from...", QDir::currentPath(), tr("Data Files (*.csv, *.mcap);;All Files (*.*)"), &selectedFilters, QFileDialog::ReadOnly);
     if (filenames.empty())
         return;
 
     qDebug() << "import files(append mode): " << filenames;
-    ui->plotwidget->ImportFromCSV(filenames);
+    ui->plotwidget->ImportData(filenames);
 
     // ExtendAll();
 }
@@ -1545,7 +1565,7 @@ void PlotWindow::OnExportTriggered()
         return;
 
     qDebug() << "export dir: " << export_dir;
-    ui->plotwidget->ExportToCSV(export_dir);
+    ui->plotwidget->ExportData(export_dir);
 }
 
 void PlotWindow::OnCloseTriggered()
@@ -1586,3 +1606,18 @@ void PlotWindow::OnMouseReleased(QMouseEvent *event)
 //     Q_UNUSED(newRange);
 //     Q_UNUSED(oldRange);
 // }
+
+void PlotWindow::OnRefreshRateFastTriggered()
+{
+    qDebug() << "PlotWindow::OnRefreshRateFastTriggered()";
+}
+
+void PlotWindow::OnRefreshRateNormalTriggered()
+{
+    qDebug() << "PlotWindow::OnRefreshRateNormalTriggered()";
+}
+
+void PlotWindow::OnRefreshRateSlowTriggered()
+{
+    qDebug() << "PlotWindow::OnRefreshRateSlowTriggered()";
+}

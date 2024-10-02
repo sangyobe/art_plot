@@ -3,6 +3,8 @@
 DataHandler::DataHandler(MainWindow *plotToolbox)
     : _plotToolbox{plotToolbox}
 {
+    connect(_plotToolbox, SIGNAL(loadActionTriggered(QString)), this, SLOT(OnLoadTriggered(QString)));
+    connect(_plotToolbox, SIGNAL(clearActionTriggered()), this, SLOT(OnClearTriggered()));
 }
 
 void DataHandler::RegisterPlot(PlotWindow *plotWnd)
@@ -17,9 +19,24 @@ void DataHandler::GetServerAddress(std::string &ip, uint16_t &port)
     _plotToolbox->GetServerAddress(ip, port);
 }
 
+void DataHandler::ClearPlotData()
+{
+    if (!_plotToolbox) return;
+
+    _plotToolbox->clearActionTriggered();
+}
+
 int DataHandler::GetDebugDataNum()
 {
     if (!_plotToolbox) return DBGDATA_NUM_DFT;
 
     return _plotToolbox->GetDebugDataNum();
+}
+
+void DataHandler::OnLoadTriggered(QString filename)
+{
+}
+
+void DataHandler::OnClearTriggered()
+{
 }

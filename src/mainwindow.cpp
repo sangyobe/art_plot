@@ -266,7 +266,7 @@ void MainWindow::OnClearTriggered()
 
 void MainWindow::OnLoadTriggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select MCAP file to load LeoQuad control state from...", QDir::currentPath(), tr("MCAP Files (*.mcap);;All Files (*.*)"));
+    QString filename = QFileDialog::getOpenFileName(this, "Select ControlState MCAP file to load LeoQuad control state from...", QDir::currentPath(), tr("MCAP Files (*.mcap)")); //;;All Files (*.*)"));
     if (filename.isEmpty())
         return;
 

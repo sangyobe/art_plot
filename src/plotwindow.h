@@ -116,6 +116,9 @@ private slots:
     void OnMousePressed(QMouseEvent*);
     void OnMouseReleased(QMouseEvent*);
     //void OnRangeChanged(const QCPRange &newRange, const QCPRange &oldRange);
+    void OnRefreshRateFastTriggered();
+    void OnRefreshRateNormalTriggered();
+    void OnRefreshRateSlowTriggered();
 
 private:
     Ui::PlotWindow *ui;
