@@ -563,8 +563,8 @@ void LeoQuadDataHandler::OnRecvLeoQuadStateTimeStamped(const char *topic_name,
     uint32_t seq = state.header().seq();
     if (seq != 0 && seq < _msg_seq)
     {
-        ClearPlotData();
-        _data_seq = 0;
+        if (ClearPlotData())
+            _data_seq = 0;
     }
     _msg_seq = seq;
 
@@ -989,7 +989,6 @@ void LeoQuadDataHandler::OnLoadTriggered(QString filename)
 
 void LeoQuadDataHandler::OnClearTriggered()
 {
-    qDebug() << "LeoQuadDataHandler::OnClearTriggered()";
     _data_seq = 0;
     _msg_seq = 0;
 }

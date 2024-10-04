@@ -18,7 +18,7 @@ private slots:
 protected:
     void RegisterPlot(PlotWindow* plotWnd);
     void GetServerAddress(std::string& ip, uint16_t& port);
-    void ClearPlotData();
+    bool ClearPlotData();
     int GetDebugDataNum();
 
 protected:

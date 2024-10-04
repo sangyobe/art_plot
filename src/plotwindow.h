@@ -69,6 +69,8 @@ public:
     PlotType GetType() { return _plotType; }
 
 protected:
+    void SetRefreshInterval(int ms);
+
     // drag & drop CSV file
     void dragEnterEvent(QDragEnterEvent* event);
     void dragLeaveEvent(QDragLeaveEvent* event);
@@ -94,6 +96,8 @@ private:
     bool RestorePlotConfig(const QByteArray &config);
     QByteArray SaveDataSeriesConfig() const;
     bool RestoreDataSeriesConfig(const QByteArray & config, const QString& name, QString& alias, QColor& color);
+    QByteArray SavePlotOption() const;
+    bool RestorePlotOption(const QByteArray &config);
 
 private slots:
     void OnConfigChanged(QStandardItem* item);
@@ -158,6 +162,7 @@ private:
     std::atomic<bool> _isNewDataReceived;
     std::unique_ptr<QTimer> _refreshPlotTimer;
     QMutex _graphDataGuard;
+    int _refreshInterval_ms;
 
 #ifdef USE_EMUL_DATA
 public slots:

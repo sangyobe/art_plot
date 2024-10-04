@@ -22,8 +22,11 @@ public:
     void AddPlot(PlotWindow* plotWnd);
     void GetServerAddress(std::string& ip, uint16_t& port);
     int GetDebugDataNum();
+    bool IsAutoClear();
 
 private:
+    QByteArray SaveOption() const;
+    bool RestoreOption(const QByteArray &config);
     QByteArray SavePlotConfig() const;
     bool RestorePlotConfig(const QByteArray & config, const QString& name);
     void SetPlotVisible(const QString &name, bool visible);
@@ -32,6 +35,7 @@ public slots:
     void OnPlotWndHidden(QWidget* widget);
     void OnPlotWndClosed(QWidget* widget);
     void OnConfigChanged(QStandardItem* item);
+    void OnAutoClearTriggered();
     void OnItemClicked(QModelIndex index);
 
 private slots:
@@ -55,6 +59,7 @@ private:
     std::string _svrIpAddr;
     uint16_t _svrPort;
     int _debug_data_num;
+    bool _autoClear{false};
 };
 
 #endif // MAINWINDOW_H

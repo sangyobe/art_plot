@@ -8,7 +8,7 @@
 #include <iostream>
 #include <memory>
 
-#define REFRESH_INTERVAL_FAST (100)  // (ms)
+#define REFRESH_INTERVAL_FAST (200) // (ms)
 #define REFRESH_INTERVAL_NORM (500)  // (ms)
 #define REFRESH_INTERVAL_SLOW (1000) // (ms)
 
@@ -135,14 +135,6 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     ResetPlot();
 
     //------------------------------------------------------------------
-    // initialize the plot refresh timer
-    //
-    _refreshPlotTimer = std::unique_ptr<QTimer>(new QTimer(this));
-    connect(_refreshPlotTimer.get(), SIGNAL(timeout()), this, SLOT(OnRefreshPlot()));
-    _refreshPlotTimer->setInterval(500); // plot refresh time interval in milli-seconds
-    _refreshPlotTimer->start();
-
-    //------------------------------------------------------------------
     // add refresh rate menu
     //
     QActionGroup *refreshRateActionGroup = new QActionGroup(this);
@@ -150,8 +142,20 @@ PlotWindow::PlotWindow(QWidget *parent, PlotType type) : QMainWindow(parent),
     refreshRateActionGroup->addAction(ui->actionRefreshRateNormal);
     refreshRateActionGroup->addAction(ui->actionRefreshRateSlow);
     refreshRateActionGroup->setExclusive(true);
+    ui->actionRefreshRateFast->setData(QVariant::fromValue(REFRESH_INTERVAL_FAST));
+    ui->actionRefreshRateNormal->setData(QVariant::fromValue(REFRESH_INTERVAL_NORM));
+    ui->actionRefreshRateSlow->setData(QVariant::fromValue(REFRESH_INTERVAL_SLOW));
+
+    _refreshInterval_ms = REFRESH_INTERVAL_NORM;
     ui->actionRefreshRateNormal->setChecked(true);
-    ui->actionRefreshRateNormal->setData(QVariant::fromValue(REFRESH_INTERVAL_FAST));
+
+    //------------------------------------------------------------------
+    // initialize the plot refresh timer
+    //
+    _refreshPlotTimer = std::unique_ptr<QTimer>(new QTimer(this));
+    connect(_refreshPlotTimer.get(), SIGNAL(timeout()), this, SLOT(OnRefreshPlot()));
+    _refreshPlotTimer->setInterval(_refreshInterval_ms); // plot refresh time interval in milli-seconds
+    _refreshPlotTimer->start();
 
     //------------------------------------------------------------------
     // add checkable menu option for showing or hiding plot config window
@@ -410,6 +414,7 @@ void PlotWindow::SetWindowTitle(const QString &title)
     restoreGeometry(settings.value(title + "/geometry").toByteArray());
     restoreState(settings.value(title + "/windowState").toByteArray());
     RestorePlotConfig(settings.value(title + "/plotConfig").toByteArray());
+    RestorePlotOption(settings.value(title + "/plotOption").toByteArray());
 }
 
 QString PlotWindow::GetWindowTitle() const
@@ -539,6 +544,18 @@ void PlotWindow::SetLineWidth(int w)
     }
 }
 
+void PlotWindow::SetRefreshInterval(int ms)
+{
+    if (ms < 0)
+        return;
+
+    _refreshInterval_ms = ms;
+
+    _refreshPlotTimer->stop();
+    _refreshPlotTimer->setInterval(_refreshInterval_ms);
+    _refreshPlotTimer->start();
+}
+
 void PlotWindow::DataUpdated(double recv_time)
 {
     _lastRecvTime = qMax(_lastRecvTime.load(), recv_time);
@@ -559,6 +576,7 @@ void PlotWindow::closeEvent(QCloseEvent *event)
     settings.setValue(windowTitle() + "/windowState", saveState());
     settings.setValue(windowTitle() + "/plotConfig", SavePlotConfig());
     settings.setValue(windowTitle() + "/dataSeriesConfig_v2", SaveDataSeriesConfig());
+    settings.setValue(windowTitle() + "/plotOption", SavePlotOption());
     QMainWindow::closeEvent(event);
     emit widgetClosed(this);
 }
@@ -1232,6 +1250,46 @@ bool PlotWindow::RestoreDataSeriesConfig(const QByteArray &config, const QString
     return false;
 }
 
+QByteArray PlotWindow::SavePlotOption() const
+{
+    QString configstr;
+    QTextStream str(&configstr);
+    str << "PlotOption::RefreshRate"
+        << "," << _refreshInterval_ms;
+    return configstr.toUtf8();
+}
+
+bool PlotWindow::RestorePlotOption(const QByteArray &config)
+{
+    QString configstr = QString::fromUtf8(config);
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1))
+    {
+        if ("PlotOption::RefreshRate" == items[idx])
+        {
+            SetRefreshInterval(items[idx + 1].toInt());
+
+            if (_refreshInterval_ms == REFRESH_INTERVAL_FAST)
+            {
+                ui->actionRefreshRateFast->setChecked(true);
+            }
+            if (_refreshInterval_ms == REFRESH_INTERVAL_NORM)
+            {
+                ui->actionRefreshRateNormal->setChecked(true);
+            }
+            else if (_refreshInterval_ms == REFRESH_INTERVAL_SLOW)
+            {
+                ui->actionRefreshRateSlow->setChecked(true);
+            }
+        }
+
+        idx += 2;
+    }
+
+    return false;
+}
+
 void PlotWindow::OnHorzScrollBarChanged(int value)
 {
     // qDebug() << "OnHorzScrollBarChanged: value=" << value;
@@ -1609,15 +1667,15 @@ void PlotWindow::OnMouseReleased(QMouseEvent *event)
 
 void PlotWindow::OnRefreshRateFastTriggered()
 {
-    qDebug() << "PlotWindow::OnRefreshRateFastTriggered()";
+    SetRefreshInterval(REFRESH_INTERVAL_FAST);
 }
 
 void PlotWindow::OnRefreshRateNormalTriggered()
 {
-    qDebug() << "PlotWindow::OnRefreshRateNormalTriggered()";
+    SetRefreshInterval(REFRESH_INTERVAL_NORM);
 }
 
 void PlotWindow::OnRefreshRateSlowTriggered()
 {
-    qDebug() << "PlotWindow::OnRefreshRateSlowTriggered()";
+    SetRefreshInterval(REFRESH_INTERVAL_SLOW);
 }

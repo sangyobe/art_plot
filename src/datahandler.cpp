@@ -19,11 +19,14 @@ void DataHandler::GetServerAddress(std::string &ip, uint16_t &port)
     _plotToolbox->GetServerAddress(ip, port);
 }
 
-void DataHandler::ClearPlotData()
+bool DataHandler::ClearPlotData()
 {
-    if (!_plotToolbox) return;
-
-    _plotToolbox->clearActionTriggered();
+    if (_plotToolbox && _plotToolbox->IsAutoClear())
+    {
+        _plotToolbox->clearActionTriggered();
+        return true;
+    }
+    return false;
 }
 
 int DataHandler::GetDebugDataNum()
