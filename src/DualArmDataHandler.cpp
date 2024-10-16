@@ -26,12 +26,31 @@
 #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
 
-constexpr static int jdof = 12;
-constexpr static int legdof = 3;
-constexpr static int legnum = 4;
-static std::string legname[4] = {"FL", "BL", "FR", "BR"};
+constexpr static int jdof = 14;
+constexpr static int armdof = 7; // Mainpulator 6DOF + HandGripper 1DOF
+constexpr static int armnum = 2;
+
+static std::string armname[2] = {"Right", "Left"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
+
+QString jointName[14] = {
+    "RArm.Shoulder_1",
+    "RArm.Shoulder_2",
+    "RArm.Shoulder_3",
+    "RArm.Elbow_1",
+    "RArm.Elbow_2",
+    "RArm.Wrist",
+    "RArm.Gripper",
+    "LArm.Shoulder_1",
+    "LArm.Shoulder_2",
+    "LArm.Shoulder_3",
+    "LArm.Elbow_1",
+    "LArm.Elbow_2",
+    "LArm.Wrist",
+    "LArm.Gripper",
+
+};
 
 DualArmDataHandler::DualArmDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox)
@@ -84,14 +103,16 @@ DualArmDataHandler::~DualArmDataHandler()
 
 void DualArmDataHandler::BuildPlots()
 {
+
 #ifdef ENABLE_JOINT_POSISION_PLOT
     //_plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointPos->AddGraph((jointName[ji] + ".pos.desired"), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointPos->AddGraph((jointName[ji] + ".pos.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
+
     _plot_jointPos->show();
     RegisterPlot(_plot_jointPos.get());
 #endif
@@ -101,8 +122,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointVel->AddGraph((jointName[ji] + ".vel.desired"), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointVel->AddGraph((jointName[ji] + ".vel.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -113,8 +134,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -126,8 +147,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointTau->AddGraph((jointName[ji] + ".toq.desired"), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointTau->AddGraph((jointName[ji] + ".toq.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
@@ -196,13 +217,15 @@ void DualArmDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::dualarm::DualArmStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::dualarm::DualArmStateTimeStamped &)> handler = [this](dtproto::dualarm::DualArmStateTimeStamped &msg) {
+    std::function<void(dtproto::dualarm::DualArmStateTimeStamped &)> handler = [this](dtproto::dualarm::DualArmStateTimeStamped &msg)
+    {
         this->OnRecvDualArmStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
     _sub_reconnector_running = true;
-    _sub_reconnector = std::thread([this] {
+    _sub_reconnector = std::thread([this]
+                                   {
         while (this->_sub_reconnector_running)
         {
             if (!this->_sub_state->IsRunning())

@@ -18,8 +18,8 @@ endif()
 set(CMAKE_PREFIX_PATH "$ENV{ARTF_INSTALL_DIR}")
 set(CMAKE_INSTALL_PREFIX "$ENV{ARTF_INSTALL_DIR}")
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 
 # 3rd-party libs
 find_package(absl REQUIRED CONFIG)
@@ -113,6 +113,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/lib)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::PrintSupport)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
