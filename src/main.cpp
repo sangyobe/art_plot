@@ -7,10 +7,11 @@
 #include <QDebug>
 #include <dtCore/src/dtLog/dtLog.h>
 
+#include "ArbitraryStateDataHandler.h"
+#include "DualArmDataHandler.h"
+#include "LeoQuadDataHandler.h"
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
-#include "LeoQuadDataHandler.h"
-#include "ArbitraryStateDataHandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -53,6 +54,9 @@ int main(int argc, char *argv[])
 #endif
 #ifdef ROBOT_LEOQUAD
     std::unique_ptr<LeoQuadDataHandler> dataHandler = std::make_unique<LeoQuadDataHandler>(&plotToolbox);
+#endif
+#ifdef ROBOT_DUALARM
+    std::unique_ptr<DualArmDataHandler> dataHandler = std::make_unique<DualArmDataHandler>(&plotToolbox);
 #endif
 
     // // special data source
