@@ -18,8 +18,8 @@ endif()
 set(CMAKE_PREFIX_PATH "$ENV{ARTF_INSTALL_DIR}")
 set(CMAKE_INSTALL_PREFIX "$ENV{ARTF_INSTALL_DIR}")
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 
 # 3rd-party libs
 find_package(absl REQUIRED CONFIG)
@@ -82,6 +82,7 @@ file(GLOB PROJECT_SOURCES
 #)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    message("Set Qt6!")
     qt_add_executable(${CMAKE_PROJECT_NAME}
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
@@ -98,6 +99,7 @@ else()
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
+        message("Set Qt5")
         add_executable(${CMAKE_PROJECT_NAME}
             ${PROJECT_SOURCES}
         )
@@ -109,11 +111,11 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/lib)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::PrintSupport)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dtproto_grpc)
-# target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ecal_core)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE spdlog)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE yaml-cpp)
 
