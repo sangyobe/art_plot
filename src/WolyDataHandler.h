@@ -59,6 +59,8 @@ private:
     std::thread _sub_reconnector;
     std::atomic<bool> _sub_reconnector_running;
 #endif
+
+    long long _data_seq{0}; // data sequence number in the plot
 };
 
 #endif // WOLYDATAHANDLER_H

@@ -11,7 +11,6 @@
 
 #define MCAP_COMPRESSION_NO_LZ4
 #define MCAP_COMPRESSION_NO_ZSTD
-#define MCAP_IMPLEMENTATION
 #include <mcap/mcap.hpp>
 
 #define USE_LOGGINGTIME_AS_TIMESTAMP
@@ -146,9 +145,6 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
     LOG(info) << "LeoQuadDataHandler created.";
 
     BuildPlots();
-
-    // connect Qt signals
-    connect(plotToolbox, SIGNAL(loadActionTriggered(QString)), this, SLOT(OnLoadTriggered(QString)));
 }
 
 LeoQuadDataHandler::~LeoQuadDataHandler()
@@ -538,9 +534,8 @@ void LeoQuadDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg)
-    {
-        this->OnRecvLeoQuadStateTimeStamped("", msg, 0, _msg_seq++);
+    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg) {
+        this->OnRecvLeoQuadStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
@@ -564,6 +559,15 @@ void LeoQuadDataHandler::OnRecvLeoQuadStateTimeStamped(const char *topic_name,
                                                        const long long time, const long long clock)
 {
     double curTime = clock * 1e-3;
+
+    uint32_t seq = state.header().seq();
+    if (seq != 0 && seq < _msg_seq)
+    {
+        if (ClearPlotData())
+            _data_seq = 0;
+    }
+    _msg_seq = seq;
+
     OnRecvLeoQuadState(curTime, state.state());
 
 #ifdef PRINT_PUB_SUB_INFO
@@ -977,8 +981,14 @@ void LeoQuadDataHandler::OnLoadTriggered(QString filename)
             logTime_max = logTime;
 
         // _msgs.push_back(message);
-        OnRecvLeoQuadStateTimeStamped("", message, 0, _msg_seq++);
+        OnRecvLeoQuadStateTimeStamped("", message, 0, _data_seq++);
     }
 
     reader.close();
+}
+
+void LeoQuadDataHandler::OnClearTriggered()
+{
+    _data_seq = 0;
+    _msg_seq = 0;
 }

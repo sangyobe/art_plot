@@ -23,6 +23,7 @@ MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnu
     // connect menu action
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::OnNewTriggered);
     connect(ui->actionClear, &QAction::triggered, this, &MainWindow::OnClearTriggered);
+    connect(ui->actionAutoClear, &QAction::triggered, this, &MainWindow::OnAutoClearTriggered);
     connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::OnLoadTriggered);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::OnExitTriggered);
 
@@ -33,9 +34,10 @@ MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnu
     connect_success = connect(ui->plotlistview, SIGNAL(clicked(QModelIndex)), this, SLOT(OnItemClicked(QModelIndex)));
     Q_ASSERT(connect_success);
 
-    // restore window geometry (size, position)
+    // restore window geometry (size, position) & program options
     QSettings settings("hmc", "artPlot");
     restoreGeometry(settings.value("geometry").toByteArray());
+    RestoreOption(settings.value("option").toByteArray());
 
     // initialize data server address
     _svrIpAddr = ip;
@@ -66,6 +68,39 @@ void MainWindow::GetServerAddress(std::string &ip, uint16_t &port)
 int MainWindow::GetDebugDataNum()
 {
     return _debug_data_num;
+}
+
+bool MainWindow::IsAutoClear()
+{
+    return _autoClear;
+}
+
+QByteArray MainWindow::SaveOption() const
+{
+    QString configstr;
+    QTextStream str(&configstr);
+    str << "File::AutoClear"
+        << "," << _autoClear;
+    return configstr.toUtf8();
+}
+
+bool MainWindow::RestoreOption(const QByteArray &config)
+{
+    QString configstr = QString::fromUtf8(config);
+    QList<QByteArray> items = config.split(',');
+    int idx = 0;
+    while (idx < (items.size() - 1))
+    {
+        if ("File::AutoClear" == items[idx])
+        {
+            _autoClear = items[idx + 1].toInt() == 0 ? false : true;
+            ui->actionAutoClear->setChecked(_autoClear);
+        }
+
+        idx += 2;
+    }
+
+    return false;
 }
 
 void MainWindow::AddPlot(PlotWindow *plotWnd)
@@ -234,6 +269,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("geometry", saveGeometry());
     settings.setValue("state", saveState());
     settings.setValue("plotConfig", SavePlotConfig());
+    settings.setValue("option", SaveOption());
 
     // close all plotWindows
     for (auto plotwnd : qAsConst(_plotWnds))
@@ -264,9 +300,14 @@ void MainWindow::OnClearTriggered()
     emit clearActionTriggered();
 }
 
+void MainWindow::OnAutoClearTriggered()
+{
+    _autoClear = ui->actionAutoClear->isChecked();
+}
+
 void MainWindow::OnLoadTriggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select MCAP file to load LeoQuad control state from...", QDir::currentPath(), tr("MCAP Files (*.mcap);;All Files (*.*)"));
+    QString filename = QFileDialog::getOpenFileName(this, "Select ControlState MCAP file to load LeoQuad control state from...", QDir::currentPath(), tr("MCAP Files (*.mcap)")); //;;All Files (*.*)"));
     if (filename.isEmpty())
         return;
 

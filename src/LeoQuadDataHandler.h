@@ -82,11 +82,13 @@ private:
     std::atomic<bool> _sub_reconnector_running;
 #endif
 
-    long long _msg_seq{0};
+    long long _data_seq{0}; // data sequence number in the plot
+    uint32_t _msg_seq{0};   // message sequence number in the received message header
 
     // Qt specific
 private slots:
-    void OnLoadTriggered(QString filename);
+    void OnLoadTriggered(QString filename) override;
+    void OnClearTriggered() override;
 };
 
 #endif // LEOQUADDATAHANDLER_H

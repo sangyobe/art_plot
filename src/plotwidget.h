@@ -12,8 +12,12 @@ public:
     QCPRange getKeyRange(bool &foundRange);
     QCPRange getValueRange(bool &foundRange);
 
-    void ExportToCSV(QString& export_dir);
-    void ImportFromCSV(QStringList& import_files);
+    void ExportData(QString &export_dir);
+    void ImportData(QStringList &import_files);
+
+private:
+    void ImportCSV(QString filename);
+    void ImportMcap(QString filename);
 
 public slots:
     void ShowPointToolTip(QMouseEvent* event);

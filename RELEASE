@@ -1,6 +1,10 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2024.10.04 [v1.4.5]
+- Plot refresh rate 옵션 추가
+- Data auto clear 옵션 추가
+
 2024.08.27 [v1.4.4]
 - LeoQuadState::Imu plot 추가
 

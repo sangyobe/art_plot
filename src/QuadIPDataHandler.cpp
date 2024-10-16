@@ -292,9 +292,8 @@ void QuadIPDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::quadip::QuadIpStateTimeStamped>>("RobotState", "svr_address");
-    std::function<void(dtproto::quadip::QuadIpStateTimeStamped&)> handler = [this](dtproto::quadip::QuadIpStateTimeStamped& msg) {
-        static long long seq = 0;
-        this->OnRecvQuadIpStateTimeStamped("", msg, 0, seq++);
+    std::function<void(dtproto::quadip::QuadIpStateTimeStamped &)> handler = [this](dtproto::quadip::QuadIpStateTimeStamped &msg) {
+        this->OnRecvQuadIpStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 

@@ -11,9 +11,14 @@ class DataHandler : public QObject
 public:
     explicit DataHandler(MainWindow *plotToolbox);
 
+private slots:
+    virtual void OnLoadTriggered(QString filename);
+    virtual void OnClearTriggered();
+
 protected:
     void RegisterPlot(PlotWindow* plotWnd);
     void GetServerAddress(std::string& ip, uint16_t& port);
+    bool ClearPlotData();
     int GetDebugDataNum();
 
 protected:

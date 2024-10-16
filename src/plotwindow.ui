@@ -77,10 +77,21 @@
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="menuRefresh_Rate">
+     <property name="title">
+      <string>Refresh Rate</string>
+     </property>
+     <addaction name="actionRefreshRateFast"/>
+     <addaction name="actionRefreshRateNormal"/>
+     <addaction name="actionRefreshRateSlow"/>
+    </widget>
     <addaction name="actionExtend_All"/>
     <addaction name="separator"/>
     <addaction name="actionConfigure"/>
     <addaction name="actionData_Grid"/>
+    <addaction name="separator"/>
+    <addaction name="menuRefresh_Rate"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -158,6 +169,38 @@
    </property>
    <property name="toolTip">
     <string>Import data from CSV file and append them to existing plots</string>
+   </property>
+  </action>
+  <action name="actionRefreshRateFast">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fast</string>
+   </property>
+  </action>
+  <action name="actionRefreshRateNormal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Normal</string>
+   </property>
+  </action>
+  <action name="actionRefreshRateSlow">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Slow</string>
+   </property>
+  </action>
+  <action name="actionAutoClear">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto Clear</string>
    </property>
   </action>
  </widget>
