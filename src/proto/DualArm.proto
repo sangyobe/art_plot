@@ -52,10 +52,13 @@ message DualArmState {
   repeated JointState jointState = 1;
   repeated JointData actJointData = 2;
   repeated JointData desJointData = 3;
-  repeated TaskState actTaskState = 4;
-  repeated TaskState desTaskState = 5;
-  ControlState actControlState = 8;
-  ControlState desControlState = 9;
+  repeated JointState gripperState = 4;
+  repeated JointData actGripperData = 5;
+  repeated JointData desGripperData = 6;
+  repeated TaskState actTaskState = 7;
+  repeated TaskState desTaskState = 8;
+  ControlState actControlState = 9;
+  ControlState desControlState = 10;
   ThreadState threadState = 11;
   std_msgs.PackedDouble arbitraryState = 20;
 }

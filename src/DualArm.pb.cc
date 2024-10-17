@@ -110,6 +110,9 @@ PROTOBUF_CONSTEXPR DualArmState::DualArmState(
     /*decltype(_impl_.jointstate_)*/{}
   , /*decltype(_impl_.actjointdata_)*/{}
   , /*decltype(_impl_.desjointdata_)*/{}
+  , /*decltype(_impl_.gripperstate_)*/{}
+  , /*decltype(_impl_.actgripperdata_)*/{}
+  , /*decltype(_impl_.desgripperdata_)*/{}
   , /*decltype(_impl_.acttaskstate_)*/{}
   , /*decltype(_impl_.destaskstate_)*/{}
   , /*decltype(_impl_.actcontrolstate_)*/nullptr
@@ -210,6 +213,9 @@ const uint32_t TableStruct_DualArm_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.jointstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.actjointdata_),
   PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.desjointdata_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.gripperstate_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.actgripperdata_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.desgripperdata_),
   PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.acttaskstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.destaskstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::dualarm::DualArmState, _impl_.actcontrolstate_),
@@ -232,7 +238,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 37, -1, -1, sizeof(::dtproto::dualarm::JointData)},
   { 48, -1, -1, sizeof(::dtproto::dualarm::ControlState)},
   { 54, -1, -1, sizeof(::dtproto::dualarm::DualArmState)},
-  { 69, -1, -1, sizeof(::dtproto::dualarm::DualArmStateTimeStamped)},
+  { 72, -1, -1, sizeof(::dtproto::dualarm::DualArmStateTimeStamped)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -268,22 +274,26 @@ const char descriptor_table_protodef_DualArm_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\001(\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\npos"
   "Aux_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_rp"
   "ss\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\016\n\014ControlStat"
-  "e\"\342\003\n\014DualArmState\022/\n\njointState\030\001 \003(\0132\033"
+  "e\"\375\004\n\014DualArmState\022/\n\njointState\030\001 \003(\0132\033"
   ".dtproto.dualarm.JointState\0220\n\014actJointD"
   "ata\030\002 \003(\0132\032.dtproto.dualarm.JointData\0220\n"
   "\014desJointData\030\003 \003(\0132\032.dtproto.dualarm.Jo"
-  "intData\0220\n\014actTaskState\030\004 \003(\0132\032.dtproto."
-  "dualarm.TaskState\0220\n\014desTaskState\030\005 \003(\0132"
-  "\032.dtproto.dualarm.TaskState\0226\n\017actContro"
-  "lState\030\010 \001(\0132\035.dtproto.dualarm.ControlSt"
-  "ate\0226\n\017desControlState\030\t \001(\0132\035.dtproto.d"
-  "ualarm.ControlState\0221\n\013threadState\030\013 \001(\013"
-  "2\034.dtproto.dualarm.ThreadState\0226\n\016arbitr"
-  "aryState\030\024 \001(\0132\036.dtproto.std_msgs.Packed"
-  "Double\"q\n\027DualArmStateTimeStamped\022(\n\006hea"
-  "der\030\001 \001(\0132\030.dtproto.std_msgs.Header\022,\n\005s"
-  "tate\030\002 \001(\0132\035.dtproto.dualarm.DualArmStat"
-  "eb\006proto3"
+  "intData\0221\n\014gripperState\030\004 \003(\0132\033.dtproto."
+  "dualarm.JointState\0222\n\016actGripperData\030\005 \003"
+  "(\0132\032.dtproto.dualarm.JointData\0222\n\016desGri"
+  "pperData\030\006 \003(\0132\032.dtproto.dualarm.JointDa"
+  "ta\0220\n\014actTaskState\030\007 \003(\0132\032.dtproto.duala"
+  "rm.TaskState\0220\n\014desTaskState\030\010 \003(\0132\032.dtp"
+  "roto.dualarm.TaskState\0226\n\017actControlStat"
+  "e\030\t \001(\0132\035.dtproto.dualarm.ControlState\0226"
+  "\n\017desControlState\030\n \001(\0132\035.dtproto.dualar"
+  "m.ControlState\0221\n\013threadState\030\013 \001(\0132\034.dt"
+  "proto.dualarm.ThreadState\0226\n\016arbitrarySt"
+  "ate\030\024 \001(\0132\036.dtproto.std_msgs.PackedDoubl"
+  "e\"q\n\027DualArmStateTimeStamped\022(\n\006header\030\001"
+  " \001(\0132\030.dtproto.std_msgs.Header\022,\n\005state\030"
+  "\002 \001(\0132\035.dtproto.dualarm.DualArmStateb\006pr"
+  "oto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_DualArm_2eproto_deps[4] = {
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fOrientation_2eproto,
@@ -293,7 +303,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_DualArm_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_DualArm_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_DualArm_2eproto = {
-    false, false, 1489, descriptor_table_protodef_DualArm_2eproto,
+    false, false, 1644, descriptor_table_protodef_DualArm_2eproto,
     "DualArm.proto",
     &descriptor_table_DualArm_2eproto_once, descriptor_table_DualArm_2eproto_deps, 4, 7,
     schemas, file_default_instances, TableStruct_DualArm_2eproto::offsets,
@@ -1876,6 +1886,9 @@ DualArmState::DualArmState(const DualArmState& from)
       decltype(_impl_.jointstate_){from._impl_.jointstate_}
     , decltype(_impl_.actjointdata_){from._impl_.actjointdata_}
     , decltype(_impl_.desjointdata_){from._impl_.desjointdata_}
+    , decltype(_impl_.gripperstate_){from._impl_.gripperstate_}
+    , decltype(_impl_.actgripperdata_){from._impl_.actgripperdata_}
+    , decltype(_impl_.desgripperdata_){from._impl_.desgripperdata_}
     , decltype(_impl_.acttaskstate_){from._impl_.acttaskstate_}
     , decltype(_impl_.destaskstate_){from._impl_.destaskstate_}
     , decltype(_impl_.actcontrolstate_){nullptr}
@@ -1908,6 +1921,9 @@ inline void DualArmState::SharedCtor(
       decltype(_impl_.jointstate_){arena}
     , decltype(_impl_.actjointdata_){arena}
     , decltype(_impl_.desjointdata_){arena}
+    , decltype(_impl_.gripperstate_){arena}
+    , decltype(_impl_.actgripperdata_){arena}
+    , decltype(_impl_.desgripperdata_){arena}
     , decltype(_impl_.acttaskstate_){arena}
     , decltype(_impl_.destaskstate_){arena}
     , decltype(_impl_.actcontrolstate_){nullptr}
@@ -1932,6 +1948,9 @@ inline void DualArmState::SharedDtor() {
   _impl_.jointstate_.~RepeatedPtrField();
   _impl_.actjointdata_.~RepeatedPtrField();
   _impl_.desjointdata_.~RepeatedPtrField();
+  _impl_.gripperstate_.~RepeatedPtrField();
+  _impl_.actgripperdata_.~RepeatedPtrField();
+  _impl_.desgripperdata_.~RepeatedPtrField();
   _impl_.acttaskstate_.~RepeatedPtrField();
   _impl_.destaskstate_.~RepeatedPtrField();
   if (this != internal_default_instance()) delete _impl_.actcontrolstate_;
@@ -1953,6 +1972,9 @@ void DualArmState::Clear() {
   _impl_.jointstate_.Clear();
   _impl_.actjointdata_.Clear();
   _impl_.desjointdata_.Clear();
+  _impl_.gripperstate_.Clear();
+  _impl_.actgripperdata_.Clear();
+  _impl_.desgripperdata_.Clear();
   _impl_.acttaskstate_.Clear();
   _impl_.destaskstate_.Clear();
   if (GetArenaForAllocation() == nullptr && _impl_.actcontrolstate_ != nullptr) {
@@ -2019,43 +2041,82 @@ const char* DualArmState::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
         } else
           goto handle_unusual;
         continue;
-      // repeated .dtproto.dualarm.TaskState actTaskState = 4;
+      // repeated .dtproto.dualarm.JointState gripperState = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_acttaskstate(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_gripperstate(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
         } else
           goto handle_unusual;
         continue;
-      // repeated .dtproto.dualarm.TaskState desTaskState = 5;
+      // repeated .dtproto.dualarm.JointData actGripperData = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_destaskstate(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_actgripperdata(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<42>(ptr));
         } else
           goto handle_unusual;
         continue;
-      // .dtproto.dualarm.ControlState actControlState = 8;
+      // repeated .dtproto.dualarm.JointData desGripperData = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_desgripperdata(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<50>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.dualarm.TaskState actTaskState = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_acttaskstate(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .dtproto.dualarm.TaskState desTaskState = 8;
       case 8:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_destaskstate(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<66>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.dualarm.ControlState actControlState = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
           ptr = ctx->ParseMessage(_internal_mutable_actcontrolstate(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // .dtproto.dualarm.ControlState desControlState = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
+      // .dtproto.dualarm.ControlState desControlState = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
           ptr = ctx->ParseMessage(_internal_mutable_descontrolstate(), ptr);
           CHK_(ptr);
         } else
@@ -2130,33 +2191,57 @@ uint8_t* DualArmState::_InternalSerialize(
         InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // repeated .dtproto.dualarm.TaskState actTaskState = 4;
+  // repeated .dtproto.dualarm.JointState gripperState = 4;
   for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_acttaskstate_size()); i < n; i++) {
-    const auto& repfield = this->_internal_acttaskstate(i);
+      n = static_cast<unsigned>(this->_internal_gripperstate_size()); i < n; i++) {
+    const auto& repfield = this->_internal_gripperstate(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
         InternalWriteMessage(4, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // repeated .dtproto.dualarm.TaskState desTaskState = 5;
+  // repeated .dtproto.dualarm.JointData actGripperData = 5;
   for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_destaskstate_size()); i < n; i++) {
-    const auto& repfield = this->_internal_destaskstate(i);
+      n = static_cast<unsigned>(this->_internal_actgripperdata_size()); i < n; i++) {
+    const auto& repfield = this->_internal_actgripperdata(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
         InternalWriteMessage(5, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // .dtproto.dualarm.ControlState actControlState = 8;
+  // repeated .dtproto.dualarm.JointData desGripperData = 6;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_desgripperdata_size()); i < n; i++) {
+    const auto& repfield = this->_internal_desgripperdata(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(6, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.dualarm.TaskState actTaskState = 7;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_acttaskstate_size()); i < n; i++) {
+    const auto& repfield = this->_internal_acttaskstate(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(7, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // repeated .dtproto.dualarm.TaskState desTaskState = 8;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_destaskstate_size()); i < n; i++) {
+    const auto& repfield = this->_internal_destaskstate(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(8, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.dualarm.ControlState actControlState = 9;
   if (this->_internal_has_actcontrolstate()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(8, _Internal::actcontrolstate(this),
+      InternalWriteMessage(9, _Internal::actcontrolstate(this),
         _Internal::actcontrolstate(this).GetCachedSize(), target, stream);
   }
 
-  // .dtproto.dualarm.ControlState desControlState = 9;
+  // .dtproto.dualarm.ControlState desControlState = 10;
   if (this->_internal_has_descontrolstate()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(9, _Internal::descontrolstate(this),
+      InternalWriteMessage(10, _Internal::descontrolstate(this),
         _Internal::descontrolstate(this).GetCachedSize(), target, stream);
   }
 
@@ -2211,28 +2296,49 @@ size_t DualArmState::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .dtproto.dualarm.TaskState actTaskState = 4;
+  // repeated .dtproto.dualarm.JointState gripperState = 4;
+  total_size += 1UL * this->_internal_gripperstate_size();
+  for (const auto& msg : this->_impl_.gripperstate_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.dualarm.JointData actGripperData = 5;
+  total_size += 1UL * this->_internal_actgripperdata_size();
+  for (const auto& msg : this->_impl_.actgripperdata_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.dualarm.JointData desGripperData = 6;
+  total_size += 1UL * this->_internal_desgripperdata_size();
+  for (const auto& msg : this->_impl_.desgripperdata_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .dtproto.dualarm.TaskState actTaskState = 7;
   total_size += 1UL * this->_internal_acttaskstate_size();
   for (const auto& msg : this->_impl_.acttaskstate_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .dtproto.dualarm.TaskState desTaskState = 5;
+  // repeated .dtproto.dualarm.TaskState desTaskState = 8;
   total_size += 1UL * this->_internal_destaskstate_size();
   for (const auto& msg : this->_impl_.destaskstate_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // .dtproto.dualarm.ControlState actControlState = 8;
+  // .dtproto.dualarm.ControlState actControlState = 9;
   if (this->_internal_has_actcontrolstate()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.actcontrolstate_);
   }
 
-  // .dtproto.dualarm.ControlState desControlState = 9;
+  // .dtproto.dualarm.ControlState desControlState = 10;
   if (this->_internal_has_descontrolstate()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -2274,6 +2380,9 @@ void DualArmState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   _this->_impl_.jointstate_.MergeFrom(from._impl_.jointstate_);
   _this->_impl_.actjointdata_.MergeFrom(from._impl_.actjointdata_);
   _this->_impl_.desjointdata_.MergeFrom(from._impl_.desjointdata_);
+  _this->_impl_.gripperstate_.MergeFrom(from._impl_.gripperstate_);
+  _this->_impl_.actgripperdata_.MergeFrom(from._impl_.actgripperdata_);
+  _this->_impl_.desgripperdata_.MergeFrom(from._impl_.desgripperdata_);
   _this->_impl_.acttaskstate_.MergeFrom(from._impl_.acttaskstate_);
   _this->_impl_.destaskstate_.MergeFrom(from._impl_.destaskstate_);
   if (from._internal_has_actcontrolstate()) {
@@ -2312,6 +2421,9 @@ void DualArmState::InternalSwap(DualArmState* other) {
   _impl_.jointstate_.InternalSwap(&other->_impl_.jointstate_);
   _impl_.actjointdata_.InternalSwap(&other->_impl_.actjointdata_);
   _impl_.desjointdata_.InternalSwap(&other->_impl_.desjointdata_);
+  _impl_.gripperstate_.InternalSwap(&other->_impl_.gripperstate_);
+  _impl_.actgripperdata_.InternalSwap(&other->_impl_.actgripperdata_);
+  _impl_.desgripperdata_.InternalSwap(&other->_impl_.desgripperdata_);
   _impl_.acttaskstate_.InternalSwap(&other->_impl_.acttaskstate_);
   _impl_.destaskstate_.InternalSwap(&other->_impl_.destaskstate_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<

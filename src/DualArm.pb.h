@@ -1196,10 +1196,13 @@ class DualArmState final :
     kJointStateFieldNumber = 1,
     kActJointDataFieldNumber = 2,
     kDesJointDataFieldNumber = 3,
-    kActTaskStateFieldNumber = 4,
-    kDesTaskStateFieldNumber = 5,
-    kActControlStateFieldNumber = 8,
-    kDesControlStateFieldNumber = 9,
+    kGripperStateFieldNumber = 4,
+    kActGripperDataFieldNumber = 5,
+    kDesGripperDataFieldNumber = 6,
+    kActTaskStateFieldNumber = 7,
+    kDesTaskStateFieldNumber = 8,
+    kActControlStateFieldNumber = 9,
+    kDesControlStateFieldNumber = 10,
     kThreadStateFieldNumber = 11,
     kArbitraryStateFieldNumber = 20,
   };
@@ -1257,7 +1260,61 @@ class DualArmState final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >&
       desjointdata() const;
 
-  // repeated .dtproto.dualarm.TaskState actTaskState = 4;
+  // repeated .dtproto.dualarm.JointState gripperState = 4;
+  int gripperstate_size() const;
+  private:
+  int _internal_gripperstate_size() const;
+  public:
+  void clear_gripperstate();
+  ::dtproto::dualarm::JointState* mutable_gripperstate(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointState >*
+      mutable_gripperstate();
+  private:
+  const ::dtproto::dualarm::JointState& _internal_gripperstate(int index) const;
+  ::dtproto::dualarm::JointState* _internal_add_gripperstate();
+  public:
+  const ::dtproto::dualarm::JointState& gripperstate(int index) const;
+  ::dtproto::dualarm::JointState* add_gripperstate();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointState >&
+      gripperstate() const;
+
+  // repeated .dtproto.dualarm.JointData actGripperData = 5;
+  int actgripperdata_size() const;
+  private:
+  int _internal_actgripperdata_size() const;
+  public:
+  void clear_actgripperdata();
+  ::dtproto::dualarm::JointData* mutable_actgripperdata(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >*
+      mutable_actgripperdata();
+  private:
+  const ::dtproto::dualarm::JointData& _internal_actgripperdata(int index) const;
+  ::dtproto::dualarm::JointData* _internal_add_actgripperdata();
+  public:
+  const ::dtproto::dualarm::JointData& actgripperdata(int index) const;
+  ::dtproto::dualarm::JointData* add_actgripperdata();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >&
+      actgripperdata() const;
+
+  // repeated .dtproto.dualarm.JointData desGripperData = 6;
+  int desgripperdata_size() const;
+  private:
+  int _internal_desgripperdata_size() const;
+  public:
+  void clear_desgripperdata();
+  ::dtproto::dualarm::JointData* mutable_desgripperdata(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >*
+      mutable_desgripperdata();
+  private:
+  const ::dtproto::dualarm::JointData& _internal_desgripperdata(int index) const;
+  ::dtproto::dualarm::JointData* _internal_add_desgripperdata();
+  public:
+  const ::dtproto::dualarm::JointData& desgripperdata(int index) const;
+  ::dtproto::dualarm::JointData* add_desgripperdata();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >&
+      desgripperdata() const;
+
+  // repeated .dtproto.dualarm.TaskState actTaskState = 7;
   int acttaskstate_size() const;
   private:
   int _internal_acttaskstate_size() const;
@@ -1275,7 +1332,7 @@ class DualArmState final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::TaskState >&
       acttaskstate() const;
 
-  // repeated .dtproto.dualarm.TaskState desTaskState = 5;
+  // repeated .dtproto.dualarm.TaskState desTaskState = 8;
   int destaskstate_size() const;
   private:
   int _internal_destaskstate_size() const;
@@ -1293,7 +1350,7 @@ class DualArmState final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::TaskState >&
       destaskstate() const;
 
-  // .dtproto.dualarm.ControlState actControlState = 8;
+  // .dtproto.dualarm.ControlState actControlState = 9;
   bool has_actcontrolstate() const;
   private:
   bool _internal_has_actcontrolstate() const;
@@ -1311,7 +1368,7 @@ class DualArmState final :
       ::dtproto::dualarm::ControlState* actcontrolstate);
   ::dtproto::dualarm::ControlState* unsafe_arena_release_actcontrolstate();
 
-  // .dtproto.dualarm.ControlState desControlState = 9;
+  // .dtproto.dualarm.ControlState desControlState = 10;
   bool has_descontrolstate() const;
   private:
   bool _internal_has_descontrolstate() const;
@@ -1376,6 +1433,9 @@ class DualArmState final :
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointState > jointstate_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData > actjointdata_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData > desjointdata_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointState > gripperstate_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData > actgripperdata_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData > desgripperdata_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::TaskState > acttaskstate_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::TaskState > destaskstate_;
     ::dtproto::dualarm::ControlState* actcontrolstate_;
@@ -2585,7 +2645,127 @@ DualArmState::desjointdata() const {
   return _impl_.desjointdata_;
 }
 
-// repeated .dtproto.dualarm.TaskState actTaskState = 4;
+// repeated .dtproto.dualarm.JointState gripperState = 4;
+inline int DualArmState::_internal_gripperstate_size() const {
+  return _impl_.gripperstate_.size();
+}
+inline int DualArmState::gripperstate_size() const {
+  return _internal_gripperstate_size();
+}
+inline void DualArmState::clear_gripperstate() {
+  _impl_.gripperstate_.Clear();
+}
+inline ::dtproto::dualarm::JointState* DualArmState::mutable_gripperstate(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.dualarm.DualArmState.gripperState)
+  return _impl_.gripperstate_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointState >*
+DualArmState::mutable_gripperstate() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.dualarm.DualArmState.gripperState)
+  return &_impl_.gripperstate_;
+}
+inline const ::dtproto::dualarm::JointState& DualArmState::_internal_gripperstate(int index) const {
+  return _impl_.gripperstate_.Get(index);
+}
+inline const ::dtproto::dualarm::JointState& DualArmState::gripperstate(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.dualarm.DualArmState.gripperState)
+  return _internal_gripperstate(index);
+}
+inline ::dtproto::dualarm::JointState* DualArmState::_internal_add_gripperstate() {
+  return _impl_.gripperstate_.Add();
+}
+inline ::dtproto::dualarm::JointState* DualArmState::add_gripperstate() {
+  ::dtproto::dualarm::JointState* _add = _internal_add_gripperstate();
+  // @@protoc_insertion_point(field_add:dtproto.dualarm.DualArmState.gripperState)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointState >&
+DualArmState::gripperstate() const {
+  // @@protoc_insertion_point(field_list:dtproto.dualarm.DualArmState.gripperState)
+  return _impl_.gripperstate_;
+}
+
+// repeated .dtproto.dualarm.JointData actGripperData = 5;
+inline int DualArmState::_internal_actgripperdata_size() const {
+  return _impl_.actgripperdata_.size();
+}
+inline int DualArmState::actgripperdata_size() const {
+  return _internal_actgripperdata_size();
+}
+inline void DualArmState::clear_actgripperdata() {
+  _impl_.actgripperdata_.Clear();
+}
+inline ::dtproto::dualarm::JointData* DualArmState::mutable_actgripperdata(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.dualarm.DualArmState.actGripperData)
+  return _impl_.actgripperdata_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >*
+DualArmState::mutable_actgripperdata() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.dualarm.DualArmState.actGripperData)
+  return &_impl_.actgripperdata_;
+}
+inline const ::dtproto::dualarm::JointData& DualArmState::_internal_actgripperdata(int index) const {
+  return _impl_.actgripperdata_.Get(index);
+}
+inline const ::dtproto::dualarm::JointData& DualArmState::actgripperdata(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.dualarm.DualArmState.actGripperData)
+  return _internal_actgripperdata(index);
+}
+inline ::dtproto::dualarm::JointData* DualArmState::_internal_add_actgripperdata() {
+  return _impl_.actgripperdata_.Add();
+}
+inline ::dtproto::dualarm::JointData* DualArmState::add_actgripperdata() {
+  ::dtproto::dualarm::JointData* _add = _internal_add_actgripperdata();
+  // @@protoc_insertion_point(field_add:dtproto.dualarm.DualArmState.actGripperData)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >&
+DualArmState::actgripperdata() const {
+  // @@protoc_insertion_point(field_list:dtproto.dualarm.DualArmState.actGripperData)
+  return _impl_.actgripperdata_;
+}
+
+// repeated .dtproto.dualarm.JointData desGripperData = 6;
+inline int DualArmState::_internal_desgripperdata_size() const {
+  return _impl_.desgripperdata_.size();
+}
+inline int DualArmState::desgripperdata_size() const {
+  return _internal_desgripperdata_size();
+}
+inline void DualArmState::clear_desgripperdata() {
+  _impl_.desgripperdata_.Clear();
+}
+inline ::dtproto::dualarm::JointData* DualArmState::mutable_desgripperdata(int index) {
+  // @@protoc_insertion_point(field_mutable:dtproto.dualarm.DualArmState.desGripperData)
+  return _impl_.desgripperdata_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >*
+DualArmState::mutable_desgripperdata() {
+  // @@protoc_insertion_point(field_mutable_list:dtproto.dualarm.DualArmState.desGripperData)
+  return &_impl_.desgripperdata_;
+}
+inline const ::dtproto::dualarm::JointData& DualArmState::_internal_desgripperdata(int index) const {
+  return _impl_.desgripperdata_.Get(index);
+}
+inline const ::dtproto::dualarm::JointData& DualArmState::desgripperdata(int index) const {
+  // @@protoc_insertion_point(field_get:dtproto.dualarm.DualArmState.desGripperData)
+  return _internal_desgripperdata(index);
+}
+inline ::dtproto::dualarm::JointData* DualArmState::_internal_add_desgripperdata() {
+  return _impl_.desgripperdata_.Add();
+}
+inline ::dtproto::dualarm::JointData* DualArmState::add_desgripperdata() {
+  ::dtproto::dualarm::JointData* _add = _internal_add_desgripperdata();
+  // @@protoc_insertion_point(field_add:dtproto.dualarm.DualArmState.desGripperData)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dtproto::dualarm::JointData >&
+DualArmState::desgripperdata() const {
+  // @@protoc_insertion_point(field_list:dtproto.dualarm.DualArmState.desGripperData)
+  return _impl_.desgripperdata_;
+}
+
+// repeated .dtproto.dualarm.TaskState actTaskState = 7;
 inline int DualArmState::_internal_acttaskstate_size() const {
   return _impl_.acttaskstate_.size();
 }
@@ -2625,7 +2805,7 @@ DualArmState::acttaskstate() const {
   return _impl_.acttaskstate_;
 }
 
-// repeated .dtproto.dualarm.TaskState desTaskState = 5;
+// repeated .dtproto.dualarm.TaskState desTaskState = 8;
 inline int DualArmState::_internal_destaskstate_size() const {
   return _impl_.destaskstate_.size();
 }
@@ -2665,7 +2845,7 @@ DualArmState::destaskstate() const {
   return _impl_.destaskstate_;
 }
 
-// .dtproto.dualarm.ControlState actControlState = 8;
+// .dtproto.dualarm.ControlState actControlState = 9;
 inline bool DualArmState::_internal_has_actcontrolstate() const {
   return this != internal_default_instance() && _impl_.actcontrolstate_ != nullptr;
 }
@@ -2755,7 +2935,7 @@ inline void DualArmState::set_allocated_actcontrolstate(::dtproto::dualarm::Cont
   // @@protoc_insertion_point(field_set_allocated:dtproto.dualarm.DualArmState.actControlState)
 }
 
-// .dtproto.dualarm.ControlState desControlState = 9;
+// .dtproto.dualarm.ControlState desControlState = 10;
 inline bool DualArmState::_internal_has_descontrolstate() const {
   return this != internal_default_instance() && _impl_.descontrolstate_ != nullptr;
 }

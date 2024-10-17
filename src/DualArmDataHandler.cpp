@@ -30,27 +30,11 @@ constexpr static int jdof = 14;
 constexpr static int armdof = 7; // Mainpulator 6DOF + HandGripper 1DOF
 constexpr static int armnum = 2;
 
-static std::string armname[2] = {"Right", "Left"};
+static std::string armname[armnum] = {"RArm", "LArm"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
-QString jointName[14] = {
-    "RArm.Shoulder_1",
-    "RArm.Shoulder_2",
-    "RArm.Shoulder_3",
-    "RArm.Elbow_1",
-    "RArm.Elbow_2",
-    "RArm.Wrist",
-    "RArm.Gripper",
-    "LArm.Shoulder_1",
-    "LArm.Shoulder_2",
-    "LArm.Shoulder_3",
-    "LArm.Elbow_1",
-    "LArm.Elbow_2",
-    "LArm.Wrist",
-    "LArm.Gripper",
-
-};
+QString jointName[jdof] = {"R1", "R2", "R3", "R4", "R5", "R6", "R7", "L1", "L2", "L3", "L4", "L5", "L6", "L7"};
 
 DualArmDataHandler::DualArmDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox)
@@ -256,7 +240,7 @@ void DualArmDataHandler::OnRecvDualArmStateTimeStamped(const char *topic_name,
 
 #ifdef PRINT_PUB_SUB_INFO
     qDebug() << "------------------------------------------";
-    qDebug() << " QuadIP State ";
+    qDebug() << " DualArm Control State ";
     qDebug() << "------------------------------------------";
     qDebug() << "topic name   : " << topic_name;
     qDebug() << "topic time   : " << time;
