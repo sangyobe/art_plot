@@ -255,57 +255,55 @@ const char descriptor_table_protodef_DualArm_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\n\rDualArm.proto\022\017dtproto.dualarm\032\035dtProt"
   "o/std_msgs/Header.proto\032\"dtProto/std_msg"
   "s/PackedArray.proto\032!dtProto/geometry_ms"
-  "gs/Point.proto\032\'dtProto/geometry_msgs/Or"
-  "ientation.proto\"9\n\013ThreadState\022\025\n\rctrlPe"
-  "riod_ms\030\001 \001(\001\022\023\n\013ctrlLoad_ms\030\002 \001(\001\"\261\002\n\tT"
-  "askState\022+\n\003pos\030\001 \001(\0132\036.dtproto.geometry"
-  "_msgs.Point3d\022,\n\003rot\030\002 \001(\0132\037.dtproto.geo"
-  "metry_msgs.Rotation\022.\n\006linVel\030\003 \001(\0132\036.dt"
-  "proto.geometry_msgs.Point3d\022.\n\006angVel\030\004 "
-  "\001(\0132\036.dtproto.geometry_msgs.Point3d\022-\n\005f"
-  "orce\030\005 \001(\0132\036.dtproto.geometry_msgs.Point"
-  "3d\022.\n\006moment\030\006 \001(\0132\036.dtproto.geometry_ms"
-  "gs.Point3d\022\n\n\002id\030\007 \001(\r\"\332\001\n\nJointState\022\022\n"
-  "\nstatusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r\022\025"
-  "\n\rincPosOfs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt\030\004"
-  " \001(\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt\030\006"
-  " \001(\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030\010 "
-  "\001(\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030\n "
-  "\001(\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\npos"
-  "Aux_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_rp"
-  "ss\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\016\n\014ControlStat"
-  "e\"\375\004\n\014DualArmState\022/\n\njointState\030\001 \003(\0132\033"
-  ".dtproto.dualarm.JointState\0220\n\014actJointD"
-  "ata\030\002 \003(\0132\032.dtproto.dualarm.JointData\0220\n"
-  "\014desJointData\030\003 \003(\0132\032.dtproto.dualarm.Jo"
-  "intData\0221\n\014gripperState\030\004 \003(\0132\033.dtproto."
-  "dualarm.JointState\0222\n\016actGripperData\030\005 \003"
-  "(\0132\032.dtproto.dualarm.JointData\0222\n\016desGri"
-  "pperData\030\006 \003(\0132\032.dtproto.dualarm.JointDa"
-  "ta\0220\n\014actTaskState\030\007 \003(\0132\032.dtproto.duala"
-  "rm.TaskState\0220\n\014desTaskState\030\010 \003(\0132\032.dtp"
-  "roto.dualarm.TaskState\0226\n\017actControlStat"
-  "e\030\t \001(\0132\035.dtproto.dualarm.ControlState\0226"
-  "\n\017desControlState\030\n \001(\0132\035.dtproto.dualar"
-  "m.ControlState\0221\n\013threadState\030\013 \001(\0132\034.dt"
-  "proto.dualarm.ThreadState\0226\n\016arbitrarySt"
-  "ate\030\024 \001(\0132\036.dtproto.std_msgs.PackedDoubl"
-  "e\"q\n\027DualArmStateTimeStamped\022(\n\006header\030\001"
-  " \001(\0132\030.dtproto.std_msgs.Header\022,\n\005state\030"
-  "\002 \001(\0132\035.dtproto.dualarm.DualArmStateb\006pr"
-  "oto3"
+  "gs/Point.proto\"9\n\013ThreadState\022\025\n\rctrlPer"
+  "iod_ms\030\001 \001(\001\022\023\n\013ctrlLoad_ms\030\002 \001(\001\"\260\002\n\tTa"
+  "skState\022+\n\003pos\030\001 \001(\0132\036.dtproto.geometry_"
+  "msgs.Point3d\022+\n\003rot\030\002 \001(\0132\036.dtproto.geom"
+  "etry_msgs.Point3d\022.\n\006linVel\030\003 \001(\0132\036.dtpr"
+  "oto.geometry_msgs.Point3d\022.\n\006angVel\030\004 \001("
+  "\0132\036.dtproto.geometry_msgs.Point3d\022-\n\005for"
+  "ce\030\005 \001(\0132\036.dtproto.geometry_msgs.Point3d"
+  "\022.\n\006moment\030\006 \001(\0132\036.dtproto.geometry_msgs"
+  ".Point3d\022\n\n\002id\030\007 \001(\r\"\332\001\n\nJointState\022\022\n\ns"
+  "tatusWord\030\001 \001(\r\022\023\n\013controlWord\030\002 \001(\r\022\025\n\r"
+  "incPosOfs_cnt\030\003 \001(\005\022\025\n\rabsPosOfs_cnt\030\004 \001"
+  "(\005\022\022\n\nincPos_cnt\030\005 \001(\005\022\022\n\nabsPos_cnt\030\006 \001"
+  "(\005\022\022\n\nincVel_cps\030\007 \001(\005\022\021\n\tmcuTemp_C\030\010 \001("
+  "\002\022\021\n\tinvTemp_C\030\t \001(\002\022\023\n\013inputVolt_V\030\n \001("
+  "\002\"d\n\tJointData\022\017\n\007pos_rad\030\001 \001(\001\022\022\n\nposAu"
+  "x_rad\030\002 \001(\001\022\017\n\007vel_rps\030\003 \001(\001\022\020\n\010acc_rpss"
+  "\030\004 \001(\001\022\017\n\007torq_Nm\030\005 \001(\001\"\016\n\014ControlState\""
+  "\375\004\n\014DualArmState\022/\n\njointState\030\001 \003(\0132\033.d"
+  "tproto.dualarm.JointState\0220\n\014actJointDat"
+  "a\030\002 \003(\0132\032.dtproto.dualarm.JointData\0220\n\014d"
+  "esJointData\030\003 \003(\0132\032.dtproto.dualarm.Join"
+  "tData\0221\n\014gripperState\030\004 \003(\0132\033.dtproto.du"
+  "alarm.JointState\0222\n\016actGripperData\030\005 \003(\013"
+  "2\032.dtproto.dualarm.JointData\0222\n\016desGripp"
+  "erData\030\006 \003(\0132\032.dtproto.dualarm.JointData"
+  "\0220\n\014actTaskState\030\007 \003(\0132\032.dtproto.dualarm"
+  ".TaskState\0220\n\014desTaskState\030\010 \003(\0132\032.dtpro"
+  "to.dualarm.TaskState\0226\n\017actControlState\030"
+  "\t \001(\0132\035.dtproto.dualarm.ControlState\0226\n\017"
+  "desControlState\030\n \001(\0132\035.dtproto.dualarm."
+  "ControlState\0221\n\013threadState\030\013 \001(\0132\034.dtpr"
+  "oto.dualarm.ThreadState\0226\n\016arbitraryStat"
+  "e\030\024 \001(\0132\036.dtproto.std_msgs.PackedDouble\""
+  "q\n\027DualArmStateTimeStamped\022(\n\006header\030\001 \001"
+  "(\0132\030.dtproto.std_msgs.Header\022,\n\005state\030\002 "
+  "\001(\0132\035.dtproto.dualarm.DualArmStateb\006prot"
+  "o3"
   ;
-static const ::_pbi::DescriptorTable* const descriptor_table_DualArm_2eproto_deps[4] = {
-  &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fOrientation_2eproto,
+static const ::_pbi::DescriptorTable* const descriptor_table_DualArm_2eproto_deps[3] = {
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fPoint_2eproto,
   &::descriptor_table_dtProto_2fstd_5fmsgs_2fHeader_2eproto,
   &::descriptor_table_dtProto_2fstd_5fmsgs_2fPackedArray_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_DualArm_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_DualArm_2eproto = {
-    false, false, 1644, descriptor_table_protodef_DualArm_2eproto,
+    false, false, 1602, descriptor_table_protodef_DualArm_2eproto,
     "DualArm.proto",
-    &descriptor_table_DualArm_2eproto_once, descriptor_table_DualArm_2eproto_deps, 4, 7,
+    &descriptor_table_DualArm_2eproto_once, descriptor_table_DualArm_2eproto_deps, 3, 7,
     schemas, file_default_instances, TableStruct_DualArm_2eproto::offsets,
     file_level_metadata_DualArm_2eproto, file_level_enum_descriptors_DualArm_2eproto,
     file_level_service_descriptors_DualArm_2eproto,
@@ -559,7 +557,7 @@ void ThreadState::InternalSwap(ThreadState* other) {
 class TaskState::_Internal {
  public:
   static const ::dtproto::geometry_msgs::Point3d& pos(const TaskState* msg);
-  static const ::dtproto::geometry_msgs::Rotation& rot(const TaskState* msg);
+  static const ::dtproto::geometry_msgs::Point3d& rot(const TaskState* msg);
   static const ::dtproto::geometry_msgs::Point3d& linvel(const TaskState* msg);
   static const ::dtproto::geometry_msgs::Point3d& angvel(const TaskState* msg);
   static const ::dtproto::geometry_msgs::Point3d& force(const TaskState* msg);
@@ -570,7 +568,7 @@ const ::dtproto::geometry_msgs::Point3d&
 TaskState::_Internal::pos(const TaskState* msg) {
   return *msg->_impl_.pos_;
 }
-const ::dtproto::geometry_msgs::Rotation&
+const ::dtproto::geometry_msgs::Point3d&
 TaskState::_Internal::rot(const TaskState* msg) {
   return *msg->_impl_.rot_;
 }
@@ -650,7 +648,7 @@ TaskState::TaskState(const TaskState& from)
     _this->_impl_.pos_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.pos_);
   }
   if (from._internal_has_rot()) {
-    _this->_impl_.rot_ = new ::dtproto::geometry_msgs::Rotation(*from._impl_.rot_);
+    _this->_impl_.rot_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.rot_);
   }
   if (from._internal_has_linvel()) {
     _this->_impl_.linvel_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.linvel_);
@@ -755,7 +753,7 @@ const char* TaskState::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
         } else
           goto handle_unusual;
         continue;
-      // .dtproto.geometry_msgs.Rotation rot = 2;
+      // .dtproto.geometry_msgs.Point3d rot = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_rot(), ptr);
@@ -839,7 +837,7 @@ uint8_t* TaskState::_InternalSerialize(
         _Internal::pos(this).GetCachedSize(), target, stream);
   }
 
-  // .dtproto.geometry_msgs.Rotation rot = 2;
+  // .dtproto.geometry_msgs.Point3d rot = 2;
   if (this->_internal_has_rot()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(2, _Internal::rot(this),
@@ -903,7 +901,7 @@ size_t TaskState::ByteSizeLong() const {
         *_impl_.pos_);
   }
 
-  // .dtproto.geometry_msgs.Rotation rot = 2;
+  // .dtproto.geometry_msgs.Point3d rot = 2;
   if (this->_internal_has_rot()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -966,7 +964,7 @@ void TaskState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROT
         from._internal_pos());
   }
   if (from._internal_has_rot()) {
-    _this->_internal_mutable_rot()->::dtproto::geometry_msgs::Rotation::MergeFrom(
+    _this->_internal_mutable_rot()->::dtproto::geometry_msgs::Point3d::MergeFrom(
         from._internal_rot());
   }
   if (from._internal_has_linvel()) {

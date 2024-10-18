@@ -40,6 +40,9 @@ private:
                           const google::protobuf::RepeatedPtrField<dtproto::dualarm::JointState> &state,
                           const google::protobuf::RepeatedPtrField<dtproto::dualarm::JointData> &actData,
                           const google::protobuf::RepeatedPtrField<dtproto::dualarm::JointData> &desData);
+    void OnRecvTaskState(const double curTime,
+                         const google::protobuf::RepeatedPtrField<dtproto::dualarm::TaskState> &actState,
+                         const google::protobuf::RepeatedPtrField<dtproto::dualarm::TaskState> &desState);
     void OnRecvThreadState(const double curTime, const dtproto::dualarm::ThreadState &state);
     void OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state);
 
@@ -49,6 +52,9 @@ private:
     std::unique_ptr<PlotWindow> _plot_jointVel{nullptr};
     std::unique_ptr<PlotWindow> _plot_jointAcc{nullptr};
     std::unique_ptr<PlotWindow> _plot_jointTau{nullptr};
+    std::unique_ptr<PlotWindow> _plot_taskPos{nullptr};
+    std::unique_ptr<PlotWindow> _plot_taskVel{nullptr};
+    std::unique_ptr<PlotWindow> _plot_taskTau{nullptr};
     std::unique_ptr<PlotWindow> _plot_incEnc{nullptr};
     std::unique_ptr<PlotWindow> _plot_absEnc{nullptr};
 

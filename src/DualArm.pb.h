@@ -34,7 +34,6 @@
 #include "dtProto/std_msgs/Header.pb.h"
 #include "dtProto/std_msgs/PackedArray.pb.h"
 #include "dtProto/geometry_msgs/Point.pb.h"
-#include "dtProto/geometry_msgs/Orientation.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_DualArm_2eproto
@@ -394,23 +393,23 @@ class TaskState final :
       ::dtproto::geometry_msgs::Point3d* pos);
   ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_pos();
 
-  // .dtproto.geometry_msgs.Rotation rot = 2;
+  // .dtproto.geometry_msgs.Point3d rot = 2;
   bool has_rot() const;
   private:
   bool _internal_has_rot() const;
   public:
   void clear_rot();
-  const ::dtproto::geometry_msgs::Rotation& rot() const;
-  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Rotation* release_rot();
-  ::dtproto::geometry_msgs::Rotation* mutable_rot();
-  void set_allocated_rot(::dtproto::geometry_msgs::Rotation* rot);
+  const ::dtproto::geometry_msgs::Point3d& rot() const;
+  PROTOBUF_NODISCARD ::dtproto::geometry_msgs::Point3d* release_rot();
+  ::dtproto::geometry_msgs::Point3d* mutable_rot();
+  void set_allocated_rot(::dtproto::geometry_msgs::Point3d* rot);
   private:
-  const ::dtproto::geometry_msgs::Rotation& _internal_rot() const;
-  ::dtproto::geometry_msgs::Rotation* _internal_mutable_rot();
+  const ::dtproto::geometry_msgs::Point3d& _internal_rot() const;
+  ::dtproto::geometry_msgs::Point3d* _internal_mutable_rot();
   public:
   void unsafe_arena_set_allocated_rot(
-      ::dtproto::geometry_msgs::Rotation* rot);
-  ::dtproto::geometry_msgs::Rotation* unsafe_arena_release_rot();
+      ::dtproto::geometry_msgs::Point3d* rot);
+  ::dtproto::geometry_msgs::Point3d* unsafe_arena_release_rot();
 
   // .dtproto.geometry_msgs.Point3d linVel = 3;
   bool has_linvel() const;
@@ -502,7 +501,7 @@ class TaskState final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::dtproto::geometry_msgs::Point3d* pos_;
-    ::dtproto::geometry_msgs::Rotation* rot_;
+    ::dtproto::geometry_msgs::Point3d* rot_;
     ::dtproto::geometry_msgs::Point3d* linvel_;
     ::dtproto::geometry_msgs::Point3d* angvel_;
     ::dtproto::geometry_msgs::Point3d* force_;
@@ -1764,24 +1763,24 @@ inline void TaskState::set_allocated_pos(::dtproto::geometry_msgs::Point3d* pos)
   // @@protoc_insertion_point(field_set_allocated:dtproto.dualarm.TaskState.pos)
 }
 
-// .dtproto.geometry_msgs.Rotation rot = 2;
+// .dtproto.geometry_msgs.Point3d rot = 2;
 inline bool TaskState::_internal_has_rot() const {
   return this != internal_default_instance() && _impl_.rot_ != nullptr;
 }
 inline bool TaskState::has_rot() const {
   return _internal_has_rot();
 }
-inline const ::dtproto::geometry_msgs::Rotation& TaskState::_internal_rot() const {
-  const ::dtproto::geometry_msgs::Rotation* p = _impl_.rot_;
-  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Rotation&>(
-      ::dtproto::geometry_msgs::_Rotation_default_instance_);
+inline const ::dtproto::geometry_msgs::Point3d& TaskState::_internal_rot() const {
+  const ::dtproto::geometry_msgs::Point3d* p = _impl_.rot_;
+  return p != nullptr ? *p : reinterpret_cast<const ::dtproto::geometry_msgs::Point3d&>(
+      ::dtproto::geometry_msgs::_Point3d_default_instance_);
 }
-inline const ::dtproto::geometry_msgs::Rotation& TaskState::rot() const {
+inline const ::dtproto::geometry_msgs::Point3d& TaskState::rot() const {
   // @@protoc_insertion_point(field_get:dtproto.dualarm.TaskState.rot)
   return _internal_rot();
 }
 inline void TaskState::unsafe_arena_set_allocated_rot(
-    ::dtproto::geometry_msgs::Rotation* rot) {
+    ::dtproto::geometry_msgs::Point3d* rot) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.rot_);
   }
@@ -1793,9 +1792,9 @@ inline void TaskState::unsafe_arena_set_allocated_rot(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:dtproto.dualarm.TaskState.rot)
 }
-inline ::dtproto::geometry_msgs::Rotation* TaskState::release_rot() {
+inline ::dtproto::geometry_msgs::Point3d* TaskState::release_rot() {
   
-  ::dtproto::geometry_msgs::Rotation* temp = _impl_.rot_;
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.rot_;
   _impl_.rot_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1808,27 +1807,27 @@ inline ::dtproto::geometry_msgs::Rotation* TaskState::release_rot() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::dtproto::geometry_msgs::Rotation* TaskState::unsafe_arena_release_rot() {
+inline ::dtproto::geometry_msgs::Point3d* TaskState::unsafe_arena_release_rot() {
   // @@protoc_insertion_point(field_release:dtproto.dualarm.TaskState.rot)
   
-  ::dtproto::geometry_msgs::Rotation* temp = _impl_.rot_;
+  ::dtproto::geometry_msgs::Point3d* temp = _impl_.rot_;
   _impl_.rot_ = nullptr;
   return temp;
 }
-inline ::dtproto::geometry_msgs::Rotation* TaskState::_internal_mutable_rot() {
+inline ::dtproto::geometry_msgs::Point3d* TaskState::_internal_mutable_rot() {
   
   if (_impl_.rot_ == nullptr) {
-    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Rotation>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::dtproto::geometry_msgs::Point3d>(GetArenaForAllocation());
     _impl_.rot_ = p;
   }
   return _impl_.rot_;
 }
-inline ::dtproto::geometry_msgs::Rotation* TaskState::mutable_rot() {
-  ::dtproto::geometry_msgs::Rotation* _msg = _internal_mutable_rot();
+inline ::dtproto::geometry_msgs::Point3d* TaskState::mutable_rot() {
+  ::dtproto::geometry_msgs::Point3d* _msg = _internal_mutable_rot();
   // @@protoc_insertion_point(field_mutable:dtproto.dualarm.TaskState.rot)
   return _msg;
 }
-inline void TaskState::set_allocated_rot(::dtproto::geometry_msgs::Rotation* rot) {
+inline void TaskState::set_allocated_rot(::dtproto::geometry_msgs::Point3d* rot) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.rot_);

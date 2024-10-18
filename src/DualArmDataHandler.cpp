@@ -21,6 +21,9 @@
 #define ENABLE_JOINT_VELOCITY_PLOT
 // #define ENABLE_JOINT_ACCELERATION_PLOT
 #define ENABLE_JOINT_TORQUE_PLOT
+#define ENABLE_TASK_POSISION_PLOT
+#define ENABLE_TASK_VELOCITY_PLOT
+// #define ENABLE_TASK_TORQUE_PLOT
 // #define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 #define ENABLE_THREAD_STATE_PLOT
@@ -29,12 +32,13 @@
 constexpr static int jdof = 14;
 constexpr static int armdof = 7; // Mainpulator 6DOF + HandGripper 1DOF
 constexpr static int armnum = 2;
+constexpr static int tasknum = 2;
 
 static std::string armname[armnum] = {"RArm", "LArm"};
+static std::string taskname[armnum] = {"eeR", "eeL"};
+static std::string jointname[jdof] = {"R1", "R2", "R3", "R4", "R5", "R6", "R7", "L1", "L2", "L3", "L4", "L5", "L6", "L7"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
-
-QString jointName[jdof] = {"R1", "R2", "R3", "R4", "R5", "R6", "R7", "L1", "L2", "L3", "L4", "L5", "L6", "L7"};
 
 DualArmDataHandler::DualArmDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox)
@@ -53,6 +57,18 @@ DualArmDataHandler::DualArmDataHandler(MainWindow *plotToolbox)
 #ifdef ENABLE_JOINT_TORQUE_PLOT
       ,
       _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_TASK_POSISION_PLOT
+      ,
+      _plot_taskPos(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_TASK_VELOCITY_PLOT
+      ,
+      _plot_taskVel(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_TASK_TORQUE_PLOT
+      ,
+      _plot_taskTau(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
       ,
@@ -87,14 +103,13 @@ DualArmDataHandler::~DualArmDataHandler()
 
 void DualArmDataHandler::BuildPlots()
 {
-
 #ifdef ENABLE_JOINT_POSISION_PLOT
     //_plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointPos->AddGraph((jointName[ji] + ".pos.desired"), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointPos->AddGraph((jointName[ji] + ".pos.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointPos->AddGraph((QString(jointname[ji].c_str()) + ".pos.desired"), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointPos->AddGraph((QString(jointname[ji].c_str()) + ".pos.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
 
     _plot_jointPos->show();
@@ -106,8 +121,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointVel->AddGraph((jointName[ji] + ".vel.desired"), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointVel->AddGraph((jointName[ji] + ".vel.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointVel->AddGraph((QString(jointname[ji].c_str()) + ".vel.desired"), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointVel->AddGraph((QString(jointname[ji].c_str()) + ".vel.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -131,11 +146,80 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointTau->AddGraph((jointName[ji] + ".toq.desired"), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointTau->AddGraph((jointName[ji] + ".toq.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointTau->AddGraph((QString(jointname[ji].c_str()) + ".toq.desired"), LineColor(ji), armname[ji / armdof].c_str());
+        _plot_jointTau->AddGraph((QString(jointname[ji].c_str()) + ".toq.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
+#endif
+
+#ifdef ENABLE_TASK_POSISION_PLOT
+    //_plot_taskPos = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_taskPos->SetWindowTitle("Task position");
+    for (int ti = 0; ti < tasknum; ti++)
+    {
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".pos.x.desired"), LineColor(ti + 0), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".pos.y.desired"), LineColor(ti + 1), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".pos.z.desired"), LineColor(ti + 2), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".rot.x.desired"), LineColor(ti + 3), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".rot.y.desired"), LineColor(ti + 4), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".rot.z.desired"), LineColor(ti + 5), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".pos.x.actual"), LineColor(ti + 6 + tasknum * 12), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".pos.y.actual"), LineColor(ti + 7 + tasknum * 12), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".pos.z.actual"), LineColor(ti + 8 + tasknum * 12), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".rot.x.actual"), LineColor(ti + 9 + tasknum * 12), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".rot.y.actual"), LineColor(ti + 10 + tasknum * 12), armname[ti].c_str());
+        _plot_taskPos->AddGraph((QString(taskname[ti].c_str()) + ".rot.z.actual"), LineColor(ti + 11 + tasknum * 12), armname[ti].c_str());
+    }
+
+    _plot_taskPos->show();
+    RegisterPlot(_plot_taskPos.get());
+#endif
+
+#ifdef ENABLE_TASK_VELOCITY_PLOT
+    //_plot_taskVel = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_taskVel->SetWindowTitle("Task velocity");
+    for (int ti = 0; ti < tasknum; ti++)
+    {
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".lin_vel.x.desired"), LineColor(ti + 0), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".lin_vel.y.desired"), LineColor(ti + 1), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".lin_vel.z.desired"), LineColor(ti + 2), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".ang_vel.x.desired"), LineColor(ti + 3), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".ang_vel.y.desired"), LineColor(ti + 4), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".ang_vel.z.desired"), LineColor(ti + 5), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".lin_vel.x.actual"), LineColor(ti + 6 + tasknum * 12), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".lin_vel.y.actual"), LineColor(ti + 7 + tasknum * 12), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".lin_vel.z.actual"), LineColor(ti + 8 + tasknum * 12), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".ang_vel.x.actual"), LineColor(ti + 9 + tasknum * 12), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".ang_vel.y.actual"), LineColor(ti + 10 + tasknum * 12), armname[ti].c_str());
+        _plot_taskVel->AddGraph((QString(taskname[ti].c_str()) + ".ang_vel.z.actual"), LineColor(ti + 11 + tasknum * 12), armname[ti].c_str());
+    }
+
+    _plot_taskVel->show();
+    RegisterPlot(_plot_taskVel.get());
+#endif
+
+#ifdef ENABLE_TASK_TORQUE_PLOT
+    //_plot_taskTau = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_taskTau->SetWindowTitle("Task torque");
+    for (int ti = 0; ti < tasknum; ti++)
+    {
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".force.x.desired"), LineColor(ti + 0), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".force.y.desired"), LineColor(ti + 1), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".force.z.desired"), LineColor(ti + 2), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".torque.x.desired"), LineColor(ti + 3), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".torque.y.desired"), LineColor(ti + 4), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".torque.z.desired"), LineColor(ti + 5), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".force.x.actual"), LineColor(ti + 6 + tasknum * 12), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".force.y.actual"), LineColor(ti + 7 + tasknum * 12), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".force.z.actual"), LineColor(ti + 8 + tasknum * 12), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".torque.x.actual"), LineColor(ti + 9 + tasknum * 12), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".torque.y.actual"), LineColor(ti + 10 + tasknum * 12), armname[ti].c_str());
+        _plot_taskTau->AddGraph((QString(taskname[ti].c_str()) + ".torque.z.actual"), LineColor(ti + 11 + tasknum * 12), armname[ti].c_str());
+    }
+
+    _plot_taskTau->show();
+    RegisterPlot(_plot_taskTau.get());
 #endif
 
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
@@ -201,15 +285,13 @@ void DualArmDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::dualarm::DualArmStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::dualarm::DualArmStateTimeStamped &)> handler = [this](dtproto::dualarm::DualArmStateTimeStamped &msg)
-    {
+    std::function<void(dtproto::dualarm::DualArmStateTimeStamped &)> handler = [this](dtproto::dualarm::DualArmStateTimeStamped &msg) {
         this->OnRecvDualArmStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
     _sub_reconnector_running = true;
-    _sub_reconnector = std::thread([this]
-                                   {
+    _sub_reconnector = std::thread([this] {
         while (this->_sub_reconnector_running)
         {
             if (!this->_sub_state->IsRunning())
@@ -264,6 +346,7 @@ void DualArmDataHandler::OnRecvDualArmState(const double curTime, const dtproto:
 {
     OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
+    OnRecvTaskState(curTime, state.acttaskstate(), state.destaskstate());
     OnRecvThreadState(curTime, state.threadstate());
     OnRecvArbitraryState(curTime, state.arbitrarystate());
 }
@@ -336,6 +419,69 @@ void DualArmDataHandler::OnRecvJointState(const double curTime,
             _plot_incEnc->AddData(ji, curTime, state.Get(ji).incpos_cnt());
         }
         _plot_incEnc->DataUpdated(curTime);
+    }
+}
+
+void DualArmDataHandler::OnRecvTaskState(const double curTime,
+                                         const google::protobuf::RepeatedPtrField<dtproto::dualarm::TaskState> &actState,
+                                         const google::protobuf::RepeatedPtrField<dtproto::dualarm::TaskState> &desState)
+{
+    if (_plot_taskPos)
+    {
+        for (int ti = 0; ti < tasknum; ti++)
+        {
+            _plot_taskPos->AddData(ti * 12 + 0, curTime, desState.Get(ti).pos().x());
+            _plot_taskPos->AddData(ti * 12 + 1, curTime, desState.Get(ti).pos().y());
+            _plot_taskPos->AddData(ti * 12 + 2, curTime, desState.Get(ti).pos().z());
+            _plot_taskPos->AddData(ti * 12 + 3, curTime, desState.Get(ti).rot().x());
+            _plot_taskPos->AddData(ti * 12 + 4, curTime, desState.Get(ti).rot().y());
+            _plot_taskPos->AddData(ti * 12 + 5, curTime, desState.Get(ti).rot().z());
+            _plot_taskPos->AddData(ti * 12 + 6, curTime, actState.Get(ti).pos().x());
+            _plot_taskPos->AddData(ti * 12 + 7, curTime, actState.Get(ti).pos().y());
+            _plot_taskPos->AddData(ti * 12 + 8, curTime, actState.Get(ti).pos().z());
+            _plot_taskPos->AddData(ti * 12 + 9, curTime, actState.Get(ti).rot().x());
+            _plot_taskPos->AddData(ti * 12 + 10, curTime, actState.Get(ti).rot().y());
+            _plot_taskPos->AddData(ti * 12 + 11, curTime, actState.Get(ti).rot().z());
+        }
+        _plot_taskPos->DataUpdated(curTime);
+    }
+    if (_plot_taskVel)
+    {
+        for (int ti = 0; ti < tasknum; ti++)
+        {
+            _plot_taskVel->AddData(ti * 12 + 0, curTime, desState.Get(ti).linvel().x());
+            _plot_taskVel->AddData(ti * 12 + 1, curTime, desState.Get(ti).linvel().y());
+            _plot_taskVel->AddData(ti * 12 + 2, curTime, desState.Get(ti).linvel().z());
+            _plot_taskVel->AddData(ti * 12 + 3, curTime, desState.Get(ti).angvel().x());
+            _plot_taskVel->AddData(ti * 12 + 4, curTime, desState.Get(ti).angvel().y());
+            _plot_taskVel->AddData(ti * 12 + 5, curTime, desState.Get(ti).angvel().z());
+            _plot_taskVel->AddData(ti * 12 + 6, curTime, actState.Get(ti).linvel().x());
+            _plot_taskVel->AddData(ti * 12 + 7, curTime, actState.Get(ti).linvel().y());
+            _plot_taskVel->AddData(ti * 12 + 8, curTime, actState.Get(ti).linvel().z());
+            _plot_taskVel->AddData(ti * 12 + 9, curTime, actState.Get(ti).angvel().x());
+            _plot_taskVel->AddData(ti * 12 + 10, curTime, actState.Get(ti).angvel().y());
+            _plot_taskVel->AddData(ti * 12 + 11, curTime, actState.Get(ti).angvel().z());
+        }
+        _plot_taskVel->DataUpdated(curTime);
+    }
+    if (_plot_taskTau)
+    {
+        for (int ti = 0; ti < tasknum; ti++)
+        {
+            _plot_taskTau->AddData(ti * 12 + 0, curTime, desState.Get(ti).force().x());
+            _plot_taskTau->AddData(ti * 12 + 1, curTime, desState.Get(ti).force().y());
+            _plot_taskTau->AddData(ti * 12 + 2, curTime, desState.Get(ti).force().z());
+            _plot_taskTau->AddData(ti * 12 + 3, curTime, desState.Get(ti).moment().x());
+            _plot_taskTau->AddData(ti * 12 + 4, curTime, desState.Get(ti).moment().y());
+            _plot_taskTau->AddData(ti * 12 + 5, curTime, desState.Get(ti).moment().z());
+            _plot_taskTau->AddData(ti * 12 + 6, curTime, actState.Get(ti).force().x());
+            _plot_taskTau->AddData(ti * 12 + 7, curTime, actState.Get(ti).force().y());
+            _plot_taskTau->AddData(ti * 12 + 8, curTime, actState.Get(ti).force().z());
+            _plot_taskTau->AddData(ti * 12 + 9, curTime, actState.Get(ti).moment().x());
+            _plot_taskTau->AddData(ti * 12 + 10, curTime, actState.Get(ti).moment().y());
+            _plot_taskTau->AddData(ti * 12 + 11, curTime, actState.Get(ti).moment().z());
+        }
+        _plot_taskTau->DataUpdated(curTime);
     }
 }
 
