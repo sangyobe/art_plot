@@ -34,7 +34,7 @@ PlotConfig::~PlotConfig()
 void PlotConfig::setConfigModel(QAbstractItemModel *configModel)
 {
     ui->configview->setModel(configModel);
-    ui->configview->setColumnWidth(0, 150);
+    ui->configview->setColumnWidth(0, 200);
     ui->configview->expandAll();
 }
 
