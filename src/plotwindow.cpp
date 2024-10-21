@@ -1,14 +1,14 @@
 #include "plotwindow.h"
+#include "datainfodlg.h"
 #include "itemviewdelegate.h"
 #include "pconstants.h"
 #include "plotconfig.h"
-#include "datainfodlg.h"
 #include "ui_plotwindow.h"
 #include <cassert>
 #include <iostream>
 #include <memory>
 
-#define REFRESH_INTERVAL_FAST (200) // (ms)
+#define REFRESH_INTERVAL_FAST (200)  // (ms)
 #define REFRESH_INTERVAL_NORM (500)  // (ms)
 #define REFRESH_INTERVAL_SLOW (1000) // (ms)
 
@@ -256,7 +256,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, const QString
         // process grouping items
         if (!group_name.isEmpty())
         {
-            group_title = const_cast<QStandardItem*>(FindFirstConfigOptionGroup("Data series", group_name, 0));
+            group_title = const_cast<QStandardItem *>(FindFirstConfigOptionGroup("Data series", group_name, 0));
             if (!group_title)
             {
                 group_title = new QStandardItem(group_name);
@@ -275,7 +275,7 @@ int PlotWindow::AddGraph(const QString &name, const QColor &color, const QString
         {
             data_series_root->appendRow(item_graph_visible);
         }
-        
+
         _plotConfig->expand(_configModel->indexFromItem(data_series_root));
         break;
     }
@@ -1000,8 +1000,8 @@ void PlotWindow::OnConfigItemGraphColorSelected(QString name, int index, QColor 
     QStandardItem const *item_title = FindFirstConfigOptionItem("Data series", name, 0, true);
     if (item_title)
     {
-        QStandardItem* item_option = (QStandardItem*)(item_title->data(Qt::UserRole + 3).value<void*>());
-        QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
+        QStandardItem *item_option = (QStandardItem *)(item_title->data(Qt::UserRole + 3).value<void *>());
+        QCPGraph *graph = (QCPGraph *)(item_title->data().value<void *>());
 
         if (item_option && graph)
         {
@@ -1032,9 +1032,9 @@ void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int in
 
                 if (child->whatsThis() == "Data series::Visible")
                 {
-                    QStandardItem*item_title = const_cast<QStandardItem*>(child);
-                    QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
-                    if (graph) 
+                    QStandardItem *item_title = const_cast<QStandardItem *>(child);
+                    QCPGraph *graph = (QCPGraph *)(item_title->data().value<void *>());
+                    if (graph)
                     {
                         QString original_name = item_title->data(Qt::UserRole + 2).toString();
                         item_title->setText(original_name);
@@ -1045,13 +1045,13 @@ void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int in
                 {
                     for (int row = 0; row < child->rowCount(); row++)
                     {
-                        QStandardItem*item_title = const_cast<QStandardItem*>(child->child(row, 0));
+                        QStandardItem *item_title = const_cast<QStandardItem *>(child->child(row, 0));
                         // qDebug() << item_title->data(Qt::DisplayRole).toString();
 
                         if (item_title->whatsThis() == "Data series::Visible")
                         {
-                            QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
-                            if (graph) 
+                            QCPGraph *graph = (QCPGraph *)(item_title->data().value<void *>());
+                            if (graph)
                             {
                                 QString original_name = item_title->data(Qt::UserRole + 2).toString();
                                 item_title->setText(original_name);
@@ -1065,11 +1065,11 @@ void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int in
     }
     else
     {
-        QStandardItem* item_title = const_cast<QStandardItem*>(FindFirstConfigOptionItem("Data series", name, 0, true));
+        QStandardItem *item_title = const_cast<QStandardItem *>(FindFirstConfigOptionItem("Data series", name, 0, true));
         if (item_title)
         {
-            QCPGraph* graph = (QCPGraph*)(item_title->data().value<void*>());
-            if (graph) 
+            QCPGraph *graph = (QCPGraph *)(item_title->data().value<void *>());
+            if (graph)
             {
                 QString original_name = item_title->data(Qt::UserRole + 2).toString();
                 item_title->setText(original_name);
@@ -1081,16 +1081,16 @@ void PlotWindow::OnConfigItemGraphRestoreNameActionSelected(QString name, int in
 
 void PlotWindow::OnConfigItemGraphShowDataInfoActionSelected(QString name, int index)
 {
-    QStandardItem* item_title = const_cast<QStandardItem*>(FindFirstConfigOptionItem("Data series", name, 0, true));
+    QStandardItem *item_title = const_cast<QStandardItem *>(FindFirstConfigOptionItem("Data series", name, 0, true));
     if (item_title)
     {
-        const QCPGraph* graph = (const QCPGraph*)(item_title->data().value<void*>());
-        if (graph) 
+        const QCPGraph *graph = (const QCPGraph *)(item_title->data().value<void *>());
+        if (graph)
         {
             // qDebug() << "PlotWindow::OnConfigItemGraphShowDataInfoActionSelected";
             // qDebug() << graph->dataCount();
 
-            DataInfoDlg* dlg = new DataInfoDlg(graph, this);
+            DataInfoDlg *dlg = new DataInfoDlg(graph, this);
             dlg->setModal(false);
             dlg->show();
         }
@@ -1208,7 +1208,7 @@ QByteArray PlotWindow::SaveDataSeriesConfig() const
                     QBrush bg_brush = data_color->background();
                     str << data_name->data(Qt::UserRole + 2).toString() << ",";
                     str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
-                    str << data_name->data(Qt::DisplayRole).toString() << ",";              // alias(display) name
+                    str << data_name->data(Qt::DisplayRole).toString() << ","; // alias(display) name
                     str << bg_brush.color().red() << "," << bg_brush.color().green() << "," << bg_brush.color().blue() << ",";
                 }
             }
@@ -1219,7 +1219,7 @@ QByteArray PlotWindow::SaveDataSeriesConfig() const
                 QBrush bg_brush = data_color->background();
                 str << data_name->data(Qt::UserRole + 2).toString() << ",";
                 str << (data_name->checkState() == Qt::Checked ? 1 : 0) << ",";
-                str << data_name->data(Qt::DisplayRole).toString() << ",";              // alias(display) name
+                str << data_name->data(Qt::DisplayRole).toString() << ","; // alias(display) name
                 str << bg_brush.color().red() << "," << bg_brush.color().green() << "," << bg_brush.color().blue() << ",";
             }
         }
@@ -1229,7 +1229,7 @@ QByteArray PlotWindow::SaveDataSeriesConfig() const
     return configstr.toUtf8();
 }
 
-bool PlotWindow::RestoreDataSeriesConfig(const QByteArray &config, const QString &name, QString& alias, QColor& color)
+bool PlotWindow::RestoreDataSeriesConfig(const QByteArray &config, const QString &name, QString &alias, QColor &color)
 {
     QString configstr = QString::fromUtf8(config);
     // qDebug() << "RestoreDataSeriesConfig: " << configstr;
@@ -1355,7 +1355,7 @@ void PlotWindow::OnSelectionChangedByUser()
             {
                 SelectGraph(item->plottable()->name());
 
-                const QStandardItem* config_item = FindFirstConfigOptionItem("Data series", item->plottable()->name(), 0, true);
+                const QStandardItem *config_item = FindFirstConfigOptionItem("Data series", item->plottable()->name(), 0, true);
                 if (config_item)
                 {
                     QModelIndex index = _configModel->indexFromItem(config_item);
@@ -1375,33 +1375,33 @@ void PlotWindow::RecalculatePlotLayout()
     ui->verticalScrollBar->setGeometry(ui->centralwidget->width() - 18, 0, 18, ui->centralwidget->height() - 18);
 }
 
-void PlotWindow::dragEnterEvent(QDragEnterEvent* event)
+void PlotWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     event->acceptProposedAction();
 }
 
-void PlotWindow::dragLeaveEvent(QDragLeaveEvent* event)
+void PlotWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
     event->accept();
 }
 
-void PlotWindow::dragMoveEvent(QDragEnterEvent* event)
+void PlotWindow::dragMoveEvent(QDragEnterEvent *event)
 {
     event->acceptProposedAction();
 }
 
-void PlotWindow::dropEvent(QDropEvent* event)
+void PlotWindow::dropEvent(QDropEvent *event)
 {
     if (_plotType == PlotType::RT_PLOT)
         return;
 
-    const QMimeData* mimeData = event->mimeData();
+    const QMimeData *mimeData = event->mimeData();
 
     if (mimeData->hasUrls())
     {
         QStringList paths;
         QList<QUrl> urls = mimeData->urls();
-        foreach(QUrl url, urls)
+        foreach (QUrl url, urls)
         {
             // qDebug() << "drag & drop : " << url.toLocalFile();
             paths.push_back(url.toLocalFile());
@@ -1507,11 +1507,11 @@ const QStandardItem *PlotWindow::FindFirstConfigOptionItem(const QString &cat, c
             else
                 break;
         }
-   }
+    }
     return nullptr;
 }
 
-const QStandardItem* PlotWindow::FindFirstConfigOptionGroup(const QString& cat, const QString& group, int col, bool recursive)
+const QStandardItem *PlotWindow::FindFirstConfigOptionGroup(const QString &cat, const QString &group, int col, bool recursive)
 {
     auto items = _configModel->findItems(group, Qt::MatchExactly | Qt::MatchRecursive, 0);
     foreach (const QStandardItem *citem, items)
