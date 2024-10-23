@@ -14,7 +14,7 @@
 #include <dtProto/Service.grpc.pb.h>
 #endif
 
-#include "DualArm.pb.h"
+#include "proto/DualArm.pb.h"
 
 class DualArmDataHandler : public DataHandler
 {

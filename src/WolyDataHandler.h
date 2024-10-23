@@ -14,7 +14,7 @@
 #include <dtProto/Service.grpc.pb.h>
 #endif
 
-#include "Woly.pb.h"
+#include "proto/Woly.pb.h"
 
 class WolyDataHandler : public DataHandler {
 private:

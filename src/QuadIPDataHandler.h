@@ -14,7 +14,7 @@
 #include <dtProto/Service.grpc.pb.h>
 #endif
 
-#include "QuadIP.pb.h"
+#include "proto/QuadIP.pb.h"
 
 class QuadIPDataHandler : public DataHandler {
 private:
