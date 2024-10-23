@@ -24,7 +24,7 @@ void PlotWidget::ExportData(QString &export_dir)
     QDateTime date = QDateTime::currentDateTime();
     QString formattedTime = date.toString("yyyyMMdd_hhmmss");
 
-    for (auto graph : qAsConst(mGraphs))
+    for (auto graph : const_cast<const QList<QCPGraph*> &>(mGraphs))
     {
         QString filename = export_dir + "/" + formattedTime + "_" + windowTitle() + "_" + graph->name() + ".csv";
         // qDebug() << "export file: " << filename;
@@ -227,7 +227,7 @@ QCPRange PlotWidget::getKeyRange(bool &foundRange)
     QCPRange range;
     foundRange = false;
 
-    for (auto graph : qAsConst(mGraphs))
+    for (auto graph : const_cast<const QList<QCPGraph*> &>(mGraphs))
     {
         QCPRange rng;
         bool fnd;
@@ -252,7 +252,7 @@ QCPRange PlotWidget::getValueRange(bool &foundRange)
     QCPRange range;
     foundRange = false;
 
-    for (auto graph : qAsConst(mGraphs))
+    for (auto graph : const_cast<const QList<QCPGraph*> &>(mGraphs))
     {
         QCPRange rng;
         bool fnd;

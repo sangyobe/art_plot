@@ -1330,7 +1330,7 @@ void PlotWindow::OnSelectionChangedByUser()
     _plotConfig->clearSelection();
 
     const QList<QCPGraph *> graphs = ui->plotwidget->selectedGraphs();
-    for (auto graph : qAsConst(graphs))
+    for (auto graph : graphs)
     {
         // Q_UNUSED(graph); // (void)graph;
         // qDebug() << "graph selected : " << graph->name();
@@ -1346,7 +1346,7 @@ void PlotWindow::OnSelectionChangedByUser()
         }
     }
     const QList<QCPLegend *> legends = ui->plotwidget->selectedLegends();
-    for (auto legend : qAsConst(legends))
+    for (auto legend : legends)
     {
         for (int i = 0; i < legend->itemCount(); i++)
         {

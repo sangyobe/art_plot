@@ -272,7 +272,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("option", SaveOption());
 
     // close all plotWindows
-    for (auto plotwnd : qAsConst(_plotWnds))
+    for (auto plotwnd : const_cast<const QList<PlotWindow*>& >(_plotWnds))
     {
         const_cast<PlotWindow *>(plotwnd)->close();
     }
