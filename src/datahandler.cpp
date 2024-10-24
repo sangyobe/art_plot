@@ -36,6 +36,13 @@ int DataHandler::GetDebugDataNum()
     return _plotToolbox->GetDebugDataNum();
 }
 
+int DataHandler::GetDebugDataXYNum()
+{
+    if (!_plotToolbox) return 16;
+
+    return _plotToolbox->GetDebugDataXYNum();
+}
+
 void DataHandler::OnLoadTriggered(QString filename)
 {
 }

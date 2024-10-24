@@ -175,6 +175,7 @@ PROTOBUF_CONSTEXPR LeoQuadState::LeoQuadState(
   , /*decltype(_impl_.cpgstate_)*/nullptr
   , /*decltype(_impl_.threadstate_)*/nullptr
   , /*decltype(_impl_.arbitrarystate_)*/nullptr
+  , /*decltype(_impl_.arbitrarystatexy_)*/nullptr
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct LeoQuadStateDefaultTypeInternal {
   PROTOBUF_CONSTEXPR LeoQuadStateDefaultTypeInternal()
@@ -199,9 +200,99 @@ struct LeoQuadStateTimeStampedDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LeoQuadStateTimeStampedDefaultTypeInternal _LeoQuadStateTimeStamped_default_instance_;
+PROTOBUF_CONSTEXPR OperationState::OperationState(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.gaitstep_)*/nullptr
+  , /*decltype(_impl_.gaitperiod_)*/nullptr
+  , /*decltype(_impl_.controlmode_)*/0
+  , /*decltype(_impl_.gaittype_)*/0
+  , /*decltype(_impl_.voltage_)*/0
+  , /*decltype(_impl_.errorstate_)*/0u
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct OperationStateDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OperationStateDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OperationStateDefaultTypeInternal() {}
+  union {
+    OperationState _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OperationStateDefaultTypeInternal _OperationState_default_instance_;
+PROTOBUF_CONSTEXPR OperationStateTimeStamped::OperationStateTimeStamped(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.header_)*/nullptr
+  , /*decltype(_impl_.state_)*/nullptr
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct OperationStateTimeStampedDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OperationStateTimeStampedDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OperationStateTimeStampedDefaultTypeInternal() {}
+  union {
+    OperationStateTimeStamped _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OperationStateTimeStampedDefaultTypeInternal _OperationStateTimeStamped_default_instance_;
+PROTOBUF_CONSTEXPR EstimateStateKF::EstimateStateKF(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.posgtb_g_)*/nullptr
+  , /*decltype(_impl_.velgtb_g_)*/nullptr
+  , /*decltype(_impl_.posgte1_g_)*/nullptr
+  , /*decltype(_impl_.posgte2_g_)*/nullptr
+  , /*decltype(_impl_.posgte3_g_)*/nullptr
+  , /*decltype(_impl_.posgte4_g_)*/nullptr
+  , /*decltype(_impl_.biasacc_g_)*/nullptr
+  , /*decltype(_impl_.timeload_us_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct EstimateStateKFDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR EstimateStateKFDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~EstimateStateKFDefaultTypeInternal() {}
+  union {
+    EstimateStateKF _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EstimateStateKFDefaultTypeInternal _EstimateStateKF_default_instance_;
+PROTOBUF_CONSTEXPR EstimateStateEKF::EstimateStateEKF(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.posgtb_g_)*/nullptr
+  , /*decltype(_impl_.velgtb_g_)*/nullptr
+  , /*decltype(_impl_.quatg2b_)*/nullptr
+  , /*decltype(_impl_.posgte1_g_)*/nullptr
+  , /*decltype(_impl_.posgte2_g_)*/nullptr
+  , /*decltype(_impl_.posgte3_g_)*/nullptr
+  , /*decltype(_impl_.posgte4_g_)*/nullptr
+  , /*decltype(_impl_.biasacc_b_)*/nullptr
+  , /*decltype(_impl_.biasgyro_b_)*/nullptr
+  , /*decltype(_impl_.eulerzyxgtb_)*/nullptr
+  , /*decltype(_impl_.timeload_us_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct EstimateStateEKFDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR EstimateStateEKFDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~EstimateStateEKFDefaultTypeInternal() {}
+  union {
+    EstimateStateEKF _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EstimateStateEKFDefaultTypeInternal _EstimateStateEKF_default_instance_;
+PROTOBUF_CONSTEXPR ImuData::ImuData(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.eulerzyxgtb_)*/nullptr
+  , /*decltype(_impl_.acc_)*/nullptr
+  , /*decltype(_impl_.gyro_)*/nullptr
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct ImuDataDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ImuDataDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ImuDataDefaultTypeInternal() {}
+  union {
+    ImuData _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ImuDataDefaultTypeInternal _ImuData_default_instance_;
 }  // namespace leoquad
 }  // namespace dtproto
-static ::_pb::Metadata file_level_metadata_LeoQuad_2eproto[8];
+static ::_pb::Metadata file_level_metadata_LeoQuad_2eproto[13];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_LeoQuad_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_LeoQuad_2eproto = nullptr;
 
@@ -327,6 +418,7 @@ const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.cpgstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.threadstate_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.arbitrarystate_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadState, _impl_.arbitrarystatexy_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadStateTimeStamped, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -335,6 +427,66 @@ const uint32_t TableStruct_LeoQuad_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadStateTimeStamped, _impl_.header_),
   PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::LeoQuadStateTimeStamped, _impl_.state_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _impl_.controlmode_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _impl_.gaittype_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _impl_.gaitstep_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _impl_.gaitperiod_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _impl_.voltage_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationState, _impl_.errorstate_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationStateTimeStamped, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationStateTimeStamped, _impl_.header_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::OperationStateTimeStamped, _impl_.state_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.posgtb_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.velgtb_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.posgte1_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.posgte2_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.posgte3_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.posgte4_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.biasacc_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateKF, _impl_.timeload_us_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.posgtb_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.velgtb_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.quatg2b_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.posgte1_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.posgte2_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.posgte3_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.posgte4_g_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.biasacc_b_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.biasgyro_b_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.timeload_us_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::EstimateStateEKF, _impl_.eulerzyxgtb_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ImuData, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ImuData, _impl_.eulerzyxgtb_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ImuData, _impl_.acc_),
+  PROTOBUF_FIELD_OFFSET(::dtproto::leoquad::ImuData, _impl_.gyro_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::dtproto::leoquad::ThreadState)},
@@ -344,7 +496,12 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 55, -1, -1, sizeof(::dtproto::leoquad::ControlState)},
   { 80, -1, -1, sizeof(::dtproto::leoquad::CpgState)},
   { 103, -1, -1, sizeof(::dtproto::leoquad::LeoQuadState)},
-  { 121, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
+  { 122, -1, -1, sizeof(::dtproto::leoquad::LeoQuadStateTimeStamped)},
+  { 130, -1, -1, sizeof(::dtproto::leoquad::OperationState)},
+  { 142, -1, -1, sizeof(::dtproto::leoquad::OperationStateTimeStamped)},
+  { 150, -1, -1, sizeof(::dtproto::leoquad::EstimateStateKF)},
+  { 164, -1, -1, sizeof(::dtproto::leoquad::EstimateStateEKF)},
+  { 181, -1, -1, sizeof(::dtproto::leoquad::ImuData)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -356,6 +513,11 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::dtproto::leoquad::_CpgState_default_instance_._instance,
   &::dtproto::leoquad::_LeoQuadState_default_instance_._instance,
   &::dtproto::leoquad::_LeoQuadStateTimeStamped_default_instance_._instance,
+  &::dtproto::leoquad::_OperationState_default_instance_._instance,
+  &::dtproto::leoquad::_OperationStateTimeStamped_default_instance_._instance,
+  &::dtproto::leoquad::_EstimateStateKF_default_instance_._instance,
+  &::dtproto::leoquad::_EstimateStateEKF_default_instance_._instance,
+  &::dtproto::leoquad::_ImuData_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -439,7 +601,7 @@ const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\n\tphiTranSw\030\016 \001(\0132\037.dtproto.geometry_msg"
   "s.Vector4d\022/\n\004step\030\017 \001(\0132!.dtproto.geome"
   "try_msgs.Vector4i32\022\n\n\002dt\030\020 \001(\001\022\013\n\003air\030\021"
-  " \001(\010\"\342\004\n\014LeoQuadState\022/\n\njointState\030\001 \003("
+  " \001(\010\"\234\005\n\014LeoQuadState\022/\n\njointState\030\001 \003("
   "\0132\033.dtproto.leoquad.JointState\0220\n\014actJoi"
   "ntData\030\002 \003(\0132\032.dtproto.leoquad.JointData"
   "\0220\n\014desJointData\030\003 \003(\0132\032.dtproto.leoquad"
@@ -454,10 +616,47 @@ const char descriptor_table_protodef_LeoQuad_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\001(\0132\031.dtproto.leoquad.CpgState\0221\n\013thread"
   "State\030\013 \001(\0132\034.dtproto.leoquad.ThreadStat"
   "e\0226\n\016arbitraryState\030\024 \001(\0132\036.dtproto.std_"
-  "msgs.PackedDouble\"q\n\027LeoQuadStateTimeSta"
-  "mped\022(\n\006header\030\001 \001(\0132\030.dtproto.std_msgs."
-  "Header\022,\n\005state\030\002 \001(\0132\035.dtproto.leoquad."
-  "LeoQuadStateb\006proto3"
+  "msgs.PackedDouble\0228\n\020arbitraryStateXY\030\025 "
+  "\001(\0132\036.dtproto.std_msgs.PackedDouble\"q\n\027L"
+  "eoQuadStateTimeStamped\022(\n\006header\030\001 \001(\0132\030"
+  ".dtproto.std_msgs.Header\022,\n\005state\030\002 \001(\0132"
+  "\035.dtproto.leoquad.LeoQuadState\"\306\001\n\016Opera"
+  "tionState\022\023\n\013controlMode\030\001 \001(\005\022\020\n\010gaitTy"
+  "pe\030\002 \001(\005\0223\n\010gaitStep\030\003 \001(\0132!.dtproto.geo"
+  "metry_msgs.Vector4i32\0223\n\ngaitPeriod\030\004 \001("
+  "\0132\037.dtproto.geometry_msgs.Vector2d\022\017\n\007vo"
+  "ltage\030\007 \001(\002\022\022\n\nerrorState\030\t \001(\r\"u\n\031Opera"
+  "tionStateTimeStamped\022(\n\006header\030\001 \001(\0132\030.d"
+  "tproto.std_msgs.Header\022.\n\005state\030\002 \001(\0132\037."
+  "dtproto.leoquad.OperationState\"\212\003\n\017Estim"
+  "ateStateKF\0220\n\010posGtB_G\030\001 \001(\0132\036.dtproto.g"
+  "eometry_msgs.Point3d\0220\n\010velGtB_G\030\002 \001(\0132\036"
+  ".dtproto.geometry_msgs.Point3d\0221\n\tposGtE"
+  "1_G\030\003 \001(\0132\036.dtproto.geometry_msgs.Point3"
+  "d\0221\n\tposGtE2_G\030\004 \001(\0132\036.dtproto.geometry_"
+  "msgs.Point3d\0221\n\tposGtE3_G\030\005 \001(\0132\036.dtprot"
+  "o.geometry_msgs.Point3d\0221\n\tposGtE4_G\030\006 \001"
+  "(\0132\036.dtproto.geometry_msgs.Point3d\0222\n\tbi"
+  "asAcc_G\030\007 \001(\0132\037.dtproto.geometry_msgs.Ve"
+  "ctor3d\022\023\n\013timeLoad_us\030\010 \001(\001\"\247\004\n\020Estimate"
+  "StateEKF\0220\n\010posGtB_G\030\001 \001(\0132\036.dtproto.geo"
+  "metry_msgs.Point3d\0220\n\010velGtB_G\030\002 \001(\0132\036.d"
+  "tproto.geometry_msgs.Point3d\0222\n\007quatG2B\030"
+  "\003 \001(\0132!.dtproto.geometry_msgs.Quaternion"
+  "\0221\n\tposGtE1_G\030\004 \001(\0132\036.dtproto.geometry_m"
+  "sgs.Point3d\0221\n\tposGtE2_G\030\005 \001(\0132\036.dtproto"
+  ".geometry_msgs.Point3d\0221\n\tposGtE3_G\030\006 \001("
+  "\0132\036.dtproto.geometry_msgs.Point3d\0221\n\tpos"
+  "GtE4_G\030\007 \001(\0132\036.dtproto.geometry_msgs.Poi"
+  "nt3d\0222\n\tbiasAcc_B\030\t \001(\0132\037.dtproto.geomet"
+  "ry_msgs.Vector3d\0223\n\nbiasGyro_B\030\n \001(\0132\037.d"
+  "tproto.geometry_msgs.Vector3d\022\023\n\013timeLoa"
+  "d_us\030\013 \001(\001\0221\n\013eulerZyxGtB\030\014 \001(\0132\034.dtprot"
+  "o.geometry_msgs.Euler\"\231\001\n\007ImuData\0221\n\013eul"
+  "erZyxGtB\030\001 \001(\0132\034.dtproto.geometry_msgs.E"
+  "uler\022,\n\003Acc\030\002 \001(\0132\037.dtproto.geometry_msg"
+  "s.Vector3d\022-\n\004Gyro\030\003 \001(\0132\037.dtproto.geome"
+  "try_msgs.Vector3db\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_deps[9] = {
   &::descriptor_table_dtProto_2fgeometry_5fmsgs_2fMatrix_2eproto,
@@ -472,9 +671,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_LeoQuad_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_LeoQuad_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_LeoQuad_2eproto = {
-    false, false, 3940, descriptor_table_protodef_LeoQuad_2eproto,
+    false, false, 5425, descriptor_table_protodef_LeoQuad_2eproto,
     "LeoQuad.proto",
-    &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 9, 8,
+    &descriptor_table_LeoQuad_2eproto_once, descriptor_table_LeoQuad_2eproto_deps, 9, 13,
     schemas, file_default_instances, TableStruct_LeoQuad_2eproto::offsets,
     file_level_metadata_LeoQuad_2eproto, file_level_enum_descriptors_LeoQuad_2eproto,
     file_level_service_descriptors_LeoQuad_2eproto,
@@ -4154,6 +4353,7 @@ class LeoQuadState::_Internal {
   static const ::dtproto::leoquad::CpgState& cpgstate(const LeoQuadState* msg);
   static const ::dtproto::leoquad::ThreadState& threadstate(const LeoQuadState* msg);
   static const ::dtproto::std_msgs::PackedDouble& arbitrarystate(const LeoQuadState* msg);
+  static const ::dtproto::std_msgs::PackedDouble& arbitrarystatexy(const LeoQuadState* msg);
 };
 
 const ::dtproto::leoquad::TaskState&
@@ -4192,6 +4392,10 @@ const ::dtproto::std_msgs::PackedDouble&
 LeoQuadState::_Internal::arbitrarystate(const LeoQuadState* msg) {
   return *msg->_impl_.arbitrarystate_;
 }
+const ::dtproto::std_msgs::PackedDouble&
+LeoQuadState::_Internal::arbitrarystatexy(const LeoQuadState* msg) {
+  return *msg->_impl_.arbitrarystatexy_;
+}
 void LeoQuadState::clear_imu() {
   if (GetArenaForAllocation() == nullptr && _impl_.imu_ != nullptr) {
     delete _impl_.imu_;
@@ -4209,6 +4413,12 @@ void LeoQuadState::clear_arbitrarystate() {
     delete _impl_.arbitrarystate_;
   }
   _impl_.arbitrarystate_ = nullptr;
+}
+void LeoQuadState::clear_arbitrarystatexy() {
+  if (GetArenaForAllocation() == nullptr && _impl_.arbitrarystatexy_ != nullptr) {
+    delete _impl_.arbitrarystatexy_;
+  }
+  _impl_.arbitrarystatexy_ = nullptr;
 }
 LeoQuadState::LeoQuadState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -4232,6 +4442,7 @@ LeoQuadState::LeoQuadState(const LeoQuadState& from)
     , decltype(_impl_.cpgstate_){nullptr}
     , decltype(_impl_.threadstate_){nullptr}
     , decltype(_impl_.arbitrarystate_){nullptr}
+    , decltype(_impl_.arbitrarystatexy_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -4262,6 +4473,9 @@ LeoQuadState::LeoQuadState(const LeoQuadState& from)
   if (from._internal_has_arbitrarystate()) {
     _this->_impl_.arbitrarystate_ = new ::dtproto::std_msgs::PackedDouble(*from._impl_.arbitrarystate_);
   }
+  if (from._internal_has_arbitrarystatexy()) {
+    _this->_impl_.arbitrarystatexy_ = new ::dtproto::std_msgs::PackedDouble(*from._impl_.arbitrarystatexy_);
+  }
   // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.LeoQuadState)
 }
 
@@ -4282,6 +4496,7 @@ inline void LeoQuadState::SharedCtor(
     , decltype(_impl_.cpgstate_){nullptr}
     , decltype(_impl_.threadstate_){nullptr}
     , decltype(_impl_.arbitrarystate_){nullptr}
+    , decltype(_impl_.arbitrarystatexy_){nullptr}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -4309,6 +4524,7 @@ inline void LeoQuadState::SharedDtor() {
   if (this != internal_default_instance()) delete _impl_.cpgstate_;
   if (this != internal_default_instance()) delete _impl_.threadstate_;
   if (this != internal_default_instance()) delete _impl_.arbitrarystate_;
+  if (this != internal_default_instance()) delete _impl_.arbitrarystatexy_;
 }
 
 void LeoQuadState::SetCachedSize(int size) const {
@@ -4360,6 +4576,10 @@ void LeoQuadState::Clear() {
     delete _impl_.arbitrarystate_;
   }
   _impl_.arbitrarystate_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.arbitrarystatexy_ != nullptr) {
+    delete _impl_.arbitrarystatexy_;
+  }
+  _impl_.arbitrarystatexy_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4480,6 +4700,14 @@ const char* LeoQuadState::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
         } else
           goto handle_unusual;
         continue;
+      // .dtproto.std_msgs.PackedDouble arbitraryStateXY = 21;
+      case 21:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 170)) {
+          ptr = ctx->ParseMessage(_internal_mutable_arbitrarystatexy(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
       default:
         goto handle_unusual;
     }  // switch
@@ -4596,6 +4824,13 @@ uint8_t* LeoQuadState::_InternalSerialize(
         _Internal::arbitrarystate(this).GetCachedSize(), target, stream);
   }
 
+  // .dtproto.std_msgs.PackedDouble arbitraryStateXY = 21;
+  if (this->_internal_has_arbitrarystatexy()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(21, _Internal::arbitrarystatexy(this),
+        _Internal::arbitrarystatexy(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4696,6 +4931,13 @@ size_t LeoQuadState::ByteSizeLong() const {
         *_impl_.arbitrarystate_);
   }
 
+  // .dtproto.std_msgs.PackedDouble arbitraryStateXY = 21;
+  if (this->_internal_has_arbitrarystatexy()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.arbitrarystatexy_);
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -4753,6 +4995,10 @@ void LeoQuadState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
     _this->_internal_mutable_arbitrarystate()->::dtproto::std_msgs::PackedDouble::MergeFrom(
         from._internal_arbitrarystate());
   }
+  if (from._internal_has_arbitrarystatexy()) {
+    _this->_internal_mutable_arbitrarystatexy()->::dtproto::std_msgs::PackedDouble::MergeFrom(
+        from._internal_arbitrarystatexy());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4774,8 +5020,8 @@ void LeoQuadState::InternalSwap(LeoQuadState* other) {
   _impl_.actjointdata_.InternalSwap(&other->_impl_.actjointdata_);
   _impl_.desjointdata_.InternalSwap(&other->_impl_.desjointdata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.arbitrarystate_)
-      + sizeof(LeoQuadState::_impl_.arbitrarystate_)
+      PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.arbitrarystatexy_)
+      + sizeof(LeoQuadState::_impl_.arbitrarystatexy_)
       - PROTOBUF_FIELD_OFFSET(LeoQuadState, _impl_.destaskstate_)>(
           reinterpret_cast<char*>(&_impl_.destaskstate_),
           reinterpret_cast<char*>(&other->_impl_.destaskstate_));
@@ -5032,6 +5278,2103 @@ void LeoQuadStateTimeStamped::InternalSwap(LeoQuadStateTimeStamped* other) {
       file_level_metadata_LeoQuad_2eproto[7]);
 }
 
+// ===================================================================
+
+class OperationState::_Internal {
+ public:
+  static const ::dtproto::geometry_msgs::Vector4i32& gaitstep(const OperationState* msg);
+  static const ::dtproto::geometry_msgs::Vector2d& gaitperiod(const OperationState* msg);
+};
+
+const ::dtproto::geometry_msgs::Vector4i32&
+OperationState::_Internal::gaitstep(const OperationState* msg) {
+  return *msg->_impl_.gaitstep_;
+}
+const ::dtproto::geometry_msgs::Vector2d&
+OperationState::_Internal::gaitperiod(const OperationState* msg) {
+  return *msg->_impl_.gaitperiod_;
+}
+void OperationState::clear_gaitstep() {
+  if (GetArenaForAllocation() == nullptr && _impl_.gaitstep_ != nullptr) {
+    delete _impl_.gaitstep_;
+  }
+  _impl_.gaitstep_ = nullptr;
+}
+void OperationState::clear_gaitperiod() {
+  if (GetArenaForAllocation() == nullptr && _impl_.gaitperiod_ != nullptr) {
+    delete _impl_.gaitperiod_;
+  }
+  _impl_.gaitperiod_ = nullptr;
+}
+OperationState::OperationState(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.leoquad.OperationState)
+}
+OperationState::OperationState(const OperationState& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  OperationState* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.gaitstep_){nullptr}
+    , decltype(_impl_.gaitperiod_){nullptr}
+    , decltype(_impl_.controlmode_){}
+    , decltype(_impl_.gaittype_){}
+    , decltype(_impl_.voltage_){}
+    , decltype(_impl_.errorstate_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_gaitstep()) {
+    _this->_impl_.gaitstep_ = new ::dtproto::geometry_msgs::Vector4i32(*from._impl_.gaitstep_);
+  }
+  if (from._internal_has_gaitperiod()) {
+    _this->_impl_.gaitperiod_ = new ::dtproto::geometry_msgs::Vector2d(*from._impl_.gaitperiod_);
+  }
+  ::memcpy(&_impl_.controlmode_, &from._impl_.controlmode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.errorstate_) -
+    reinterpret_cast<char*>(&_impl_.controlmode_)) + sizeof(_impl_.errorstate_));
+  // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.OperationState)
+}
+
+inline void OperationState::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.gaitstep_){nullptr}
+    , decltype(_impl_.gaitperiod_){nullptr}
+    , decltype(_impl_.controlmode_){0}
+    , decltype(_impl_.gaittype_){0}
+    , decltype(_impl_.voltage_){0}
+    , decltype(_impl_.errorstate_){0u}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+OperationState::~OperationState() {
+  // @@protoc_insertion_point(destructor:dtproto.leoquad.OperationState)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void OperationState::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.gaitstep_;
+  if (this != internal_default_instance()) delete _impl_.gaitperiod_;
+}
+
+void OperationState::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void OperationState::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.leoquad.OperationState)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.gaitstep_ != nullptr) {
+    delete _impl_.gaitstep_;
+  }
+  _impl_.gaitstep_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.gaitperiod_ != nullptr) {
+    delete _impl_.gaitperiod_;
+  }
+  _impl_.gaitperiod_ = nullptr;
+  ::memset(&_impl_.controlmode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.errorstate_) -
+      reinterpret_cast<char*>(&_impl_.controlmode_)) + sizeof(_impl_.errorstate_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* OperationState::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // int32 controlMode = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _impl_.controlmode_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 gaitType = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.gaittype_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector4i32 gaitStep = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_gaitstep(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector2d gaitPeriod = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_gaitperiod(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // float voltage = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 61)) {
+          _impl_.voltage_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 errorState = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
+          _impl_.errorstate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* OperationState::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.leoquad.OperationState)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 controlMode = 1;
+  if (this->_internal_controlmode() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_controlmode(), target);
+  }
+
+  // int32 gaitType = 2;
+  if (this->_internal_gaittype() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_gaittype(), target);
+  }
+
+  // .dtproto.geometry_msgs.Vector4i32 gaitStep = 3;
+  if (this->_internal_has_gaitstep()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::gaitstep(this),
+        _Internal::gaitstep(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector2d gaitPeriod = 4;
+  if (this->_internal_has_gaitperiod()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, _Internal::gaitperiod(this),
+        _Internal::gaitperiod(this).GetCachedSize(), target, stream);
+  }
+
+  // float voltage = 7;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_voltage = this->_internal_voltage();
+  uint32_t raw_voltage;
+  memcpy(&raw_voltage, &tmp_voltage, sizeof(tmp_voltage));
+  if (raw_voltage != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(7, this->_internal_voltage(), target);
+  }
+
+  // uint32 errorState = 9;
+  if (this->_internal_errorstate() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(9, this->_internal_errorstate(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.leoquad.OperationState)
+  return target;
+}
+
+size_t OperationState::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.leoquad.OperationState)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Vector4i32 gaitStep = 3;
+  if (this->_internal_has_gaitstep()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.gaitstep_);
+  }
+
+  // .dtproto.geometry_msgs.Vector2d gaitPeriod = 4;
+  if (this->_internal_has_gaitperiod()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.gaitperiod_);
+  }
+
+  // int32 controlMode = 1;
+  if (this->_internal_controlmode() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_controlmode());
+  }
+
+  // int32 gaitType = 2;
+  if (this->_internal_gaittype() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_gaittype());
+  }
+
+  // float voltage = 7;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_voltage = this->_internal_voltage();
+  uint32_t raw_voltage;
+  memcpy(&raw_voltage, &tmp_voltage, sizeof(tmp_voltage));
+  if (raw_voltage != 0) {
+    total_size += 1 + 4;
+  }
+
+  // uint32 errorState = 9;
+  if (this->_internal_errorstate() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_errorstate());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData OperationState::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    OperationState::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*OperationState::GetClassData() const { return &_class_data_; }
+
+
+void OperationState::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<OperationState*>(&to_msg);
+  auto& from = static_cast<const OperationState&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.leoquad.OperationState)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_gaitstep()) {
+    _this->_internal_mutable_gaitstep()->::dtproto::geometry_msgs::Vector4i32::MergeFrom(
+        from._internal_gaitstep());
+  }
+  if (from._internal_has_gaitperiod()) {
+    _this->_internal_mutable_gaitperiod()->::dtproto::geometry_msgs::Vector2d::MergeFrom(
+        from._internal_gaitperiod());
+  }
+  if (from._internal_controlmode() != 0) {
+    _this->_internal_set_controlmode(from._internal_controlmode());
+  }
+  if (from._internal_gaittype() != 0) {
+    _this->_internal_set_gaittype(from._internal_gaittype());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_voltage = from._internal_voltage();
+  uint32_t raw_voltage;
+  memcpy(&raw_voltage, &tmp_voltage, sizeof(tmp_voltage));
+  if (raw_voltage != 0) {
+    _this->_internal_set_voltage(from._internal_voltage());
+  }
+  if (from._internal_errorstate() != 0) {
+    _this->_internal_set_errorstate(from._internal_errorstate());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void OperationState::CopyFrom(const OperationState& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.leoquad.OperationState)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool OperationState::IsInitialized() const {
+  return true;
+}
+
+void OperationState::InternalSwap(OperationState* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(OperationState, _impl_.errorstate_)
+      + sizeof(OperationState::_impl_.errorstate_)
+      - PROTOBUF_FIELD_OFFSET(OperationState, _impl_.gaitstep_)>(
+          reinterpret_cast<char*>(&_impl_.gaitstep_),
+          reinterpret_cast<char*>(&other->_impl_.gaitstep_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata OperationState::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
+      file_level_metadata_LeoQuad_2eproto[8]);
+}
+
+// ===================================================================
+
+class OperationStateTimeStamped::_Internal {
+ public:
+  static const ::dtproto::std_msgs::Header& header(const OperationStateTimeStamped* msg);
+  static const ::dtproto::leoquad::OperationState& state(const OperationStateTimeStamped* msg);
+};
+
+const ::dtproto::std_msgs::Header&
+OperationStateTimeStamped::_Internal::header(const OperationStateTimeStamped* msg) {
+  return *msg->_impl_.header_;
+}
+const ::dtproto::leoquad::OperationState&
+OperationStateTimeStamped::_Internal::state(const OperationStateTimeStamped* msg) {
+  return *msg->_impl_.state_;
+}
+void OperationStateTimeStamped::clear_header() {
+  if (GetArenaForAllocation() == nullptr && _impl_.header_ != nullptr) {
+    delete _impl_.header_;
+  }
+  _impl_.header_ = nullptr;
+}
+OperationStateTimeStamped::OperationStateTimeStamped(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.leoquad.OperationStateTimeStamped)
+}
+OperationStateTimeStamped::OperationStateTimeStamped(const OperationStateTimeStamped& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  OperationStateTimeStamped* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.header_){nullptr}
+    , decltype(_impl_.state_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_header()) {
+    _this->_impl_.header_ = new ::dtproto::std_msgs::Header(*from._impl_.header_);
+  }
+  if (from._internal_has_state()) {
+    _this->_impl_.state_ = new ::dtproto::leoquad::OperationState(*from._impl_.state_);
+  }
+  // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.OperationStateTimeStamped)
+}
+
+inline void OperationStateTimeStamped::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.header_){nullptr}
+    , decltype(_impl_.state_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+OperationStateTimeStamped::~OperationStateTimeStamped() {
+  // @@protoc_insertion_point(destructor:dtproto.leoquad.OperationStateTimeStamped)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void OperationStateTimeStamped::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.header_;
+  if (this != internal_default_instance()) delete _impl_.state_;
+}
+
+void OperationStateTimeStamped::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void OperationStateTimeStamped::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.leoquad.OperationStateTimeStamped)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.header_ != nullptr) {
+    delete _impl_.header_;
+  }
+  _impl_.header_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.state_ != nullptr) {
+    delete _impl_.state_;
+  }
+  _impl_.state_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* OperationStateTimeStamped::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .dtproto.std_msgs.Header header = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_header(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.leoquad.OperationState state = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_state(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* OperationStateTimeStamped::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.leoquad.OperationStateTimeStamped)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .dtproto.std_msgs.Header header = 1;
+  if (this->_internal_has_header()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::header(this),
+        _Internal::header(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.leoquad.OperationState state = 2;
+  if (this->_internal_has_state()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::state(this),
+        _Internal::state(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.leoquad.OperationStateTimeStamped)
+  return target;
+}
+
+size_t OperationStateTimeStamped::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.leoquad.OperationStateTimeStamped)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .dtproto.std_msgs.Header header = 1;
+  if (this->_internal_has_header()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.header_);
+  }
+
+  // .dtproto.leoquad.OperationState state = 2;
+  if (this->_internal_has_state()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.state_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData OperationStateTimeStamped::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    OperationStateTimeStamped::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*OperationStateTimeStamped::GetClassData() const { return &_class_data_; }
+
+
+void OperationStateTimeStamped::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<OperationStateTimeStamped*>(&to_msg);
+  auto& from = static_cast<const OperationStateTimeStamped&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.leoquad.OperationStateTimeStamped)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_header()) {
+    _this->_internal_mutable_header()->::dtproto::std_msgs::Header::MergeFrom(
+        from._internal_header());
+  }
+  if (from._internal_has_state()) {
+    _this->_internal_mutable_state()->::dtproto::leoquad::OperationState::MergeFrom(
+        from._internal_state());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void OperationStateTimeStamped::CopyFrom(const OperationStateTimeStamped& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.leoquad.OperationStateTimeStamped)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool OperationStateTimeStamped::IsInitialized() const {
+  return true;
+}
+
+void OperationStateTimeStamped::InternalSwap(OperationStateTimeStamped* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(OperationStateTimeStamped, _impl_.state_)
+      + sizeof(OperationStateTimeStamped::_impl_.state_)
+      - PROTOBUF_FIELD_OFFSET(OperationStateTimeStamped, _impl_.header_)>(
+          reinterpret_cast<char*>(&_impl_.header_),
+          reinterpret_cast<char*>(&other->_impl_.header_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata OperationStateTimeStamped::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
+      file_level_metadata_LeoQuad_2eproto[9]);
+}
+
+// ===================================================================
+
+class EstimateStateKF::_Internal {
+ public:
+  static const ::dtproto::geometry_msgs::Point3d& posgtb_g(const EstimateStateKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& velgtb_g(const EstimateStateKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte1_g(const EstimateStateKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte2_g(const EstimateStateKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte3_g(const EstimateStateKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte4_g(const EstimateStateKF* msg);
+  static const ::dtproto::geometry_msgs::Vector3d& biasacc_g(const EstimateStateKF* msg);
+};
+
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateKF::_Internal::posgtb_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.posgtb_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateKF::_Internal::velgtb_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.velgtb_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateKF::_Internal::posgte1_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.posgte1_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateKF::_Internal::posgte2_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.posgte2_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateKF::_Internal::posgte3_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.posgte3_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateKF::_Internal::posgte4_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.posgte4_g_;
+}
+const ::dtproto::geometry_msgs::Vector3d&
+EstimateStateKF::_Internal::biasacc_g(const EstimateStateKF* msg) {
+  return *msg->_impl_.biasacc_g_;
+}
+void EstimateStateKF::clear_posgtb_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgtb_g_ != nullptr) {
+    delete _impl_.posgtb_g_;
+  }
+  _impl_.posgtb_g_ = nullptr;
+}
+void EstimateStateKF::clear_velgtb_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.velgtb_g_ != nullptr) {
+    delete _impl_.velgtb_g_;
+  }
+  _impl_.velgtb_g_ = nullptr;
+}
+void EstimateStateKF::clear_posgte1_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte1_g_ != nullptr) {
+    delete _impl_.posgte1_g_;
+  }
+  _impl_.posgte1_g_ = nullptr;
+}
+void EstimateStateKF::clear_posgte2_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte2_g_ != nullptr) {
+    delete _impl_.posgte2_g_;
+  }
+  _impl_.posgte2_g_ = nullptr;
+}
+void EstimateStateKF::clear_posgte3_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte3_g_ != nullptr) {
+    delete _impl_.posgte3_g_;
+  }
+  _impl_.posgte3_g_ = nullptr;
+}
+void EstimateStateKF::clear_posgte4_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte4_g_ != nullptr) {
+    delete _impl_.posgte4_g_;
+  }
+  _impl_.posgte4_g_ = nullptr;
+}
+void EstimateStateKF::clear_biasacc_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.biasacc_g_ != nullptr) {
+    delete _impl_.biasacc_g_;
+  }
+  _impl_.biasacc_g_ = nullptr;
+}
+EstimateStateKF::EstimateStateKF(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.leoquad.EstimateStateKF)
+}
+EstimateStateKF::EstimateStateKF(const EstimateStateKF& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  EstimateStateKF* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.posgtb_g_){nullptr}
+    , decltype(_impl_.velgtb_g_){nullptr}
+    , decltype(_impl_.posgte1_g_){nullptr}
+    , decltype(_impl_.posgte2_g_){nullptr}
+    , decltype(_impl_.posgte3_g_){nullptr}
+    , decltype(_impl_.posgte4_g_){nullptr}
+    , decltype(_impl_.biasacc_g_){nullptr}
+    , decltype(_impl_.timeload_us_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_posgtb_g()) {
+    _this->_impl_.posgtb_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgtb_g_);
+  }
+  if (from._internal_has_velgtb_g()) {
+    _this->_impl_.velgtb_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.velgtb_g_);
+  }
+  if (from._internal_has_posgte1_g()) {
+    _this->_impl_.posgte1_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte1_g_);
+  }
+  if (from._internal_has_posgte2_g()) {
+    _this->_impl_.posgte2_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte2_g_);
+  }
+  if (from._internal_has_posgte3_g()) {
+    _this->_impl_.posgte3_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte3_g_);
+  }
+  if (from._internal_has_posgte4_g()) {
+    _this->_impl_.posgte4_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte4_g_);
+  }
+  if (from._internal_has_biasacc_g()) {
+    _this->_impl_.biasacc_g_ = new ::dtproto::geometry_msgs::Vector3d(*from._impl_.biasacc_g_);
+  }
+  _this->_impl_.timeload_us_ = from._impl_.timeload_us_;
+  // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.EstimateStateKF)
+}
+
+inline void EstimateStateKF::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.posgtb_g_){nullptr}
+    , decltype(_impl_.velgtb_g_){nullptr}
+    , decltype(_impl_.posgte1_g_){nullptr}
+    , decltype(_impl_.posgte2_g_){nullptr}
+    , decltype(_impl_.posgte3_g_){nullptr}
+    , decltype(_impl_.posgte4_g_){nullptr}
+    , decltype(_impl_.biasacc_g_){nullptr}
+    , decltype(_impl_.timeload_us_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+EstimateStateKF::~EstimateStateKF() {
+  // @@protoc_insertion_point(destructor:dtproto.leoquad.EstimateStateKF)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void EstimateStateKF::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.posgtb_g_;
+  if (this != internal_default_instance()) delete _impl_.velgtb_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte1_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte2_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte3_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte4_g_;
+  if (this != internal_default_instance()) delete _impl_.biasacc_g_;
+}
+
+void EstimateStateKF::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void EstimateStateKF::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.leoquad.EstimateStateKF)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.posgtb_g_ != nullptr) {
+    delete _impl_.posgtb_g_;
+  }
+  _impl_.posgtb_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.velgtb_g_ != nullptr) {
+    delete _impl_.velgtb_g_;
+  }
+  _impl_.velgtb_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte1_g_ != nullptr) {
+    delete _impl_.posgte1_g_;
+  }
+  _impl_.posgte1_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte2_g_ != nullptr) {
+    delete _impl_.posgte2_g_;
+  }
+  _impl_.posgte2_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte3_g_ != nullptr) {
+    delete _impl_.posgte3_g_;
+  }
+  _impl_.posgte3_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte4_g_ != nullptr) {
+    delete _impl_.posgte4_g_;
+  }
+  _impl_.posgte4_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.biasacc_g_ != nullptr) {
+    delete _impl_.biasacc_g_;
+  }
+  _impl_.biasacc_g_ = nullptr;
+  _impl_.timeload_us_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* EstimateStateKF::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .dtproto.geometry_msgs.Point3d posGtB_G = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgtb_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d velGtB_G = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velgtb_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE1_G = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte1_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE2_G = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte2_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE3_G = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte3_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE4_G = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte4_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector3d biasAcc_G = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr = ctx->ParseMessage(_internal_mutable_biasacc_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double timeLoad_us = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 65)) {
+          _impl_.timeload_us_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* EstimateStateKF::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.leoquad.EstimateStateKF)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Point3d posGtB_G = 1;
+  if (this->_internal_has_posgtb_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::posgtb_g(this),
+        _Internal::posgtb_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velGtB_G = 2;
+  if (this->_internal_has_velgtb_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::velgtb_g(this),
+        _Internal::velgtb_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE1_G = 3;
+  if (this->_internal_has_posgte1_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::posgte1_g(this),
+        _Internal::posgte1_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE2_G = 4;
+  if (this->_internal_has_posgte2_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, _Internal::posgte2_g(this),
+        _Internal::posgte2_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE3_G = 5;
+  if (this->_internal_has_posgte3_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(5, _Internal::posgte3_g(this),
+        _Internal::posgte3_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE4_G = 6;
+  if (this->_internal_has_posgte4_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(6, _Internal::posgte4_g(this),
+        _Internal::posgte4_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d biasAcc_G = 7;
+  if (this->_internal_has_biasacc_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(7, _Internal::biasacc_g(this),
+        _Internal::biasacc_g(this).GetCachedSize(), target, stream);
+  }
+
+  // double timeLoad_us = 8;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timeload_us = this->_internal_timeload_us();
+  uint64_t raw_timeload_us;
+  memcpy(&raw_timeload_us, &tmp_timeload_us, sizeof(tmp_timeload_us));
+  if (raw_timeload_us != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(8, this->_internal_timeload_us(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.leoquad.EstimateStateKF)
+  return target;
+}
+
+size_t EstimateStateKF::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.leoquad.EstimateStateKF)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Point3d posGtB_G = 1;
+  if (this->_internal_has_posgtb_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgtb_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velGtB_G = 2;
+  if (this->_internal_has_velgtb_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.velgtb_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE1_G = 3;
+  if (this->_internal_has_posgte1_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte1_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE2_G = 4;
+  if (this->_internal_has_posgte2_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte2_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE3_G = 5;
+  if (this->_internal_has_posgte3_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte3_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE4_G = 6;
+  if (this->_internal_has_posgte4_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte4_g_);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d biasAcc_G = 7;
+  if (this->_internal_has_biasacc_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.biasacc_g_);
+  }
+
+  // double timeLoad_us = 8;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timeload_us = this->_internal_timeload_us();
+  uint64_t raw_timeload_us;
+  memcpy(&raw_timeload_us, &tmp_timeload_us, sizeof(tmp_timeload_us));
+  if (raw_timeload_us != 0) {
+    total_size += 1 + 8;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData EstimateStateKF::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    EstimateStateKF::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*EstimateStateKF::GetClassData() const { return &_class_data_; }
+
+
+void EstimateStateKF::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<EstimateStateKF*>(&to_msg);
+  auto& from = static_cast<const EstimateStateKF&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.leoquad.EstimateStateKF)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_posgtb_g()) {
+    _this->_internal_mutable_posgtb_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgtb_g());
+  }
+  if (from._internal_has_velgtb_g()) {
+    _this->_internal_mutable_velgtb_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_velgtb_g());
+  }
+  if (from._internal_has_posgte1_g()) {
+    _this->_internal_mutable_posgte1_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte1_g());
+  }
+  if (from._internal_has_posgte2_g()) {
+    _this->_internal_mutable_posgte2_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte2_g());
+  }
+  if (from._internal_has_posgte3_g()) {
+    _this->_internal_mutable_posgte3_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte3_g());
+  }
+  if (from._internal_has_posgte4_g()) {
+    _this->_internal_mutable_posgte4_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte4_g());
+  }
+  if (from._internal_has_biasacc_g()) {
+    _this->_internal_mutable_biasacc_g()->::dtproto::geometry_msgs::Vector3d::MergeFrom(
+        from._internal_biasacc_g());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timeload_us = from._internal_timeload_us();
+  uint64_t raw_timeload_us;
+  memcpy(&raw_timeload_us, &tmp_timeload_us, sizeof(tmp_timeload_us));
+  if (raw_timeload_us != 0) {
+    _this->_internal_set_timeload_us(from._internal_timeload_us());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void EstimateStateKF::CopyFrom(const EstimateStateKF& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.leoquad.EstimateStateKF)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool EstimateStateKF::IsInitialized() const {
+  return true;
+}
+
+void EstimateStateKF::InternalSwap(EstimateStateKF* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(EstimateStateKF, _impl_.timeload_us_)
+      + sizeof(EstimateStateKF::_impl_.timeload_us_)
+      - PROTOBUF_FIELD_OFFSET(EstimateStateKF, _impl_.posgtb_g_)>(
+          reinterpret_cast<char*>(&_impl_.posgtb_g_),
+          reinterpret_cast<char*>(&other->_impl_.posgtb_g_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata EstimateStateKF::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
+      file_level_metadata_LeoQuad_2eproto[10]);
+}
+
+// ===================================================================
+
+class EstimateStateEKF::_Internal {
+ public:
+  static const ::dtproto::geometry_msgs::Point3d& posgtb_g(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& velgtb_g(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Quaternion& quatg2b(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte1_g(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte2_g(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte3_g(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Point3d& posgte4_g(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Vector3d& biasacc_b(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Vector3d& biasgyro_b(const EstimateStateEKF* msg);
+  static const ::dtproto::geometry_msgs::Euler& eulerzyxgtb(const EstimateStateEKF* msg);
+};
+
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateEKF::_Internal::posgtb_g(const EstimateStateEKF* msg) {
+  return *msg->_impl_.posgtb_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateEKF::_Internal::velgtb_g(const EstimateStateEKF* msg) {
+  return *msg->_impl_.velgtb_g_;
+}
+const ::dtproto::geometry_msgs::Quaternion&
+EstimateStateEKF::_Internal::quatg2b(const EstimateStateEKF* msg) {
+  return *msg->_impl_.quatg2b_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateEKF::_Internal::posgte1_g(const EstimateStateEKF* msg) {
+  return *msg->_impl_.posgte1_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateEKF::_Internal::posgte2_g(const EstimateStateEKF* msg) {
+  return *msg->_impl_.posgte2_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateEKF::_Internal::posgte3_g(const EstimateStateEKF* msg) {
+  return *msg->_impl_.posgte3_g_;
+}
+const ::dtproto::geometry_msgs::Point3d&
+EstimateStateEKF::_Internal::posgte4_g(const EstimateStateEKF* msg) {
+  return *msg->_impl_.posgte4_g_;
+}
+const ::dtproto::geometry_msgs::Vector3d&
+EstimateStateEKF::_Internal::biasacc_b(const EstimateStateEKF* msg) {
+  return *msg->_impl_.biasacc_b_;
+}
+const ::dtproto::geometry_msgs::Vector3d&
+EstimateStateEKF::_Internal::biasgyro_b(const EstimateStateEKF* msg) {
+  return *msg->_impl_.biasgyro_b_;
+}
+const ::dtproto::geometry_msgs::Euler&
+EstimateStateEKF::_Internal::eulerzyxgtb(const EstimateStateEKF* msg) {
+  return *msg->_impl_.eulerzyxgtb_;
+}
+void EstimateStateEKF::clear_posgtb_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgtb_g_ != nullptr) {
+    delete _impl_.posgtb_g_;
+  }
+  _impl_.posgtb_g_ = nullptr;
+}
+void EstimateStateEKF::clear_velgtb_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.velgtb_g_ != nullptr) {
+    delete _impl_.velgtb_g_;
+  }
+  _impl_.velgtb_g_ = nullptr;
+}
+void EstimateStateEKF::clear_quatg2b() {
+  if (GetArenaForAllocation() == nullptr && _impl_.quatg2b_ != nullptr) {
+    delete _impl_.quatg2b_;
+  }
+  _impl_.quatg2b_ = nullptr;
+}
+void EstimateStateEKF::clear_posgte1_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte1_g_ != nullptr) {
+    delete _impl_.posgte1_g_;
+  }
+  _impl_.posgte1_g_ = nullptr;
+}
+void EstimateStateEKF::clear_posgte2_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte2_g_ != nullptr) {
+    delete _impl_.posgte2_g_;
+  }
+  _impl_.posgte2_g_ = nullptr;
+}
+void EstimateStateEKF::clear_posgte3_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte3_g_ != nullptr) {
+    delete _impl_.posgte3_g_;
+  }
+  _impl_.posgte3_g_ = nullptr;
+}
+void EstimateStateEKF::clear_posgte4_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte4_g_ != nullptr) {
+    delete _impl_.posgte4_g_;
+  }
+  _impl_.posgte4_g_ = nullptr;
+}
+void EstimateStateEKF::clear_biasacc_b() {
+  if (GetArenaForAllocation() == nullptr && _impl_.biasacc_b_ != nullptr) {
+    delete _impl_.biasacc_b_;
+  }
+  _impl_.biasacc_b_ = nullptr;
+}
+void EstimateStateEKF::clear_biasgyro_b() {
+  if (GetArenaForAllocation() == nullptr && _impl_.biasgyro_b_ != nullptr) {
+    delete _impl_.biasgyro_b_;
+  }
+  _impl_.biasgyro_b_ = nullptr;
+}
+void EstimateStateEKF::clear_eulerzyxgtb() {
+  if (GetArenaForAllocation() == nullptr && _impl_.eulerzyxgtb_ != nullptr) {
+    delete _impl_.eulerzyxgtb_;
+  }
+  _impl_.eulerzyxgtb_ = nullptr;
+}
+EstimateStateEKF::EstimateStateEKF(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.leoquad.EstimateStateEKF)
+}
+EstimateStateEKF::EstimateStateEKF(const EstimateStateEKF& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  EstimateStateEKF* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.posgtb_g_){nullptr}
+    , decltype(_impl_.velgtb_g_){nullptr}
+    , decltype(_impl_.quatg2b_){nullptr}
+    , decltype(_impl_.posgte1_g_){nullptr}
+    , decltype(_impl_.posgte2_g_){nullptr}
+    , decltype(_impl_.posgte3_g_){nullptr}
+    , decltype(_impl_.posgte4_g_){nullptr}
+    , decltype(_impl_.biasacc_b_){nullptr}
+    , decltype(_impl_.biasgyro_b_){nullptr}
+    , decltype(_impl_.eulerzyxgtb_){nullptr}
+    , decltype(_impl_.timeload_us_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_posgtb_g()) {
+    _this->_impl_.posgtb_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgtb_g_);
+  }
+  if (from._internal_has_velgtb_g()) {
+    _this->_impl_.velgtb_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.velgtb_g_);
+  }
+  if (from._internal_has_quatg2b()) {
+    _this->_impl_.quatg2b_ = new ::dtproto::geometry_msgs::Quaternion(*from._impl_.quatg2b_);
+  }
+  if (from._internal_has_posgte1_g()) {
+    _this->_impl_.posgte1_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte1_g_);
+  }
+  if (from._internal_has_posgte2_g()) {
+    _this->_impl_.posgte2_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte2_g_);
+  }
+  if (from._internal_has_posgte3_g()) {
+    _this->_impl_.posgte3_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte3_g_);
+  }
+  if (from._internal_has_posgte4_g()) {
+    _this->_impl_.posgte4_g_ = new ::dtproto::geometry_msgs::Point3d(*from._impl_.posgte4_g_);
+  }
+  if (from._internal_has_biasacc_b()) {
+    _this->_impl_.biasacc_b_ = new ::dtproto::geometry_msgs::Vector3d(*from._impl_.biasacc_b_);
+  }
+  if (from._internal_has_biasgyro_b()) {
+    _this->_impl_.biasgyro_b_ = new ::dtproto::geometry_msgs::Vector3d(*from._impl_.biasgyro_b_);
+  }
+  if (from._internal_has_eulerzyxgtb()) {
+    _this->_impl_.eulerzyxgtb_ = new ::dtproto::geometry_msgs::Euler(*from._impl_.eulerzyxgtb_);
+  }
+  _this->_impl_.timeload_us_ = from._impl_.timeload_us_;
+  // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.EstimateStateEKF)
+}
+
+inline void EstimateStateEKF::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.posgtb_g_){nullptr}
+    , decltype(_impl_.velgtb_g_){nullptr}
+    , decltype(_impl_.quatg2b_){nullptr}
+    , decltype(_impl_.posgte1_g_){nullptr}
+    , decltype(_impl_.posgte2_g_){nullptr}
+    , decltype(_impl_.posgte3_g_){nullptr}
+    , decltype(_impl_.posgte4_g_){nullptr}
+    , decltype(_impl_.biasacc_b_){nullptr}
+    , decltype(_impl_.biasgyro_b_){nullptr}
+    , decltype(_impl_.eulerzyxgtb_){nullptr}
+    , decltype(_impl_.timeload_us_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+EstimateStateEKF::~EstimateStateEKF() {
+  // @@protoc_insertion_point(destructor:dtproto.leoquad.EstimateStateEKF)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void EstimateStateEKF::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.posgtb_g_;
+  if (this != internal_default_instance()) delete _impl_.velgtb_g_;
+  if (this != internal_default_instance()) delete _impl_.quatg2b_;
+  if (this != internal_default_instance()) delete _impl_.posgte1_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte2_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte3_g_;
+  if (this != internal_default_instance()) delete _impl_.posgte4_g_;
+  if (this != internal_default_instance()) delete _impl_.biasacc_b_;
+  if (this != internal_default_instance()) delete _impl_.biasgyro_b_;
+  if (this != internal_default_instance()) delete _impl_.eulerzyxgtb_;
+}
+
+void EstimateStateEKF::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void EstimateStateEKF::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.leoquad.EstimateStateEKF)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.posgtb_g_ != nullptr) {
+    delete _impl_.posgtb_g_;
+  }
+  _impl_.posgtb_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.velgtb_g_ != nullptr) {
+    delete _impl_.velgtb_g_;
+  }
+  _impl_.velgtb_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.quatg2b_ != nullptr) {
+    delete _impl_.quatg2b_;
+  }
+  _impl_.quatg2b_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte1_g_ != nullptr) {
+    delete _impl_.posgte1_g_;
+  }
+  _impl_.posgte1_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte2_g_ != nullptr) {
+    delete _impl_.posgte2_g_;
+  }
+  _impl_.posgte2_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte3_g_ != nullptr) {
+    delete _impl_.posgte3_g_;
+  }
+  _impl_.posgte3_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.posgte4_g_ != nullptr) {
+    delete _impl_.posgte4_g_;
+  }
+  _impl_.posgte4_g_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.biasacc_b_ != nullptr) {
+    delete _impl_.biasacc_b_;
+  }
+  _impl_.biasacc_b_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.biasgyro_b_ != nullptr) {
+    delete _impl_.biasgyro_b_;
+  }
+  _impl_.biasgyro_b_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.eulerzyxgtb_ != nullptr) {
+    delete _impl_.eulerzyxgtb_;
+  }
+  _impl_.eulerzyxgtb_ = nullptr;
+  _impl_.timeload_us_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* EstimateStateEKF::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .dtproto.geometry_msgs.Point3d posGtB_G = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgtb_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d velGtB_G = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velgtb_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Quaternion quatG2B = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_quatg2b(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE1_G = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte1_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE2_G = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte2_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE3_G = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte3_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Point3d posGtE4_G = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr = ctx->ParseMessage(_internal_mutable_posgte4_g(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector3d biasAcc_B = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
+          ptr = ctx->ParseMessage(_internal_mutable_biasacc_b(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector3d biasGyro_B = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
+          ptr = ctx->ParseMessage(_internal_mutable_biasgyro_b(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double timeLoad_us = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 89)) {
+          _impl_.timeload_us_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Euler eulerZyxGtB = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 98)) {
+          ptr = ctx->ParseMessage(_internal_mutable_eulerzyxgtb(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* EstimateStateEKF::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.leoquad.EstimateStateEKF)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Point3d posGtB_G = 1;
+  if (this->_internal_has_posgtb_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::posgtb_g(this),
+        _Internal::posgtb_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velGtB_G = 2;
+  if (this->_internal_has_velgtb_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::velgtb_g(this),
+        _Internal::velgtb_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Quaternion quatG2B = 3;
+  if (this->_internal_has_quatg2b()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::quatg2b(this),
+        _Internal::quatg2b(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE1_G = 4;
+  if (this->_internal_has_posgte1_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, _Internal::posgte1_g(this),
+        _Internal::posgte1_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE2_G = 5;
+  if (this->_internal_has_posgte2_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(5, _Internal::posgte2_g(this),
+        _Internal::posgte2_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE3_G = 6;
+  if (this->_internal_has_posgte3_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(6, _Internal::posgte3_g(this),
+        _Internal::posgte3_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE4_G = 7;
+  if (this->_internal_has_posgte4_g()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(7, _Internal::posgte4_g(this),
+        _Internal::posgte4_g(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d biasAcc_B = 9;
+  if (this->_internal_has_biasacc_b()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(9, _Internal::biasacc_b(this),
+        _Internal::biasacc_b(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d biasGyro_B = 10;
+  if (this->_internal_has_biasgyro_b()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(10, _Internal::biasgyro_b(this),
+        _Internal::biasgyro_b(this).GetCachedSize(), target, stream);
+  }
+
+  // double timeLoad_us = 11;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timeload_us = this->_internal_timeload_us();
+  uint64_t raw_timeload_us;
+  memcpy(&raw_timeload_us, &tmp_timeload_us, sizeof(tmp_timeload_us));
+  if (raw_timeload_us != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(11, this->_internal_timeload_us(), target);
+  }
+
+  // .dtproto.geometry_msgs.Euler eulerZyxGtB = 12;
+  if (this->_internal_has_eulerzyxgtb()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(12, _Internal::eulerzyxgtb(this),
+        _Internal::eulerzyxgtb(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.leoquad.EstimateStateEKF)
+  return target;
+}
+
+size_t EstimateStateEKF::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.leoquad.EstimateStateEKF)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Point3d posGtB_G = 1;
+  if (this->_internal_has_posgtb_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgtb_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d velGtB_G = 2;
+  if (this->_internal_has_velgtb_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.velgtb_g_);
+  }
+
+  // .dtproto.geometry_msgs.Quaternion quatG2B = 3;
+  if (this->_internal_has_quatg2b()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.quatg2b_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE1_G = 4;
+  if (this->_internal_has_posgte1_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte1_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE2_G = 5;
+  if (this->_internal_has_posgte2_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte2_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE3_G = 6;
+  if (this->_internal_has_posgte3_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte3_g_);
+  }
+
+  // .dtproto.geometry_msgs.Point3d posGtE4_G = 7;
+  if (this->_internal_has_posgte4_g()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.posgte4_g_);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d biasAcc_B = 9;
+  if (this->_internal_has_biasacc_b()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.biasacc_b_);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d biasGyro_B = 10;
+  if (this->_internal_has_biasgyro_b()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.biasgyro_b_);
+  }
+
+  // .dtproto.geometry_msgs.Euler eulerZyxGtB = 12;
+  if (this->_internal_has_eulerzyxgtb()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.eulerzyxgtb_);
+  }
+
+  // double timeLoad_us = 11;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timeload_us = this->_internal_timeload_us();
+  uint64_t raw_timeload_us;
+  memcpy(&raw_timeload_us, &tmp_timeload_us, sizeof(tmp_timeload_us));
+  if (raw_timeload_us != 0) {
+    total_size += 1 + 8;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData EstimateStateEKF::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    EstimateStateEKF::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*EstimateStateEKF::GetClassData() const { return &_class_data_; }
+
+
+void EstimateStateEKF::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<EstimateStateEKF*>(&to_msg);
+  auto& from = static_cast<const EstimateStateEKF&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.leoquad.EstimateStateEKF)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_posgtb_g()) {
+    _this->_internal_mutable_posgtb_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgtb_g());
+  }
+  if (from._internal_has_velgtb_g()) {
+    _this->_internal_mutable_velgtb_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_velgtb_g());
+  }
+  if (from._internal_has_quatg2b()) {
+    _this->_internal_mutable_quatg2b()->::dtproto::geometry_msgs::Quaternion::MergeFrom(
+        from._internal_quatg2b());
+  }
+  if (from._internal_has_posgte1_g()) {
+    _this->_internal_mutable_posgte1_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte1_g());
+  }
+  if (from._internal_has_posgte2_g()) {
+    _this->_internal_mutable_posgte2_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte2_g());
+  }
+  if (from._internal_has_posgte3_g()) {
+    _this->_internal_mutable_posgte3_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte3_g());
+  }
+  if (from._internal_has_posgte4_g()) {
+    _this->_internal_mutable_posgte4_g()->::dtproto::geometry_msgs::Point3d::MergeFrom(
+        from._internal_posgte4_g());
+  }
+  if (from._internal_has_biasacc_b()) {
+    _this->_internal_mutable_biasacc_b()->::dtproto::geometry_msgs::Vector3d::MergeFrom(
+        from._internal_biasacc_b());
+  }
+  if (from._internal_has_biasgyro_b()) {
+    _this->_internal_mutable_biasgyro_b()->::dtproto::geometry_msgs::Vector3d::MergeFrom(
+        from._internal_biasgyro_b());
+  }
+  if (from._internal_has_eulerzyxgtb()) {
+    _this->_internal_mutable_eulerzyxgtb()->::dtproto::geometry_msgs::Euler::MergeFrom(
+        from._internal_eulerzyxgtb());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timeload_us = from._internal_timeload_us();
+  uint64_t raw_timeload_us;
+  memcpy(&raw_timeload_us, &tmp_timeload_us, sizeof(tmp_timeload_us));
+  if (raw_timeload_us != 0) {
+    _this->_internal_set_timeload_us(from._internal_timeload_us());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void EstimateStateEKF::CopyFrom(const EstimateStateEKF& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.leoquad.EstimateStateEKF)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool EstimateStateEKF::IsInitialized() const {
+  return true;
+}
+
+void EstimateStateEKF::InternalSwap(EstimateStateEKF* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(EstimateStateEKF, _impl_.timeload_us_)
+      + sizeof(EstimateStateEKF::_impl_.timeload_us_)
+      - PROTOBUF_FIELD_OFFSET(EstimateStateEKF, _impl_.posgtb_g_)>(
+          reinterpret_cast<char*>(&_impl_.posgtb_g_),
+          reinterpret_cast<char*>(&other->_impl_.posgtb_g_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata EstimateStateEKF::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
+      file_level_metadata_LeoQuad_2eproto[11]);
+}
+
+// ===================================================================
+
+class ImuData::_Internal {
+ public:
+  static const ::dtproto::geometry_msgs::Euler& eulerzyxgtb(const ImuData* msg);
+  static const ::dtproto::geometry_msgs::Vector3d& acc(const ImuData* msg);
+  static const ::dtproto::geometry_msgs::Vector3d& gyro(const ImuData* msg);
+};
+
+const ::dtproto::geometry_msgs::Euler&
+ImuData::_Internal::eulerzyxgtb(const ImuData* msg) {
+  return *msg->_impl_.eulerzyxgtb_;
+}
+const ::dtproto::geometry_msgs::Vector3d&
+ImuData::_Internal::acc(const ImuData* msg) {
+  return *msg->_impl_.acc_;
+}
+const ::dtproto::geometry_msgs::Vector3d&
+ImuData::_Internal::gyro(const ImuData* msg) {
+  return *msg->_impl_.gyro_;
+}
+void ImuData::clear_eulerzyxgtb() {
+  if (GetArenaForAllocation() == nullptr && _impl_.eulerzyxgtb_ != nullptr) {
+    delete _impl_.eulerzyxgtb_;
+  }
+  _impl_.eulerzyxgtb_ = nullptr;
+}
+void ImuData::clear_acc() {
+  if (GetArenaForAllocation() == nullptr && _impl_.acc_ != nullptr) {
+    delete _impl_.acc_;
+  }
+  _impl_.acc_ = nullptr;
+}
+void ImuData::clear_gyro() {
+  if (GetArenaForAllocation() == nullptr && _impl_.gyro_ != nullptr) {
+    delete _impl_.gyro_;
+  }
+  _impl_.gyro_ = nullptr;
+}
+ImuData::ImuData(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:dtproto.leoquad.ImuData)
+}
+ImuData::ImuData(const ImuData& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ImuData* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.eulerzyxgtb_){nullptr}
+    , decltype(_impl_.acc_){nullptr}
+    , decltype(_impl_.gyro_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_eulerzyxgtb()) {
+    _this->_impl_.eulerzyxgtb_ = new ::dtproto::geometry_msgs::Euler(*from._impl_.eulerzyxgtb_);
+  }
+  if (from._internal_has_acc()) {
+    _this->_impl_.acc_ = new ::dtproto::geometry_msgs::Vector3d(*from._impl_.acc_);
+  }
+  if (from._internal_has_gyro()) {
+    _this->_impl_.gyro_ = new ::dtproto::geometry_msgs::Vector3d(*from._impl_.gyro_);
+  }
+  // @@protoc_insertion_point(copy_constructor:dtproto.leoquad.ImuData)
+}
+
+inline void ImuData::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.eulerzyxgtb_){nullptr}
+    , decltype(_impl_.acc_){nullptr}
+    , decltype(_impl_.gyro_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+ImuData::~ImuData() {
+  // @@protoc_insertion_point(destructor:dtproto.leoquad.ImuData)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ImuData::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.eulerzyxgtb_;
+  if (this != internal_default_instance()) delete _impl_.acc_;
+  if (this != internal_default_instance()) delete _impl_.gyro_;
+}
+
+void ImuData::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void ImuData::Clear() {
+// @@protoc_insertion_point(message_clear_start:dtproto.leoquad.ImuData)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.eulerzyxgtb_ != nullptr) {
+    delete _impl_.eulerzyxgtb_;
+  }
+  _impl_.eulerzyxgtb_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.acc_ != nullptr) {
+    delete _impl_.acc_;
+  }
+  _impl_.acc_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.gyro_ != nullptr) {
+    delete _impl_.gyro_;
+  }
+  _impl_.gyro_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ImuData::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .dtproto.geometry_msgs.Euler eulerZyxGtB = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_eulerzyxgtb(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector3d Acc = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_acc(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .dtproto.geometry_msgs.Vector3d Gyro = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_gyro(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ImuData::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dtproto.leoquad.ImuData)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Euler eulerZyxGtB = 1;
+  if (this->_internal_has_eulerzyxgtb()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::eulerzyxgtb(this),
+        _Internal::eulerzyxgtb(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d Acc = 2;
+  if (this->_internal_has_acc()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::acc(this),
+        _Internal::acc(this).GetCachedSize(), target, stream);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d Gyro = 3;
+  if (this->_internal_has_gyro()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::gyro(this),
+        _Internal::gyro(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dtproto.leoquad.ImuData)
+  return target;
+}
+
+size_t ImuData::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dtproto.leoquad.ImuData)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .dtproto.geometry_msgs.Euler eulerZyxGtB = 1;
+  if (this->_internal_has_eulerzyxgtb()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.eulerzyxgtb_);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d Acc = 2;
+  if (this->_internal_has_acc()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.acc_);
+  }
+
+  // .dtproto.geometry_msgs.Vector3d Gyro = 3;
+  if (this->_internal_has_gyro()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.gyro_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ImuData::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    ImuData::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ImuData::GetClassData() const { return &_class_data_; }
+
+
+void ImuData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ImuData*>(&to_msg);
+  auto& from = static_cast<const ImuData&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:dtproto.leoquad.ImuData)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_eulerzyxgtb()) {
+    _this->_internal_mutable_eulerzyxgtb()->::dtproto::geometry_msgs::Euler::MergeFrom(
+        from._internal_eulerzyxgtb());
+  }
+  if (from._internal_has_acc()) {
+    _this->_internal_mutable_acc()->::dtproto::geometry_msgs::Vector3d::MergeFrom(
+        from._internal_acc());
+  }
+  if (from._internal_has_gyro()) {
+    _this->_internal_mutable_gyro()->::dtproto::geometry_msgs::Vector3d::MergeFrom(
+        from._internal_gyro());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ImuData::CopyFrom(const ImuData& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dtproto.leoquad.ImuData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ImuData::IsInitialized() const {
+  return true;
+}
+
+void ImuData::InternalSwap(ImuData* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ImuData, _impl_.gyro_)
+      + sizeof(ImuData::_impl_.gyro_)
+      - PROTOBUF_FIELD_OFFSET(ImuData, _impl_.eulerzyxgtb_)>(
+          reinterpret_cast<char*>(&_impl_.eulerzyxgtb_),
+          reinterpret_cast<char*>(&other->_impl_.eulerzyxgtb_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ImuData::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_LeoQuad_2eproto_getter, &descriptor_table_LeoQuad_2eproto_once,
+      file_level_metadata_LeoQuad_2eproto[12]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace leoquad
 }  // namespace dtproto
@@ -5067,6 +7410,26 @@ Arena::CreateMaybeMessage< ::dtproto::leoquad::LeoQuadState >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::dtproto::leoquad::LeoQuadStateTimeStamped*
 Arena::CreateMaybeMessage< ::dtproto::leoquad::LeoQuadStateTimeStamped >(Arena* arena) {
   return Arena::CreateMessageInternal< ::dtproto::leoquad::LeoQuadStateTimeStamped >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dtproto::leoquad::OperationState*
+Arena::CreateMaybeMessage< ::dtproto::leoquad::OperationState >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::leoquad::OperationState >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dtproto::leoquad::OperationStateTimeStamped*
+Arena::CreateMaybeMessage< ::dtproto::leoquad::OperationStateTimeStamped >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::leoquad::OperationStateTimeStamped >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dtproto::leoquad::EstimateStateKF*
+Arena::CreateMaybeMessage< ::dtproto::leoquad::EstimateStateKF >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::leoquad::EstimateStateKF >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dtproto::leoquad::EstimateStateEKF*
+Arena::CreateMaybeMessage< ::dtproto::leoquad::EstimateStateEKF >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::leoquad::EstimateStateEKF >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dtproto::leoquad::ImuData*
+Arena::CreateMaybeMessage< ::dtproto::leoquad::ImuData >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::dtproto::leoquad::ImuData >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
