@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 cmake_policy(SET CMP0048 NEW)
+cmake_policy(SET CMP0071 NEW)
 
 project(artplot VERSION 1.4.5 LANGUAGES CXX)
 
@@ -15,17 +16,14 @@ if ("$ENV{ARTF_INSTALL_DIR}" STREQUAL "")
 else()
     message(STATUS "ARTF_INSTALL_DIR: $ENV{ARTF_INSTALL_DIR}")
 endif()
-set(CMAKE_PREFIX_PATH "$ENV{ARTF_INSTALL_DIR}")
+set(CMAKE_PREFIX_PATH "$ENV{ARTF_INSTALL_DIR}" "$ENV{Qt6_DIR}")
 set(CMAKE_INSTALL_PREFIX "$ENV{ARTF_INSTALL_DIR}")
 
+# find packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
-
-# 3rd-party libs
 find_package(absl REQUIRED CONFIG)
-# find_package (glog 0.6.0 REQUIRED)
-set(Protobuf_MODULE_COMPATIBLE TRUE)
-find_package(Protobuf CONFIG REQUIRED)
+find_package(protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
 
 # Set build options
@@ -66,6 +64,21 @@ endif()
 # message(STATUS "Compiler preprocessor definitions: " ${PROJECT_COMPILE_DEFINITIONS})
 # add_compile_definitions(${PROJECT_COMPILE_DEFINITIONS})
 
+# Compile proto files
+file(GLOB_RECURSE PB_SRCS "src/proto/*.proto")
+add_library(proto-objects OBJECT ${PB_SRCS})
+target_link_libraries(proto-objects PUBLIC protobuf::libprotobuf)
+
+set(PROTO_BINARY_DIR "${CMAKE_CURRENT_LIST_DIR}/src/proto")
+set(PROTO_IMPORT_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/proto")
+
+target_include_directories(proto-objects PUBLIC "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>")
+
+protobuf_generate(
+    TARGET proto-objects
+    IMPORT_DIRS ${PROTO_IMPORT_DIRS}
+    PROTOC_OUT_DIR "${PROTO_BINARY_DIR}")
+
 # Generate config.h
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/src/config.h" @ONLY)
 
@@ -78,12 +91,6 @@ file(GLOB PROJECT_SOURCES
     "src/*.qrc"
     "src/*.cc"
 )
-#set(PROJECT_SOURCES
-#    main.cpp
-#    mainwindow.h
-#    mainwindow.cpp
-#    mainwindow.ui
-#)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     message("Set Qt6!")
@@ -110,13 +117,16 @@ else()
     endif()
 endif()
 
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/build/src/proto)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/include)
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/lib)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::PrintSupport)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
+
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE proto-objects)
+# target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dtproto_grpc)

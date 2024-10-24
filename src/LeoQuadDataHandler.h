@@ -14,7 +14,7 @@
 #include <dtProto/Service.grpc.pb.h>
 #endif
 
-#include "LeoQuad.pb.h"
+#include "proto/LeoQuad.pb.h"
 
 class LeoQuadDataHandler : public DataHandler
 {
