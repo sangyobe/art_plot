@@ -135,7 +135,8 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
 #endif
 #ifdef ENABLE_DEBUG_DATA_PLOT
       ,
-      _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+      _plot_debugData(std::make_unique<PlotWindow>(plotToolbox)),
+      _plot_debugDataXY(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_IMU_PLOT
       ,
@@ -492,6 +493,16 @@ void LeoQuadDataHandler::BuildPlots()
     }
     _plot_debugData->show();
     RegisterPlot(_plot_debugData.get());
+
+    _debug_data_xy_array_size_max = GetDebugDataXYNum();
+    //_plot_debugDataXY = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_debugDataXY->SetWindowTitle("Debug XY Data Array");
+    for (int gi = 0; gi < _debug_data_xy_array_size_max; gi++)
+    {
+        _plot_debugDataXY->AddGraph(QString("Data_%1").arg(gi, 2, 10, QLatin1Char('0')), LineColor(gi), QString(""), 0, LineScatterShape::ssStar, 0);
+    }
+    _plot_debugDataXY->show();
+    RegisterPlot(_plot_debugDataXY.get());
 #endif
 
 #ifdef ENABLE_IMU_PLOT
@@ -534,7 +545,8 @@ void LeoQuadDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::leoquad::LeoQuadStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg) {
+    std::function<void(dtproto::leoquad::LeoQuadStateTimeStamped &)> handler = [this](dtproto::leoquad::LeoQuadStateTimeStamped &msg)
+    {
         this->OnRecvLeoQuadStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
@@ -599,6 +611,7 @@ void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto:
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
     OnRecvThreadState(curTime, state.threadstate());
     OnRecvArbitraryState(curTime, state.arbitrarystate());
+    OnRecvArbitraryStateXY(curTime, state.arbitrarystatexy());
     OnRecvImu(curTime, state.imu());
 }
 
@@ -898,6 +911,30 @@ void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtprot
         // LOG(trace) << "  data[" << gi << "] = " << state.data(gi);
         _plot_debugData->AddData(gi, curTime, state.data().Get(gi));
         _plot_debugData->DataUpdated(curTime);
+    }
+}
+
+void LeoQuadDataHandler::OnRecvArbitraryStateXY(const double curTime, const dtproto::std_msgs::PackedDouble &state)
+{
+    if (!_plot_debugDataXY || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
+    {
+        return;
+    }
+
+    if (_debug_data_xy_array_size < 0)
+    {
+        _debug_data_xy_array_size = state.data_size() / 2;
+        if (_debug_data_xy_array_size > _debug_data_xy_array_size_max)
+            _debug_data_xy_array_size = _debug_data_xy_array_size_max;
+    }
+
+    for (int gi = 0; gi < _debug_data_xy_array_size; gi++)
+    {
+        if (gi >= _debug_data_xy_array_size_max || gi >= _plot_debugDataXY->GetGraphCount())
+            return;
+
+        // LOG(trace) << "  data[" << gi << "] = " << state.data(2*gi) << ", " << << state.data(2*gi+1);
+        _plot_debugDataXY->AddData(gi, state.data().Get(2 * gi), state.data().Get(2 * gi + 1));
     }
 }
 

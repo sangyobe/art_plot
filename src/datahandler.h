@@ -20,6 +20,7 @@ protected:
     void GetServerAddress(std::string& ip, uint16_t& port);
     bool ClearPlotData();
     int GetDebugDataNum();
+    int GetDebugDataXYNum();
 
 protected:
     MainWindow* _plotToolbox{nullptr};

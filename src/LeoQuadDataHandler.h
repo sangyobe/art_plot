@@ -43,6 +43,7 @@ private:
                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData);
     void OnRecvThreadState(const double curTime, const dtproto::leoquad::ThreadState &state);
     void OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state);
+    void OnRecvArbitraryStateXY(const double curTime, const dtproto::std_msgs::PackedDouble &state);
     void OnRecvImu(const double curTime, const dtproto::sensor_msgs::Imu &imu);
 
 private:
@@ -70,8 +71,13 @@ private:
 
     // for plotting user-defined arbitrary data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};
+    std::unique_ptr<PlotWindow> _plot_debugDataXY{nullptr};
+
     int _debug_data_array_size{-1};
     int _debug_data_array_size_max{0};
+
+    int _debug_data_xy_array_size{-1};
+    int _debug_data_xy_array_size_max{0};
 
 #ifdef USE_TRANSPORT_ECAL
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::leoquad::LeoQuadStateTimeStamped>> _sub_state;

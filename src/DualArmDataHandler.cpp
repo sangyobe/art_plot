@@ -285,13 +285,15 @@ void DualArmDataHandler::BuildPlots()
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
     _sub_state = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::dualarm::DualArmStateTimeStamped>>("RobotState", svr_address);
-    std::function<void(dtproto::dualarm::DualArmStateTimeStamped &)> handler = [this](dtproto::dualarm::DualArmStateTimeStamped &msg) {
+    std::function<void(dtproto::dualarm::DualArmStateTimeStamped &)> handler = [this](dtproto::dualarm::DualArmStateTimeStamped &msg)
+    {
         this->OnRecvDualArmStateTimeStamped("", msg, 0, this->_data_seq++);
     };
     _sub_state->RegMessageHandler(handler);
 
     _sub_reconnector_running = true;
-    _sub_reconnector = std::thread([this] {
+    _sub_reconnector = std::thread([this]
+                                   {
         while (this->_sub_reconnector_running)
         {
             if (!this->_sub_state->IsRunning())

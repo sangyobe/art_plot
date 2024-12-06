@@ -111,6 +111,7 @@ message LeoQuadState {
   CpgState cpgState = 10;
   ThreadState threadState = 11;
   std_msgs.PackedDouble arbitraryState = 20;
+  std_msgs.PackedDouble arbitraryStateXY = 21;
 }
 
 message LeoQuadStateTimeStamped {

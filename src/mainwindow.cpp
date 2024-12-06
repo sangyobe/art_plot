@@ -52,6 +52,7 @@ MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnu
 
     // store params
     _debug_data_num = (dnum > 0 && dnum < DBGDATA_NUM_MAX ? dnum : DBGDATA_NUM_DFT);
+    _debug_data_xy_num = 16; //
 }
 
 MainWindow::~MainWindow()
@@ -68,6 +69,11 @@ void MainWindow::GetServerAddress(std::string &ip, uint16_t &port)
 int MainWindow::GetDebugDataNum()
 {
     return _debug_data_num;
+}
+
+int MainWindow::GetDebugDataXYNum()
+{
+    return _debug_data_xy_num;
 }
 
 bool MainWindow::IsAutoClear()
