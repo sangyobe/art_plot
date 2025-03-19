@@ -10,6 +10,7 @@
 #include "ArbitraryStateDataHandler.h"
 #include "DualArmDataHandler.h"
 #include "LeoQuadDataHandler.h"
+#include "LeoQuadWheelDataHandler.h"
 #include "MotorAgingDataHandler.h"
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
@@ -55,6 +56,9 @@ int main(int argc, char *argv[])
 #endif
 #ifdef ROBOT_LEOQUAD
     std::unique_ptr<LeoQuadDataHandler> dataHandler = std::make_unique<LeoQuadDataHandler>(&plotToolbox);
+#endif
+#ifdef ROBOT_LEOQUADWHEEL
+    std::unique_ptr<LeoQuadWheelDataHandler> dataHandler = std::make_unique<LeoQuadWheelDataHandler>(&plotToolbox);
 #endif
 #ifdef ROBOT_DUALARM
     std::unique_ptr<DualArmDataHandler> dataHandler = std::make_unique<DualArmDataHandler>(&plotToolbox);

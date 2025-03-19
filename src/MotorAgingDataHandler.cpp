@@ -318,7 +318,7 @@ void MotorAgingDataHandler::OnRecvThreadState(const double curTime, const dtprot
 
 void MotorAgingDataHandler::OnLoadTriggered(QString filename)
 {
-#ifndef ROBOT_LEOQUAD
+#ifndef ROBOT_MOTORAGING
     qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
     return;
 #endif
