@@ -11,22 +11,33 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if ("$ENV{ARTF_INSTALL_DIR}" STREQUAL "")
+
+file(TO_CMAKE_PATH "$ENV{ARTF_INSTALL_DIR}" ARTF_INSTALL_DIR)
+
+if("$ENV{ARTF_INSTALL_DIR}" STREQUAL "")
+    set(ARTF_INSTALL_DIR "$ENV{HOME}/.local/ART_Framework")
+else()
+    file(TO_CMAKE_PATH "$ENV{ARTF_INSTALL_DIR}" ARTF_INSTALL_DIR)
+endif()
+
+if("${ARTF_INSTALL_DIR}" STREQUAL "")
     message(FATAL_ERROR "ARTF_INSTALL_DIR is not set.")
 else()
-    message(STATUS "ARTF_INSTALL_DIR: $ENV{ARTF_INSTALL_DIR}")
+    message(STATUS "ARTF_INSTALL_DIR: ${ARTF_INSTALL_DIR}")
 endif()
-set(CMAKE_PREFIX_PATH "$ENV{ARTF_INSTALL_DIR}" "$ENV{Qt6_DIR}")
-set(CMAKE_INSTALL_PREFIX "$ENV{ARTF_INSTALL_DIR}")
 
-# find packages
+set(CMAKE_INSTALL_PREFIX "${ARTF_INSTALL_DIR}")
+list(APPEND CMAKE_PREFIX_PATH "${ARTF_INSTALL_DIR}")
+# list(APPEND CMAKE_PREFIX_PATH "/opt/Qt/6.5.1/gcc_64/") # set Qt install prefix path
+
+# Find packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
-find_package(absl REQUIRED CONFIG)
-find_package(protobuf CONFIG REQUIRED)
-find_package(gRPC CONFIG REQUIRED)
+find_package(artf CONFIG REQUIRED)
 
+# --------------------------------------------------------
 # Set build options
+# --------------------------------------------------------
 set(ROBOT_TYPE "LQ" CACHE STRING "select robot. (QI: QuadIP, LQ: LeoQuad, LQW: LeoQuad-Wheel, WL: Woly, DA: Dual Arm, MA: Motor Aging)")
 set(TRANSPORT_TYPE "GRPC" CACHE STRING "select transport library. (GRPC: gRPC, ECAL: eCAL)")
 
@@ -95,6 +106,10 @@ protobuf_generate(
 # Generate config.h
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/src/config.h" @ONLY)
 
+# --------------------------------------------------------
+# Build
+# --------------------------------------------------------
+
 # Prepare source files
 file(GLOB PROJECT_SOURCES
     "src/*.cpp"
@@ -132,19 +147,11 @@ endif()
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/build/src/proto)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/include)
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE $ENV{ARTF_INSTALL_DIR}/lib)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::PrintSupport)
-
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE proto-objects)
-# target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE protobuf::libprotobuf)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gRPC::grpc++_reflection)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dtproto_grpc)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE spdlog)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE yaml-cpp)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE artf::dtproto_grpc)
 
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -154,6 +161,9 @@ set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+# --------------------------------------------------------
+# Install
+# --------------------------------------------------------
 install(TARGETS ${CMAKE_PROJECT_NAME}
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

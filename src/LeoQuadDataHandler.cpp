@@ -44,10 +44,13 @@
 
 #define ENABLE_IMU_PLOT
 
-constexpr static int jdof = 12;
-constexpr static int legdof = 3;
-constexpr static int legnum = 4;
-static std::string legname[4] = {"FL", "BL", "FR", "BR"};
+constexpr static int cjdof = 12;
+constexpr static int clegdof = 3;
+constexpr static int clegnum = 4;
+static int jdof = 0;
+static int legdof = 0;
+static int legnum = 0;
+static std::string clegname[4] = {"FL", "BL", "FR", "BR"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
@@ -338,10 +341,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_POSISION_PLOT
     //_plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointPos->SetWindowTitle("Joint position");
-    for (int ji = 0; ji < jdof; ji++)
+    for (int ji = 0; ji < cjdof; ji++)
     {
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
     }
     _plot_jointPos->show();
     RegisterPlot(_plot_jointPos.get());
@@ -350,10 +353,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
     // _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointVel->SetWindowTitle("Joint velocity");
-    for (int ji = 0; ji < jdof; ji++)
+    for (int ji = 0; ji < cjdof; ji++)
     {
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -362,10 +365,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
     // _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
-    for (int ji = 0; ji < jdof; ji++)
+    for (int ji = 0; ji < cjdof; ji++)
     {
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -375,10 +378,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_TORQUE_PLOT
     // _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointTau->SetWindowTitle("Joint torque");
-    for (int ji = 0; ji < jdof; ji++)
+    for (int ji = 0; ji < cjdof; ji++)
     {
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
@@ -387,7 +390,7 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
     // _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_absEnc->SetWindowTitle("Joint absolute encoder");
-    for (int ji = 0; ji < jdof; ji++)
+    for (int ji = 0; ji < cjdof; ji++)
     {
         _plot_absEnc->AddGraph(QString("Joint_%1.absolute_encoder").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
@@ -398,7 +401,7 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
     // _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_incEnc->SetWindowTitle("Joint incremental encoder");
-    for (int ji = 0; ji < jdof; ji++)
+    for (int ji = 0; ji < cjdof; ji++)
     {
         _plot_incEnc->AddGraph(QString("Joint_%1.incremental_encoder").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
@@ -606,6 +609,10 @@ void LeoQuadDataHandler::OnRecvLeoQuadStateTimeStamped(const char *topic_name,
 
 void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto::leoquad::LeoQuadState &state)
 {
+    jdof = state.desjointdata_size();                              // jnum
+    legnum = state.descontrolstate().posworld2footwrtworld_size(); // legnum
+    legdof = jdof / legnum;
+
     OnRecvCpgState(curTime, state.cpgstate());
     OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
