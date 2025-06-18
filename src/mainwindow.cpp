@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "preferencesdlg.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QVector>
@@ -20,12 +21,17 @@ MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnu
 
     ui->plotlistview->setModel(_plotListModel);
 
+    ui->actionAutoClear->setChecked(_autoClear);
+    ui->actionFetchInvisibleData->setChecked(_fetchInvisibleData);
+
     // connect menu action
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::OnNewTriggered);
     connect(ui->actionClear, &QAction::triggered, this, &MainWindow::OnClearTriggered);
-    connect(ui->actionAutoClear, &QAction::triggered, this, &MainWindow::OnAutoClearTriggered);
     connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::OnLoadTriggered);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::OnExitTriggered);
+    connect(ui->actionPreferences, &QAction::triggered, this, &MainWindow::OnPreferencesTriggered);
+    connect(ui->actionAutoClear, &QAction::triggered, this, &MainWindow::OnAutoClearTriggered);
+    connect(ui->actionFetchInvisibleData, &QAction::triggered, this, &MainWindow::OnFetchInvisibleDataTriggered);
 
     bool connect_success;
     connect_success = connect(_plotListModel, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(OnConfigChanged(QStandardItem *)));
@@ -81,12 +87,20 @@ bool MainWindow::IsAutoClear()
     return _autoClear;
 }
 
+bool MainWindow::IsFetchInvisibleData()
+{
+    return _fetchInvisibleData;
+}
+
 QByteArray MainWindow::SaveOption() const
 {
     QString configstr;
     QTextStream str(&configstr);
     str << "File::AutoClear"
-        << "," << _autoClear;
+        << "," << _autoClear
+        << ","
+        << "File::FetchInvisibleData"
+        << "," << _fetchInvisibleData;
     return configstr.toUtf8();
 }
 
@@ -101,6 +115,11 @@ bool MainWindow::RestoreOption(const QByteArray &config)
         {
             _autoClear = items[idx + 1].toInt() == 0 ? false : true;
             ui->actionAutoClear->setChecked(_autoClear);
+        }
+        else if ("File::FetchInvisibleData" == items[idx])
+        {
+            _fetchInvisibleData = items[idx + 1].toInt() == 0 ? false : true;
+            ui->actionFetchInvisibleData->setChecked(_fetchInvisibleData);
         }
 
         idx += 2;
@@ -309,6 +328,18 @@ void MainWindow::OnClearTriggered()
 void MainWindow::OnAutoClearTriggered()
 {
     _autoClear = ui->actionAutoClear->isChecked();
+}
+
+void MainWindow::OnFetchInvisibleDataTriggered()
+{
+    _fetchInvisibleData = ui->actionFetchInvisibleData->isChecked();
+}
+
+void MainWindow::OnPreferencesTriggered()
+{
+    PreferencesDlg *dlg = new PreferencesDlg(this);
+    dlg->setModal(true);
+    dlg->show();
 }
 
 void MainWindow::OnLoadTriggered()

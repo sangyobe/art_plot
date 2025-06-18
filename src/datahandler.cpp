@@ -43,6 +43,13 @@ int DataHandler::GetDebugDataXYNum()
     return _plotToolbox->GetDebugDataXYNum();
 }
 
+bool DataHandler::IsFetchInvisibleData()
+{
+    if (!_plotToolbox) return false;
+
+    return _plotToolbox->IsFetchInvisibleData();
+}
+
 void DataHandler::OnLoadTriggered(QString filename)
 {
 }

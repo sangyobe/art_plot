@@ -1,6 +1,12 @@
 TODO
 - Selecting DataHandler by parsing program argument.
 
+2025.06.18 [v1.4.6]
+- Fetch Data For Invisible Plot 옵션 추가: 플롯창이 숨겨진 상태에서도 데이터를 받아 저장할지 여부
+- Dual-Arm(DA) 지원 추가
+- Motor-Aging(MA) 지원 추가
+- LeoQuad-Wheel(LQW) 지원 추가
+
 2024.10.04 [v1.4.5]
 - Plot refresh rate 옵션 추가
 - Data auto clear 옵션 추가

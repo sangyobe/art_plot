@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 cmake_policy(SET CMP0048 NEW)
 cmake_policy(SET CMP0071 NEW)
 
-project(artplot VERSION 1.4.5 LANGUAGES CXX)
+project(artplot VERSION 1.4.6 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -27,7 +27,7 @@ endif()
 set(CMAKE_INSTALL_PREFIX "${ARTF_INSTALL_DIR}")
 list(APPEND CMAKE_PREFIX_PATH "${ARTF_INSTALL_DIR}")
 
-# list(APPEND CMAKE_PREFIX_PATH "/opt/Qt/6.5.1/gcc_64/") # set Qt install prefix path
+# list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/Qt/6.5.1/gcc_64/") # set Qt install prefix path
 
 # Find packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)

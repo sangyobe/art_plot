@@ -21,6 +21,7 @@ protected:
     bool ClearPlotData();
     int GetDebugDataNum();
     int GetDebugDataXYNum();
+    bool IsFetchInvisibleData();
 
 protected:
     MainWindow* _plotToolbox{nullptr};

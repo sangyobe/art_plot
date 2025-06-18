@@ -25,6 +25,7 @@ public:
     int GetDebugDataNum();
     int GetDebugDataXYNum(); // number of data (x,y)
     bool IsAutoClear();
+    bool IsFetchInvisibleData();
 
 private:
     QByteArray SaveOption() const;
@@ -37,7 +38,6 @@ public slots:
     void OnPlotWndHidden(QWidget *widget);
     void OnPlotWndClosed(QWidget *widget);
     void OnConfigChanged(QStandardItem *item);
-    void OnAutoClearTriggered();
     void OnItemClicked(QModelIndex index);
 
 private slots:
@@ -45,6 +45,9 @@ private slots:
     void OnClearTriggered();
     void OnLoadTriggered();
     void OnExitTriggered();
+    void OnPreferencesTriggered();
+    void OnAutoClearTriggered();
+    void OnFetchInvisibleDataTriggered();
 
 signals:
     void clearActionTriggered();
@@ -63,6 +66,7 @@ private:
     int _debug_data_num;
     int _debug_data_xy_num;
     bool _autoClear{false};
+    bool _fetchInvisibleData{true};
 };
 
 #endif // MAINWINDOW_H

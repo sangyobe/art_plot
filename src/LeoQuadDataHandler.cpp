@@ -44,13 +44,10 @@
 
 #define ENABLE_IMU_PLOT
 
-constexpr static int cjdof = 12;
-constexpr static int clegdof = 3;
-constexpr static int clegnum = 4;
-static int jdof = 0;
-static int legdof = 0;
-static int legnum = 0;
-static std::string clegname[4] = {"FL", "BL", "FR", "BR"};
+constexpr static int jdof = 12;
+constexpr static int legdof = 3;
+constexpr static int legnum = 4;
+static std::string legname[4] = {"FL", "BL", "FR", "BR"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
@@ -341,10 +338,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_POSISION_PLOT
     //_plot_jointPos = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointPos->SetWindowTitle("Joint position");
-    for (int ji = 0; ji < cjdof; ji++)
+    for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
-        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointPos->AddGraph(QString("Joint_%1.pos.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointPos->show();
     RegisterPlot(_plot_jointPos.get());
@@ -353,10 +350,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
     // _plot_jointVel = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointVel->SetWindowTitle("Joint velocity");
-    for (int ji = 0; ji < cjdof; ji++)
+    for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
-        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointVel->AddGraph(QString("Joint_%1.vel.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -365,10 +362,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
     // _plot_jointAcc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
-    for (int ji = 0; ji < cjdof; ji++)
+    for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -378,10 +375,10 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_TORQUE_PLOT
     // _plot_jointTau = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_jointTau->SetWindowTitle("Joint torque");
-    for (int ji = 0; ji < cjdof; ji++)
+    for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), clegname[ji / clegdof].c_str());
-        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + cjdof), clegname[ji / clegdof].c_str());
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), legname[ji / legdof].c_str());
+        _plot_jointTau->AddGraph(QString("Joint_%1.tau.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), legname[ji / legdof].c_str());
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
@@ -390,7 +387,7 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
     // _plot_absEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_absEnc->SetWindowTitle("Joint absolute encoder");
-    for (int ji = 0; ji < cjdof; ji++)
+    for (int ji = 0; ji < jdof; ji++)
     {
         _plot_absEnc->AddGraph(QString("Joint_%1.absolute_encoder").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
@@ -401,7 +398,7 @@ void LeoQuadDataHandler::BuildPlots()
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
     // _plot_incEnc = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_incEnc->SetWindowTitle("Joint incremental encoder");
-    for (int ji = 0; ji < cjdof; ji++)
+    for (int ji = 0; ji < jdof; ji++)
     {
         _plot_incEnc->AddGraph(QString("Joint_%1.incremental_encoder").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji));
     }
@@ -609,10 +606,6 @@ void LeoQuadDataHandler::OnRecvLeoQuadStateTimeStamped(const char *topic_name,
 
 void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto::leoquad::LeoQuadState &state)
 {
-    jdof = state.desjointdata_size();                              // jnum
-    legnum = state.descontrolstate().posworld2footwrtworld_size(); // legnum
-    legdof = jdof / legnum;
-
     OnRecvCpgState(curTime, state.cpgstate());
     OnRecvControlState(curTime, state.actcontrolstate(), state.descontrolstate());
     OnRecvJointState(curTime, state.jointstate(), state.actjointdata(), state.desjointdata());
@@ -624,7 +617,7 @@ void LeoQuadDataHandler::OnRecvLeoQuadState(const double curTime, const dtproto:
 
 void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leoquad::CpgState &state)
 {
-    if (_plot_cpgPhi && _plot_cpgPhi->isVisible())
+    if (_plot_cpgPhi && (_plot_cpgPhi->isVisible() || IsFetchInvisibleData()))
     {
         _plot_cpgPhi->AddData(0, curTime, state.phi().a1());
         _plot_cpgPhi->AddData(1, curTime, state.phi().a2());
@@ -632,7 +625,7 @@ void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leo
         _plot_cpgPhi->AddData(3, curTime, state.phi().a4());
         _plot_cpgPhi->DataUpdated(curTime);
     }
-    if (_plot_cpgCpg && _plot_cpgCpg->isVisible())
+    if (_plot_cpgCpg && (_plot_cpgCpg->isVisible() || IsFetchInvisibleData()))
     {
         _plot_cpgCpg->AddData(0, curTime, state.cpg().a1());
         _plot_cpgCpg->AddData(1, curTime, state.cpg().a2());
@@ -644,7 +637,7 @@ void LeoQuadDataHandler::OnRecvCpgState(const double curTime, const dtproto::leo
 
 void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto::leoquad::ControlState &actState, const dtproto::leoquad::ControlState &desState)
 {
-    if (_plot_footForce && _plot_footForce->isVisible())
+    if (_plot_footForce && (_plot_footForce->isVisible() || IsFetchInvisibleData()))
     {
         for (int li = 0; li < legnum; li++)
         {
@@ -657,7 +650,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         }
         _plot_footForce->DataUpdated(curTime);
     }
-    if (_plot_footPos && _plot_footPos->isVisible())
+    if (_plot_footPos && (_plot_footPos->isVisible() || IsFetchInvisibleData()))
     {
         for (int li = 0; li < legnum; li++)
         {
@@ -677,7 +670,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         }
         _plot_footPos->DataUpdated(curTime);
     }
-    if (_plot_footVel && _plot_footVel->isVisible())
+    if (_plot_footVel && (_plot_footVel->isVisible() || IsFetchInvisibleData()))
     {
         for (int li = 0; li < legnum; li++)
         {
@@ -697,7 +690,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         }
         _plot_footVel->DataUpdated(curTime);
     }
-    if (_plot_comPos && _plot_comPos->isVisible())
+    if (_plot_comPos && (_plot_comPos->isVisible() || IsFetchInvisibleData()))
     {
         _plot_comPos->AddData(0, curTime,
                               desState.posworld2comwrtworld().x());
@@ -713,12 +706,12 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
                               actState.posworld2comwrtworld().z());
         _plot_comPos->DataUpdated(curTime);
     }
-    if (_plot_comPosXY && _plot_comPosXY->isVisible())
+    if (_plot_comPosXY && (_plot_comPosXY->isVisible() || IsFetchInvisibleData()))
     {
         _plot_comPosXY->AddData(0, desState.posworld2comwrtworld().x(), desState.posworld2comwrtworld().y());
         _plot_comPosXY->AddData(1, actState.posworld2comwrtworld().x(), actState.posworld2comwrtworld().y());
     }
-    if (_plot_comVel && _plot_comVel->isVisible())
+    if (_plot_comVel && (_plot_comVel->isVisible() || IsFetchInvisibleData()))
     {
         _plot_comVel->AddData(0, curTime,
                               desState.velworld2comwrtworld().x());
@@ -734,7 +727,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
                               actState.velworld2comwrtworld().z());
         _plot_comVel->DataUpdated(curTime);
     }
-    if (_plot_eePosG_G && _plot_eePosG_G->isVisible())
+    if (_plot_eePosG_G && (_plot_eePosG_G->isVisible() || IsFetchInvisibleData()))
     {
         for (int li = 0; li < legnum; li++)
         {
@@ -754,7 +747,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         }
         _plot_eePosG_G->DataUpdated(curTime);
     }
-    if (_plot_eeVelE_G && _plot_eeVelE_G->isVisible())
+    if (_plot_eeVelE_G && (_plot_eeVelE_G->isVisible() || IsFetchInvisibleData()))
     {
         for (int li = 0; li < legnum; li++)
         {
@@ -774,7 +767,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
         }
         _plot_eeVelE_G->DataUpdated(curTime);
     }
-    if (_plot_orient && _plot_orient->isVisible())
+    if (_plot_orient && (_plot_orient->isVisible() || IsFetchInvisibleData()))
     {
         _plot_orient->AddData(0, curTime,
                               desState.euleranglebodywrtworld().r() * RAD2DEG);
@@ -790,7 +783,7 @@ void LeoQuadDataHandler::OnRecvControlState(const double curTime, const dtproto:
                               actState.euleranglebodywrtworld().y() * RAD2DEG);
         _plot_orient->DataUpdated(curTime);
     }
-    if (_plot_angVel && _plot_angVel->isVisible())
+    if (_plot_angVel && (_plot_angVel->isVisible() || IsFetchInvisibleData()))
     {
         _plot_angVel->AddData(0, curTime,
                               desState.angularvelbodywrtbody().r() * RAD2DEG);
@@ -813,7 +806,7 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
                                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &actData,
                                           const google::protobuf::RepeatedPtrField<dtproto::leoquad::JointData> &desData)
 {
-    if (_plot_jointPos && _plot_jointPos->isVisible())
+    if (_plot_jointPos && (_plot_jointPos->isVisible() || IsFetchInvisibleData()))
     {
         for (int ji = 0; ji < jdof; ji++)
         {
@@ -824,7 +817,7 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
         }
         _plot_jointPos->DataUpdated(curTime);
     }
-    if (_plot_jointVel && _plot_jointVel->isVisible())
+    if (_plot_jointVel && (_plot_jointVel->isVisible() || IsFetchInvisibleData()))
     {
         for (int ji = 0; ji < jdof; ji++)
         {
@@ -835,7 +828,7 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
         }
         _plot_jointVel->DataUpdated(curTime);
     }
-    if (_plot_jointAcc && _plot_jointAcc->isVisible())
+    if (_plot_jointAcc && (_plot_jointAcc->isVisible() || IsFetchInvisibleData()))
     {
         for (int ji = 0; ji < jdof; ji++)
         {
@@ -846,7 +839,7 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
         }
         _plot_jointAcc->DataUpdated(curTime);
     }
-    if (_plot_jointTau && _plot_jointTau->isVisible())
+    if (_plot_jointTau && (_plot_jointTau->isVisible() || IsFetchInvisibleData()))
     {
         for (int ji = 0; ji < jdof; ji++)
         {
@@ -857,7 +850,7 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
         }
         _plot_jointTau->DataUpdated(curTime);
     }
-    if (_plot_absEnc && _plot_absEnc->isVisible())
+    if (_plot_absEnc && (_plot_absEnc->isVisible() || IsFetchInvisibleData()))
     {
         for (int ji = 0; ji < jdof; ji++)
         {
@@ -865,7 +858,7 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
         }
         _plot_absEnc->DataUpdated(curTime);
     }
-    if (_plot_incEnc && _plot_incEnc->isVisible())
+    if (_plot_incEnc && (_plot_incEnc->isVisible() || IsFetchInvisibleData()))
     {
         for (int ji = 0; ji < jdof; ji++)
         {
@@ -877,25 +870,23 @@ void LeoQuadDataHandler::OnRecvJointState(const double curTime,
 
 void LeoQuadDataHandler::OnRecvThreadState(const double curTime, const dtproto::leoquad::ThreadState &state)
 {
-    if (!_plot_threadState || !_plot_threadState->isVisible())
+    if (_plot_threadState && (_plot_threadState->isVisible() || IsFetchInvisibleData()))
     {
-        return;
+        _plot_threadState->AddData(0, curTime, state.ctrlperiod_ms());
+        _plot_threadState->AddData(1, curTime, state.ctrlload_ms());
+        _plot_threadState->AddData(2, curTime, state.mpcperiod_ms());
+        _plot_threadState->AddData(3, curTime, state.mpcload_ms());
+        _plot_threadState->AddData(4, curTime, state.imuperiod_ms());
+        _plot_threadState->AddData(5, curTime, state.imuload_ms());
+        _plot_threadState->AddData(6, curTime, state.joystickperiod_ms());
+        _plot_threadState->AddData(7, curTime, state.joystickload_ms());
+        _plot_threadState->DataUpdated(curTime);
     }
-
-    _plot_threadState->AddData(0, curTime, state.ctrlperiod_ms());
-    _plot_threadState->AddData(1, curTime, state.ctrlload_ms());
-    _plot_threadState->AddData(2, curTime, state.mpcperiod_ms());
-    _plot_threadState->AddData(3, curTime, state.mpcload_ms());
-    _plot_threadState->AddData(4, curTime, state.imuperiod_ms());
-    _plot_threadState->AddData(5, curTime, state.imuload_ms());
-    _plot_threadState->AddData(6, curTime, state.joystickperiod_ms());
-    _plot_threadState->AddData(7, curTime, state.joystickload_ms());
-    _plot_threadState->DataUpdated(curTime);
 }
 
 void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state)
 {
-    if (!_plot_debugData || !_plot_debugData->isVisible() || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
+    if (!_plot_debugData || (!_plot_debugData->isVisible() && !IsFetchInvisibleData()) || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
     {
         return;
     }
@@ -925,7 +916,7 @@ void LeoQuadDataHandler::OnRecvArbitraryState(const double curTime, const dtprot
 
 void LeoQuadDataHandler::OnRecvArbitraryStateXY(const double curTime, const dtproto::std_msgs::PackedDouble &state)
 {
-    if (!_plot_debugDataXY || !_plot_debugDataXY->isVisible() || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
+    if (!_plot_debugDataXY || (!_plot_debugDataXY->isVisible() && !IsFetchInvisibleData()) || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
     {
         return;
     }
@@ -949,28 +940,26 @@ void LeoQuadDataHandler::OnRecvArbitraryStateXY(const double curTime, const dtpr
 
 void LeoQuadDataHandler::OnRecvImu(const double curTime, const dtproto::sensor_msgs::Imu &imu)
 {
-    if (!_plot_imu || !_plot_imu->isVisible())
+    if (_plot_imu && (_plot_imu->isVisible() || IsFetchInvisibleData()))
     {
-        return;
+        _plot_imu->AddData(0, curTime, imu.orientation().x());
+        _plot_imu->AddData(1, curTime, imu.orientation().y());
+        _plot_imu->AddData(2, curTime, imu.orientation().z());
+        _plot_imu->AddData(3, curTime, imu.orientation().w());
+        _plot_imu->AddData(4, curTime, imu.angular_velocity().a1());
+        _plot_imu->AddData(5, curTime, imu.angular_velocity().a2());
+        _plot_imu->AddData(6, curTime, imu.angular_velocity().a3());
+        _plot_imu->AddData(7, curTime, imu.linear_acceleration().a1());
+        _plot_imu->AddData(8, curTime, imu.linear_acceleration().a2());
+        _plot_imu->AddData(9, curTime, imu.linear_acceleration().a3());
+
+        dt::Math::Quaternion<double> ori(imu.orientation().w(), imu.orientation().x(), imu.orientation().y(), imu.orientation().z());
+        dt::Math::Vector3<double> rpy = ori.GetEulerAngles(AXIS3(Z_AXIS, Y_AXIS, X_AXIS));
+        _plot_imu->AddData(10, curTime, rpy(2));
+        _plot_imu->AddData(11, curTime, rpy(1));
+        _plot_imu->AddData(12, curTime, rpy(0));
+        _plot_imu->DataUpdated(curTime);
     }
-
-    _plot_imu->AddData(0, curTime, imu.orientation().x());
-    _plot_imu->AddData(1, curTime, imu.orientation().y());
-    _plot_imu->AddData(2, curTime, imu.orientation().z());
-    _plot_imu->AddData(3, curTime, imu.orientation().w());
-    _plot_imu->AddData(4, curTime, imu.angular_velocity().a1());
-    _plot_imu->AddData(5, curTime, imu.angular_velocity().a2());
-    _plot_imu->AddData(6, curTime, imu.angular_velocity().a3());
-    _plot_imu->AddData(7, curTime, imu.linear_acceleration().a1());
-    _plot_imu->AddData(8, curTime, imu.linear_acceleration().a2());
-    _plot_imu->AddData(9, curTime, imu.linear_acceleration().a3());
-
-    dt::Math::Quaternion<double> ori(imu.orientation().w(), imu.orientation().x(), imu.orientation().y(), imu.orientation().z());
-    dt::Math::Vector3<double> rpy = ori.GetEulerAngles(AXIS3(Z_AXIS, Y_AXIS, X_AXIS));
-    _plot_imu->AddData(10, curTime, rpy(2));
-    _plot_imu->AddData(11, curTime, rpy(1));
-    _plot_imu->AddData(12, curTime, rpy(0));
-    _plot_imu->DataUpdated(curTime);
 }
 
 void LeoQuadDataHandler::OnLoadTriggered(QString filename)
