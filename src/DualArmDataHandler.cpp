@@ -30,14 +30,20 @@
 #define ENABLE_DEBUG_DATA_PLOT
 #define ENABLE_DEBUG_DATA_XY_PLOT
 
-constexpr static int jdof = 14;
-constexpr static int armdof = 7; // Mainpulator 6DOF + HandGripper 1DOF
+constexpr static int jdof = 17;
 constexpr static int armnum = 2;
 constexpr static int tasknum = 2;
 
+static std::string jointgroupname[jdof] = {
+    "Torso", "Torso", "Torso",
+    "RArm", "RArm", "RArm", "RArm", "RArm", "RArm", "RArm",
+    "LArm", "LArm", "LArm", "LArm", "LArm", "LArm", "LArm"};
+static std::string jointname[jdof] = {
+    "T1", "T2", "T3",
+    "R1", "R2", "R3", "R4", "R5", "R6", "R7",
+    "L1", "L2", "L3", "L4", "L5", "L6", "L7"};
 static std::string armname[armnum] = {"RArm", "LArm"};
 static std::string taskname[armnum] = {"eeR", "eeL"};
-static std::string jointname[jdof] = {"R1", "R2", "R3", "R4", "R5", "R6", "R7", "L1", "L2", "L3", "L4", "L5", "L6", "L7"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
@@ -113,8 +119,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointPos->SetWindowTitle("Joint position");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointPos->AddGraph((QString(jointname[ji].c_str()) + ".pos.desired"), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointPos->AddGraph((QString(jointname[ji].c_str()) + ".pos.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointPos->AddGraph((QString(jointname[ji].c_str()) + ".pos.desired"), LineColor(ji), jointgroupname[ji].c_str());
+        _plot_jointPos->AddGraph((QString(jointname[ji].c_str()) + ".pos.actual"), LineColor(ji + jdof), jointgroupname[ji].c_str());
     }
 
     _plot_jointPos->show();
@@ -126,8 +132,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointVel->SetWindowTitle("Joint velocity");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointVel->AddGraph((QString(jointname[ji].c_str()) + ".vel.desired"), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointVel->AddGraph((QString(jointname[ji].c_str()) + ".vel.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointVel->AddGraph((QString(jointname[ji].c_str()) + ".vel.desired"), LineColor(ji), jointgroupname[ji].c_str());
+        _plot_jointVel->AddGraph((QString(jointname[ji].c_str()) + ".vel.actual"), LineColor(ji + jdof), jointgroupname[ji].c_str());
     }
     _plot_jointVel->show();
     RegisterPlot(_plot_jointVel.get());
@@ -138,8 +144,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointAcc->SetWindowTitle("Joint acceleration");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.desired").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji), jointgroupname[ji].c_str());
+        _plot_jointAcc->AddGraph(QString("Joint_%1.acc.actual").arg(ji + 1, 2, 10, QLatin1Char('0')), LineColor(ji + jdof), jointgroupname[ji].c_str());
     }
     _plot_jointAcc->show();
     RegisterPlot(_plot_jointAcc.get());
@@ -151,8 +157,8 @@ void DualArmDataHandler::BuildPlots()
     _plot_jointTau->SetWindowTitle("Joint torque");
     for (int ji = 0; ji < jdof; ji++)
     {
-        _plot_jointTau->AddGraph((QString(jointname[ji].c_str()) + ".toq.desired"), LineColor(ji), armname[ji / armdof].c_str());
-        _plot_jointTau->AddGraph((QString(jointname[ji].c_str()) + ".toq.actual"), LineColor(ji + jdof), armname[ji / armdof].c_str());
+        _plot_jointTau->AddGraph((QString(jointname[ji].c_str()) + ".toq.desired"), LineColor(ji), jointgroupname[ji].c_str());
+        _plot_jointTau->AddGraph((QString(jointname[ji].c_str()) + ".toq.actual"), LineColor(ji + jdof), jointgroupname[ji].c_str());
     }
     _plot_jointTau->show();
     RegisterPlot(_plot_jointTau.get());
