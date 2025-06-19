@@ -69,13 +69,13 @@ private:
     std::unique_ptr<PlotWindow> _plot_comPosXY{nullptr};
     std::unique_ptr<PlotWindow> _plot_imu{nullptr};
 
-    // for plotting user-defined arbitrary data array
+    // for plotting user-defined debug data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};
-    std::unique_ptr<PlotWindow> _plot_debugDataXY{nullptr};
-
     int _debug_data_array_size{-1};
     int _debug_data_array_size_max{0};
 
+    // for plotting user-defined debug data array(2D)
+    std::unique_ptr<PlotWindow> _plot_debugDataXY{nullptr};
     int _debug_data_xy_array_size{-1};
     int _debug_data_xy_array_size_max{0};
 

@@ -4,10 +4,8 @@ package dtproto.dualarm;
 
 import "dtProto/std_msgs/Header.proto";
 import "dtProto/std_msgs/PackedArray.proto";
+import "dtProto/std_msgs/Request.proto";
 import "dtProto/geometry_msgs/Point.proto";
-// import "dtProto/geometry_msgs/Orientation.proto";
-// import "dtProto/geometry_msgs/Matrix.proto";
-// import "dtProto/geometry_msgs/Vector.proto";
 
 message ThreadState {
     double ctrlPeriod_ms = 1;
@@ -45,8 +43,7 @@ message JointData {
     double torq_Nm = 5;
 }
 
-message ControlState {
-}
+message ControlState {}
 
 message DualArmState {
   repeated JointState jointState = 1;
@@ -61,9 +58,20 @@ message DualArmState {
   ControlState desControlState = 10;
   ThreadState threadState = 11;
   std_msgs.PackedDouble arbitraryState = 20;
+  std_msgs.PackedDouble arbitraryStateXY = 21;
 }
 
 message DualArmStateTimeStamped {
   std_msgs.Header header = 1;
   DualArmState state = 2;
 }
+
+message OperationState {
+    int32 op_mode = 1;
+    int32 op_status = 2;
+  }
+  
+  message OperationStateTimeStamped {
+    std_msgs.Header header = 1;
+    OperationState state = 2;
+  }

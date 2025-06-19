@@ -45,6 +45,7 @@ private:
                          const google::protobuf::RepeatedPtrField<dtproto::dualarm::TaskState> &desState);
     void OnRecvThreadState(const double curTime, const dtproto::dualarm::ThreadState &state);
     void OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state);
+    void OnRecvArbitraryStateXY(const double curTime, const dtproto::std_msgs::PackedDouble &state);
 
 private:
     std::unique_ptr<PlotWindow> _plot_threadState{nullptr};
@@ -58,10 +59,15 @@ private:
     std::unique_ptr<PlotWindow> _plot_incEnc{nullptr};
     std::unique_ptr<PlotWindow> _plot_absEnc{nullptr};
 
-    // for plotting user-defined arbitrary data array
+    // for plotting user-defined debug data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};
     int _debug_data_array_size{-1};
     int _debug_data_array_size_max{0};
+
+    // for plotting user-defined debug data array(2D)
+    std::unique_ptr<PlotWindow> _plot_debugDataXY{nullptr};
+    int _debug_data_xy_array_size{-1};
+    int _debug_data_xy_array_size_max{0};
 
 #ifdef USE_TRANSPORT_ECAL
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::dualarm::DualArmStateTimeStamped>> _sub_state;

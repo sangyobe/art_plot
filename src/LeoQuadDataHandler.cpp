@@ -40,6 +40,7 @@
 
 #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
+#define ENABLE_DEBUG_DATA_XY_PLOT
 #define ENABLE_COM_POS_XY_PLOT
 
 #define ENABLE_IMU_PLOT
@@ -135,7 +136,10 @@ LeoQuadDataHandler::LeoQuadDataHandler(MainWindow *plotToolbox)
 #endif
 #ifdef ENABLE_DEBUG_DATA_PLOT
       ,
-      _plot_debugData(std::make_unique<PlotWindow>(plotToolbox)),
+      _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_DEBUG_DATA_XY_PLOT
+      ,
       _plot_debugDataXY(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_IMU_PLOT
@@ -493,7 +497,9 @@ void LeoQuadDataHandler::BuildPlots()
     }
     _plot_debugData->show();
     RegisterPlot(_plot_debugData.get());
+#endif
 
+#ifdef ENABLE_DEBUG_DATA_XY_PLOT
     _debug_data_xy_array_size_max = GetDebugDataXYNum();
     //_plot_debugDataXY = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_debugDataXY->SetWindowTitle("Debug XY Data Array");

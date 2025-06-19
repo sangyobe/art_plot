@@ -28,6 +28,7 @@
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
+#define ENABLE_DEBUG_DATA_XY_PLOT
 
 constexpr static int jdof = 14;
 constexpr static int armdof = 7; // Mainpulator 6DOF + HandGripper 1DOF
@@ -85,6 +86,10 @@ DualArmDataHandler::DualArmDataHandler(MainWindow *plotToolbox)
 #ifdef ENABLE_DEBUG_DATA_PLOT
       ,
       _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_DEBUG_DATA_XY_PLOT
+      ,
+      _plot_debugDataXY(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 {
     LOG(info) << "DualArmDataHandler created.";
@@ -265,6 +270,18 @@ void DualArmDataHandler::BuildPlots()
     RegisterPlot(_plot_debugData.get());
 #endif
 
+#ifdef ENABLE_DEBUG_DATA_XY_PLOT
+    _debug_data_xy_array_size_max = GetDebugDataXYNum();
+    //_plot_debugDataXY = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_debugDataXY->SetWindowTitle("Debug XY Data Array");
+    for (int gi = 0; gi < _debug_data_xy_array_size_max; gi++)
+    {
+        _plot_debugDataXY->AddGraph(QString("Data_%1").arg(gi, 2, 10, QLatin1Char('0')), LineColor(gi), QString(""), 0, LineScatterShape::ssStar, 0);
+    }
+    _plot_debugDataXY->show();
+    RegisterPlot(_plot_debugDataXY.get());
+#endif
+
     // 데이터 연결
 #ifdef USE_TRANSPORT_ECAL
     _sub_state = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::dualarm::DualArmStateTimeStamped>>("RobotState");
@@ -351,6 +368,7 @@ void DualArmDataHandler::OnRecvDualArmState(const double curTime, const dtproto:
     OnRecvTaskState(curTime, state.acttaskstate(), state.destaskstate());
     OnRecvThreadState(curTime, state.threadstate());
     OnRecvArbitraryState(curTime, state.arbitrarystate());
+    OnRecvArbitraryStateXY(curTime, state.arbitrarystatexy());
 }
 
 void DualArmDataHandler::OnRecvControlState(const double curTime, const dtproto::dualarm::ControlState &actState, const dtproto::dualarm::ControlState &desState)
@@ -524,6 +542,30 @@ void DualArmDataHandler::OnRecvArbitraryState(const double curTime, const dtprot
         // LOG(trace) << "  data[" << gi << "] = " << state.data(gi);
         _plot_debugData->AddData(gi, curTime, state.data().Get(gi));
         _plot_debugData->DataUpdated(curTime);
+    }
+}
+
+void DualArmDataHandler::OnRecvArbitraryStateXY(const double curTime, const dtproto::std_msgs::PackedDouble &state)
+{
+    if (!_plot_debugDataXY || state.GetTypeName() != "dtproto.std_msgs.PackedDouble")
+    {
+        return;
+    }
+
+    if (_debug_data_xy_array_size < 0)
+    {
+        _debug_data_xy_array_size = state.data_size() / 2;
+        if (_debug_data_xy_array_size > _debug_data_xy_array_size_max)
+            _debug_data_xy_array_size = _debug_data_xy_array_size_max;
+    }
+
+    for (int gi = 0; gi < _debug_data_xy_array_size; gi++)
+    {
+        if (gi >= _debug_data_xy_array_size_max || gi >= _plot_debugDataXY->GetGraphCount())
+            return;
+
+        // LOG(trace) << "  data[" << gi << "] = " << state.data(2*gi) << ", " << << state.data(2*gi+1);
+        _plot_debugDataXY->AddData(gi, state.data().Get(2 * gi), state.data().Get(2 * gi + 1));
     }
 }
 
