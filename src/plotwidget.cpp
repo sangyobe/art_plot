@@ -39,11 +39,12 @@ void PlotWidget::ExportData(QString &export_dir)
 
         QTextStream out(&file);
 
-        out << "_time_" << ","
+        out << "_time_"
+            << ","
             << graph->name() << "|"
             << graph->lineStyle() << "|"
             << graph->pen().color().rgb() << "|"
-            << graph->pen().width() << "|"
+            << (graph->lineStyle() == QCPGraph::lsNone ? 0 : graph->pen().width()) << "|"
             << graph->scatterStyle().shape() << "|"
             << graph->scatterStyle().size() << "|"
             << graph->scatterSkip() << "\n";
@@ -137,6 +138,9 @@ void PlotWidget::ImportCSV(QString filename)
                     scatter_size = mdata[5].toDouble();
                 if (mdata.size() > 6)
                     scatter_skip = mdata[6].toInt();
+
+                if (line_style == QCPGraph::lsNone)
+                    line_width = 0;
 
                 int idx = static_cast<PlotWindow *>(parent()->parent())->AddGraph(name, line_color, "", line_width, scatter_shape, scatter_skip);
                 if (graph_count == 0)

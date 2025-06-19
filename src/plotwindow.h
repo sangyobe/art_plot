@@ -62,6 +62,7 @@ public:
     void SetLegendLocation(QFlags<Qt::AlignmentFlag> flag);
     // config style
     void SetLineWidth(int w);
+    void SetLineStyle(int style);
 
     void DataUpdated(double recv_time);
 
@@ -98,6 +99,7 @@ private:
     bool RestoreDataSeriesConfig(const QByteArray & config, const QString& name, QString& alias, QColor& color);
     QByteArray SavePlotOption() const;
     bool RestorePlotOption(const QByteArray &config);
+    void UpdateLineStyle();
 
 private slots:
     void OnConfigChanged(QStandardItem* item);
@@ -144,6 +146,7 @@ private:
         bool legend_visible;
         QFlags<Qt::AlignmentFlag> legend_location;
         unsigned int style_line_width;
+        unsigned int style_line_style;
     };
     ConfigOption _configOption;
 

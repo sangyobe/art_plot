@@ -21,7 +21,8 @@ PlotWindow::ConfigOption::ConfigOption() : x_axis_auto_scroll(true),
                                            y_axis_ubound(1.0),
                                            legend_visible(true),
                                            legend_location(Qt::AlignRight | Qt::AlignTop),
-                                           style_line_width(1)
+                                           style_line_width(1),
+                                           style_line_style(1)
 {
 }
 
@@ -537,10 +538,33 @@ void PlotWindow::SetLegendLocation(QFlags<Qt::AlignmentFlag> flag)
 
 void PlotWindow::SetLineWidth(int w)
 {
-    QStandardItem const *item = FindFirstConfigOptionItem("Style", "Line width(1~5)");
+    QStandardItem const *item = FindFirstConfigOptionItem("Style", "Line width(0~5)", 1);
     if (item)
     {
         const_cast<QStandardItem *>(item)->setData(w, Qt::EditRole);
+    }
+}
+
+void PlotWindow::SetLineStyle(int style)
+{
+    const QStandardItem *item = FindFirstConfigOptionItem("Style", "Line Style", 1);
+    if (!item)
+        return;
+
+    switch (style)
+    {
+    case 0:
+        const_cast<QStandardItem *>(item)->setData("None", Qt::EditRole);
+        break;
+    case 1:
+        const_cast<QStandardItem *>(item)->setData("Line", Qt::EditRole);
+        break;
+        // case 2:
+        //     const_cast<QStandardItem *>(item)->setData("Dash", Qt::EditRole);
+        //     break;
+        // case 3:
+        //     const_cast<QStandardItem *>(item)->setData("Dash-Line", Qt::EditRole);
+        //     break;
     }
 }
 
@@ -743,12 +767,25 @@ void PlotWindow::BuildConfig()
     _configModel->appendRow(style_root);
 
     items.clear();
-    item_title = new QStandardItem("Line width(1~5)");
+    item_title = new QStandardItem("Line width(0~5)");
     item_title->setEditable(false);
     item = new QStandardItem();
     item->setEditable(true);
-    item->setData(_configOption.style_line_width, Qt::EditRole);
     item->setWhatsThis("Style::LineWidth");
+    item->setData(_configOption.style_line_width, Qt::EditRole);
+    items.append(item_title);
+    items.append(item);
+    style_root->appendRow(items);
+
+    items.clear();
+    item_title = new QStandardItem("Line Style");
+    item_title->setEditable(false);
+    // QStringList line_style_options = {"None", "Line", "Dash", "Dash-Line"};
+    QStringList line_style_options = {"None", "Line"};
+    item = new QStandardItem(line_style_options[1]);
+    item->setEditable(true);
+    item->setWhatsThis("Style::LineStyle");
+    item->setData(QVariant(line_style_options), static_cast<int>(ItemViewDelegate::Role::ComboBox));
     items.append(item_title);
     items.append(item);
     style_root->appendRow(items);
@@ -919,31 +956,42 @@ void PlotWindow::OnConfigChanged(QStandardItem *item)
     else if (item->whatsThis() == "Style::LineWidth")
     {
         _configOption.style_line_width = item->data(Qt::EditRole).toUInt();
+        // qDebug() << line_width << "(" << _configOption.style_line_width << ")";
 
-        if (_configOption.style_line_width >= 1 && _configOption.style_line_width <= 5)
+        if (_configOption.style_line_width > 5)
         {
-            QPen pen;
-            for (int i = 0; i < ui->plotwidget->graphCount(); ++i)
-            {
-                pen = ui->plotwidget->graph(i)->pen();
-                pen.setWidth(_configOption.style_line_width);
-                ui->plotwidget->graph(i)->setPen(pen);
-            }
-        }
-        else
-        {
-            if (_configOption.style_line_width < 1)
-                _configOption.style_line_width = 1;
-            else if (_configOption.style_line_width > 5)
-                _configOption.style_line_width = 5;
+            _configOption.style_line_width = 5;
 
             QStandardItem const *item;
-            item = FindFirstConfigOptionItem("Style", "Line width(1~5)", 1);
+            item = FindFirstConfigOptionItem("Style", "Line width(0~5)", 1);
             if (item)
             {
                 const_cast<QStandardItem *>(item)->setData(_configOption.style_line_width, Qt::EditRole);
             }
         }
+        else
+        {
+            UpdateLineStyle();
+        }
+    }
+    else if (item->whatsThis() == "Style::LineStyle")
+    {
+        QString line_style = item->data(Qt::EditRole).toString();
+        if (line_style == "None")
+        {
+            _configOption.style_line_style = 0;
+        }
+        else if (line_style == "Line")
+        {
+            _configOption.style_line_style = 1;
+        }
+        else
+        {
+            _configOption.style_line_style = 1;
+        }
+        // qDebug() << line_style << "(" << _configOption.style_line_style << ")";
+
+        UpdateLineStyle();
     }
     else if (item->whatsThis() == "Data series::Visible")
     {
@@ -1102,26 +1150,28 @@ QByteArray PlotWindow::SavePlotConfig() const
     // qDebug() << "SavePlotConfig";
     QString configstr;
     QTextStream str(&configstr);
-    str << "x-Axis::AutoScroll"
-        << "," << _configOption.x_axis_auto_scroll << ","
-        << "x-Axis::AutoScrollWindow"
-        << "," << _configOption.x_axis_auto_scroll_window << ","
-        << "x-Axis::Begin"
-        << "," << _configOption.x_axis_begin_sec << ","
-        << "x-Axis::End"
-        << "," << _configOption.x_axis_end_sec << ","
-        << "y-Axis::AutoScale"
-        << "," << _configOption.y_axis_auto_scale << ","
-        << "y-Axis::LBound"
-        << "," << _configOption.y_axis_lbound << ","
-        << "y-Axis::UBound"
-        << "," << _configOption.y_axis_ubound << ","
-        << "Legend::Visible"
-        << "," << _configOption.legend_visible << ","
-        << "Legend::Location"
-        << "," << _configOption.legend_location << ","
-        << "Style::LineWidth"
-        << "," << _configOption.style_line_width;
+    str << "x-Axis::AutoScroll,"
+        << _configOption.x_axis_auto_scroll << ","
+        << "x-Axis::AutoScrollWindow,"
+        << _configOption.x_axis_auto_scroll_window << ","
+        << "x-Axis::Begin,"
+        << _configOption.x_axis_begin_sec << ","
+        << "x-Axis::End,"
+        << _configOption.x_axis_end_sec << ","
+        << "y-Axis::AutoScale,"
+        << _configOption.y_axis_auto_scale << ","
+        << "y-Axis::LBound,"
+        << _configOption.y_axis_lbound << ","
+        << "y-Axis::UBound,"
+        << _configOption.y_axis_ubound << ","
+        << "Legend::Visible,"
+        << _configOption.legend_visible << ","
+        << "Legend::Location,"
+        << _configOption.legend_location << ","
+        << "Style::LineWidth,"
+        << _configOption.style_line_width << ","
+        << "Style::LineStyle,"
+        << _configOption.style_line_style;
     // qDebug() << configstr;
     return configstr.toUtf8();
 }
@@ -1171,6 +1221,10 @@ bool PlotWindow::RestorePlotConfig(const QByteArray &config)
         else if ("Style::LineWidth" == items[idx])
         {
             SetLineWidth(items[idx + 1].toInt());
+        }
+        else if ("Style::LineStyle" == items[idx])
+        {
+            SetLineStyle(items[idx + 1].toInt());
         }
 
         idx += 2;
@@ -1288,6 +1342,33 @@ bool PlotWindow::RestorePlotOption(const QByteArray &config)
     }
 
     return false;
+}
+
+void PlotWindow::UpdateLineStyle()
+{
+    if (_configOption.style_line_style == 0 || _configOption.style_line_width == 0)
+    {
+        QCPScatterStyle sstyle(QCPScatterStyle::ssStar);
+        for (int i = 0; i < ui->plotwidget->graphCount(); ++i)
+        {
+            ui->plotwidget->graph(i)->setScatterStyle(sstyle);
+            ui->plotwidget->graph(i)->setLineStyle(QCPGraph::lsNone);
+        }
+    }
+    else
+    {
+        QCPScatterStyle sstyle(QCPScatterStyle::ssNone);
+        QPen pen;
+        for (int i = 0; i < ui->plotwidget->graphCount(); ++i)
+        {
+            pen = ui->plotwidget->graph(i)->pen();
+            pen.setWidth(_configOption.style_line_width);
+            pen.setWidth(_configOption.style_line_width);
+            ui->plotwidget->graph(i)->setPen(pen);
+            ui->plotwidget->graph(i)->setLineStyle(QCPGraph::lsLine);
+            ui->plotwidget->graph(i)->setScatterStyle(sstyle);
+        }
+    }
 }
 
 void PlotWindow::OnHorzScrollBarChanged(int value)
