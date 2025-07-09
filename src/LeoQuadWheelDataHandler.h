@@ -89,6 +89,7 @@ private:
 #endif
 
     long long _data_seq{0}; // data sequence number in the plot
+    double _data_seq_zero_time; // time at data sequence 0
     uint32_t _msg_seq{0};   // message sequence number in the received message header
 
     // Qt specific

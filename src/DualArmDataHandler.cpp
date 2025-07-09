@@ -333,8 +333,6 @@ void DualArmDataHandler::OnRecvDualArmStateTimeStamped(const char *topic_name,
                                                        const dtproto::dualarm::DualArmStateTimeStamped &state,
                                                        const long long time, const long long clock)
 {
-    double curTime = clock * 1e-3;
-
     uint32_t seq = state.header().seq();
     if (seq != 0 && seq < _msg_seq)
     {
@@ -342,6 +340,12 @@ void DualArmDataHandler::OnRecvDualArmStateTimeStamped(const char *topic_name,
             _data_seq = 0;
     }
     _msg_seq = seq;
+
+    // double curTime = clock * 1e-3;
+    double curTime = state.header().time_stamp().seconds() + state.header().time_stamp().nanos() * 1e-9;
+    if (clock == 0)
+        _data_seq_zero_time = curTime;
+    curTime -= _data_seq_zero_time;
 
     OnRecvDualArmState(curTime, state.state());
 
