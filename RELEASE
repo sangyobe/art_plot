@@ -1,5 +1,5 @@
-TODO
-- Selecting DataHandler by parsing program argument.
+2025.06.18 [v1.5.0]
+- Add a default command-line argument to select data handler. Possible data handlers are "leoquad", "leoquad_wheel", "dualarm", "motoraging", "quadip", "woly".
 
 2025.06.18 [v1.4.6]
 - Fetch Data For Invisible Plot 옵션 추가: 플롯창이 숨겨진 상태에서도 데이터를 받아 저장할지 여부

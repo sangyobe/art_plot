@@ -1,12 +1,21 @@
 #include "mainwindow.h"
 #include "preferencesdlg.h"
 #include "ui_mainwindow.h"
+#include "ArbitraryStateDataHandler.h"
+#include "DualArmDataHandler.h"
+#include "LeoQuadDataHandler.h"
+#include "LeoQuadWheelDataHandler.h"
+#include "MotorAgingDataHandler.h"
+#include "QuadIPDataHandler.h"
+#include "WolyDataHandler.h"
 #include <QDebug>
 #include <QVector>
-#include <algorithm>
+#include <algorithm> // For std::transform
+#include <cctype> // For std::tolower
 
-MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnum, QWidget *parent) : QMainWindow(parent),
-                                                                                                      ui(new Ui::MainWindow)
+MainWindow::MainWindow(const std::string &ip, const uint16_t port, const int dnum, QWidget *parent) 
+: QMainWindow(parent)
+, ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     _plotListModel = new QStandardItemModel;
@@ -126,6 +135,70 @@ bool MainWindow::RestoreOption(const QByteArray &config)
     }
 
     return false;
+}
+
+bool MainWindow::CreatePlotWindows(const std::string &profile_name)
+{    
+#ifdef USE_TRANSPORT_ECAL
+    eCAL::Initialize(0, nullptr, "art_plot::QuadIP::ControlStatus");
+    eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "proc info");
+#endif
+#ifdef USE_TRANSPORT_GRPC
+#endif
+
+    std::function<std::string(const std::string&)> to_lower = [](const std::string& s) -> std::string {
+        std::string lower_s = s;
+        std::transform(lower_s.begin(), lower_s.end(), lower_s.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
+        return lower_s;
+    };
+    std::string profile_lname = to_lower(profile_name);
+
+    if (profile_lname == "leoquad" ||
+        profile_lname == "lq")
+    {
+        _dataHandler = std::make_unique<LeoQuadDataHandler>(this);
+    }
+    else if (profile_lname == "leoquad_wheel" || 
+             profile_lname == "leoquad-wheel" ||
+             profile_lname == "leoquad_w" || 
+             profile_lname == "leoquad-w" ||
+             profile_lname == "lqw")
+    {
+        _dataHandler = std::make_unique<LeoQuadWheelDataHandler>(this);
+    }
+    else if (profile_lname == "dualarm" || 
+             profile_lname == "da")
+    {
+        _dataHandler = std::make_unique<DualArmDataHandler>(this);
+    }
+    else if (profile_lname == "motoraging" || 
+             profile_lname == "ma")
+    {
+        _dataHandler = std::make_unique<MotorAgingDataHandler>(this);
+    }
+    else if (profile_lname == "quadip" || 
+             profile_lname == "quad_ip" ||
+             profile_lname == "quad-ip" ||
+             profile_lname == "qi")
+    {
+        _dataHandler = std::make_unique<QuadIPDataHandler>(this);
+    }
+    else if (profile_lname == "woly" || 
+             profile_lname == "wl")
+    {
+        _dataHandler = std::make_unique<WolyDataHandler>(this);
+    }
+    else
+    {
+        qDebug() << "Invalid data profile name.";
+        return false;
+    }
+
+    QString app_name = QString("%1 v%2 - %3").arg(APP_NAME).arg(ARTPLOT_VERSION_STR).arg(profile_name.c_str());
+    setWindowTitle(app_name);
+
+    return true;
 }
 
 void MainWindow::AddPlot(PlotWindow *plotWnd)

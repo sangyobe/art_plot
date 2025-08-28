@@ -2,14 +2,15 @@
 #define DATAHANDLER_H
 
 #include <QObject>
-#include "mainwindow.h"
 #include "plotwindow.h"
 
+class MainWindow;
 class DataHandler : public QObject
 {
     Q_OBJECT
 public:
     explicit DataHandler(MainWindow *plotToolbox);
+    virtual ~DataHandler();
 
 private slots:
     virtual void OnLoadTriggered(QString filename);

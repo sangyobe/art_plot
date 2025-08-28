@@ -1,10 +1,15 @@
 #include "datahandler.h"
+#include "mainwindow.h"
 
 DataHandler::DataHandler(MainWindow *plotToolbox)
     : _plotToolbox{plotToolbox}
 {
     connect(_plotToolbox, SIGNAL(loadActionTriggered(QString)), this, SLOT(OnLoadTriggered(QString)));
     connect(_plotToolbox, SIGNAL(clearActionTriggered()), this, SLOT(OnClearTriggered()));
+}
+
+DataHandler::~DataHandler()
+{
 }
 
 void DataHandler::RegisterPlot(PlotWindow *plotWnd)

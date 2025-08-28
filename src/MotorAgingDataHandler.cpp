@@ -318,10 +318,6 @@ void MotorAgingDataHandler::OnRecvThreadState(const double curTime, const dtprot
 
 void MotorAgingDataHandler::OnLoadTriggered(QString filename)
 {
-#ifndef ROBOT_MOTORAGING
-    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
-    return;
-#endif
 #ifndef USE_TRANSPORT_GRPC
     qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
     return;

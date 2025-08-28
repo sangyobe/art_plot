@@ -22,6 +22,7 @@
 //
 #define ROBOT_@conf_artplot_robot_type@
 #define ROBOT_NAME "@conf_artplot_robot_name@"
-#define APP_NAME "ArtPlot v@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@ - @conf_artplot_robot_name@"
+#define APP_NAME "ArtPlot"
+#define APP_NAME_WITH_VERSION "ArtPlot v@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@"
 
 #endif // CONFIG_H

@@ -581,10 +581,6 @@ void DualArmDataHandler::OnRecvArbitraryStateXY(const double curTime, const dtpr
 
 void DualArmDataHandler::OnLoadTriggered(QString filename)
 {
-#ifndef ROBOT_DUALARM
-    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
-    return;
-#endif
 #ifndef USE_TRANSPORT_GRPC
     qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
     return;

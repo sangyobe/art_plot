@@ -974,10 +974,6 @@ void LeoQuadDataHandler::OnRecvImu(const double curTime, const dtproto::sensor_m
 
 void LeoQuadDataHandler::OnLoadTriggered(QString filename)
 {
-#ifndef ROBOT_LEOQUAD
-    qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
-    return;
-#endif
 #ifndef USE_TRANSPORT_GRPC
     qDebug() << "MainWindow::OnLoadTriggered(): Not implemented!";
     return;

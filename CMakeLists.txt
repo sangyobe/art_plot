@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 cmake_policy(SET CMP0048 NEW)
 cmake_policy(SET CMP0071 NEW)
 
-project(artplot VERSION 1.4.6 LANGUAGES CXX)
+project(artplot VERSION 1.5.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -27,7 +27,7 @@ endif()
 set(CMAKE_INSTALL_PREFIX "${ARTF_INSTALL_DIR}")
 list(APPEND CMAKE_PREFIX_PATH "${ARTF_INSTALL_DIR}")
 
-# list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/Qt/6.5.1/gcc_64/") # set Qt install prefix path
+# list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/Qt/6.9.1/gcc_64/") # set Qt install prefix path
 
 # Find packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
@@ -37,7 +37,7 @@ find_package(artf CONFIG REQUIRED)
 # --------------------------------------------------------
 # Set build options
 # --------------------------------------------------------
-set(ROBOT_TYPE "LQ" CACHE STRING "select robot. (QI: QuadIP, LQ: LeoQuad, LQW: LeoQuad-Wheel, WL: Woly, DA: Dual Arm, MA: Motor Aging)")
+set(ROBOT_TYPE "" CACHE STRING "select robot. (QI: QuadIP, LQ: LeoQuad, LQW: LeoQuad-Wheel, WL: Woly, DA: Dual Arm, MA: Motor Aging)")
 set(TRANSPORT_TYPE "GRPC" CACHE STRING "select transport library. (GRPC: gRPC, ECAL: eCAL)")
 
 if(ROBOT_TYPE STREQUAL "LQ")
@@ -65,7 +65,9 @@ elseif(ROBOT_TYPE STREQUAL "MA")
     set(conf_artplot_robot_type "MOTORAGING")
     set(conf_artplot_robot_name "MotorAging")
 else()
-    message(FATAL_ERROR "ROBOT_TYPE must be set.")
+    # message(FATAL_ERROR "ROBOT_TYPE must be set.")
+    set(conf_artplot_robot_type "")
+    set(conf_artplot_robot_name "")
 endif()
 
 message(STATUS "************************************************************************************************************")

@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "plotwindow.h"
 #include <QMainWindow>
+#include "plotwindow.h"
+#include "datahandler.h"
 
 #define DBGDATA_NUM_MAX (256) //<! maximum number of debug_data
 #define DBGDATA_NUM_DFT (64)  //<! default number of debug_data
@@ -20,6 +21,7 @@ public:
     ~MainWindow();
 
 public:
+    bool CreatePlotWindows(const std::string &profile_name);
     void AddPlot(PlotWindow *plotWnd);
     void GetServerAddress(std::string &ip, uint16_t &port);
     int GetDebugDataNum();
@@ -59,6 +61,7 @@ private:
 
 private:
     Ui::MainWindow *ui;
+    std::unique_ptr<DataHandler> _dataHandler{nullptr};
     QList<PlotWindow *> _plotWnds;
     QStandardItemModel *_plotListModel;
     std::string _svrIpAddr;

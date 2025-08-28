@@ -7,24 +7,42 @@
 #include <QDebug>
 #include <dtCore/src/dtLog/dtLog.h>
 
-#include "ArbitraryStateDataHandler.h"
-#include "DualArmDataHandler.h"
-#include "LeoQuadDataHandler.h"
-#include "LeoQuadWheelDataHandler.h"
-#include "MotorAgingDataHandler.h"
-#include "QuadIPDataHandler.h"
-#include "WolyDataHandler.h"
+void Usage();
 
 int main(int argc, char *argv[])
 {
+    // Parse default arguments
+    std::string profile_name = "";
+
+    if (argc < 2)
+    {
+#if defined(ROBOT_NAME)
+        profile_name = ROBOT_NAME;
+#endif
+    }
+    else
+    {
+        profile_name = std::string(argv[1]);
+    }
+
+    if (profile_name == "")
+    {
+        Usage();
+        return -1;
+    }
+
+    // Initialize app
+    int rtn = 0;
     dt::Log::Initialize("artplot", "logs/artplot.txt");
-    dt::Log::SetLogLevel(dt::Log::LogLevel::trace);
+    dt::Log::SetLogLevel(dt::Log::LogLevel::info);
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/images/artplot.png"));
 
+    // Parse optiona arguments starting with "--"
     struct AppOptions
     {
+        std::string profile_name{};
         std::string ip_addr{};
         int port{};
         int debug_data_num{};
@@ -36,44 +54,42 @@ int main(int argc, char *argv[])
     });
     auto app_opts = parser->parse(argc, argv);
 
+    // Create main window
     MainWindow plotToolbox(app_opts.ip_addr, (uint16_t)app_opts.port, (int)app_opts.debug_data_num);
-    plotToolbox.setWindowTitle(APP_NAME);
+    plotToolbox.setWindowTitle(APP_NAME_WITH_VERSION);
     plotToolbox.setWindowFlag(Qt::WindowStaysOnTopHint);
     plotToolbox.show();
 
-#ifdef USE_TRANSPORT_ECAL
-    eCAL::Initialize(0, nullptr, "art_plot::QuadIP::ControlStatus");
-    eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "proc info");
-#endif
-#ifdef USE_TRANSPORT_GRPC
-#endif
-
-#ifdef ROBOT_QUADIP
-    std::unique_ptr<QuadIPDataHandler> dataHandler = std::make_unique<QuadIPDataHandler>(&plotToolbox);
-#endif
-#ifdef ROBOT_WOLY
-    std::unique_ptr<WolyDataHandler> dataHandler = std::make_unique<WolyDataHandler>(&plotToolbox);
-#endif
-#ifdef ROBOT_LEOQUAD
-    std::unique_ptr<LeoQuadDataHandler> dataHandler = std::make_unique<LeoQuadDataHandler>(&plotToolbox);
-#endif
-#ifdef ROBOT_LEOQUADWHEEL
-    std::unique_ptr<LeoQuadWheelDataHandler> dataHandler = std::make_unique<LeoQuadWheelDataHandler>(&plotToolbox);
-#endif
-#ifdef ROBOT_DUALARM
-    std::unique_ptr<DualArmDataHandler> dataHandler = std::make_unique<DualArmDataHandler>(&plotToolbox);
-#endif
-#ifdef ROBOT_MOTORAGING
-    std::unique_ptr<MotorAgingDataHandler> dataHandler = std::make_unique<MotorAgingDataHandler>(&plotToolbox);
-#endif
-
-    // // special data source
-    // std::unique_ptr<ArbitraryStateDataHandler> dataHandler_darray = std::make_unique<ArbitraryStateDataHandler>(&plotToolbox);
+    // Create plot windows
+    if (!plotToolbox.CreatePlotWindows(profile_name))
+    {
+        Usage();
+        rtn = -1;
+        goto finish;
+    }
 
     // Start main application(event-loop)
-    int rtn = app.exec();
+    rtn = app.exec();
 
 finish:
     dt::Log::Terminate();
     return rtn;
+}
+
+void Usage()
+{
+    printf("artplot: real-time data plot.\n");
+    printf("\n");
+    printf("Usage: artplot [OPTION]...\n");
+    printf("\n");
+    printf("Options:\n");
+    printf("  --profile DATA_PROFILE_NAME   Data profile name.    \n");
+    printf("                                Possible data handlers are \"leoquad\", \"leoquad_w\", \"dualarm\", \"motoraging\", \"quadip\", and \"woly\"\n");
+    printf("  --ip IP_ADDRESS               ip_adress or hostname of the server. (default:localhost)    \n");
+    // printf("\t--port PORT_NUMBER            listening port number of the server.    \n");
+    printf("  --dnum DEBUGDATA_NUM          Number of debug data (length of debugdata array. (default:32) \n");
+    printf("\n");
+    printf("Examples:\n");
+    printf("  artplot --profile leoquad\n");
+    printf("  artview --profile leoquad --ip localhost --dnum 64\n");
 }
