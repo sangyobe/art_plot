@@ -195,7 +195,7 @@ bool MainWindow::CreatePlotWindows(const std::string &profile_name)
         return false;
     }
 
-    QString app_name = QString("%1 v%2 - %3").arg(APP_NAME).arg(ARTPLOT_VERSION_STR).arg(profile_name.c_str());
+    QString app_name = QString("%1 v%2 - %3").arg(APP_NAME).arg(ARTPLOT_VERSION_STR).arg(_dataHandler->GetProfileName().c_str());
     setWindowTitle(app_name);
 
     return true;

@@ -53,7 +53,7 @@ static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
 LeoQuadWheelDataHandler::LeoQuadWheelDataHandler(MainWindow *plotToolbox)
-    : DataHandler(plotToolbox)
+    : DataHandler(plotToolbox, "LeoQuad-Wheel")
 #ifdef ENABLE_COM_POS_PLOT
       ,
       _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))

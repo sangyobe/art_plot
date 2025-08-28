@@ -13,7 +13,7 @@
 
 
 ArbitraryStateDataHandler::ArbitraryStateDataHandler(MainWindow* plotToolbox) 
-: DataHandler(plotToolbox)
+: DataHandler(plotToolbox, "ArbitraryState")
 , _plot(std::make_unique<PlotWindow>(plotToolbox))
 {
     LOG(info) << "ArbitraryStateDataHandler created.";

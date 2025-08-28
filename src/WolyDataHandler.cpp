@@ -29,7 +29,7 @@ constexpr static int jdof = 16;
 constexpr static int legnum = 4;
 
 WolyDataHandler::WolyDataHandler(MainWindow* plotToolbox) 
-: DataHandler(plotToolbox)
+: DataHandler(plotToolbox, "Woly")
 #ifdef ENABLE_COM_POS_PLOT
 , _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif

@@ -29,7 +29,7 @@ constexpr static int jdof = 12;
 constexpr static int legnum = 4;
 
 QuadIPDataHandler::QuadIPDataHandler(MainWindow* plotToolbox) 
-: DataHandler(plotToolbox)
+: DataHandler(plotToolbox, "Quad-IP")
 #ifdef ENABLE_COM_POS_PLOT
 , _plot_comPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif

@@ -30,7 +30,7 @@ static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
 MotorAgingDataHandler::MotorAgingDataHandler(MainWindow *plotToolbox)
-    : DataHandler(plotToolbox)
+    : DataHandler(plotToolbox, "Motor-Aging")
 #ifdef ENABLE_JOINT_POSISION_PLOT
       ,
       _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))

@@ -5,12 +5,16 @@
 #include "plotwindow.h"
 
 class MainWindow;
+
 class DataHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataHandler(MainWindow *plotToolbox);
+    explicit DataHandler(MainWindow *plotToolbox, const char *profileName);
     virtual ~DataHandler();
+
+public:
+    const std::string& GetProfileName() const;
 
 private slots:
     virtual void OnLoadTriggered(QString filename);
@@ -26,6 +30,7 @@ protected:
 
 protected:
     MainWindow* _plotToolbox{nullptr};
+    std::string _profileName;
 };
 
 #endif // DATAHANDLER_H

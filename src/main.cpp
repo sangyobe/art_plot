@@ -80,16 +80,18 @@ void Usage()
 {
     printf("artplot: real-time data plot.\n");
     printf("\n");
-    printf("Usage: artplot [OPTION]...\n");
+    printf("Usage: artplot DATA_PROFILE_NAME [OPTION]...\n");
+    printf("\n");
+    printf("Open real-time plot windows for DATA_PROFILE_NAME.\n");
+    printf("  DATA_PROFILE_NAME         Data profile name.    \n");
+    printf("                            Possible data handlers are \"leoquad\", \"leoquad_w\", \"dualarm\", \"motoraging\", \"quadip\", and \"woly\"\n");
     printf("\n");
     printf("Options:\n");
-    printf("  --profile DATA_PROFILE_NAME   Data profile name.    \n");
-    printf("                                Possible data handlers are \"leoquad\", \"leoquad_w\", \"dualarm\", \"motoraging\", \"quadip\", and \"woly\"\n");
-    printf("  --ip IP_ADDRESS               ip_adress or hostname of the server. (default:localhost)    \n");
-    // printf("\t--port PORT_NUMBER            listening port number of the server.    \n");
-    printf("  --dnum DEBUGDATA_NUM          Number of debug data (length of debugdata array. (default:32) \n");
+    printf("  --ip IP_ADDRESS           ip_adress or hostname of the server. (default:localhost)    \n");
+    // printf("  --port PORT_NUMBER        listening port number of the server.    \n");
+    printf("  --dnum DEBUGDATA_NUM      Number of debug data (length of debugdata array. (default:32) \n");
     printf("\n");
     printf("Examples:\n");
-    printf("  artplot --profile leoquad\n");
-    printf("  artview --profile leoquad --ip localhost --dnum 64\n");
+    printf("  artplot leoquad\n");
+    printf("  artplot leoquad --ip localhost --dnum 64\n");
 }
