@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package dtproto.g1;
+
+import "dtProto/std_msgs/Header.proto";
+import "dtProto/std_msgs/PackedArray.proto";
+import "dtProto/geometry_msgs/Point.proto";
+import "dtProto/geometry_msgs/Vector.proto";
+import "dtProto/sensor_msgs/Imu.proto";
+
+message ThreadState {
+    double ctrlPeriod_ms = 1;
+    double ctrlLoad_ms = 2;
+    double rlPeriod_ms = 3;
+    double rlLoad_ms = 4;
+}
+
+message JointData {
+    double pos_rad = 1;
+    double vel_rps = 2;
+    double acc_rpss = 3;
+    double torq_Nm = 4;
+}
+
+message G1State {
+    repeated JointData actJointData = 1;
+    repeated JointData desJointData = 2;
+    sensor_msgs.Imu pelvisImu = 3;
+    sensor_msgs.Imu torsoImu = 4;
+    ThreadState threadState = 5;
+    std_msgs.PackedDouble arbitraryState = 20;
+    std_msgs.PackedDouble arbitraryStateXY = 21;
+}
+
+message G1StateTimeStamped {
+    std_msgs.Header header = 1;
+    G1State state = 2;
+}

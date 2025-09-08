@@ -6,6 +6,7 @@
 #include "LeoQuadDataHandler.h"
 #include "LeoQuadWheelDataHandler.h"
 #include "MotorAgingDataHandler.h"
+#include "G1DataHandler.h"
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
 #include <QDebug>
@@ -189,6 +190,11 @@ bool MainWindow::CreatePlotWindows(const std::string &profile_name)
     {
         _dataHandler = std::make_unique<WolyDataHandler>(this);
     }
+    else if (profile_lname == "g1" ||
+             profile_lname == "G1")
+    {
+        _dataHandler = std::make_unique<G1DataHandler>(this);
+    }
     else
     {
         qDebug() << "Invalid data profile name.";
@@ -247,7 +253,7 @@ QByteArray MainWindow::SavePlotConfig() const
     QString configstr;
     QTextStream str(&configstr);
 
-    // qDebug() << "SavePlotConfig";
+    // qDebug() << "SavePlotConfig called";
     auto items = _plotListModel->findItems("Realtime plots", Qt::MatchExactly | Qt::MatchRecursive, 0);
     for (QStandardItem *plot_root : items)
     {
@@ -262,21 +268,25 @@ QByteArray MainWindow::SavePlotConfig() const
         }
         break;
     }
-    // qDebug() << configstr;
+    // qDebug() << "SavePlotConfig result:" << configstr;
     return configstr.toUtf8();
 }
 
 bool MainWindow::RestorePlotConfig(const QByteArray &config, const QString &name)
 {
     QString configstr = QString::fromUtf8(config);
-    // qDebug() << "RestorePlotConfig: " << configstr;
+    // qDebug() << "RestorePlotConfig for plot:" << name << "config:" << configstr;
     QList<QByteArray> items = config.split(',');
     int idx = 0;
     while (idx < (items.size() - 1))
     {
-        if (name == items[idx])
+        QString itemName = QString::fromUtf8(items[idx]);
+        int checkState = items[idx + 1].toInt();
+        // qDebug() << "Checking config item:" << itemName << "vs plot name:" << name << "state:" << checkState;
+        if (name == itemName)
         {
-            SetPlotVisible(name, items[idx + 1].toInt() == 0 ? false : true);
+            // qDebug() << "Found match! Setting plot visible:" << (checkState != 0);
+            SetPlotVisible(name, checkState == 0 ? false : true);
             return true;
         }
 
@@ -292,7 +302,17 @@ void MainWindow::SetPlotVisible(const QString &name, bool visible)
     {
         if (citem->parent() && citem->parent()->text() == "Realtime plots")
         {
-            const_cast<QStandardItem *>(citem)->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+            QStandardItem *item = const_cast<QStandardItem *>(citem);
+            item->setCheckState(visible ? Qt::Checked : Qt::Unchecked);
+            
+            // Also set the actual plot window visibility
+            PlotWindow *plotWnd = (PlotWindow *)item->data().value<void *>();
+            if (plotWnd)
+            {
+                plotWnd->setVisible(visible);
+                if (visible)
+                    plotWnd->activateWindow();
+            }
             return;
         }
     }
