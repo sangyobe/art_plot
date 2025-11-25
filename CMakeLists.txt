@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 cmake_policy(SET CMP0048 NEW)
 cmake_policy(SET CMP0071 NEW)
 
-project(artplot VERSION 1.5.0 LANGUAGES CXX)
+project(artplot VERSION 1.5.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)

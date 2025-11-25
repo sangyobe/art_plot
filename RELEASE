@@ -1,3 +1,6 @@
+2025.11.25 [v1.5.1]
+- Support FtSensor.
+
 2025.06.18 [v1.5.0]
 - Add a default command-line argument to select data handler. Possible data handlers are "leoquad", "leoquad_wheel", "dualarm", "motoraging", "quadip", "woly".
 

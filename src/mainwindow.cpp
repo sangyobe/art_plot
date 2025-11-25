@@ -9,6 +9,7 @@
 #include "G1DataHandler.h"
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
+#include "FtSensorDataHandler.h"
 #include <QDebug>
 #include <QVector>
 #include <algorithm> // For std::transform
@@ -194,6 +195,12 @@ bool MainWindow::CreatePlotWindows(const std::string &profile_name)
              profile_lname == "G1")
     {
         _dataHandler = std::make_unique<G1DataHandler>(this);
+    }
+    else if (profile_lname == "ft" ||
+             profile_lname == "Ft" || 
+             profile_lname == "FT")
+    {
+        _dataHandler = std::make_unique<FtSensorDataHandler>(this);
     }
     else
     {
