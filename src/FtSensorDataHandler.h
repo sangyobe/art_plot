@@ -38,6 +38,7 @@ private:
 
 private:
     std::unique_ptr<PlotWindow> _plot_ft{nullptr};
+    std::unique_ptr<PlotWindow> _plot_ft_raw{nullptr};
 
 #ifdef USE_TRANSPORT_ECAL
     std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::ftexp::SensorStateTimeStamped>> _sub_ft;
