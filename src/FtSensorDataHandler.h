@@ -14,7 +14,7 @@
 #include <dtProto/Service.grpc.pb.h>
 #endif
 
-#include <dtProto/sensor_msgs/FtSensor.pb.h>
+#include <proto/FtExp.pb.h>
 
 class FtSensorDataHandler : public DataHandler
 {
@@ -31,19 +31,19 @@ private:
     void BuildPlots();
 
     void OnRecvFtTimeStamped(const char *topic_name,
-                                       const dtproto::sensor_msgs::FtTimeStamped &msg,
+                                       const dtproto::ftexp::SensorStateTimeStamped &msg,
                                        const long long time, const long long clock);
 
-    void OnRecvFt(const double curTime, const dtproto::sensor_msgs::Ft &ft);
+    void OnRecvFt(const double curTime, const dtproto::ftexp::SensorState &ft);
 
 private:
     std::unique_ptr<PlotWindow> _plot_ft{nullptr};
 
 #ifdef USE_TRANSPORT_ECAL
-    std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::sensor_msgs::FtTimeStamped>> _sub_ft;
+    std::unique_ptr<eCAL::protobuf::CSubscriber<dtproto::ftexp::SensorStateTimeStamped>> _sub_ft;
 #endif
 #ifdef USE_TRANSPORT_GRPC
-    std::unique_ptr<dt::DAQ::StateSubscriberGrpc<dtproto::sensor_msgs::FtTimeStamped>> _sub_ft;
+    std::unique_ptr<dt::DAQ::StateSubscriberGrpc<dtproto::ftexp::SensorStateTimeStamped>> _sub_ft;
     std::thread _sub_reconnector;
     std::atomic<bool> _sub_reconnector_running;
 #endif
