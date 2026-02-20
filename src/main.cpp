@@ -78,7 +78,7 @@ finish:
 
 void Usage()
 {
-    printf("artplot: real-time data plot.\n");
+    printf("%s: real-time data plot.\n", APP_NAME_WITH_VERSION);
     printf("\n");
     printf("Usage: artplot DATA_PROFILE_NAME [OPTION]...\n");
     printf("\n");
