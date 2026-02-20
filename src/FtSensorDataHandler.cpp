@@ -26,7 +26,8 @@ FtSensorDataHandler::FtSensorDataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox, "Ft")
 #ifdef ENABLE_FT_PLOT
       ,
-      _plot_ft(std::make_unique<PlotWindow>(plotToolbox))
+      _plot_ft(std::make_unique<PlotWindow>(plotToolbox)),
+      _plot_ft_raw(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 {
     LOG(info) << "FtSensorDataHandler created.";
@@ -48,19 +49,37 @@ void FtSensorDataHandler::BuildPlots()
 #ifdef ENABLE_FT_PLOT
     // _plot_ft = std::make_unique<PlotWindow>(_plotToolbox);
     _plot_ft->SetWindowTitle("Ft");
-    _plot_ft->AddGraph("Force.x", LineColor<0>());
-    _plot_ft->AddGraph("Force.y", LineColor<1>());
-    _plot_ft->AddGraph("Force.z", LineColor<2>());
-    _plot_ft->AddGraph("Torque.x", LineColor<3>());
-    _plot_ft->AddGraph("Torque.y", LineColor<4>());
-    _plot_ft->AddGraph("Torque.z", LineColor<5>());
+    _plot_ft->AddGraph("RFTS.Force.x", LineColor<0>());
+    _plot_ft->AddGraph("RFTS.Force.y", LineColor<1>());
+    _plot_ft->AddGraph("RFTS.Force.z", LineColor<2>());
+    _plot_ft->AddGraph("RFTS.Torque.x", LineColor<3>());
+    _plot_ft->AddGraph("RFTS.Torque.y", LineColor<4>());
+    _plot_ft->AddGraph("RFTS.Torque.z", LineColor<5>());
+
+    _plot_ft->AddGraph("AFTS.Force.x", LineColor<6>());
+    _plot_ft->AddGraph("AFTS.Force.y", LineColor<7>());
+    _plot_ft->AddGraph("AFTS.Force.z", LineColor<8>());
+    _plot_ft->AddGraph("AFTS.Torque.x", LineColor<9>());
+    _plot_ft->AddGraph("AFTS.Torque.y", LineColor<10>());
+    _plot_ft->AddGraph("AFTS.Torque.z", LineColor<11>());
     _plot_ft->show();
     RegisterPlot(_plot_ft.get());
+
+    _plot_ft_raw->SetWindowTitle("Raw");
+    _plot_ft_raw->AddGraph("RFTS.Raw[0]", LineColor<0>());
+    _plot_ft_raw->AddGraph("RFTS.Raw[1]", LineColor<1>());
+    _plot_ft_raw->AddGraph("RFTS.Raw[2]", LineColor<2>());
+    _plot_ft_raw->AddGraph("RFTS.Raw[3]", LineColor<3>());
+    _plot_ft_raw->AddGraph("RFTS.Raw[4]", LineColor<4>());
+    _plot_ft_raw->AddGraph("RFTS.Raw[5]", LineColor<5>());
+    _plot_ft_raw->show();
+    RegisterPlot(_plot_ft_raw.get());
+
 #endif
 
     // 데이터 연결
 #ifdef USE_TRANSPORT_ECAL
-    _sub_ft = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::sensor_msgs::FtTimeStamped>>("Ft");
+    _sub_ft = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::ftexp::SensorStateTimeStamped>>("Ft");
     _sub_ft->AddReceiveCallback(std::bind(
         &FtSensorDataHandler::OnRecvFtTimeStamped, this,
         std::placeholders::_1, std::placeholders::_2,
@@ -77,8 +96,8 @@ void FtSensorDataHandler::BuildPlots()
     }
     std::string svr_address = string_format("%s:%d", ip.c_str(), port);
 
-    _sub_ft = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::sensor_msgs::FtTimeStamped>>("Ft", svr_address);
-    std::function<void(dtproto::sensor_msgs::FtTimeStamped &)> handler = [this](dtproto::sensor_msgs::FtTimeStamped &msg)
+    _sub_ft = std::make_unique<dt::DAQ::StateSubscriberGrpc<dtproto::ftexp::SensorStateTimeStamped>>("Ft", svr_address);
+    std::function<void(dtproto::ftexp::SensorStateTimeStamped &)> handler = [this](dtproto::ftexp::SensorStateTimeStamped &msg)
     {
         this->OnRecvFtTimeStamped("", msg, 0, this->_data_seq++);
     };
@@ -100,7 +119,7 @@ void FtSensorDataHandler::BuildPlots()
 }
 
 void FtSensorDataHandler::OnRecvFtTimeStamped(const char *topic_name,
-                                              const dtproto::sensor_msgs::FtTimeStamped &msg,
+                                              const dtproto::ftexp::SensorStateTimeStamped &msg,
                                               const long long time, const long long clock)
 {
     uint32_t seq = msg.header().seq();
@@ -117,7 +136,7 @@ void FtSensorDataHandler::OnRecvFtTimeStamped(const char *topic_name,
         _data_seq_zero_time = curTime;
     curTime -= _data_seq_zero_time;
 
-    OnRecvFt(curTime, msg.ft());
+    OnRecvFt(curTime, msg.state());
 
 #ifdef PRINT_PUB_SUB_INFO
     qDebug() << "------------------------------------------";
@@ -141,18 +160,39 @@ void FtSensorDataHandler::OnRecvFtTimeStamped(const char *topic_name,
 #endif // PRINT_PUB_SUB_INFO
 }
 
-void FtSensorDataHandler::OnRecvFt(const double curTime, const dtproto::sensor_msgs::Ft &ft)
+void FtSensorDataHandler::OnRecvFt(const double curTime, const dtproto::ftexp::SensorState &state)
 {
     if (_plot_ft && (_plot_ft->isVisible() || IsFetchInvisibleData()))
     {
-        _plot_ft->AddData(0, curTime, ft.force().x());
-        _plot_ft->AddData(1, curTime, ft.force().y());
-        _plot_ft->AddData(2, curTime, ft.force().z());
-        _plot_ft->AddData(3, curTime, ft.torque().x());
-        _plot_ft->AddData(4, curTime, ft.torque().y());
-        _plot_ft->AddData(5, curTime, ft.torque().z());
+        _plot_ft->AddData(0, curTime, state.rfts().force().x()*1E-6f);
+        _plot_ft->AddData(1, curTime, state.rfts().force().y()*1E-6f);
+        _plot_ft->AddData(2, curTime, state.rfts().force().z()*1E-6f);
+        _plot_ft->AddData(3, curTime, state.rfts().torque().x()*1E-6f);
+        _plot_ft->AddData(4, curTime, state.rfts().torque().y()*1E-6f);
+        _plot_ft->AddData(5, curTime, state.rfts().torque().z()*1E-6f);
+
+        _plot_ft->AddData(6, curTime,  state.afts().force().x()*1E-6f);
+        _plot_ft->AddData(7, curTime,  state.afts().force().y()*1E-6f);
+        _plot_ft->AddData(8, curTime,  state.afts().force().z()*1E-6f);
+        _plot_ft->AddData(9, curTime,  state.afts().torque().x()*1E-6f);
+        _plot_ft->AddData(10, curTime, state.afts().torque().y()*1E-6f);
+        _plot_ft->AddData(11, curTime, state.afts().torque().z()*1E-6f);
+
         _plot_ft->DataUpdated(curTime);
     }
+
+    if (_plot_ft_raw && (_plot_ft_raw->isVisible() || IsFetchInvisibleData()))
+    {
+        _plot_ft_raw->AddData(0, curTime, state.rfts().raw().a1());
+        _plot_ft_raw->AddData(1, curTime, state.rfts().raw().a2());
+        _plot_ft_raw->AddData(2, curTime, state.rfts().raw().a3());
+        _plot_ft_raw->AddData(3, curTime, state.rfts().raw().a4());
+        _plot_ft_raw->AddData(4, curTime, state.rfts().raw().a5());
+        _plot_ft_raw->AddData(5, curTime, state.rfts().raw().a6());
+
+        _plot_ft_raw->DataUpdated(curTime);
+    }
+
 }
 
 void FtSensorDataHandler::OnLoadTriggered(QString filename)
@@ -184,7 +224,7 @@ void FtSensorDataHandler::OnLoadTriggered(QString filename)
             continue;
         }
 
-        dtproto::sensor_msgs::FtTimeStamped message;
+        dtproto::ftexp::SensorStateTimeStamped message;
         if (!message.ParseFromArray(static_cast<const void *>(itr->message.data), itr->message.dataSize))
         {
             qDebug() << "could not parse " << schemaName.c_str();

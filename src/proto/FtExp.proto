@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dtproto.ftexp;
+
+import "dtProto/std_msgs/Header.proto";
+import "dtProto/sensor_msgs/FtSensor.proto";
+
+message ThreadState {
+    double ctrlPeriod_ms = 1;
+    double ctrlLoad_ms = 2;
+}
+
+message ControlState {
+}
+
+message SensorState {
+    sensor_msgs.Ft rfts = 1;
+    sensor_msgs.Ft afts = 2;
+}
+
+message SensorStateTimeStamped {
+  std_msgs.Header header = 1;
+  SensorState state = 2;
+}
