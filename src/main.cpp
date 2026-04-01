@@ -84,7 +84,16 @@ void Usage()
     printf("\n");
     printf("Open real-time plot windows for DATA_PROFILE_NAME.\n");
     printf("  DATA_PROFILE_NAME         Data profile name.    \n");
-    printf("                            Possible data handlers are \"leoquad\", \"leoquad_w\", \"dualarm\", \"motoraging\", \"quadip\", \"woly\", and \"g1\"\n");
+    printf("                            Possible data profiles are,\n");
+    printf("                                leoquad    : Quadruped roobt, LeoQuad \n");
+    printf("                                leoquad_w  : Quadruped with wheels, LeoQuad-w \n");
+    printf("                                dualarm    : PonyKA (14-dof dual-arm + 3-dof torso)  \n");
+    printf("                                ponytal    : PonyTAL (14-dof dual-arm + 2-dof arm elevation) \n");
+    printf("                                motoraging : Motor aging application \n");
+    printf("                                quadip     : Quad-IP (deprecated) \n");
+    printf("                                woly       : Woly (deprecated) \n");
+    printf("                                g1         : Unitree G1 \n");
+    printf("                                myrobot    : dtAppTemplate \n");
     printf("\n");
     printf("Options:\n");
     printf("  --ip IP_ADDRESS           ip_adress or hostname of the server. (default:localhost)    \n");

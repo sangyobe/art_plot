@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include "ArbitraryStateDataHandler.h"
 #include "DualArmDataHandler.h"
+#include "PonyTALDataHandler.h"
 #include "LeoQuadDataHandler.h"
 #include "LeoQuadWheelDataHandler.h"
 #include "MotorAgingDataHandler.h"
@@ -10,6 +11,7 @@
 #include "QuadIPDataHandler.h"
 #include "WolyDataHandler.h"
 #include "FtSensorDataHandler.h"
+#include "MyRobotDataHandler.h"
 #include <QDebug>
 #include <QVector>
 #include <algorithm> // For std::transform
@@ -170,9 +172,16 @@ bool MainWindow::CreatePlotWindows(const std::string &profile_name)
         _dataHandler = std::make_unique<LeoQuadWheelDataHandler>(this);
     }
     else if (profile_lname == "dualarm" || 
-             profile_lname == "da")
+             profile_lname == "da" ||
+             profile_lname == "ponyka" ||
+             profile_lname == "pk")
     {
         _dataHandler = std::make_unique<DualArmDataHandler>(this);
+    }
+    else if (profile_lname == "ponytal" || 
+             profile_lname == "pt")
+    {
+        _dataHandler = std::make_unique<PonyTALDataHandler>(this);
     }
     else if (profile_lname == "motoraging" || 
              profile_lname == "ma")
@@ -201,6 +210,10 @@ bool MainWindow::CreatePlotWindows(const std::string &profile_name)
              profile_lname == "FT")
     {
         _dataHandler = std::make_unique<FtSensorDataHandler>(this);
+    }
+    else if (profile_lname == "myrobot")
+    {
+        _dataHandler = std::make_unique<MyRobotDataHandler>(this);
     }
     else
     {

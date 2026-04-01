@@ -1,5 +1,5 @@
-#ifndef DUALARMATAHANDLER_H
-#define DUALARMATAHANDLER_H
+#ifndef DUALARMDATAHANDLER_H
+#define DUALARMDATAHANDLER_H
 
 #include "config.h"
 #include "datahandler.h"
@@ -88,4 +88,4 @@ private slots:
     void OnClearTriggered() override;
 };
 
-#endif // DUALARMATAHANDLER_H
+#endif // DUALARMDATAHANDLER_H
