@@ -4,6 +4,7 @@
 #include "ArbitraryStateDataHandler.h"
 #include "DualArmDataHandler.h"
 #include "PonyTALDataHandler.h"
+#include "BMR2DataHandler.h"
 #include "LeoQuadDataHandler.h"
 #include "LeoQuadWheelDataHandler.h"
 #include "MotorAgingDataHandler.h"
@@ -182,6 +183,10 @@ bool MainWindow::CreatePlotWindows(const std::string &profile_name)
              profile_lname == "pt")
     {
         _dataHandler = std::make_unique<PonyTALDataHandler>(this);
+    }
+    else if (profile_lname == "bmr2")
+    {
+        _dataHandler = std::make_unique<BMR2DataHandler>(this);
     }
     else if (profile_lname == "motoraging" || 
              profile_lname == "ma")

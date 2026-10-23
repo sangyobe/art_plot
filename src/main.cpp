@@ -89,6 +89,7 @@ void Usage()
     printf("                                leoquad_w  : Quadruped with wheels, LeoQuad-w \n");
     printf("                                dualarm    : PonyKA (14-dof dual-arm + 3-dof torso)  \n");
     printf("                                ponytal    : PonyTAL (14-dof dual-arm + 2-dof arm elevation) \n");
+    printf("                                bmr2       : BMR2 (14-dof dual-arm + 4-dof torso + 2-dof neck + 8-dof plud) \n");
     printf("                                motoraging : Motor aging application \n");
     printf("                                quadip     : Quad-IP (deprecated) \n");
     printf("                                woly       : Woly (deprecated) \n");
