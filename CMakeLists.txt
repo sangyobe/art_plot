@@ -27,7 +27,7 @@ endif()
 set(CMAKE_INSTALL_PREFIX "${ARTF_INSTALL_DIR}")
 list(APPEND CMAKE_PREFIX_PATH "${ARTF_INSTALL_DIR}")
 
-# list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/Qt/6.9.1/gcc_64/") # set Qt install prefix path
+list(APPEND CMAKE_PREFIX_PATH "$ENV{Qt6_DIR}") # set Qt install prefix path
 
 # Find packages
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
