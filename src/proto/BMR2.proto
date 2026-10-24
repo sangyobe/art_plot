@@ -7,6 +7,7 @@ import "dtProto/std_msgs/Header.proto";
 import "dtProto/std_msgs/PackedArray.proto";
 import "dtProto/geometry_msgs/Point.proto";
 import "dtProto/geometry_msgs/Pose.proto";
+import "google/protobuf/timestamp.proto";
 
 message ThreadState {
   double ctrlPeriod_ms = 1;
@@ -34,6 +35,7 @@ message JointState {
   float mcuTemp_C = 8;
   float invTemp_C = 9;
   float inputVolt_V = 10;
+  uint32 id = 11;
 }
 
 message JointData {
@@ -42,6 +44,7 @@ message JointData {
   double vel_rps = 3;    // main sensor data
   double acc_rpss = 4;
   double torq_Nm = 5;
+  uint32 id = 6;
 }
 
 message ControlState {}
@@ -49,7 +52,9 @@ message ControlState {}
 message FTSensorData {
     repeated double force = 1;
     repeated double torque = 2;
-    uint32 status_code = 3;
+    uint32 status = 3;
+    google.protobuf.Timestamp time = 4;
+    uint32 id = 5;
 }
 
 message BMR2State {

@@ -46,6 +46,7 @@ private:
     void OnRecvThreadState(const double curTime, const dtproto::bmr2::ThreadState &state);
     void OnRecvArbitraryState(const double curTime, const dtproto::std_msgs::PackedDouble &state);
     void OnRecvArbitraryStateXY(const double curTime, const dtproto::std_msgs::PackedDouble &state);
+    void OnRecvFtState(const double curTime, const google::protobuf::RepeatedPtrField<dtproto::bmr2::FTSensorData> &state);
 
 private:
     std::unique_ptr<PlotWindow> _plot_threadState{nullptr};
@@ -58,6 +59,7 @@ private:
     std::unique_ptr<PlotWindow> _plot_taskTau{nullptr};
     std::unique_ptr<PlotWindow> _plot_incEnc{nullptr};
     std::unique_ptr<PlotWindow> _plot_absEnc{nullptr};
+    std::unique_ptr<PlotWindow> _plot_ftSensor{nullptr};
 
     // for plotting user-defined debug data array
     std::unique_ptr<PlotWindow> _plot_debugData{nullptr};

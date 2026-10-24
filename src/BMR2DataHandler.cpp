@@ -17,91 +17,85 @@
 
 // #define PRINT_PUB_SUB_INFO
 
-// #define ENABLE_JOINT_POSISION_PLOT
-// #define ENABLE_JOINT_VELOCITY_PLOT
+#define ENABLE_JOINT_POSISION_PLOT
+#define ENABLE_JOINT_VELOCITY_PLOT
 // #define ENABLE_JOINT_ACCELERATION_PLOT
-// #define ENABLE_JOINT_TORQUE_PLOT
-// #define ENABLE_TASK_POSISION_PLOT
-// #define ENABLE_TASK_VELOCITY_PLOT
+#define ENABLE_JOINT_TORQUE_PLOT
+#define ENABLE_TASK_POSISION_PLOT
+#define ENABLE_TASK_VELOCITY_PLOT
 // #define ENABLE_TASK_TORQUE_PLOT
 // #define ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
 // #define ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
 // #define ENABLE_THREAD_STATE_PLOT
 #define ENABLE_DEBUG_DATA_PLOT
 // #define ENABLE_DEBUG_DATA_XY_PLOT
+#define ENABLE_FT_DATA_PLOT
 
 constexpr static int jdof = 28;
 constexpr static int armnum = 2;
 constexpr static int tasknum = 2;
+constexpr static int ftnum = 2;
 
 static std::string jointgroupname[jdof] = {
-    "LArm", "LArm", "LArm", "LArm", "LArm", "LArm", "LArm",
-    "RArm", "RArm", "RArm", "RArm", "RArm", "RArm", "RArm",
+    "Plud", "Plud", "Plud", "Plud", "Plud", "Plud", "Plud", "Plud",
     "Torso", "Torso", "Torso", "Torso",
     "Neck", "Neck",
-    "Plud", "Plud", "Plud", "Plud", "Plud", "Plud", "Plud", "Plud"
+    "LArm", "LArm", "LArm", "LArm", "LArm", "LArm", "LArm",
+    "RArm", "RArm", "RArm", "RArm", "RArm", "RArm", "RArm"
 };
 static std::string jointname[jdof] = {
-    "L1", "L2", "L3", "L4", "L5", "L6", "L7",
-    "R1", "R2", "R3", "R4", "R5", "R6", "R7",
+    "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8",
     "T1", "T2", "T3", "T4", 
     "N1", "N2",
-    "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8" 
+    "L1", "L2", "L3", "L4", "L5", "L6", "L7",
+    "R1", "R2", "R3", "R4", "R5", "R6", "R7"
 };
-static std::string armname[armnum] = {"LArm", "RArm"};
-static std::string taskname[armnum] = {"eeL", "eeR"};
+static std::string armname[armnum] = {"RArm", "LArm"};
+static std::string taskname[armnum] = {"eeR", "eeL"};
+static std::string ftname[armnum] = {"ftL", "ftR"};
 static const double RAD2DEG = 57.295779513; //! 180.0f/M_PI
 static const double DEG2RAD = 0.0174532925; //! M_PI/180.0f
 
 BMR2DataHandler::BMR2DataHandler(MainWindow *plotToolbox)
     : DataHandler(plotToolbox, "BMR2")
 #ifdef ENABLE_JOINT_POSISION_PLOT
-      ,
-      _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_VELOCITY_PLOT
-      ,
-      _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_ACCELERATION_PLOT
-      ,
-      _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointAcc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_TORQUE_PLOT
-      ,
-      _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_jointTau(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_TASK_POSISION_PLOT
-      ,
-      _plot_taskPos(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_taskPos(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_TASK_VELOCITY_PLOT
-      ,
-      _plot_taskVel(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_taskVel(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_TASK_TORQUE_PLOT
-      ,
-      _plot_taskTau(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_taskTau(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_INCREMENTAL_ENCODER_PLOT
-      ,
-      _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_incEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_JOINT_ABSOLUTE_ENCODER_PLOT
-      ,
-      _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_absEnc(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_THREAD_STATE_PLOT
-      ,
-      _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_threadState(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_DEBUG_DATA_PLOT
-      ,
-      _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_debugData(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 #ifdef ENABLE_DEBUG_DATA_XY_PLOT
-      ,
-      _plot_debugDataXY(std::make_unique<PlotWindow>(plotToolbox))
+    , _plot_debugDataXY(std::make_unique<PlotWindow>(plotToolbox))
+#endif
+#ifdef ENABLE_FT_DATA_PLOT
+    , _plot_ftSensor(std::make_unique<PlotWindow>(plotToolbox))
 #endif
 {
     LOG(info) << "BMR2DataHandler created.";
@@ -294,6 +288,24 @@ void BMR2DataHandler::BuildPlots()
     RegisterPlot(_plot_debugDataXY.get());
 #endif
 
+#ifdef ENABLE_FT_DATA_PLOT
+    //_plot_ftSensor = std::make_unique<PlotWindow>(_plotToolbox);
+    _plot_ftSensor->SetWindowTitle("F/T Sensor");
+    for (int fi = 0; fi < ftnum; fi++)
+    {
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".force.x"), LineColor(fi * 7 + 0), ftname[fi].c_str());
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".force.y"), LineColor(fi * 7 + 1), ftname[fi].c_str());
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".force.z"), LineColor(fi * 7 + 2), ftname[fi].c_str());
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".torque.x"), LineColor(fi * 7 + 3), ftname[fi].c_str());
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".torque.y"), LineColor(fi * 7 + 4), ftname[fi].c_str());
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".torque.z"), LineColor(fi * 7 + 5), ftname[fi].c_str());
+        _plot_ftSensor->AddGraph((QString(ftname[fi].c_str()) + ".status"), LineColor(fi * 7 + 6), ftname[fi].c_str());
+    }
+
+    _plot_ftSensor->show();
+    RegisterPlot(_plot_ftSensor.get());
+#endif
+
     // 데이터 연결
 #ifdef USE_TRANSPORT_ECAL
     _sub_state = std::make_unique<eCAL::protobuf::CSubscriber<dtproto::bmr2::BMR2StateTimeStamped>>("RobotState");
@@ -385,6 +397,7 @@ void BMR2DataHandler::OnRecvBMR2State(const double curTime, const dtproto::bmr2:
     OnRecvThreadState(curTime, state.threadstate());
     OnRecvArbitraryState(curTime, state.arbitrarystate());
     OnRecvArbitraryStateXY(curTime, state.arbitrarystatexy());
+    OnRecvFtState(curTime, state.ftsensordata());
 }
 
 void BMR2DataHandler::OnRecvControlState(const double curTime, const dtproto::bmr2::ControlState &actState, const dtproto::bmr2::ControlState &desState)
@@ -396,129 +409,172 @@ void BMR2DataHandler::OnRecvJointState(const double curTime,
                                           const google::protobuf::RepeatedPtrField<dtproto::bmr2::JointData> &actData,
                                           const google::protobuf::RepeatedPtrField<dtproto::bmr2::JointData> &desData)
 {
-    if (_plot_jointPos)
+    bool plot_jointPos_updated = false;
+    bool plot_jointVel_updated = false;
+    bool plot_jointAcc_updated = false;
+    bool plot_jointTau_updated = false;
+    bool plot_absEnc_updated = false;
+    bool plot_incEnc_updated = false;
+    
+    for (auto &data : state)
     {
-        for (int ji = 0; ji < jdof; ji++)
+        int ji = data.id();
+
+        if (_plot_absEnc)
         {
-            _plot_jointPos->AddData(
-                2 * ji, curTime, desData.Get(ji).pos_rad());
-            _plot_jointPos->AddData(
-                2 * ji + 1, curTime, actData.Get(ji).pos_rad());
+            _plot_absEnc->AddData(ji, curTime, data.abspos_cnt());
+            plot_absEnc_updated = true;
         }
-        _plot_jointPos->DataUpdated(curTime);
+        if (_plot_incEnc)
+        {
+            _plot_incEnc->AddData(ji, curTime, data.incpos_cnt());
+            plot_incEnc_updated = true;
+        }
     }
-    if (_plot_jointVel)
+
+    for (auto &data : actData)
     {
-        for (int ji = 0; ji < jdof; ji++)
+        int ji = data.id();
+
+        if (_plot_jointPos)
         {
-            _plot_jointVel->AddData(
-                2 * ji, curTime, desData.Get(ji).vel_rps());
-            _plot_jointVel->AddData(
-                2 * ji + 1, curTime, actData.Get(ji).vel_rps());
+            _plot_jointPos->AddData(2 * ji + 1, curTime, data.pos_rad());
+            plot_jointPos_updated = true;
         }
-        _plot_jointVel->DataUpdated(curTime);
+        if (_plot_jointVel)
+        {
+            _plot_jointVel->AddData(2 * ji + 1, curTime, data.vel_rps());
+            plot_jointVel_updated = true;
+        }
+        if (_plot_jointAcc)
+        {
+            _plot_jointAcc->AddData(2 * ji + 1, curTime, data.acc_rpss());
+            plot_jointAcc_updated = true;
+        }
+        if (_plot_jointTau)
+        {
+            _plot_jointTau->AddData(2 * ji + 1, curTime, data.torq_nm());
+            plot_jointTau_updated = true;
+        }
     }
-    if (_plot_jointAcc)
+
+    for (auto &data : desData)
     {
-        for (int ji = 0; ji < jdof; ji++)
+        int ji = data.id();
+
+        if (_plot_jointPos)
         {
-            _plot_jointAcc->AddData(
-                2 * ji, curTime, desData.Get(ji).acc_rpss());
-            _plot_jointAcc->AddData(
-                2 * ji + 1, curTime, actData.Get(ji).acc_rpss());
+            _plot_jointPos->AddData(2 * ji, curTime, data.pos_rad());
+            plot_jointPos_updated = true;
         }
-        _plot_jointAcc->DataUpdated(curTime);
-    }
-    if (_plot_jointTau)
-    {
-        for (int ji = 0; ji < jdof; ji++)
+        if (_plot_jointVel)
         {
-            _plot_jointTau->AddData(
-                2 * ji, curTime, desData.Get(ji).torq_nm());
-            _plot_jointTau->AddData(
-                2 * ji + 1, curTime, actData.Get(ji).torq_nm());
+            _plot_jointVel->AddData(2 * ji, curTime, data.vel_rps());
+            plot_jointVel_updated = true;
         }
-        _plot_jointTau->DataUpdated(curTime);
-    }
-    if (_plot_absEnc)
-    {
-        for (int ji = 0; ji < jdof; ji++)
+        if (_plot_jointAcc)
         {
-            _plot_absEnc->AddData(ji, curTime, state.Get(ji).abspos_cnt());
+            _plot_jointAcc->AddData(2 * ji, curTime, data.acc_rpss());
+            plot_jointAcc_updated = true;
         }
-        _plot_absEnc->DataUpdated(curTime);
-    }
-    if (_plot_incEnc)
-    {
-        for (int ji = 0; ji < jdof; ji++)
+        if (_plot_jointTau)
         {
-            _plot_incEnc->AddData(ji, curTime, state.Get(ji).incpos_cnt());
+            _plot_jointTau->AddData(2 * ji, curTime, data.torq_nm());
+            plot_jointTau_updated = true;
         }
-        _plot_incEnc->DataUpdated(curTime);
     }
+
+    if (plot_jointPos_updated) _plot_jointPos->DataUpdated(curTime);
+    if (plot_jointVel_updated) _plot_jointVel->DataUpdated(curTime);
+    if (plot_jointAcc_updated) _plot_jointAcc->DataUpdated(curTime);
+    if (plot_jointTau_updated) _plot_jointTau->DataUpdated(curTime);
+    if (plot_absEnc_updated) _plot_absEnc->DataUpdated(curTime);
+    if (plot_incEnc_updated) _plot_incEnc->DataUpdated(curTime);
 }
 
 void BMR2DataHandler::OnRecvTaskState(const double curTime,
                                          const google::protobuf::RepeatedPtrField<dtproto::bmr2::TaskState> &actState,
                                          const google::protobuf::RepeatedPtrField<dtproto::bmr2::TaskState> &desState)
 {
-    if (_plot_taskPos)
+    bool plot_taskPos_updated = false;
+    bool plot_taskVel_updated = false;
+    bool plot_taskTau_updated = false;
+
+    for (auto &data : actState)
     {
-        for (int ti = 0; ti < tasknum; ti++)
+        int ti = data.id();
+
+        if (_plot_taskPos)
         {
-            _plot_taskPos->AddData(ti * 12 + 0, curTime, desState.Get(ti).pos().x());
-            _plot_taskPos->AddData(ti * 12 + 1, curTime, desState.Get(ti).pos().y());
-            _plot_taskPos->AddData(ti * 12 + 2, curTime, desState.Get(ti).pos().z());
-            _plot_taskPos->AddData(ti * 12 + 3, curTime, desState.Get(ti).rot().x());
-            _plot_taskPos->AddData(ti * 12 + 4, curTime, desState.Get(ti).rot().y());
-            _plot_taskPos->AddData(ti * 12 + 5, curTime, desState.Get(ti).rot().z());
-            _plot_taskPos->AddData(ti * 12 + 6, curTime, actState.Get(ti).pos().x());
-            _plot_taskPos->AddData(ti * 12 + 7, curTime, actState.Get(ti).pos().y());
-            _plot_taskPos->AddData(ti * 12 + 8, curTime, actState.Get(ti).pos().z());
-            _plot_taskPos->AddData(ti * 12 + 9, curTime, actState.Get(ti).rot().x());
-            _plot_taskPos->AddData(ti * 12 + 10, curTime, actState.Get(ti).rot().y());
-            _plot_taskPos->AddData(ti * 12 + 11, curTime, actState.Get(ti).rot().z());
+            _plot_taskPos->AddData(ti * 12 + 6, curTime, data.pos().x());
+            _plot_taskPos->AddData(ti * 12 + 7, curTime, data.pos().y());
+            _plot_taskPos->AddData(ti * 12 + 8, curTime, data.pos().z());
+            _plot_taskPos->AddData(ti * 12 + 9, curTime, data.rot().x());
+            _plot_taskPos->AddData(ti * 12 + 10, curTime, data.rot().y());
+            _plot_taskPos->AddData(ti * 12 + 11, curTime, data.rot().z());
+            plot_taskPos_updated = true;
         }
-        _plot_taskPos->DataUpdated(curTime);
+        if (_plot_taskVel)
+        {
+            _plot_taskVel->AddData(ti * 12 + 6, curTime, data.linvel().x());
+            _plot_taskVel->AddData(ti * 12 + 7, curTime, data.linvel().y());
+            _plot_taskVel->AddData(ti * 12 + 8, curTime, data.linvel().z());
+            _plot_taskVel->AddData(ti * 12 + 9, curTime, data.angvel().x());
+            _plot_taskVel->AddData(ti * 12 + 10, curTime, data.angvel().y());
+            _plot_taskVel->AddData(ti * 12 + 11, curTime, data.angvel().z());
+            plot_taskVel_updated = true;
+        }
+        if (_plot_taskTau)
+        {
+            _plot_taskTau->AddData(ti * 12 + 6, curTime, data.force().x());
+            _plot_taskTau->AddData(ti * 12 + 7, curTime, data.force().y());
+            _plot_taskTau->AddData(ti * 12 + 8, curTime, data.force().z());
+            _plot_taskTau->AddData(ti * 12 + 9, curTime, data.moment().x());
+            _plot_taskTau->AddData(ti * 12 + 10, curTime, data.moment().y());
+            _plot_taskTau->AddData(ti * 12 + 11, curTime, data.moment().z());
+            plot_taskTau_updated = true;
+        }
     }
-    if (_plot_taskVel)
+
+    for (auto &data : desState)
     {
-        for (int ti = 0; ti < tasknum; ti++)
+        int ti = data.id();
+
+        if (_plot_taskPos)
         {
-            _plot_taskVel->AddData(ti * 12 + 0, curTime, desState.Get(ti).linvel().x());
-            _plot_taskVel->AddData(ti * 12 + 1, curTime, desState.Get(ti).linvel().y());
-            _plot_taskVel->AddData(ti * 12 + 2, curTime, desState.Get(ti).linvel().z());
-            _plot_taskVel->AddData(ti * 12 + 3, curTime, desState.Get(ti).angvel().x());
-            _plot_taskVel->AddData(ti * 12 + 4, curTime, desState.Get(ti).angvel().y());
-            _plot_taskVel->AddData(ti * 12 + 5, curTime, desState.Get(ti).angvel().z());
-            _plot_taskVel->AddData(ti * 12 + 6, curTime, actState.Get(ti).linvel().x());
-            _plot_taskVel->AddData(ti * 12 + 7, curTime, actState.Get(ti).linvel().y());
-            _plot_taskVel->AddData(ti * 12 + 8, curTime, actState.Get(ti).linvel().z());
-            _plot_taskVel->AddData(ti * 12 + 9, curTime, actState.Get(ti).angvel().x());
-            _plot_taskVel->AddData(ti * 12 + 10, curTime, actState.Get(ti).angvel().y());
-            _plot_taskVel->AddData(ti * 12 + 11, curTime, actState.Get(ti).angvel().z());
+            _plot_taskPos->AddData(ti * 12 + 0, curTime, data.pos().x());
+            _plot_taskPos->AddData(ti * 12 + 1, curTime, data.pos().y());
+            _plot_taskPos->AddData(ti * 12 + 2, curTime, data.pos().z());
+            _plot_taskPos->AddData(ti * 12 + 3, curTime, data.rot().x());
+            _plot_taskPos->AddData(ti * 12 + 4, curTime, data.rot().y());
+            _plot_taskPos->AddData(ti * 12 + 5, curTime, data.rot().z());
+            plot_taskPos_updated = true;
         }
-        _plot_taskVel->DataUpdated(curTime);
-    }
-    if (_plot_taskTau)
-    {
-        for (int ti = 0; ti < tasknum; ti++)
+        if (_plot_taskVel)
         {
-            _plot_taskTau->AddData(ti * 12 + 0, curTime, desState.Get(ti).force().x());
-            _plot_taskTau->AddData(ti * 12 + 1, curTime, desState.Get(ti).force().y());
-            _plot_taskTau->AddData(ti * 12 + 2, curTime, desState.Get(ti).force().z());
-            _plot_taskTau->AddData(ti * 12 + 3, curTime, desState.Get(ti).moment().x());
-            _plot_taskTau->AddData(ti * 12 + 4, curTime, desState.Get(ti).moment().y());
-            _plot_taskTau->AddData(ti * 12 + 5, curTime, desState.Get(ti).moment().z());
-            _plot_taskTau->AddData(ti * 12 + 6, curTime, actState.Get(ti).force().x());
-            _plot_taskTau->AddData(ti * 12 + 7, curTime, actState.Get(ti).force().y());
-            _plot_taskTau->AddData(ti * 12 + 8, curTime, actState.Get(ti).force().z());
-            _plot_taskTau->AddData(ti * 12 + 9, curTime, actState.Get(ti).moment().x());
-            _plot_taskTau->AddData(ti * 12 + 10, curTime, actState.Get(ti).moment().y());
-            _plot_taskTau->AddData(ti * 12 + 11, curTime, actState.Get(ti).moment().z());
+            _plot_taskVel->AddData(ti * 12 + 0, curTime, data.linvel().x());
+            _plot_taskVel->AddData(ti * 12 + 1, curTime, data.linvel().y());
+            _plot_taskVel->AddData(ti * 12 + 2, curTime, data.linvel().z());
+            _plot_taskVel->AddData(ti * 12 + 3, curTime, data.angvel().x());
+            _plot_taskVel->AddData(ti * 12 + 4, curTime, data.angvel().y());
+            _plot_taskVel->AddData(ti * 12 + 5, curTime, data.angvel().z());
+            plot_taskVel_updated = true;
         }
-        _plot_taskTau->DataUpdated(curTime);
+        if (_plot_taskTau)
+        {
+            _plot_taskTau->AddData(ti * 12 + 0, curTime, data.force().x());
+            _plot_taskTau->AddData(ti * 12 + 1, curTime, data.force().y());
+            _plot_taskTau->AddData(ti * 12 + 2, curTime, data.force().z());
+            _plot_taskTau->AddData(ti * 12 + 3, curTime, data.moment().x());
+            _plot_taskTau->AddData(ti * 12 + 4, curTime, data.moment().y());
+            _plot_taskTau->AddData(ti * 12 + 5, curTime, data.moment().z());
+            plot_taskTau_updated = true;
+        }
     }
+
+    if (plot_taskPos_updated) _plot_taskPos->DataUpdated(curTime);
+    if (plot_taskVel_updated) _plot_taskVel->DataUpdated(curTime);
+    if (plot_taskTau_updated) _plot_taskTau->DataUpdated(curTime);
 }
 
 void BMR2DataHandler::OnRecvThreadState(const double curTime, const dtproto::bmr2::ThreadState &state)
@@ -583,6 +639,30 @@ void BMR2DataHandler::OnRecvArbitraryStateXY(const double curTime, const dtproto
         // LOG(trace) << "  data[" << gi << "] = " << state.data(2*gi) << ", " << << state.data(2*gi+1);
         _plot_debugDataXY->AddData(gi, state.data().Get(2 * gi), state.data().Get(2 * gi + 1));
     }
+}
+
+void BMR2DataHandler::OnRecvFtState(const double curTime, const google::protobuf::RepeatedPtrField<dtproto::bmr2::FTSensorData> &state)
+{
+    bool plot_ftSensor_updated = false;
+
+    for (auto &data : state)
+    {
+        int fi = data.id();
+
+        if (_plot_ftSensor)
+        {
+            _plot_ftSensor->AddData(fi * 7 + 0, curTime, data.force(0));
+            _plot_ftSensor->AddData(fi * 7 + 1, curTime, data.force(1));
+            _plot_ftSensor->AddData(fi * 7 + 2, curTime, data.force(2));
+            _plot_ftSensor->AddData(fi * 7 + 3, curTime, data.torque(0));
+            _plot_ftSensor->AddData(fi * 7 + 4, curTime, data.torque(1));
+            _plot_ftSensor->AddData(fi * 7 + 5, curTime, data.torque(2));
+            _plot_ftSensor->AddData(fi * 7 + 6, curTime, data.status());
+            plot_ftSensor_updated = true;
+        }
+    }
+
+    if (plot_ftSensor_updated) _plot_ftSensor->DataUpdated(curTime);
 }
 
 void BMR2DataHandler::OnLoadTriggered(QString filename)
